@@ -19,6 +19,17 @@ OUT = ROOT / "dist"
 SITE = "https://linkwiki.info"
 POSTS = ROOT / "content"
 
+CATEGORY_LANDING = (
+    ("커뮤니티", "community", "커뮤니티 사이트모음", "게임·취미·생활 등 관심사에 맞는 게시판을 찾아보고 가입 조건을 비교하세요."),
+    ("한인교민", "korean", "해외 한인 사이트모음", "지역별 교민 정보와 생활 게시판을 살펴보고 실제 활동 도시를 확인하세요."),
+    ("만화", "comics-directory", "만화 사이트모음", "만화·웹소설 플랫폼의 서비스 분야와 유료 이용 조건을 확인하세요."),
+    ("만화·웹툰", "webtoon", "웹툰 링크모음", "웹툰 서비스별 작품 유형과 공식 이용 경로를 비교하세요."),
+    ("AI 도구", "ai", "AI 도구 사이트모음", "글쓰기·검색·요약 도구를 기능과 이용 조건에 따라 비교하세요."),
+    ("검색·포털", "search", "검색·포털 링크모음", "검색과 정보 탐색에 필요한 포털 서비스를 골라보세요."),
+    ("스포츠", "sports", "스포츠 사이트모음", "일정·기록·뉴스 등 목적에 따라 서비스를 찾고 중계권을 확인하세요."),
+    ("영상·OTT", "video", "영상·OTT 링크모음", "영상 서비스의 콘텐츠 제공 방식과 구독 조건을 구분해 살펴보세요."),
+)
+
 
 def public_url(url):
     """Use Pages' extensionless public URL; keep files on disk as .html."""
@@ -188,7 +199,7 @@ def polish_home_intent(home):
             '이 사이트의 97개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>',
             '이 사이트의 97개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>'
             '<p class="lw-search-quicklinks"><a href="/directory.html">전체 주소 목록 보기</a>'
-            ' · <a href="#categories">분야별 사이트 찾기</a></p>',
+            ' · <a href="/categories/">분야별 사이트 찾기</a></p>',
         ),
         (
             '<p class="v47-help-note">사이트 목록은 편의를 위한 안내이며, 외부 서비스의 운영·안전성을 보증하지 않습니다. 접속 전 주소와 이용 조건을 확인하세요.</p>',
@@ -303,6 +314,46 @@ def build():
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
+    # One useful navigation hub backed by existing registered sites, not eight
+    # duplicate keyword doorway pages. Individual category pages remain intact.
+    records = json.loads((OUT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
+    counts = {}
+    for record in records:
+        counts[record["category"]] = counts.get(record["category"], 0) + 1
+    category_cards = []
+    for category, slug, heading, purpose in CATEGORY_LANDING:
+        count = counts.get(category, 0)
+        if not count or not (OUT / "categories" / f"{slug}.html").is_file():
+            raise RuntimeError(f"Category page or directory data missing: {category}")
+        category_cards.append(
+            f'<article class="v6-card"><h2><a href="/categories/{slug}">{escape(heading)}</a></h2>'
+            f'<p>{escape(purpose)}</p><p>{count}개 등록 사이트</p>'
+            f'<a href="/categories/{slug}">사이트 목록 보기</a></article>')
+    hub = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 분야별 사이트</nav>'
+           '<div class="blog-heading"><p class="eyebrow">LINKWIKI · DIRECTORY</p>'
+           '<h1>분야별 사이트모음·링크모음</h1>'
+           '<p>필요한 분야를 선택하면 등록된 사이트의 이름과 주소, 이용 목적을 살펴볼 수 있습니다.</p></div>'
+           '<div class="v6-grid">' + ''.join(category_cards) + '</div>'
+           '<section class="seo-guidance"><h2>사이트를 선택할 때</h2>'
+           '<p>사이트 수가 많다고 더 신뢰할 수 있는 것은 아닙니다. 각 서비스의 운영 주체, 정확한 도메인, 로그인·결제 조건을 확인하세요.</p>'
+           '<p>이 목록은 접속 가능 여부나 최신 주소를 실시간으로 검증한 순위표가 아닙니다.</p>'
+           '<p><a href="/directory">전체 등록 사이트 검색</a> · <a href="/guides/address-check">주소 확인 방법</a></p>'
+           '</section></div>')
+    hub_path = OUT / "categories" / "index.html"
+    hub_path.write_text(document("분야별 사이트모음·링크모음", "커뮤니티, 웹툰, 스포츠, AI 도구, 검색·포털, 영상·OTT, 해외 교민 등 분야별 사이트 목록과 주소 확인 방법을 살펴보세요.",
+                                 SITE + "/categories/", hub, header, footer), encoding="utf-8")
+    for category, slug, _, _ in CATEGORY_LANDING:
+        path = OUT / "categories" / f"{slug}.html"
+        source = path.read_text(encoding="utf-8")
+        marker = '</main>'
+        if source.count(marker) != 1:
+            raise RuntimeError(f"Category page layout changed: {slug}")
+        source = source.replace(marker,
+            '<nav class="wrap seo-related-links" aria-label="다른 분야 탐색">'
+            '<a href="/categories/">다른 분야 사이트모음 보기</a> · '
+            '<a href="/directory">전체 사이트 검색</a></nav>' + marker, 1)
+        path.write_text(source, encoding="utf-8")
+
     # Normalize every generated page, including the new blog pages. Do not
     # rename physical files: Cloudflare Pages maps /about to /about.html.
     for page in OUT.rglob("*.html"):
@@ -319,7 +370,8 @@ def build():
         if element.text:
             element.text = public_url(element.text)
     existing = {el.text for el in urlset.findall(f"{{{ns}}}url/{{{ns}}}loc")}
-    for entry in [{"url": "/blog/", "modified": datetime.now(timezone.utc).date().isoformat()}] + posts:
+    for entry in [{"url": "/categories/", "modified": datetime.now(timezone.utc).date().isoformat()},
+                  {"url": "/blog/", "modified": datetime.now(timezone.utc).date().isoformat()}] + posts:
         loc = SITE + entry["url"]
         if loc in existing:
             continue

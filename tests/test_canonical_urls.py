@@ -42,6 +42,19 @@ class CanonicalURLTests(unittest.TestCase):
         html = (dist / "categories" / "ai.html").read_text(encoding="utf-8")
         self.assertIn('href="https://linkwiki.info/categories/ai" rel="canonical"', html)
 
+    def test_category_hub_and_existing_pages_link_each_other(self):
+        dist = ROOT / "dist"
+        if not (dist / "categories" / "index.html").exists():
+            self.skipTest("Run build.py before release verification")
+        hub = (dist / "categories" / "index.html").read_text(encoding="utf-8")
+        self.assertEqual(hub.count('개 등록 사이트'), len(builder.CATEGORY_LANDING))
+        self.assertIn('href="https://linkwiki.info/categories/"', hub)
+        for _, slug, _, _ in builder.CATEGORY_LANDING:
+            self.assertIn(f'href="/categories/{slug}"', hub)
+            page = (dist / "categories" / f"{slug}.html").read_text(encoding="utf-8")
+            self.assertIn('href="/categories/"', page)
+        self.assertIn('href="/categories/"', (dist / "index.html").read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()

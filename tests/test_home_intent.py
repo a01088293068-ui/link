@@ -10,7 +10,7 @@ class HomeIntentTests(unittest.TestCase):
         modified = build.polish_home_intent(source)
         self.assertIn("링크위키 바로가기", modified)
         self.assertIn("https://linkwiki01.com/", modified)
-        self.assertIn('href="#categories"', modified)
+        self.assertIn('href="/categories/"', modified)
         self.assertIn('href="/directory.html"', modified)
         self.assertIn("실시간 접속 확인을 보증하지 않습니다", modified)
         self.assertEqual(modified.count('class="lw-search-quicklinks"'), 1)

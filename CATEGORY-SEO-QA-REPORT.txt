@@ -1,0 +1,18 @@
+LinkWiki category search-entry enhancement — 2026-10-27
+
+Scope:
+- New build-generated /categories/ discovery hub for the eight existing registered category groups.
+- Category counts derived from assets/verified-directory.json at build time.
+- Home search quick link targets /categories/.
+- Each of the eight original category pages gets a return link to the hub and directory.
+- Cloudflare Pages deployment output and file routes remain unchanged.
+- No unverified live-availability or site-safety claims have been introduced.
+
+Verification performed:
+- python3 -B build.py: PASS; 2 blog posts generated, all category pages present.
+- python3 -B -m unittest discover -s tests -q: PASS; 30 tests.
+- Build audit: PASS; sitemap, canonical and internal article link checks.
+- Live deployment and desktop/mobile interactive browser checks: NOT PERFORMED.
+
+No changes to GitHub workflow, API keys, automatic publishing, original category data,
+main-service link, site design CSS, or administrator system.
