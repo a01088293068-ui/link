@@ -9,7 +9,6 @@ from hashlib import sha256
 import json
 import os
 from pathlib import Path
-import random
 import re
 import sys
 import time
@@ -23,19 +22,21 @@ SEEDS = SEO / "seed_keywords.txt"
 HISTORY = SEO / "history.json"
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
-GEMINI_FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash-lite")
+GEMINI_RETRY_DELAYS = (5, 10, 20, 40)
 BLOCKED = ("무료쿠폰", "우회 접속", "불법", "토토", "성인", "실시간 주소")
 
 
-def api_json(url, headers, body):
+def api_json(url, headers, body, timeout=60):
     request = urllib.request.Request(url, method="POST",
         data=json.dumps(body, ensure_ascii=False).encode("utf-8"),
         headers={"Accept": "application/json", "Content-Type": "application/json", **headers})
     try:
-        with urllib.request.urlopen(request, timeout=60) as response:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             return json.load(response)
     except urllib.error.HTTPError as error:
         raise RuntimeError(f"API HTTP {error.code}: {error.read(250).decode('utf-8', 'replace')}") from error
+    except (TimeoutError, urllib.error.URLError) as error:
+        raise RuntimeError(f"API network error: {error}") from error
 
 
 def serper(query):
@@ -69,37 +70,27 @@ def gemini_json(system, data):
     key = os.getenv("GEMINI_API_KEY", "").strip()
     if not key:
         raise RuntimeError("GEMINI_API_KEY secret is missing")
-    models = list(dict.fromkeys(x for x in [GEMINI_MODEL, GEMINI_FALLBACK_MODEL] if x))
-    if any(not re.fullmatch(r"[a-zA-Z0-9_.-]+", model) for model in models):
+    if not re.fullmatch(r"[a-zA-Z0-9_.-]+", GEMINI_MODEL):
         raise RuntimeError("Invalid Gemini model name")
     request_body = {
         "systemInstruction": {"parts": [{"text": system}]},
         "contents": [{"role": "user", "parts": [{"text": json.dumps(data, ensure_ascii=False)}]}],
         "generationConfig": {"responseMimeType": "application/json", "temperature": 0.35}}
-    response = None
-    for index, model in enumerate(models):
-        for attempt in range(3):
-            try:
-                response = api_json(
-                    f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                    {"x-goog-api-key": key}, request_body)
-                break
-            except RuntimeError as error:
-                # Only retry temporary server overload; 400/401/403/404 and quota errors
-                # should not consume repeated API calls or silently switch models.
-                transient = re.search(r"API HTTP (408|429|500|502|503|504):", str(error))
-                if not transient or attempt == 2:
-                    if index + 1 < len(models) and "API HTTP 503:" in str(error):
-                        print(f"Gemini {model} overloaded; trying {models[index + 1]}", flush=True)
-                        break
-                    raise
-                delay = min(12, (2 ** attempt) * 2) + random.uniform(0, 0.75)
-                print(f"Gemini temporary API error on {model}; retrying in {delay:.1f}s", flush=True)
-                time.sleep(delay)
-        if response is not None:
+    for attempt in range(len(GEMINI_RETRY_DELAYS) + 1):
+        try:
+            response = api_json(
+                f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent",
+                {"x-goog-api-key": key}, request_body, timeout=30)
             break
-    if response is None:
-        raise RuntimeError("Gemini did not return a response")
+        except RuntimeError as error:
+            # Retry temporary overload and network timeouts only. 401/403/404 and
+            # 429 (possibly exhausted daily quota) must fail without extra calls.
+            transient = bool(re.search(r"API HTTP (408|500|502|503|504):|API network error:", str(error)))
+            if not transient or attempt == len(GEMINI_RETRY_DELAYS):
+                raise
+            delay = GEMINI_RETRY_DELAYS[attempt]
+            print(f"Gemini temporary error ({attempt + 1}/5); retrying same model in {delay}s", flush=True)
+            time.sleep(delay)
     try:
         content = "".join(part.get("text", "") for part in response["candidates"][0]["content"]["parts"])
         return json.loads(content)

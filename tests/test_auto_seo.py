@@ -25,11 +25,25 @@ class SEOTests(unittest.TestCase):
             self.assertEqual(seo.gemini_json("system", {}), {"ok": True})
             self.assertEqual(request.call_count, 2)
 
-    def test_gemini_fallback_on_repeated_503(self):
+    def test_gemini_retries_same_model_up_to_five_times(self):
         success = {"candidates": [{"content": {"parts": [{"text": '{"ok": true}'}]}}]}
-        with patch.dict("os.environ", {"GEMINI_API_KEY": "test-key"}), patch.object(seo, "api_json", side_effect=[RuntimeError("API HTTP 503: overloaded")] * 3 + [success]) as request, patch.object(seo.time, "sleep"):
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test-key"}), patch.object(seo, "api_json", side_effect=[RuntimeError("API HTTP 503: overloaded")] * 4 + [success]) as request, patch.object(seo.time, "sleep") as pause:
             self.assertEqual(seo.gemini_json("system", {}), {"ok": True})
-            self.assertIn("gemini-3.5-flash-lite", request.call_args.args[0])
+            self.assertEqual(request.call_count, 5)
+            self.assertEqual([call.args[0] for call in pause.call_args_list], [5, 10, 20, 40])
+            self.assertTrue(all("gemini-3.8-flash" in call.args[0] for call in request.call_args_list))
+
+    def test_timeout_is_retried(self):
+        success = {"candidates": [{"content": {"parts": [{"text": '{"ok": true}'}]}}]}
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test-key"}), patch.object(seo, "api_json", side_effect=[RuntimeError("API network error: The read operation timed out"), success]) as request, patch.object(seo.time, "sleep"):
+            self.assertEqual(seo.gemini_json("system", {}), {"ok": True})
+            self.assertEqual(request.call_count, 2)
+
+    def test_exhausted_retries_stop(self):
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "test-key"}), patch.object(seo, "api_json", side_effect=RuntimeError("API HTTP 503: overloaded")) as request, patch.object(seo.time, "sleep"):
+            with self.assertRaisesRegex(RuntimeError, "503"):
+                seo.gemini_json("system", {})
+            self.assertEqual(request.call_count, 5)
 
     def test_nontransient_not_retried(self):
         with patch.dict("os.environ", {"GEMINI_API_KEY": "test-key"}), patch.object(seo, "api_json", side_effect=RuntimeError("API HTTP 403: forbidden")) as request, patch.object(seo.time, "sleep"):
