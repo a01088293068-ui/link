@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bounded Serper research -> GPT-4o writing/review -> local Markdown.
+"""Bounded Serper research -> Gemini/OpenAI writing/review -> local Markdown.
 GitHub Actions commits passing articles. No GitHub token is needed here.
 """
 import argparse
@@ -20,6 +20,7 @@ SEO = ROOT / "seo"
 SEEDS = SEO / "seed_keywords.txt"
 HISTORY = SEO / "history.json"
 MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 BLOCKED = ("무료쿠폰", "우회 접속", "불법", "토토", "성인", "실시간 주소")
 
 
@@ -59,6 +60,34 @@ def openai_json(system, data):
          "messages": [{"role": "system", "content": system},
                       {"role": "user", "content": json.dumps(data, ensure_ascii=False)}]})
     return json.loads(response["choices"][0]["message"]["content"])
+
+
+def gemini_json(system, data):
+    key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not key:
+        raise RuntimeError("GEMINI_API_KEY secret is missing")
+    if not re.fullmatch(r"[a-zA-Z0-9_.-]+", GEMINI_MODEL):
+        raise RuntimeError("Invalid GEMINI_MODEL")
+    response = api_json(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent",
+        {"x-goog-api-key": key},
+        {"systemInstruction": {"parts": [{"text": system}]},
+         "contents": [{"role": "user", "parts": [{"text": json.dumps(data, ensure_ascii=False)}]}],
+         "generationConfig": {"responseMimeType": "application/json", "temperature": 0.35}})
+    try:
+        content = "".join(part.get("text", "") for part in response["candidates"][0]["content"]["parts"])
+        return json.loads(content)
+    except (KeyError, IndexError, TypeError, ValueError) as error:
+        raise RuntimeError("Gemini response was missing valid JSON") from error
+
+
+def model_json(system, data):
+    provider = os.getenv("SEO_AI_PROVIDER", "gemini").lower().strip()
+    if provider == "gemini":
+        return gemini_json(system, data)
+    if provider == "openai":
+        return openai_json(system, data)
+    raise RuntimeError("SEO_AI_PROVIDER must be gemini or openai")
 
 
 def similarity(a, b):
@@ -114,7 +143,7 @@ def generate(topic, search, prior_titles):
       "JSON만 반환하세요: title, description, introduction, sections(최소 4개; 각 heading 및 paragraphs 배열, 문단 2개 이상), "
       "faq(최소 3개; 각 question, answer), distinct_value. 전체 1600~2600자 목표. "
       "본문에 HTML, Markdown 문법, 외부 URL을 넣지 마세요.")
-    return openai_json(system, {"topic": topic, "unverified_serp": search["organic"],
+    return model_json(system, {"topic": topic, "unverified_serp": search["organic"],
                                 "existing_titles": prior_titles[:30]})
 
 
@@ -167,7 +196,7 @@ def independent_review(topic, article, markdown):
     system = ("엄격한 별도의 편집 검수자입니다. 실용성, 독창성, 정확성, 반복, 검색 의도, 광고 편향을 심사하세요. "
       "검색 스니펫에 근거한 확정적 사실, 검증되지 않은 최신성·안전성·수치가 있으면 불합격하세요. "
       "JSON 반환: pass(boolean), score(0~100 정수), issues(문자열 배열), reason(문자열).")
-    result = openai_json(system, {"topic": topic, "draft": markdown[:12000],
+    result = model_json(system, {"topic": topic, "draft": markdown[:12000],
                                   "distinct_value": article.get("distinct_value", "")})
     score = result.get("score", 0)
     ok = (result.get("pass") is True and isinstance(score, int) and score >= 82
