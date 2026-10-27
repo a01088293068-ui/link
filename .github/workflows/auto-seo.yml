@@ -10,6 +10,11 @@ on:
         type: boolean
         required: false
         default: false
+      diagnose_models:
+        description: 'Check Gemini model availability only (no article)'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -30,7 +35,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Diagnose Gemini model availability
+        if: github.event_name == 'workflow_dispatch' && inputs.diagnose_models == true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 seo/check_gemini_models.py
       - name: Search, generate and review one article
+        if: github.event_name == 'schedule' || inputs.diagnose_models != true
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -48,7 +59,7 @@ jobs:
             python3 seo/auto_seo.py
           fi
       - name: Commit qualified article
-        if: github.event_name == 'schedule' || inputs.publish == true
+        if: (github.event_name == 'schedule' || inputs.publish == true) && inputs.diagnose_models != true
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
@@ -61,7 +72,7 @@ jobs:
             echo 'No article passed review; nothing committed.'
           fi
       - name: Upload reviewed draft
-        if: github.event_name == 'workflow_dispatch' && inputs.publish != true
+        if: github.event_name == 'workflow_dispatch' && inputs.publish != true && inputs.diagnose_models != true
         uses: actions/upload-artifact@v4
         with:
           name: seo-reviewed-draft
