@@ -1,0 +1,30 @@
+LINKWIKI SEO 통합본 검증 보고 (2026-10-27)
+
+입력: LINKWIKI-SEO-PUBLIC-CTA-DEPLOY.zip (원본 정적 페이지 39개 파일)
+기존 GitHub 글: content/post_20261026_144625.md (교체 대상으로 제외)
+개선 원고: content/address-directory-safety-guide.md (전면 재작성)
+
+추가 구현:
+- 기존 메인 디자인과 연동되는 '새로운 이용 가이드' 카드 섹션
+- /blog/ 전체 목록 및 /blog/address-directory-safety-guide/ 글 페이지
+- 새 마크다운 추가 시 글 목록, 상세페이지, 사이트맵 자동 갱신
+- 모바일 반응형 블로그 CSS와 홈/목록 내부 탐색
+- Python 표준 라이브러리만 사용하는 build.py
+
+실행 결과:
+- python3 build.py : 성공 (1개 글 생성)
+- 기존 메인 CTA linkwiki01.com 유지 : 확인
+- 메인 새 글 링크 삽입 : 확인
+- 글 목록/상세 HTML 생성 : 확인
+- sitemap.xml 새 URL 포함 및 XML 파싱 : 확인
+- 기존 가이드, 404.html, assets/blog.css 유지 : 확인
+
+미검증:
+- 실제 Cloudflare Pages 배포/도메인 연결
+- Mac Safari/Chrome 실브라우저 시각 검증 및 모바일 화면 실측
+- API 기반 대량 글 생성과 GitHub 자동 업로드
+
+배포 설정: Framework=None, Branch=main, Build Command=python3 build.py,
+Output directory=dist, Root directory=repository root.
+
+검색 노출·상위 순위는 보장되지 않습니다. 새 글 게시 전 내용과 출처 검토가 필요합니다.

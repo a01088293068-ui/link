@@ -1,0 +1,15 @@
+/*
+  X-Content-Type-Options: nosniff
+  Strict-Transport-Security: max-age=31536000
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'none'; style-src 'self'; script-src 'self' https://static.cloudflareinsights.com; img-src 'self'; font-src 'self'; connect-src https://cloudflareinsights.com; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+
+/sitemap.xml
+  Content-Type: application/xml; charset=UTF-8
+  Cache-Control: public, max-age=300
+
+/sitemap-v2.xml
+  Content-Type: application/xml; charset=UTF-8
+  Cache-Control: public, max-age=300
