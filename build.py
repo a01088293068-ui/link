@@ -158,7 +158,7 @@ def build():
     OUT.mkdir()
     # Preserve all existing features and assets; only add a discreet nav item to HTML pages.
     for child in ROOT.iterdir():
-        if child.name in {"dist", "content", "build.py", "README-AUTO-BLOG.md", "__pycache__"}:
+        if child.name in {"dist", "content", "seo", ".github", ".git", "build.py", "README-AUTO-BLOG.md", "SEO-AUTOMATION-SETUP.md", "QA-REPORT.txt", "__pycache__", "tests"}:
             continue
         if child.is_dir():
             shutil.copytree(child, OUT / child.name)
