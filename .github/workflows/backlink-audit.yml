@@ -1,0 +1,41 @@
+name: LinkWiki backlink health audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '42 1 * * 0'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: linkwiki-backlink-audit
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run backlink unit tests
+        run: python3 -B -m unittest discover -s tests -p 'test_backlink_manager.py' -v
+      - name: Verify up to 30 listed public backlinks
+        run: python3 seo/backlink_manager.py audit --limit 30
+      - name: Save backlink report
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add seo/backlink-registry.json seo/backlink-status.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh backlink verification records'
+            git push origin HEAD:main
+          else
+            echo 'No backlink records changed.'
+          fi
