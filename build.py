@@ -112,6 +112,7 @@ def slug_for(path):
 def chrome():
     source = (ROOT / "index.html").read_text(encoding="utf-8")
     header = re.search(r'<header class="top">.*?</header>', source, re.S).group()
+    header = add_nav(header)
     footer = re.search(r'<footer class="footer">.*?</footer>', source, re.S).group()
     # Blog is nested; force absolute paths for reusable site chrome.
     for relative in ("index.html", "directory.html", "about.html", "privacy.html",
@@ -121,6 +122,16 @@ def chrome():
         footer = footer.replace('"' + relative + '"', '"/' + relative + '"')
     header = re.sub(r'href="(assets/[^\"]+)"', r'href="/\1"', header)
     return header, footer
+
+
+def add_nav(source):
+    """Append one discreet site-info item to the existing desktop/mobile menu."""
+    pattern = r'(<nav\b[^>]*id="mobile-primary-nav"[^>]*>)(.*?)(</nav>)'
+    def replace(match):
+        if 'href="/blog/"' in match.group(2):
+            return match.group()
+        return match.group(1) + match.group(2) + '<a href="/blog/">사이트 정보</a>' + match.group(3)
+    return re.sub(pattern, replace, source, count=1, flags=re.S)
 
 
 def document(title, description, canonical, main_content, header, footer):
@@ -145,7 +156,7 @@ def build():
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
-    # Preserve existing pages and assets byte-for-byte, except the homepage section and sitemap.
+    # Preserve all existing features and assets; only add a discreet nav item to HTML pages.
     for child in ROOT.iterdir():
         if child.name in {"dist", "content", "build.py", "README-AUTO-BLOG.md", "__pycache__"}:
             continue
@@ -153,6 +164,11 @@ def build():
             shutil.copytree(child, OUT / child.name)
         elif child.is_file():
             shutil.copy2(child, OUT / child.name)
+    for existing_page in OUT.rglob('*.html'):
+        existing_html = existing_page.read_text(encoding='utf-8')
+        improved_html = add_nav(existing_html)
+        if improved_html != existing_html:
+            existing_page.write_text(improved_html, encoding='utf-8')
     header, footer = chrome()
     posts = []
     for source in sorted(POSTS.glob("*.md"), reverse=True) if POSTS.exists() else []:
@@ -174,8 +190,8 @@ def build():
         url = f"/blog/{quote(name)}/"
         canonical = SITE + url
         article = (f'<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / '
-                   f'<a href="/blog/">이용 가이드</a></nav><article class="blog-article">'
-                   f'<p class="eyebrow">LINKWIKI · 이용 가이드</p><h1>{escape(title)}</h1>'
+                   f'<a href="/blog/">사이트 정보</a></nav><article class="blog-article">'
+                   f'<p class="eyebrow">LINKWIKI · 사이트 정보</p><h1>{escape(title)}</h1>'
                    + (f'<p class="blog-date">{display_date}</p>' if display_date else '') +
                    f'<div class="blog-content">{markdown(body)}</div>'
                    '<div class="blog-bottom"><a href="/blog/">다른 이용 가이드 보기</a>'
@@ -190,29 +206,30 @@ def build():
         if not entries:
             return '<p class="blog-empty">새로운 이용 가이드를 준비하고 있습니다.</p>'
         return ''.join(f'<a class="blog-card" href="{escape(p["url"], quote=True)}">'
-                       f'<span class="blog-card-label">이용 가이드{(" · " + p["date"]) if p["date"] else ""}</span>'
+                       f'<span class="blog-card-label">사이트 정보{(" · " + p["date"]) if p["date"] else ""}</span>'
                        f'<strong>{escape(p["title"])}</strong><span>{escape(p["description"][:95])}</span>'
                        '<span class="blog-card-more">글 읽기 →</span></a>' for p in entries)
 
-    listing = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 이용 가이드</nav>'
+    listing = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 사이트 정보</nav>'
                '<div class="blog-heading"><p class="eyebrow">LINKWIKI · GUIDE JOURNAL</p>'
-               '<h1>주소모음과 사이트 이용 가이드</h1><p>유용한 링크 탐색법과 주소 확인 방법을 정리합니다.</p></div>'
+               '<h1>사이트 탐색 정보</h1><p>유용한 링크 탐색법과 주소 확인 방법을 정리합니다.</p></div>'
                f'<div class="blog-grid">{cards(posts)}</div></div>')
     blog_index = OUT / "blog" / "index.html"
     blog_index.parent.mkdir(parents=True, exist_ok=True)
-    blog_index.write_text(document("주소모음과 사이트 이용 가이드", "링크모음과 주소모음 안전 이용 방법을 안내합니다.",
+    blog_index.write_text(document("사이트 탐색 정보", "링크모음과 주소모음 안전 이용 방법을 안내합니다.",
                                    SITE + "/blog/", listing, header, footer), encoding="utf-8")
 
     # A restrained homepage panel between the existing guide list and how-to section.
     home = (OUT / "index.html").read_text(encoding="utf-8")
-    panel = ('<section class="wrap blog-home" aria-label="새로운 이용 가이드">'
-             '<div class="v47-section-heading"><h2>새로운 이용 가이드</h2>'
+    panel = ('<section class="wrap blog-home" aria-label="최근 등록된 정보">'
+             '<div class="v47-section-heading"><h2>최근 등록된 정보</h2>'
              '<a href="/blog/">전체 글 보기 <span aria-hidden="true"></span></a></div>'
              f'<div class="blog-grid">{cards(posts[:3])}</div></section>')
     position = '<section aria-label="링크모음 이용 방법"'
     if position not in home:
         raise RuntimeError("기존 메인 구조가 달라져 게시판 삽입 위치를 확인할 수 없습니다")
     home = home.replace(position, panel + position, 1)
+    home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
     ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
