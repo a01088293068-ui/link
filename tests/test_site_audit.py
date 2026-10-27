@@ -1,5 +1,6 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import json
 import unittest
 
 from seo.site_audit import SITE, audit_site, page_file
@@ -16,6 +17,10 @@ class SiteAuditTests(unittest.TestCase):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root / "blog/entry").mkdir(parents=True)
+            (root / "assets").mkdir()
+            (root / "assets/verified-directory.json").write_text(json.dumps([
+                {"name": "예시", "category": "검색", "description": "예시 설명", "url": "https://example.com/"}
+            ], ensure_ascii=False), encoding="utf-8")
             (root / "blog/index.html").write_text("index", encoding="utf-8")
             sitemap = f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{SITE}/blog/</loc></url></urlset>'
             (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
@@ -27,6 +32,20 @@ class SiteAuditTests(unittest.TestCase):
             problems = audit_site(root)
             self.assertTrue(any("absent from sitemap" in item for item in problems))
             self.assertTrue(any("broken internal article link" in item for item in problems))
+
+    def test_audit_rejects_unvalidated_directory_url_format(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            (root / "blog").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            sitemap = f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{SITE}/blog/</loc></url></urlset>'
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(json.dumps([
+                {"name": "테스트", "category": "기타", "description": "테스트", "url": "javascript:alert(1)"}
+            ], ensure_ascii=False), encoding="utf-8")
+            self.assertTrue(any("invalid directory URL" in item for item in audit_site(root)))
 
     def test_existing_generated_site_is_consistent(self):
         root = Path(__file__).resolve().parents[1] / "dist"

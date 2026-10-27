@@ -134,6 +134,34 @@ def add_nav(source):
     return re.sub(pattern, replace, source, count=1, flags=re.S)
 
 
+def polish_home_intent(home):
+    """Small, restrained changes to the generated home page; source HTML stays intact."""
+    edits = (
+        (
+            '분야별 사이트를 비교하고, 주소 확인부터 접속 문제 해결까지 링크위키에서 살펴보세요.',
+            '링크위키 주소모음·링크모음에서 분야별 사이트를 찾고, 실제 이동 주소와 이용 조건을 확인해 보세요.',
+        ),
+        ('<label for="lw-home-query">사이트 이름으로 찾기</label>',
+         '<label for="lw-home-query">사이트 이름·주소 검색</label>'),
+        (
+            '이 사이트의 97개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>',
+            '이 사이트의 97개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>'
+            '<p class="lw-search-quicklinks"><a href="/directory.html">전체 주소 목록 보기</a>'
+            ' · <a href="#categories">분야별 사이트 찾기</a></p>',
+        ),
+        (
+            '<p class="v47-help-note">사이트 목록은 편의를 위한 안내이며, 외부 서비스의 운영·안전성을 보증하지 않습니다. 접속 전 주소와 이용 조건을 확인하세요.</p>',
+            '<p class="v47-help-note">등록된 주소는 변경되거나 접속되지 않을 수 있으며, 실시간 접속 확인을 보증하지 않습니다. '
+            '방문 전 <a href="/guides/address-check.html">공식 주소 확인 방법</a>과 각 서비스의 이용 조건을 확인하세요.</p>',
+        ),
+    )
+    for old, new in edits:
+        if home.count(old) != 1:
+            raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
+        home = home.replace(old, new, 1)
+    return home
+
+
 def document(title, description, canonical, main_content, header, footer):
     description = description[:170]
     return f'''<!doctype html>
@@ -195,7 +223,8 @@ def build():
                    f'<p class="eyebrow">LINKWIKI · 사이트 정보</p><h1>{escape(title)}</h1>'
                    + (f'<p class="blog-date">{display_date}</p>' if display_date else '') +
                    f'<div class="blog-content">{markdown(content_body)}</div>'
-                   '<div class="blog-bottom"><a href="/blog/">다른 이용 가이드 보기</a>'
+                   '<div class="blog-bottom"><a href="/">주소모음·링크모음 홈</a>'
+                   '<a href="/blog/">다른 이용 가이드 보기</a>'
                    '<a href="/directory.html">사이트 목록 살펴보기</a></div></article></div>')
         target = OUT / "blog" / name / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -221,7 +250,7 @@ def build():
                                    SITE + "/blog/", listing, header, footer), encoding="utf-8")
 
     # A restrained homepage panel between the existing guide list and how-to section.
-    home = (OUT / "index.html").read_text(encoding="utf-8")
+    home = polish_home_intent((OUT / "index.html").read_text(encoding="utf-8"))
     panel = ('<section class="wrap blog-home" aria-label="최근 등록된 정보">'
              '<div class="v47-section-heading"><h2>최근 등록된 정보</h2>'
              '<a href="/blog/">전체 글 보기 <span aria-hidden="true"></span></a></div>'

@@ -227,7 +227,8 @@ def render(article, related=()):
             if re.fullmatch(r"/blog/[A-Za-z0-9_-]+/", url):
                 lines.append(f"- [{title}]({url})")
         lines.append("")
-    lines += ["## 관련 정보", "", "- [링크위키 사이트 목록](/directory.html)",
+    lines += ["## 관련 정보", "", "- [링크위키 주소모음·링크모음 홈](/)",
+              "- [링크위키 사이트 목록](/directory.html)",
               "- [공식 주소 확인 방법](/guides/address-check.html)",
               "- [안전한 사이트 이용](/guides/security.html)", "",
               "별도로 운영되는 [링크위키 본 서비스](https://linkwiki01.com/)를 이용할 때도 각 사이트의 주소와 이용 조건을 확인하세요.", ""]
