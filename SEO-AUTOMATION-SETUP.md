@@ -2,22 +2,23 @@
 
 ## 1. 무엇이 자동화되나
 
-`seo/seed_keywords.txt`에 설정된 주제에서 하루에 하나의 시드를 순환합니다. Serper로 관련 검색어와 경쟁 결과 제목·요약을 조사하고 관련성 기반 후보를 선정합니다. GPT-4o가 정보를 작성하고 독립된 GPT-4o 검수 및 코드 검사를 통과하면 `content/`에 글 1개를 저장합니다. GitHub Actions가 해당 변경을 커밋하면 Cloudflare Pages가 배포합니다.
+`seo/seed_keywords.txt`에 설정된 주제에서 날짜별 시드를 순환합니다. Serper로 관련 검색어와 검색 결과 제목·요약을 조사하고 후보를 선정합니다. 기본 모델 Gemini 3.5 Flash-Lite가 글을 생성하며, 별도 Gemini 검수와 코드 검사를 통과할 때만 `content/`에 글 1개를 저장합니다. GitHub Actions가 해당 변경을 커밋하면 Cloudflare Pages가 배포합니다. 기계적 검수는 실제 사실 확인이나 편집자의 판단을 대신하지 않습니다.
 
 검색량, 경쟁 난도, 구글 검색 순위는 이 코드만으로 검증되지 않습니다. 유용한 콘텐츠가 항상 색인·상위노출되는 것은 아닙니다.
 
 ## 2. 준비: GitHub Secrets
 
-GitHub `a01088293068-ui/link` → **Settings → Secrets and variables → Actions → Secrets**에서 아래 **Repository secrets** 2개를 만드세요.
+GitHub `a01088293068-ui/link` → **Settings → Secrets and variables → Actions → Secrets**에서 아래 Repository secrets를 만드세요.
 
-- `OPENAI_API_KEY`: OpenAI API 키
+- `GEMINI_API_KEY`: Gemini API 키 (기본 사용)
 - `SERPER_API_KEY`: Serper API 키
+- `OPENAI_API_KEY`: 나중에 OpenAI 모델을 선택할 때만 필요 (현재 미사용)
 
 비밀 값은 코드, 채팅, 저장소 파일에 붙여넣지 마세요. 별도의 GitHub PAT는 Actions 내 콘텐츠 Commit에 필요하지 않습니다. GitHub Actions에는 `GITHUB_TOKEN`을 사용하도록 설정되어 있습니다.
 
 ## 3. 첫 시험: 게시하지 않고 실행
 
-GitHub → **Actions → LinkWiki SEO research and publish → Run workflow** → `publish=false`를 선택하고 실행합니다. API 비용이 발생할 수 있으며, 통과한 원고가 있을 때만 실행 결과의 `seo-reviewed-draft` Artifacts에 저장됩니다. 중복이나 품질 미달이면 게시하지 않고 로그에 사유를 남깁니다.
+GitHub → **Actions → LinkWiki SEO research and publish → Run workflow** → `publish=false`, `diagnose_models=false`를 선택하고 실행합니다. API 비용이 발생할 수 있으며, 통과한 원고가 있을 때만 실행 결과의 `seo-reviewed-draft` Artifacts에 저장됩니다. 중복이나 품질 미달이면 게시하지 않고 로그에 사유를 남깁니다.
 
 ## 4. 수동 게시 검증
 
@@ -29,7 +30,7 @@ GitHub → **Settings → Secrets and variables → Actions → Variables** → 
 
 이름 `AUTO_SEO_ENABLED`, 값 `true`.
 
-이때부터 GitHub Actions가 월·수·금 02:15 UTC(한국 시간 11:15)에 실행을 시도합니다. 플랫폼 사정에 따라 예약 시간이 지연되거나 실행이 건너뛰어질 수 있습니다. **품질 기준 통과 시에만 최대 1개 발행**합니다. 끄려면 같은 변수를 `false`로 바꾸세요.
+이때부터 GitHub Actions가 월·수·금 02:15 UTC(한국 시간 11:15)에 실행을 시도합니다. 플랫폼 사정에 따라 예약 시간이 지연되거나 실행이 건너뛰어질 수 있습니다. **품질 기준 통과 시에만 실행당 최대 1개 발행**합니다. 끄려면 같은 변수를 `false`로 바꾸세요. 처음에는 글을 직접 확인할 수 있도록 비활성화 상태를 유지하는 것을 권장합니다.
 
 ## 6. GitHub Actions 쓰기 권한
 

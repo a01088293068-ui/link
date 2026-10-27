@@ -189,11 +189,12 @@ def build():
             display_date = ""
         url = f"/blog/{quote(name)}/"
         canonical = SITE + url
+        content_body = re.sub(r'^#\s+.*(?:\n|$)', '', body, count=1)
         article = (f'<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / '
                    f'<a href="/blog/">사이트 정보</a></nav><article class="blog-article">'
                    f'<p class="eyebrow">LINKWIKI · 사이트 정보</p><h1>{escape(title)}</h1>'
                    + (f'<p class="blog-date">{display_date}</p>' if display_date else '') +
-                   f'<div class="blog-content">{markdown(body)}</div>'
+                   f'<div class="blog-content">{markdown(content_body)}</div>'
                    '<div class="blog-bottom"><a href="/blog/">다른 이용 가이드 보기</a>'
                    '<a href="/directory.html">사이트 목록 살펴보기</a></div></article></div>')
         target = OUT / "blog" / name / "index.html"

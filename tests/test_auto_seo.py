@@ -69,11 +69,31 @@ class SEOTests(unittest.TestCase):
             "introduction": "사이트를 비교할 때 확인해야 하는 항목들입니다. " * 8,
             "sections": [{"heading": f"확인 항목 {i}", "paragraphs": ["링크의 실제 이동 주소와 설명을 대조하고 공식 공지를 확인합니다. " * 6,
               "검색창과 카테고리의 정확성을 직접 시험하고 불필요한 권한 요구를 확인합니다. " * 5]} for i in range(4)],
-            "faq": [{"question": f"질문 {i}", "answer": "운영 주체와 이용 조건을 직접 확인하세요."} for i in range(3)]}
+            "faq": [{"question": f"질문 {i}", "answer": "운영 주체와 이용 조건을 직접 확인하고 연결 주소가 공식적으로 안내된 주소인지 비교해 보세요. 불확실하면 접속을 멈추세요."} for i in range(3)]}
         draft = seo.render(article)
         self.assertIn("/directory.html", draft)
         self.assertFalse(seo.deterministic_review("링크모음 사이트 비교 기준", article, draft, []))
         self.assertTrue(seo.deterministic_review("링크모음 사이트 비교 기준", article, draft, [article["title"]]))
+
+    def test_unsafe_bulk_cookie_deletion_advice_is_rejected(self):
+        article = self.sample_article()
+        article["sections"][0]["paragraphs"][0] += " 모든 쿠키를 삭제하세요."
+        issues = seo.deterministic_review("링크모음 사이트 비교 기준", article, seo.render(article), [])
+        self.assertIn("potentially unsafe troubleshooting advice", issues)
+
+    def test_warning_about_bulk_deletion_is_not_rejected(self):
+        article = self.sample_article()
+        article["sections"][0]["paragraphs"][0] += " 전체 쿠키를 삭제하면 로그아웃될 수 있습니다."
+        issues = seo.deterministic_review("링크모음 사이트 비교 기준", article, seo.render(article), [])
+        self.assertNotIn("potentially unsafe troubleshooting advice", issues)
+
+    def sample_article(self):
+        return {"title": "링크모음 사이트 비교 기준",
+                "description": "링크모음 사이트를 비교하는 구체적인 기준을 설명하고 안전한 주소 확인 단계와 실수하기 쉬운 점검 방법을 정리한 이용 안내입니다.",
+                "introduction": "연결 주소의 정확성과 분류 기준을 확인하는 방법을 설명합니다. " * 8,
+                "sections": [{"heading": f"확인 단계 {i}", "paragraphs": ["표시된 도메인을 공식 운영자 안내와 직접 대조합니다. " * 5,
+                              "이동하기 전에 입력 요구와 목적지를 신중하게 살펴봅니다. " * 5]} for i in range(4)],
+                "faq": [{"question": f"질문 {i}", "answer": "서비스가 안내하는 공식 주소와 운영 정보를 확인하고 이상한 경고가 나타나면 진행을 멈추고 고객센터 안내를 확인하세요."} for i in range(3)]}
 
 
 if __name__ == "__main__":
