@@ -2,6 +2,7 @@ import importlib.util
 from pathlib import Path
 import unittest
 from unittest.mock import patch
+from tempfile import TemporaryDirectory
 
 SCRIPT = Path(__file__).resolve().parents[1] / "seo" / "auto_seo.py"
 spec = importlib.util.spec_from_file_location("auto_seo_test", SCRIPT)
@@ -63,6 +64,32 @@ class SEOTests(unittest.TestCase):
         found = seo.select_topic("링크모음 안전하게 이용하는 방법",
             {"related": ["오늘 날씨", "불법 사이트 주소모음", "링크모음 비교 방법"]}, [], [])
         self.assertIn(found, {"링크모음 비교 방법", "링크모음 안전하게 이용하는 방법"})
+
+    def test_selection_uses_serp_title_signal_without_extra_api_calls(self):
+        research = {"related": ["사이트 접속 오류 해결 방법"], "organic": [
+            {"title": "주소모음 사이트 선택 기준", "link": "https://example.org/a"},
+            {"title": "주소모음 사이트 선택 기준 안내", "link": "https://other.org/a"},
+            {"title": "주소모음 사이트 선택 기준 정리", "link": "https://third.org/a"}]}
+        self.assertEqual(seo.select_topic("주소모음 사이트 선택 기준", research, [], []),
+                         "사이트 접속 오류 해결 방법")
+
+    def test_related_posts_link_only_existing_published_paths(self):
+        with TemporaryDirectory() as folder:
+            directory = Path(folder)
+            (directory / "good-entry.md").write_text("# 링크모음 접속 오류 해결 방법\n", encoding="utf-8")
+            (directory / "unrelated.md").write_text("# 구매 상품 배송 추적\n", encoding="utf-8")
+            (directory / "not-a-post.txt").write_text("# 링크모음 접속 오류 해결 방법", encoding="utf-8")
+            with patch.object(seo, "CONTENT", directory):
+                links = seo.related_posts("링크모음 접속 오류 해결")
+        self.assertEqual(links, [("링크모음 접속 오류 해결 방법", "/blog/good-entry/")])
+        self.assertIn("/blog/good-entry/", seo.render(self.sample_article(), links))
+        self.assertNotIn("/blog/unrelated/", seo.render(self.sample_article(), links))
+
+    def test_render_rejects_unexpected_related_post_paths(self):
+        article = self.sample_article()
+        rendered = seo.render(article, [("외부", "https://untrusted.invalid/"), ("정상", "/blog/valid-post/")])
+        self.assertNotIn("untrusted.invalid", rendered)
+        self.assertIn("/blog/valid-post/", rendered)
 
     def test_render_and_quality_gate(self):
         article = {"title": "링크모음 사이트 비교 기준", "description": "링크모음 사이트를 비교할 때 실제 연결 주소, 카테고리, 검색 편의성, 운영 주체의 안내와 개인정보 입력 요청을 점검하는 방법을 차근차근 설명합니다.",

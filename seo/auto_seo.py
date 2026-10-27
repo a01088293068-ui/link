@@ -14,6 +14,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT = ROOT / "content"
@@ -24,6 +25,8 @@ MODEL = os.getenv("OPENAI_MODEL", "gpt-4o")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 GEMINI_RETRY_DELAYS = (5, 10, 20, 40)
 BLOCKED = ("무료쿠폰", "우회 접속", "불법", "토토", "성인", "실시간 주소")
+INTENT_TERMS = ("방법", "기준", "확인", "차이", "비교", "안전", "해결", "주의", "선택")
+GENERIC_WORDS = ("사이트", "링크", "주소", "모음", "정보", "가이드", "방법", "기준", "확인", "이용", "검색", "및", "하는", "대한")
 
 
 def api_json(url, headers, body, timeout=60):
@@ -136,7 +139,7 @@ def content_overlap(markdown):
 
 
 def select_topic(seed, research, history, titles):
-    candidates = list(dict.fromkeys([seed] + research["related"]))
+    candidates = list(dict.fromkeys([seed] + research.get("related", [])[:12]))
     rated = []
     for topic in candidates:
         if not 5 <= len(topic) <= 55 or any(x in topic for x in BLOCKED):
@@ -146,10 +149,51 @@ def select_topic(seed, research, history, titles):
         if any(similarity(topic, prior) > .62 for prior in titles + history):
             continue
         # Relevance heuristic ONLY; it does not estimate traffic or keyword difficulty.
-        score = 3 * int(any(x in topic for x in ("방법", "기준", "확인", "차이", "비교", "안전", "해결")))
+        score = 3 * int(any(x in topic for x in INTENT_TERMS))
         score += 2 * int(9 <= len(topic) <= 26) + int(topic != seed)
+        # Search-title overlap is a weak saturation signal, NOT search volume,
+        # ranking probability, or Google's keyword difficulty metric.
+        organic = research.get("organic", [])
+        exact_matches = sum(similarity(topic, str(x.get("title", ""))) >= .73
+                            for x in organic if isinstance(x, dict))
+        score -= min(3, exact_matches)
+        # A variety of independent SERP domains offers diverse source material.
+        domains = {urlparse(str(x.get("link", ""))).hostname for x in organic
+                   if isinstance(x, dict) and str(x.get("link", "")).startswith("https://")}
+        score += int(len(domains - {None}) >= 4)
         rated.append((score, topic))
     return sorted(rated, key=lambda x: (-x[0], x[1]))[0][1] if rated else None
+
+
+def post_terms(text):
+    """Use meaningful Hangul word fragments, excluding generic navigation terms."""
+    tokens = re.findall(r"[가-힣]{2,}|[a-zA-Z]{3,}", text.lower())
+    return {word for word in tokens if len(word) >= 2
+            and not any(word == generic for generic in GENERIC_WORDS)}
+
+
+def related_posts(topic, limit=2):
+    """Find related published posts only; no draft URLs or invented destinations."""
+    topic_terms = post_terms(topic)
+    ranked = []
+    for path in sorted(CONTENT.glob("*.md")):
+        if not re.fullmatch(r"[A-Za-z0-9_-]+", path.stem):
+            continue
+        source = path.read_text(encoding="utf-8-sig")
+        match = re.search(r"^#\s+(.+)$", source, re.M)
+        if not match:
+            continue
+        title = match.group(1).strip()
+        title_terms = post_terms(title)
+        overlap = len(topic_terms & title_terms)
+        if overlap == 0:
+            # Korean compounds are often joined without spaces.
+            overlap = sum(1 for term in topic_terms if len(term) >= 3 and term in title)
+        if overlap:
+            safe_title = re.sub(r"[\[\]<>]", "", title)[:90]
+            ranked.append((overlap, path.stem, safe_title))
+    ranked.sort(key=lambda item: (-item[0], item[1]))
+    return [(title, f"/blog/{stem}/") for _, stem, title in ranked[:limit]]
 
 
 def generate(topic, search, prior_titles):
@@ -168,7 +212,7 @@ def generate(topic, search, prior_titles):
                                 "existing_titles": prior_titles[:30]})
 
 
-def render(article):
+def render(article, related=()):
     lines = ["# " + str(article["title"]).strip(), "", str(article["introduction"]).strip(), ""]
     for section in article["sections"]:
         lines += ["## " + str(section["heading"]).strip(), ""]
@@ -177,6 +221,12 @@ def render(article):
     lines += ["## 자주 묻는 질문", ""]
     for faq in article["faq"]:
         lines += ["### " + str(faq["question"]).strip(), "", str(faq["answer"]).strip(), ""]
+    if related:
+        lines += ["## 함께 읽으면 좋은 글", ""]
+        for title, url in related:
+            if re.fullmatch(r"/blog/[A-Za-z0-9_-]+/", url):
+                lines.append(f"- [{title}]({url})")
+        lines.append("")
     lines += ["## 관련 정보", "", "- [링크위키 사이트 목록](/directory.html)",
               "- [공식 주소 확인 방법](/guides/address-check.html)",
               "- [안전한 사이트 이용](/guides/security.html)", "",
@@ -264,9 +314,10 @@ def main():
         print("SKIP: no relevant distinct topic")
         return
     research = first if topic == seed else serper(topic)
+    print("Keyword selection: informational-intent and SERP-title heuristics; no search-volume estimates")
     article = generate(topic, research, titles)
     try:
-        markdown = render(article)
+        markdown = render(article, related_posts(topic))
     except (KeyError, TypeError, ValueError) as error:
         raise RuntimeError(f"Invalid article structure: {error}") from error
     issues = deterministic_review(topic, article, markdown, titles)
