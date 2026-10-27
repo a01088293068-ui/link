@@ -22,7 +22,11 @@ def page_file(dist, path):
     if ".." in parts:
         return None
     destination = dist.joinpath(*parts)
-    return destination / "index.html" if clean.endswith("/") else destination
+    if clean.endswith("/"):
+        return destination / "index.html"
+    if destination.suffix == "":
+        return destination.with_suffix(".html")
+    return destination
 
 
 def audit_site(dist):
@@ -41,6 +45,35 @@ def audit_site(dist):
     blog_index = dist / "blog" / "index.html"
     if not blog_index.is_file() or SITE + "/blog/" not in locs:
         errors.append("blog index missing from build or sitemap")
+
+    for loc in locs:
+        if not loc.startswith(SITE + "/"):
+            errors.append(f"non-site sitemap URL: {loc}")
+        elif urlsplit(loc).path.endswith(".html"):
+            errors.append(f"redirecting .html URL in sitemap: {loc}")
+        elif (resolved := page_file(dist, loc[len(SITE):])) is None or not resolved.is_file():
+            errors.append(f"sitemap URL without generated page: {loc}")
+
+    # Every canonical must match a non-redirecting URL in the sitemap.
+    for page in dist.rglob("*.html"):
+        if page.name == "404.html":
+            continue
+        relative = page.relative_to(dist).as_posix()
+        public_path = ("/" + relative.removesuffix("index.html")
+                       if page.name == "index.html" else "/" + relative.removesuffix(".html"))
+        content = page.read_text(encoding="utf-8")
+        # Search engine ownership proof files are plain text despite .html.
+        if not re.search(r"<html\b", content, re.I):
+            continue
+        canonical = re.search(r'<link\b[^>]*\brel="canonical"[^>]*\bhref="([^"]+)"', content)
+        if not canonical:
+            canonical = re.search(r'<link\b[^>]*\bhref="([^"]+)"[^>]*\brel="canonical"', content)
+        if not canonical or canonical.group(1) != SITE + public_path:
+            errors.append(f"noncanonical page URL: {relative}")
+        for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"', content):
+            if href.startswith(SITE + "/") or href.startswith("/") and not href.startswith("//"):
+                if urlsplit(href).path.endswith(".html"):
+                    errors.append(f"redirecting internal link: {relative} -> {href}")
 
     # Verify stored addresses are well formed. This DOES NOT mean destinations
     # were visited or that the linked services have been independently vetted.

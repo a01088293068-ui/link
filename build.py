@@ -20,6 +20,47 @@ SITE = "https://linkwiki.info"
 POSTS = ROOT / "content"
 
 
+def public_url(url):
+    """Use Pages' extensionless public URL; keep files on disk as .html."""
+    if url.startswith(SITE + "/"):
+        prefix, tail = SITE, url[len(SITE):]
+    elif url.startswith("/") and not url.startswith("//"):
+        prefix, tail = "", url
+    else:
+        return url
+    match = re.match(r"^([^?#]*)(.*)$", tail, re.S)
+    path, suffix = match.groups()
+    if path == "/index.html":
+        path = "/"
+    elif path.endswith(".html"):
+        path = path[:-5]
+    return prefix + path + suffix
+
+
+def normalize_page_links(html):
+    """Normalize existing same-site links and SEO metadata in generated HTML."""
+    def href(match):
+        value = match.group(2)
+        if value.startswith(("https://", "http://", "mailto:", "//", "#")):
+            updated = public_url(value)
+        elif value.endswith(".html") or ".html#" in value or ".html?" in value:
+            updated = re.sub(r"\.html(?=$|[?#])", "", value)
+            if updated == "index":
+                updated = "./"
+            elif updated.endswith("/index"):
+                updated = updated[:-5]
+        else:
+            updated = value
+        return match.group(1) + updated + match.group(3)
+
+    html = re.sub(r'(\bhref=")([^"]+)(")', href, html)
+    html = re.sub(r'(<meta\s+[^>]*\bproperty="og:url"[^>]*\bcontent=")([^"]+)(")',
+                  lambda m: m.group(1) + public_url(m.group(2)) + m.group(3), html)
+    html = re.sub(r'(<meta\s+[^>]*\bcontent=")([^"]+)("[^>]*\bproperty="og:url")',
+                  lambda m: m.group(1) + public_url(m.group(2)) + m.group(3), html)
+    return html
+
+
 def clean_url(url):
     url = url.strip()
     if url.startswith("/") and not url.startswith("//"):
@@ -262,10 +303,21 @@ def build():
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
+    # Normalize every generated page, including the new blog pages. Do not
+    # rename physical files: Cloudflare Pages maps /about to /about.html.
+    for page in OUT.rglob("*.html"):
+        original = page.read_text(encoding="utf-8")
+        normalized = normalize_page_links(original)
+        if normalized != original:
+            page.write_text(normalized, encoding="utf-8")
+
     ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
     ET.register_namespace("", ns)
     tree = ET.parse(OUT / "sitemap.xml")
     urlset = tree.getroot()
+    for element in urlset.findall(f"{{{ns}}}url/{{{ns}}}loc"):
+        if element.text:
+            element.text = public_url(element.text)
     existing = {el.text for el in urlset.findall(f"{{{ns}}}url/{{{ns}}}loc")}
     for entry in [{"url": "/blog/", "modified": datetime.now(timezone.utc).date().isoformat()}] + posts:
         loc = SITE + entry["url"]
