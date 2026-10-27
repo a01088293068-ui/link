@@ -248,6 +248,10 @@ def build():
         existing.add(loc)
     tree.write(OUT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     (OUT / "sitemap-v2.xml").write_bytes((OUT / "sitemap.xml").read_bytes())
+    from seo.site_audit import audit_site
+    problems = audit_site(OUT)
+    if problems:
+        raise RuntimeError("Build integrity check failed: " + "; ".join(problems))
     print(f"Built {len(posts)} blog post(s); output={OUT}")
 
 
