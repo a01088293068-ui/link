@@ -187,16 +187,16 @@
     {
       "id": "f5fe9b590052a256",
       "platform": "LinkCentre",
-      "submission_url": "https://www.linkcentre.com/addurl/",
+      "submission_url": "https://secure.linkcentre.com/portal/listings/",
       "public_url": "",
-      "submission_status": "not_submitted",
+      "submission_status": "pending_review",
       "audit_status": "unverified",
       "last_checked": "",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "무료 계정 제공. 로그인과 편집자 심사 필요"
+      "notes": "2026-10-28 리쑤화 Google 계정으로 무료 목록 #1729824 제출 성공. LinkCentre 화면 Pending review, 무료 심사 대기 약 4일(표시 당시). 공개 URL 미확인. 중복 제출 금지."
     },
     {
       "id": "f2e42b5209551862",
