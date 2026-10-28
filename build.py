@@ -69,6 +69,10 @@ def normalize_page_links(html):
                   lambda m: m.group(1) + public_url(m.group(2)) + m.group(3), html)
     html = re.sub(r'(<meta\s+[^>]*\bcontent=")([^"]+)("[^>]*\bproperty="og:url")',
                   lambda m: m.group(1) + public_url(m.group(2)) + m.group(3), html)
+    # Remove an obsolete pre-publication notice from generated public pages.
+    # Source HTML is preserved; only the deployed output is normalized.
+    html = html.replace("링크위키 · 공개 전 미리보기.",
+                        "링크위키 · 사이트 주소와 이용 정보를 안내합니다.")
     return html
 
 
