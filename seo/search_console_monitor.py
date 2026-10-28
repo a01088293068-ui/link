@@ -65,13 +65,6 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
             f'- 노출: {impressions:,}회 · 클릭: {clicks:,}회 · CTR: {ctr:.1f}%',
             '- 검색어 표와 전체 합계는 익명 검색어 처리로 차이가 날 수 있습니다.', '',
         ]
-        lines.extend(['', '## 최근 날짜별 추세', '',
-                      '| 날짜 | 노출 | 클릭 | 평균 순위 |',
-                      '|---|---:|---:|---:|'])
-        for row in daily[-14:]:
-            day = str((row.get('keys') or [''])[0])
-            lines.append(f"| {day} | {int(row.get('impressions', 0))} | "
-                         f"{int(row.get('clicks', 0))} | {row.get('position', 0):.1f} |")
     else:
         lines[6:6] = ['## 전체 검색 성과', '', '날짜별 검색 성과 데이터 없음', '']
     for row in keyword_rows[:30]:
@@ -88,6 +81,14 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
                      f"{int(row.get('clicks', 0))} | {row.get('position', 0):.1f} |")
     if not page_rows:
         lines.append('| 데이터 없음 | - | - | - |')
+    if daily:
+        lines.extend(['', '## 최근 날짜별 추세', '',
+                      '| 날짜 | 노출 | 클릭 | 평균 순위 |',
+                      '|---|---:|---:|---:|'])
+        for row in daily[-14:]:
+            day = str((row.get('keys') or [''])[0])
+            lines.append(f"| {day} | {int(row.get('impressions', 0))} | "
+                         f"{int(row.get('clicks', 0))} | {row.get('position', 0):.1f} |")
     lines.extend(['', '※ 데이터 집계 지연과 API 상위 행 제한으로 전체 실적과 다를 수 있습니다.', ''])
     return '\n'.join(lines)
 
