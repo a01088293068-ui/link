@@ -20,6 +20,8 @@ jobs:
           python-version: '3.12'
       - name: Install Google authentication
         run: python3 -m pip install 'google-auth>=2,<3' 'requests>=2,<3'
+      - name: Test Search Console report formatting
+        run: python3 -B -m unittest discover -s tests -p 'test_search_console_monitor.py' -v
       - name: Fetch private performance report
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
