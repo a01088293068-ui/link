@@ -48,12 +48,32 @@ def query_performance(token, property_url, start_date, end_date, dimensions, lim
         return json.load(response).get('rows', [])
 
 
-def format_report(keyword_rows, page_rows, start_date, end_date, property_url):
+def format_report(keyword_rows, page_rows, start_date, end_date, property_url, date_rows=None):
     lines = ['# 링크위키 Search Console 실적', '',
              f'- 속성: `{property_url}`', f'- 조회 기간: {start_date} ~ {end_date}',
              '- 데이터: Google Search Console API. 검색량이나 실시간 순위가 아닙니다.', '',
              '## 검색어 상위 30개', '', '| 검색어 | 노출 | 클릭 | CTR | 평균 순위 |',
              '|---|---:|---:|---:|---:|']
+    # Date-based totals include impressions from anonymized query rows.
+    daily = sorted(date_rows or [], key=lambda row: (row.get('keys') or [''])[0])
+    if daily:
+        clicks = sum(int(row.get('clicks', 0)) for row in daily)
+        impressions = sum(int(row.get('impressions', 0)) for row in daily)
+        ctr = clicks / impressions * 100 if impressions else 0
+        lines[6:6] = [
+            '## 전체 검색 성과 (날짜별 합계)', '',
+            f'- 노출: {impressions:,}회 · 클릭: {clicks:,}회 · CTR: {ctr:.1f}%',
+            '- 검색어 표와 전체 합계는 익명 검색어 처리로 차이가 날 수 있습니다.', '',
+        ]
+        lines.extend(['', '## 최근 날짜별 추세', '',
+                      '| 날짜 | 노출 | 클릭 | 평균 순위 |',
+                      '|---|---:|---:|---:|'])
+        for row in daily[-14:]:
+            day = str((row.get('keys') or [''])[0])
+            lines.append(f"| {day} | {int(row.get('impressions', 0))} | "
+                         f"{int(row.get('clicks', 0))} | {row.get('position', 0):.1f} |")
+    else:
+        lines[6:6] = ['## 전체 검색 성과', '', '날짜별 검색 성과 데이터 없음', '']
     for row in keyword_rows[:30]:
         key = str((row.get('keys') or [''])[0]).replace('|', '\\|').replace('\n', ' ')
         lines.append(f"| {key} | {int(row.get('impressions', 0))} | {int(row.get('clicks', 0))} | "
@@ -85,8 +105,9 @@ def main():
     token = access_token()
     keywords = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['query'])
     pages = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['page'])
+    dates = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['date'])
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(format_report(keywords, pages, start, end, args.property), encoding='utf-8')
+    args.output.write_text(format_report(keywords, pages, start, end, args.property, dates), encoding='utf-8')
     print(f'Wrote {args.output}: {len(keywords)} queries, {len(pages)} pages')
 
 
