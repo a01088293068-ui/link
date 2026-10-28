@@ -353,6 +353,34 @@
       "rel": [],
       "noindex": null,
       "notes": "브랜드명과 도메인 언급은 검색에서 확인. 공개 DOM에서 linkwiki.info a[href] 직접 링크 확인되지 않음. 백링크로 집계 금지."
+    },
+    {
+      "id": "e7e7fd26467c48a1",
+      "platform": "SpicyRanked",
+      "submission_url": "https://spicyranked.com/get-featured",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-28",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "2026-10-28 무료 독립 리뷰 신청서에 사이트명, URL, 설명 입력 완료. 필수 연락처 이메일 미확인으로 제출 전 대기. 제출 성공으로 간주 금지."
+    },
+    {
+      "id": "a4d5fc7cb312a129",
+      "platform": "FetishX Hub",
+      "submission_url": "https://hub.fetish-x.com/submit-adult-link",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-28",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "무료 성인 분야 링크 등록 가능 안내 확인. 제출 전 별도 무료 계정 필요. 중복 등록 금지."
     }
   ]
 }
