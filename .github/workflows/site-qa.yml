@@ -52,3 +52,4 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p 'test_site_audit.py' -v
           python3 -m unittest discover -s tests -p 'test_seo_release_regression.py' -v
+          python3 -m unittest discover -s tests -p 'test_auto_seo.py' -v
