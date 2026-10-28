@@ -218,7 +218,7 @@ def generate(topic, search, prior_titles):
       "캐시·쿠키 전체 삭제, 보안 소프트웨어 해제, 경고 무시, 안전하지 않은 HTTP 연결을 "
       "만능 해결책처럼 권하지 마세요. 특정 기기·앱 설정 메뉴는 버전에 따라 다를 수 있음을 설명하세요. "
       "동일한 서론·결론 틀이나 상투적 표현을 반복하지 마세요. 사례와 체크리스트는 주제별로 달라야 합니다. "
-      "기존 주제와 중복을 피하세요. 광고 문구, 키워드 반복, 허위 경험담은 금지합니다. "
+      "기존 주제와 중복을 피하세요. 주제를 확장한다는 이유로 브라우저 멀티검색·멀티서치 등 별도 기능을 섞지 마세요. 실제 주제의 검색 의도를 일관되게 유지하세요. 광고 문구, 키워드 반복, 허위 경험담은 금지합니다. "
       "JSON만 반환하세요: title, description, introduction, sections(최소 4개; 각 heading 및 paragraphs 배열, 문단 2개 이상), "
       "faq(최소 3개; 각 question, answer), distinct_value. 전체 1600~2600자 목표. "
       "본문에 HTML, Markdown 문법, 외부 URL을 넣지 마세요.")
@@ -274,6 +274,8 @@ def deterministic_review(topic, article, text, titles):
         reasons.append("overlaps an existing title")
     if any(x in text for x in ("100% 보장", "무조건 1위", "검증된 업체", "절대 안전", "```", "http://")):
         reasons.append("unsupported statement or markup")
+    if ("멀티검색" in text or "멀티서치" in text) and not any(x in topic for x in ("멀티검색", "멀티서치")):
+        reasons.append("unrelated multi-search feature drift")
     unsafe_patterns = (
         r"(?:모든|전체|전부)\s*(?:기간의\s*)?(?:쿠키|캐시).{0,20}(?:삭제하세요|지우세요|삭제하는\s*것이\s*좋)",
         r"(?:보안\s*프로그램|백신|방화벽|보호\s*기능).{0,20}(?:끄세요|해제하세요|비활성화하세요)",
@@ -297,7 +299,7 @@ def independent_review(topic, article, markdown):
       "실제 사용자가 따라 할 수 있는 증상별 점검 순서와 제한조건이 부족하면 불합격하세요. "
       "캐시·쿠키 전부 삭제, 백신·보안 기능 무조건 끄기, 경고 무시, 안전하지 않은 접속을 "
       "충분한 주의 없이 권장하면 불합격하세요. 모바일 메뉴 위치가 모든 기기에서 같다고 단정해도 불합격입니다. "
-      "겉보기만 그럴듯하고 구체적인 판단 기준이 없는 일반론 중심의 글은 80점 이하로 평가하세요. "
+      "검색 주제와 무관한 브라우저 기능·앱 기능을 섞거나 페이지 폐쇄·도메인 변경을 증거 없이 단정하면 불합격하세요. 겉보기만 그럴듯하고 구체적인 판단 기준이 없는 일반론 중심의 글은 80점 이하로 평가하세요. "
       "JSON 반환: pass(boolean), score(0~100 정수), issues(문자열 배열), reason(문자열).")
     result = model_json(system, {"topic": topic, "draft": markdown[:12000],
                                   "distinct_value": article.get("distinct_value", "")})
