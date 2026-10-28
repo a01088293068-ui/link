@@ -1,12 +1,12 @@
 # 링크위키 백링크 현황
 
-기록 시각: 2026-10-28T05:02:53+00:00 (UTC)
+기록 시각: 2026-10-28T05:16:52+00:00 (UTC)
 대상: linkwiki.info
-등록처: 13개
+등록처: 21개
 
 ## 공개 링크 검증 상태
 
-- unverified: 13
+- unverified: 21
 
 상태가 `verified_link`여도 SEO 순위 상승이나 색인을 보장하지 않습니다.
 `link_with_rel`은 nofollow/ugc/sponsored 중 하나가 포함된 실제 링크입니다.
@@ -17,6 +17,8 @@
 | 등록처 | 제출 | 검사 | 마지막 확인 | 공개 URL |
 |---|---|---|---|---|
 | Anoox | submitted | unverified |  |  |
+| B3 Directory | not_submitted | unverified |  |  |
+| DevElif | not_submitted | unverified |  |  |
 | ExactSeek | pending_review | unverified |  |  |
 | FreeWebSubmission | submitted | unverified |  |  |
 | FWS - Amidalla | not_submitted | unverified |  |  |
@@ -26,6 +28,12 @@
 | FWS - SecretSELabs | submitted | unverified |  |  |
 | FWS - SitesOnDisplay | submitted | unverified |  |  |
 | FWS - SonicRun | submitted | unverified |  |  |
+| Global Site Directory | not_submitted | unverified |  |  |
+| LinkCentre | not_submitted | unverified |  |  |
+| MeWebLink | not_submitted | unverified |  |  |
 | Sites Internationaux | unknown | unverified |  |  |
+| SoMuch | not_submitted | unverified |  |  |
 | Submit.biz | unknown | unverified |  |  |
+| Tiny Web Directory | not_submitted | unverified |  |  |
 | Viesearch | pending_review | unverified |  |  |
+| Zearches | not_submitted | unverified |  |  |

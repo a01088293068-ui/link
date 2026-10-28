@@ -17,6 +17,34 @@
       "notes": "제출 과정 확인. 공개 URL 미확인"
     },
     {
+      "id": "cde06c857135f45f",
+      "platform": "B3 Directory",
+      "submission_url": "https://b3directory.com/home/submit-site/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "무료/유료 등록 안내. 조건 확인 필요"
+    },
+    {
+      "id": "a6317876439db393",
+      "platform": "DevElif",
+      "submission_url": "https://develif.com/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "홈페이지 등록 양식 확인. 공개 링크 품질 미확인"
+    },
+    {
       "id": "86bbbf38da1b7b64",
       "platform": "ExactSeek",
       "submission_url": "https://exactseek.com/cgi-bin/emember.cgi?list_urls=1",
@@ -143,6 +171,48 @@
       "notes": "일괄 제출 결과 Connected Success. 공개 링크 아님"
     },
     {
+      "id": "15dab23f9cf3dd84",
+      "platform": "Global Site Directory",
+      "submission_url": "https://gsdirectory.org/submit/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 사이트 무료 등록 안내. 공개 링크 품질 미확인"
+    },
+    {
+      "id": "f5fe9b590052a256",
+      "platform": "LinkCentre",
+      "submission_url": "https://www.linkcentre.com/addurl/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "무료 계정 제공. 로그인과 편집자 심사 필요"
+    },
+    {
+      "id": "f2e42b5209551862",
+      "platform": "MeWebLink",
+      "submission_url": "https://meweblink.com/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "홈페이지에서 무료 URL 등록 안내. 자동 API 미확인"
+    },
+    {
       "id": "69596258176b4b08",
       "platform": "Sites Internationaux",
       "submission_url": "https://sites-internationaux.com/anglophone/allopass/access.php?link=71761",
@@ -155,6 +225,20 @@
       "rel": [],
       "noindex": null,
       "notes": "입력 양식 화면 확인. 최종 제출 성공 증거 없음"
+    },
+    {
+      "id": "bffa36c312acd514",
+      "platform": "SoMuch",
+      "submission_url": "https://www.somuch.com/submit-links/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 등록 폼 있음. 이메일 검증과 운영자 심사 필요"
     },
     {
       "id": "4a2da8d0ed594706",
@@ -171,6 +255,20 @@
       "notes": "Internet Directories 선택과 입력 양식 확인. 제출 완료 증거 없음"
     },
     {
+      "id": "fd1bf677bf3a39c4",
+      "platform": "Tiny Web Directory",
+      "submission_url": "https://tinywebdirectory.com/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "수동 심사형 무료 등록 안내. API 미확인"
+    },
+    {
       "id": "ceeff64a32ddc26b",
       "platform": "Viesearch",
       "submission_url": "https://viesearch.com/2a2n3/plan",
@@ -183,6 +281,20 @@
       "rel": [],
       "noindex": null,
       "notes": "Wait in Line 선택 후 무료 목록 미리보기에 LinkWiki 표시됨. 심사 대기"
+    },
+    {
+      "id": "6891225d0b012dc4",
+      "platform": "Zearches",
+      "submission_url": "https://zearches.com/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "무료 사이트 등록 안내. API는 확인되지 않음"
     }
   ]
 }
