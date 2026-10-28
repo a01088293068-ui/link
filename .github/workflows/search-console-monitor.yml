@@ -1,0 +1,42 @@
+name: LinkWiki Search Console monitoring
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '25 3 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  performance:
+    if: vars.GSC_MONITOR_ENABLED == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Google authentication
+        run: python3 -m pip install 'google-auth>=2,<3' 'requests>=2,<3'
+      - name: Fetch private performance report
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GSC_PROPERTY: ${{ vars.GSC_PROPERTY }}
+        run: |
+          if [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
+            echo 'GOOGLE_SERVICE_ACCOUNT_JSON secret is missing.'
+            exit 1
+          fi
+          if [ -z "$GSC_PROPERTY" ]; then
+            export GSC_PROPERTY='sc-domain:linkwiki.info'
+          fi
+          python3 seo/search_console_monitor.py
+      - name: Retain report privately for 30 days
+        uses: actions/upload-artifact@v4
+        with:
+          name: search-console-performance
+          path: seo/search-console-report.md
+          if-no-files-found: error
+          retention-days: 30
