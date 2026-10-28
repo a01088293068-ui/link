@@ -1,0 +1,41 @@
+name: LinkWiki Korean search visibility tracking
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '05 5 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: linkwiki-rank-monitor
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test ranking monitor
+        run: python3 -B -m unittest discover -s tests -p 'test_rank_tracker.py' -v
+      - name: Measure six Korean queries (first ten organic results only)
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+        run: python3 -B seo/rank_tracker.py
+      - name: Save 90-day observations
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add seo/rank-history.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record Korean search visibility snapshot'
+            git push origin HEAD:main
+          fi
