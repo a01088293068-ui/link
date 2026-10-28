@@ -115,6 +115,18 @@ class SEOTests(unittest.TestCase):
         issues = seo.deterministic_review("링크모음 사이트 비교 기준", article, seo.render(article), [])
         self.assertNotIn("potentially unsafe troubleshooting advice", issues)
 
+    def test_off_topic_multi_search_drift_is_rejected(self):
+        article = self.sample_article()
+        article["sections"][0]["paragraphs"][0] += " 브라우저 멀티검색 기능을 사용하는 방법도 알아봅니다."
+        issues = seo.deterministic_review("주소모음 사이트 검색 방법", article, seo.render(article), [])
+        self.assertIn("unrelated multi-search feature drift", issues)
+
+    def test_topic_explicitly_about_multi_search_is_not_blocked(self):
+        article = self.sample_article()
+        article["sections"][0]["paragraphs"][0] += " 멀티검색 기능의 차이를 알아봅니다."
+        issues = seo.deterministic_review("멀티검색 링크모음 비교 방법", article, seo.render(article), [])
+        self.assertNotIn("unrelated multi-search feature drift", issues)
+
     def sample_article(self):
         return {"title": "링크모음 사이트 비교 기준",
                 "description": "링크모음 사이트를 비교하는 구체적인 기준을 설명하고 안전한 주소 확인 단계와 실수하기 쉬운 점검 방법을 정리한 이용 안내입니다.",
