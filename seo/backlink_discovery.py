@@ -150,6 +150,8 @@ def main():
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     args.report.write_text(report_text(leads, errors, observed), encoding="utf-8")
     print(f"Found {len(leads)} candidate domains; {len(errors)} failed queries")
+    for lead in leads[:15]:
+        print(f"PROSPECT {lead['lead_score']:02d} {lead['domain']} {lead['url']}")
     if len(errors) == len(QUERIES):
         raise SystemExit("All search queries failed")
 
