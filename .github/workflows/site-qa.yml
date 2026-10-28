@@ -1,0 +1,46 @@
+name: LinkWiki SEO build QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'build.py'
+      - 'seo/site_audit.py'
+      - 'seo/auto_seo.py'
+      - 'guides/**'
+      - 'categories/**'
+      - 'content/**'
+      - 'tests/**'
+      - '.github/workflows/site-qa.yml'
+  pull_request:
+    paths:
+      - 'build.py'
+      - 'seo/site_audit.py'
+      - 'seo/auto_seo.py'
+      - 'guides/**'
+      - 'categories/**'
+      - 'content/**'
+      - 'tests/**'
+      - '.github/workflows/site-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build Cloudflare Pages release
+        run: python3 build.py
+      - name: Verify generated sitemap and canonical URLs
+        run: python3 seo/site_audit.py dist
+      - name: Test build and content QA regressions
+        run: |
+          python3 -m unittest discover -s tests -p 'test_site_audit.py' -v
+          python3 -m unittest discover -s tests -p 'test_seo_release_regression.py' -v
