@@ -1,0 +1,38 @@
+name: LinkWiki backlink opportunity discovery
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '18 4 * * 2,5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linkwiki-backlink-discovery
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test ranking and deduplication logic
+        run: python3 -B -m unittest discover -s tests -p 'test_backlink_discovery.py' -v
+      - name: Discover relevant sites (research only; no submissions)
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+        run: python3 -B seo/backlink_discovery.py
+      - name: Store private prospect shortlist for 30 days
+        uses: actions/upload-artifact@v4
+        with:
+          name: backlink-outreach-prospects
+          path: |
+            seo/backlink-prospects.json
+            seo/backlink-prospects.md
+          if-no-files-found: error
+          retention-days: 30
