@@ -359,14 +359,14 @@
       "platform": "SpicyRanked",
       "submission_url": "https://spicyranked.com/get-featured",
       "public_url": "",
-      "submission_status": "not_submitted",
+      "submission_status": "pending_review",
       "audit_status": "unverified",
       "last_checked": "2026-10-28",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "2026-10-28 무료 독립 리뷰 신청서에 사이트명, URL, 설명 입력 완료. 필수 연락처 이메일 미확인으로 제출 전 대기. 제출 성공으로 간주 금지."
+      "notes": "2026-10-28 LinkWiki, https://linkwiki.info, a01088293068@gmail.com으로 무료 리뷰 신청 제출. 사이트가 'Submission received' 확인 메시지 표시. 공개 URL 미발행, 독립 심사 대기. 중복 제출 금지."
     },
     {
       "id": "a4d5fc7cb312a129",
