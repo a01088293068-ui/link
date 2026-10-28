@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
+      - 'directory.html'
+      - 'about.html'
+      - 'privacy.html'
       - 'build.py'
       - 'seo/site_audit.py'
       - 'seo/auto_seo.py'
@@ -14,6 +18,10 @@ on:
       - '.github/workflows/site-qa.yml'
   pull_request:
     paths:
+      - 'index.html'
+      - 'directory.html'
+      - 'about.html'
+      - 'privacy.html'
       - 'build.py'
       - 'seo/site_audit.py'
       - 'seo/auto_seo.py'
