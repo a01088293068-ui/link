@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "measurement": "Serper top 10, gl=kr, hl=ko",
+  "samples": [
+    {
+      "date": "2026-10-28",
+      "observed_at": "2026-10-28T11:13:21+00:00",
+      "results": {
+        "링크모음": {
+          "position": null,
+          "url": null
+        },
+        "주소모음": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "링크모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "주소모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음 추천": {
+          "position": null,
+          "url": null
+        }
+      }
+    }
+  ]
+}
