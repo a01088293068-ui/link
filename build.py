@@ -212,9 +212,17 @@ def polish_home_intent(home):
         ),
     )
     for old, new in edits:
-        if home.count(old) != 1:
+        if home.count(old) == 1:
+            home = home.replace(old, new, 1)
+        elif home.count(new) == 1:
+            # The source page may already include this editorial improvement.
+            continue
+        elif old.startswith("분야별 사이트를 비교하고,"):
+            # The homepage now uses a more specific, fact-checked 97-site summary.
+            if "97개 등록 사이트를 분야별로 검색하고 비교하세요." not in home:
+                raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
+        else:
             raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
-        home = home.replace(old, new, 1)
     return home
 
 
