@@ -120,10 +120,10 @@ def static_guide_titles():
     """Avoid publishing AI articles that repeat existing evergreen guide titles."""
     titles = []
     for path in sorted((ROOT / "guides").glob("*.html")):
-        match = re.search(r"<title>\\s*(.*?)\\s*</title>",
+        match = re.search(r"<title>\s*(.*?)\s*</title>",
                           path.read_text(encoding="utf-8"), re.I | re.S)
         if match:
-            title = unescape(re.sub(r"\\s*\\|\\s*링크위키\\s*$", "", match.group(1))).strip()
+            title = unescape(re.sub(r"\s*\|\s*링크위키\s*$", "", match.group(1))).strip()
             if title:
                 titles.append(title)
     return titles
