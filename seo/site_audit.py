@@ -62,6 +62,8 @@ def audit_site(dist):
         public_path = ("/" + relative.removesuffix("index.html")
                        if page.name == "index.html" else "/" + relative.removesuffix(".html"))
         content = page.read_text(encoding="utf-8")
+        if "공개 전 미리보기" in content:
+            errors.append(f"stale preview notice on public page: {relative}")
         # Search engine ownership proof files are plain text despite .html.
         if not re.search(r"<html\b", content, re.I):
             continue

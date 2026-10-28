@@ -3,6 +3,7 @@
 GitHub Actions commits passing articles. No GitHub token is needed here.
 """
 import argparse
+from html import unescape
 from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from hashlib import sha256
@@ -113,6 +114,19 @@ def model_json(system, data):
 def similarity(a, b):
     clean = lambda s: re.sub(r"[^가-힣a-z0-9]", "", s.lower())
     return SequenceMatcher(None, clean(a), clean(b)).ratio()
+
+
+def static_guide_titles():
+    """Avoid publishing AI articles that repeat existing evergreen guide titles."""
+    titles = []
+    for path in sorted((ROOT / "guides").glob("*.html")):
+        match = re.search(r"<title>\\s*(.*?)\\s*</title>",
+                          path.read_text(encoding="utf-8"), re.I | re.S)
+        if match:
+            title = unescape(re.sub(r"\\s*\\|\\s*링크위키\\s*$", "", match.group(1))).strip()
+            if title:
+                titles.append(title)
+    return titles
 
 
 def existing_titles():
@@ -306,7 +320,7 @@ def main():
         raise RuntimeError("No seed keywords")
     history = json.loads(HISTORY.read_text(encoding="utf-8")) if HISTORY.exists() else []
     previous = [str(x.get("keyword", "")) for x in history]
-    titles = existing_titles()
+    titles = existing_titles() + static_guide_titles()
     seed = args.seed or seeds[date.toordinal() % len(seeds)]
     print("Research seed:", seed)
     first = serper(seed)
