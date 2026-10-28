@@ -37,5 +37,17 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('주소모음 | 100 | 3 | 3.0% | 9.8', result)
 
 
+    def test_date_aggregates_when_queries_hidden(self):
+        days = [
+            {'keys': ['2026-09-27'], 'impressions': 12, 'clicks': 1, 'position': 23.2},
+            {'keys': ['2026-09-28'], 'impressions': 8, 'clicks': 0, 'position': 17.4},
+        ]
+        result = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+                                       'sc-domain:linkwiki.info', days)
+        self.assertIn('노출: 20회 · 클릭: 1회 · CTR: 5.0%', result)
+        self.assertIn('| 2026-09-28 | 8 | 0 | 17.4 |', result)
+        self.assertLess(result.index('## 검색어 상위'), result.index('## 최근 날짜별 추세'))
+
+
 if __name__ == '__main__':
     unittest.main()
