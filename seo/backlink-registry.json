@@ -311,6 +311,48 @@
       ],
       "noindex": false,
       "notes": "2026-10-28 실제 공개 목록 확인. 2026-10-27 등록된 LinkWiki 항목 #97; HTML a[href] 정상, rel=nofollow, robots noindex 없음, canonical 일치. 공개 링크이며 SEO 순위 신호 전달은 제한될 수 있음."
+    },
+    {
+      "id": "saaskr_linkwiki_20261028",
+      "platform": "saaskr",
+      "submission_url": "https://saaskr.com/saas/linkwiki-info",
+      "public_url": "https://saaskr.com/saas/linkwiki-info",
+      "submission_status": "submitted",
+      "audit_status": "verified_link",
+      "last_checked": "2026-10-28",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [],
+      "noindex": null,
+      "notes": "2026-10-28 실제 공개 페이지 확인. linkwiki.info로 연결되는 HTML 링크 3개, rel=noopener noreferrer (nofollow 없음). 등록자 작성 소개. 검색 노출과 SEO 가중치는 별개."
+    },
+    {
+      "id": "siteda_brand_20261028",
+      "platform": "사이트다",
+      "submission_url": "https://siteda.kr/",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-28",
+      "http_status": 200,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "브랜드명과 도메인 표시는 확인했으나 홈페이지 DOM에서 linkwiki.info a[href] 직접 링크 검증되지 않음. 백링크로 집계 금지."
+    },
+    {
+      "id": "vibelabs_brand_20261028",
+      "platform": "VibeLabs",
+      "submission_url": "https://vibelabs.kr/lab",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-28",
+      "http_status": 200,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "브랜드명과 도메인 언급은 검색에서 확인. 공개 DOM에서 linkwiki.info a[href] 직접 링크 확인되지 않음. 백링크로 집계 금지."
     }
   ]
 }
