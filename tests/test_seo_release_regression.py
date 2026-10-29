@@ -3,11 +3,16 @@ from tempfile import TemporaryDirectory
 from unittest.mock import patch
 import unittest
 
-from build import normalize_page_links
+from build import normalize_page_links, stable_post_lastmod
 from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
+        self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
+        self.assertIsNone(stable_post_lastmod(Path('address-directory-safety-guide.md')))
+        self.assertIsNone(stable_post_lastmod(Path('seo-20261377-bad.md')))
+
     def test_generated_canonical_and_og_use_nonredirecting_url(self):
         html = (
             '<link href="https://linkwiki.info/guides/address-check.html" rel="canonical">'
