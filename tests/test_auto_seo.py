@@ -54,6 +54,13 @@ class SEOTests(unittest.TestCase):
     def test_similarity(self):
         self.assertGreater(seo.similarity("주소모음 사이트 선택 기준", "주소모음 사이트 선택기준"), .9)
 
+    def test_seed_topics_cover_distinct_real_directory_categories(self):
+        seeds = [line.strip() for line in seo.SEEDS.read_text(encoding='utf-8').splitlines()
+                 if line.strip() and not line.startswith('#')]
+        self.assertEqual(len(seeds), len(set(seeds)))
+        for subject in ('커뮤니티', '한인', 'AI 도구', '스포츠', '웹툰', 'OTT', '포털'):
+            self.assertTrue(any(subject in topic for topic in seeds), subject)
+
     def test_topic_selection_skips_duplicate(self):
         found = seo.select_topic("주소모음 사이트 선택 기준",
             {"related": ["사이트 접속 오류 해결 방법", "주소모음 사이트 선택 기준"]},
