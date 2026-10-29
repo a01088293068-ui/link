@@ -55,6 +55,7 @@ def audit_site(dist):
             errors.append(f"sitemap URL without generated page: {loc}")
 
     # Every canonical must match a non-redirecting URL in the sitemap.
+    titles_seen = {}
     for page in dist.rglob("*.html"):
         if page.name == "404.html":
             continue
@@ -72,6 +73,16 @@ def audit_site(dist):
             canonical = re.search(r'<link\b[^>]*\bhref="([^"]+)"[^>]*\brel="canonical"', content)
         if not canonical or canonical.group(1) != SITE + public_path:
             errors.append(f"noncanonical page URL: {relative}")
+        if SITE + public_path not in locs:
+            errors.append(f"indexable page missing from sitemap: {relative}")
+        title_match = re.search(r"<title[^>]*>(.*?)</title>", content, re.I | re.S)
+        title = re.sub(r"\\s+", " ", title_match.group(1)).strip() if title_match else ""
+        if not title:
+            errors.append(f"missing HTML title: {relative}")
+        elif title in titles_seen:
+            errors.append(f"duplicate HTML title: {relative} and {titles_seen[title]}")
+        else:
+            titles_seen[title] = relative
         for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"', content):
             if href.startswith(SITE + "/") or href.startswith("/") and not href.startswith("//"):
                 local_href = href[len(SITE):] if href.startswith(SITE + "/") else href
