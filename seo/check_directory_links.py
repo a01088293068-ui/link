@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+from urllib.parse import urlsplit
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -30,12 +31,25 @@ def check(record, timeout=8):
     except (URLError, TimeoutError, OSError) as error:
         return {"name": record["name"], "url": url, "result": "unreachable",
                 "detail": type(error).__name__}
+    # HTTP 200 alone is not proof the submitted destination still resolves
+    # to the same service. Flag cross-host redirects and HTTPS downgrades for
+    # human review, but never silently delete the registered directory link.
+    origin = urlsplit(url)
+    landed = urlsplit(final_url)
+    redirected_host = (landed.hostname or "").lower() != (origin.hostname or "").lower()
+    downgraded = origin.scheme == "https" and landed.scheme != "https"
     # 401/403/429 often reflect access control or bot blocking, not dead links.
-    category = ("ok" if 200 <= status < 400 else
-                "access_restricted" if status in (401, 403, 405, 429) else
-                "not_found" if status in (404, 410) else "needs_review")
-    return {"name": record["name"], "url": url, "result": category,
-            "http_status": status, "final_url": final_url}
+    category = ("access_restricted" if status in (401, 403, 405, 429) else
+                "not_found" if status in (404, 410) else
+                "needs_review" if redirected_host or downgraded else
+                "ok" if 200 <= status < 400 else "needs_review")
+    result = {"name": record["name"], "url": url, "result": category,
+              "http_status": status, "final_url": final_url}
+    if redirected_host:
+        result["redirect_warning"] = "destination_hostname_changed"
+    if downgraded:
+        result["security_warning"] = "https_downgrade"
+    return result
 
 
 def run(records, workers=8, timeout=8):
