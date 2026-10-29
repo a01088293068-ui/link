@@ -20,10 +20,11 @@ class HomeIntentTests(unittest.TestCase):
             build.polish_home_intent("invalid template")
 
     def test_published_article_bottom_has_home_link(self):
-        article = (Path(__file__).resolve().parents[1] / "dist" / "blog" /
-                   "address-directory-safety-guide" / "index.html")
-        if article.exists():
-            self.assertIn('href="/">주소모음·링크모음 홈</a>', article.read_text(encoding="utf-8"))
+        blog = Path(__file__).resolve().parents[1] / "dist" / "blog"
+        for article in blog.glob("*/index.html"):
+            content = article.read_text(encoding="utf-8")
+            self.assertIn('href="/">주소모음·링크모음 홈</a>', content)
+            self.assertIn('href="https://linkwiki01.com/" rel="noopener noreferrer">링크위키 바로가기</a>', content)
 
 
 if __name__ == "__main__":
