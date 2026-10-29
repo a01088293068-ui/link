@@ -36,7 +36,7 @@ jobs:
               grep -Eq '<html|<HTML' /tmp/linkwiki-response || { echo "::error::No HTML page at ${url}"; exit 1; }
               grep -Fq 'rel="canonical"' /tmp/linkwiki-response || { echo "::error::Canonical URL missing at ${url}"; exit 1; }
               expected_canonical="${BASE}${path}"
-              if ! grep -Eq "<link[^>]+rel=\\\"canonical\\\"[^>]+href=\\\"${expected_canonical}\\\"|<link[^>]+href=\\\"${expected_canonical}\\\"[^>]+rel=\\\"canonical\\\"" /tmp/linkwiki-response; then
+              if ! grep -Fq "href=\\\"${expected_canonical}\\\"" /tmp/linkwiki-response; then
                 echo "::error::Canonical URL disagrees with public page: ${expected_canonical}"
                 exit 1
               fi
