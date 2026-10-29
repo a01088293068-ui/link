@@ -51,12 +51,38 @@ def query_performance(token, property_url, start_date, end_date, dimensions, lim
 
 INSPECT_URLS = (
     'https://linkwiki.info/',
-    'https://linkwiki.info/directory',
-    'https://linkwiki.info/categories/',
-    'https://linkwiki.info/categories/ai',
-    'https://linkwiki.info/guides/address-check',
-    'https://linkwiki.info/guides/directory-comparison',
+    'https://linkwiki.info/directory.html',
+    'https://linkwiki.info/categories/ai.html',
+    'https://linkwiki.info/guides/address-check.html',
+    'https://linkwiki.info/guides/directory-comparison.html',
 )
+
+
+def inspection_targets(page_rows, limit=15):
+    """Inspect observed Google landing URLs alongside their declared .html canonicals.
+
+    Search Console can report pretty URLs while the deployed HTML declares the
+    corresponding .html URL canonical. Comparing both identifies mismatches.
+    """
+    from urllib.parse import urlsplit
+    urls = list(INSPECT_URLS)
+    seen = set(urls)
+    for row in sorted(page_rows, key=lambda r: -int(r.get('impressions', 0))):
+        observed = str((row.get('keys') or [''])[0]).strip()
+        parts = urlsplit(observed)
+        if parts.scheme != 'https' or parts.netloc != 'linkwiki.info':
+            continue
+        if parts.query or parts.fragment:
+            continue
+        path = parts.path.rstrip('/')
+        candidates = [observed]
+        if path and not path.endswith('.html') and '.' not in path.rsplit('/', 1)[-1]:
+            candidates.append('https://linkwiki.info' + path + '.html')
+        for url in candidates:
+            if url not in seen and len(urls) < limit:
+                urls.append(url)
+                seen.add(url)
+    return urls
 
 
 def inspect_index(token, property_url, inspection_url):
@@ -226,7 +252,7 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     inspections = []
     inspection_error = ''
-    for url in INSPECT_URLS:
+    for url in inspection_targets(pages):
         try:
             inspections.append(inspect_index(token, args.property, url))
         except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as error:
