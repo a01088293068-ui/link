@@ -1,0 +1,53 @@
+name: LinkWiki public crawlability smoke check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '40 1,13 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  public-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check public SEO pages and crawl files
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://linkwiki.info'
+          for path in / /directory /categories/ /guides/directory-comparison /robots.txt /sitemap.xml; do
+            url="${BASE}${path}"
+            echo "Checking ${url}"
+            status=$(curl --location --silent --show-error --output /tmp/linkwiki-response --write-out '%{http_code}' --max-time 20 --retry 2 --retry-delay 2 "${url}")
+            if [[ "${status}" != '200' ]]; then
+              echo "::error::Unexpected HTTP ${status} at ${url}"
+              exit 1
+            fi
+            if [[ "${path}" == '/robots.txt' ]]; then
+              grep -Fq 'Sitemap: https://linkwiki.info/sitemap.xml' /tmp/linkwiki-response || { echo '::error::Sitemap missing in robots.txt'; exit 1; }
+            fi
+            if [[ "${path}" == '/sitemap.xml' ]]; then
+              grep -Fq 'https://linkwiki.info/' /tmp/linkwiki-response || { echo '::error::Sitemap has no site URLs'; exit 1; }
+            fi
+            if [[ "${path}" == '/' || "${path}" == '/directory' || "${path}" == '/categories/' || "${path}" == '/guides/directory-comparison' ]]; then
+              grep -Eq '<html|<HTML' /tmp/linkwiki-response || { echo "::error::No HTML page at ${url}"; exit 1; }
+              grep -Fq 'rel="canonical"' /tmp/linkwiki-response || { echo "::error::Canonical URL missing at ${url}"; exit 1; }
+              if grep -Eiq '<meta[^>]+name="robots"[^>]+noindex|<meta[^>]+content="[^"]*noindex[^"]*"[^>]+name="robots"' /tmp/linkwiki-response; then
+                echo "::error::Noindex unexpectedly set at ${url}"
+                exit 1
+              fi
+            fi
+            echo "PASS ${url}"
+          done
+      - name: Check main-service outbound destination without blocking SEO checks
+        if: always()
+        shell: bash
+        run: |
+          status=$(curl --location --silent --show-error --output /dev/null --write-out '%{http_code}' --max-time 15 --retry 1 'https://linkwiki01.com/' || true)
+          echo "LinkWiki main-service destination HTTP: ${status:-unreachable}"
+          if [[ "${status}" != '200' ]]; then
+            echo "::warning::Main-service destination linkwiki01.com is not responding with HTTP 200."
+          fi
