@@ -74,8 +74,12 @@ def audit_site(dist):
             errors.append(f"noncanonical page URL: {relative}")
         for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"', content):
             if href.startswith(SITE + "/") or href.startswith("/") and not href.startswith("//"):
-                if urlsplit(href).path.endswith(".html"):
+                local_href = href[len(SITE):] if href.startswith(SITE + "/") else href
+                if urlsplit(local_href).path.endswith(".html"):
                     errors.append(f"redirecting internal link: {relative} -> {href}")
+                target = page_file(dist, local_href)
+                if target is None or not target.is_file():
+                    errors.append(f"broken internal navigation link: {relative} -> {href}")
 
     # Verify stored addresses are well formed. This DOES NOT mean destinations
     # were visited or that the linked services have been independently vetted.
