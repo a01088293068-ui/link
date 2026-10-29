@@ -166,7 +166,7 @@ def stable_post_lastmod(path):
     GitHub Actions checkout updates filesystem mtimes even when content is unchanged.
     Undated posts have no reliable modification date, so omit lastmod.
     """
-    match = re.search(r"(?:^|[-_])(20\\d{6})(?:[-_.]|$)", path.stem)
+    match = re.search(r"(?:^|[-_])(20\d{6})(?:[-_.]|$)", path.stem)
     if not match:
         return None
     try:
