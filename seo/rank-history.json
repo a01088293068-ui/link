@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "measurement": "Serper top 10, gl=kr, hl=ko",
+  "measurement": "Serper requested top 30, gl=kr, hl=ko; returned_results records actual response size",
   "samples": [
     {
       "date": "2026-10-28",
@@ -34,7 +34,7 @@
     },
     {
       "date": "2026-10-29",
-      "observed_at": "2026-10-29T05:40:49+00:00",
+      "observed_at": "2026-10-29T06:58:46+00:00",
       "results": {
         "링크모음": {
           "position": null,
@@ -60,6 +60,14 @@
           "position": null,
           "url": null
         }
+      },
+      "returned_results": {
+        "링크모음": 10,
+        "주소모음": 10,
+        "사이트모음": 10,
+        "링크모음 사이트": 10,
+        "주소모음 사이트": 10,
+        "사이트모음 추천": 10
       }
     }
   ]
