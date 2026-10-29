@@ -122,6 +122,7 @@ def audit_site(dist):
     # Verify stored addresses are well formed. This DOES NOT mean destinations
     # were visited or that the linked services have been independently vetted.
     directory = dist / "assets" / "verified-directory.json"
+    records = None
     try:
         records = json.loads(directory.read_text(encoding="utf-8"))
         if not isinstance(records, list) or not records:
@@ -144,6 +145,26 @@ def audit_site(dist):
                     errors.append(f"directory metadata incomplete #{number}")
     except (OSError, ValueError) as error:
         errors.append(f"directory data cannot be read: {error}")
+
+    # The visible directory cards are statically crawlable. Keep them in sync
+    # with the editable JSON source so Google and on-page search see the same list.
+    directory_page = dist / "directory.html"
+    if directory_page.is_file() and isinstance(records, list):
+        listing = directory_page.read_text(encoding="utf-8")
+        card_blocks = re.findall(
+            r'<article\s+class="v6-card"[^>]*>(.*?)</article>', listing, re.I | re.S)
+        card_urls = []
+        for block in card_blocks:
+            anchors = re.findall(r'<a\b[^>]*\bhref="(https://[^"]+)"', block)
+            if len(anchors) != 1:
+                errors.append("directory card has missing/multiple destination links")
+            else:
+                card_urls.append(anchors[0])
+        expected_urls = [item.get("url") for item in records if isinstance(item, dict)]
+        if len(card_blocks) != len(expected_urls):
+            errors.append(f"directory card count differs from JSON: {len(card_blocks)} != {len(expected_urls)}")
+        if card_urls != expected_urls:
+            errors.append("directory card URL order/content differs from JSON source")
 
     posts = sorted((dist / "blog").glob("*/index.html"))
     for post in posts:
