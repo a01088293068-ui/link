@@ -119,7 +119,11 @@ def similarity(a, b):
 def static_guide_titles():
     """Avoid publishing AI articles that repeat existing evergreen guide titles."""
     titles = []
-    for path in sorted((ROOT / "guides").glob("*.html")):
+    for path in sorted(list((ROOT / "guides").glob("*.html")) +
+                       list((ROOT / "categories").glob("*.html")) +
+                       [ROOT / "directory.html"]):
+        if not path.is_file():
+            continue
         match = re.search(r"<title>\s*(.*?)\s*</title>",
                           path.read_text(encoding="utf-8"), re.I | re.S)
         if match:
