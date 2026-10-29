@@ -43,6 +43,19 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('검색어 행은 0개지만 페이지별 데이터가 있습니다', report)
         self.assertIn('노출 0회로 해석하지 마세요', report)
 
+    def test_page_opportunity_queue_works_without_search_queries(self):
+        pages = [
+            {'keys': ['https://linkwiki.info/directory'], 'impressions': 16, 'clicks': 1, 'position': 18},
+            {'keys': ['https://linkwiki.info/categories/ai'], 'impressions': 5, 'clicks': 0, 'position': 42},
+            {'keys': ['https://linkwiki.info/'], 'impressions': 50, 'clicks': 0, 'position': 61},
+        ]
+        report = monitor.format_report([], pages, '2026-09-01', '2026-09-28',
+                                       'sc-domain:linkwiki.info')
+        section = report.split('## 노출 페이지 우선 개선 후보')[1].split('## 최근 날짜별 추세')[0]
+        self.assertIn('https://linkwiki.info/directory | 16 | 1 | 18.0', section)
+        self.assertIn('https://linkwiki.info/categories/ai | 5 | 0 | 42.0', section)
+        self.assertNotIn('https://linkwiki.info/ | 50', section)
+
     def test_opportunity_queue_uses_observed_impressions_and_positions(self):
         rows = [
             {'keys': ['커뮤니티 사이트모음'], 'impressions': 18, 'clicks': 1, 'position': 12},
