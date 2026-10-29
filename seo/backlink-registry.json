@@ -395,6 +395,34 @@
       "rel": [],
       "noindex": null,
       "notes": "2026-10-29 리쑤화 계정으로 링크위키 등록 접수 #757213b7-1ce9-41ed-9eb2-6bae9af82688. 소유권 인증 완료, 관리자 심사 대기 1~3영업일 안내. GitHub index.html ows-verify 태그 갱신 (commit a029e6d). 공개 URL 및 HTML 링크는 아직 미확인. 중복 제출 금지."
+    },
+    {
+      "id": "gainweb_20261029",
+      "platform": "GainWeb",
+      "submission_url": "https://gainweb.org/submit.php",
+      "notes": "2026-10-29 무료 Regular 등록폼 실확인. 카테고리 Computers and Internet > Directories 존재. 제목·URL·설명 입력. 최종 제출 전 단계, 무료는 심사·승인 보장 없음. 사용자 확인 후 등록.",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-29",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null
+    },
+    {
+      "id": "cipinet_20261029",
+      "platform": "Cipinet",
+      "submission_url": "https://www.cipinet.com/submit.php",
+      "notes": "2026-10-29 실확인: 무료 목록 심사 약 6~7개월, 유료 $85/$135는 우선 심사. 무료 등록 폼은 현 화면에서 추가 진입 필요. 급한 상위노출 목적상 우선순위 낮음.",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-29",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null
     }
   ]
 }
