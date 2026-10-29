@@ -304,7 +304,7 @@ def build():
                    f'<div class="blog-content">{markdown(content_body)}</div>'
                    '<div class="blog-bottom"><a href="/">주소모음·링크모음 홈</a>'
                    '<a href="/blog/">다른 이용 가이드 보기</a>'
-                   '<a href="/">링크위키 바로가기</a></div></article></div>')
+                   '<a href="https://linkwiki01.com/" rel="noopener noreferrer">링크위키 바로가기</a></div></article></div>')
         target = OUT / "blog" / name / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(document(title, desc, canonical, article, header, footer), encoding="utf-8")
