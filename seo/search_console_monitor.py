@@ -82,14 +82,14 @@ def format_index_inspection(rows, error=''):
              '| URL | 판정 | 상태 | 마지막 크롤링 | Google 선택 정규 URL |',
              '|---|---|---|---|---|']
     for row in rows:
-        safe = lambda value: str(value).replace('|', '%7C').replace('\\n', ' ')
+        safe = lambda value: str(value).replace('|', '%7C').replace('\n', ' ')
         lines.append('| ' + ' | '.join(safe(row.get(key, '')) for key in
                      ('url', 'verdict', 'coverage', 'last_crawl', 'google_canonical')) + ' |')
     if error:
         lines.extend(['', '색인 조회 일부 또는 전체 실패: ' + error])
     if not rows:
         lines.append('| 조회 결과 없음 | - | - | - | - |')
-    return '\\n'.join(lines)
+    return '\n'.join(lines)
 
 
 def format_report(keyword_rows, page_rows, start_date, end_date, property_url, date_rows=None, query_page_rows=None):
