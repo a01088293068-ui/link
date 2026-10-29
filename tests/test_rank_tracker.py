@@ -22,6 +22,22 @@ class RankTrackerTests(unittest.TestCase):
         self.assertEqual(len(rows), 10)
         self.assertEqual(fetch.call_count, 2)
 
+    def test_longtail_queries_use_single_serp_page(self):
+        from unittest.mock import patch
+        ten = [{"link": f"https://example.com/{i}"} for i in range(10)]
+        self.assertEqual(rank_tracker.query_depth("웹툰 링크모음"), 10)
+        self.assertEqual(rank_tracker.query_depth("주소모음"), 30)
+        with patch.object(rank_tracker, "search", return_value=ten) as fetch:
+            rows = rank_tracker.search_top_results("웹툰 링크모음", "test", limit=10)
+        self.assertEqual(len(rows), 10)
+        fetch.assert_called_once_with("웹툰 링크모음", "test", page=1)
+
+    def test_longtail_has_distinct_existing_page_intents(self):
+        self.assertIn("커뮤니티 사이트모음", rank_tracker.KEYWORDS)
+        self.assertIn("사이트 주소 확인 방법", rank_tracker.KEYWORDS)
+        self.assertEqual(len(rank_tracker.KEYWORDS), len(set(rank_tracker.KEYWORDS)))
+        self.assertTrue(set(rank_tracker.CORE_KEYWORDS).isdisjoint(rank_tracker.LONGTAIL_KEYWORDS))
+
     def test_detect_exact_host_and_subdomain(self):
         results = [
             {"link": "https://other.example.com/"},
