@@ -43,6 +43,26 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('검색어 행은 0개지만 페이지별 데이터가 있습니다', report)
         self.assertIn('노출 0회로 해석하지 마세요', report)
 
+    def test_opportunity_queue_uses_observed_impressions_and_positions(self):
+        rows = [
+            {'keys': ['커뮤니티 사이트모음'], 'impressions': 18, 'clicks': 1, 'position': 12},
+            {'keys': ['웹툰 링크모음'], 'impressions': 7, 'clicks': 0, 'position': 24},
+            {'keys': ['주소모음'], 'impressions': 100, 'clicks': 2, 'position': 55},
+            {'keys': ['희소 검색어'], 'impressions': 1, 'clicks': 0, 'position': 15},
+        ]
+        report = monitor.format_report(rows, [], '2026-09-01', '2026-09-28',
+                                       'sc-domain:linkwiki.info')
+        queue = report.split('## 먼저 개선할 연관 검색어 후보')[1].split('## 페이지 상위')[0]
+        self.assertIn('커뮤니티 사이트모음 | 18 | 1 | 12.0', queue)
+        self.assertIn('웹툰 링크모음 | 7 | 0 | 24.0', queue)
+        self.assertNotIn('주소모음 |', queue)
+        self.assertNotIn('희소 검색어 |', queue)
+
+    def test_empty_opportunity_queue_has_explicit_note(self):
+        report = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+                                       'sc-domain:linkwiki.info')
+        self.assertIn('조건에 맞는 검색어 없음', report)
+
     def test_weekly_comparison_requires_fourteen_dates(self):
         days = [{'keys': [f'2026-09-{day:02}'], 'impressions': day, 'clicks': 1, 'position': 20}
                 for day in range(1, 15)]
