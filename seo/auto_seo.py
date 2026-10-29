@@ -211,14 +211,14 @@ def related_posts(topic, limit=2):
 
 
 CATEGORY_RELATED = (
-    (("커뮤니티", "게시판", "토론"), "커뮤니티 사이트모음", "/categories/community/"),
-    (("한인", "교민"), "해외 한인 사이트모음", "/categories/korean/"),
-    (("웹툰",), "웹툰 링크모음", "/categories/webtoon/"),
-    (("만화", "웹소설"), "만화·웹소설 사이트모음", "/categories/comics-directory/"),
-    (("AI 도구", "인공지능"), "AI 도구 사이트모음", "/categories/ai/"),
-    (("포털", "검색엔진"), "검색·포털 링크모음", "/categories/search/"),
-    (("스포츠", "경기 일정", "경기 결과"), "스포츠 사이트모음", "/categories/sports/"),
-    (("OTT", "영상", "스트리밍"), "영상·OTT 링크모음", "/categories/video/"),
+    (("커뮤니티", "게시판", "토론"), "커뮤니티 사이트모음", "/categories/community"),
+    (("한인", "교민"), "해외 한인 사이트모음", "/categories/korean"),
+    (("웹툰",), "웹툰 링크모음", "/categories/webtoon"),
+    (("만화", "웹소설"), "만화·웹소설 사이트모음", "/categories/comics-directory"),
+    (("AI 도구", "인공지능"), "AI 도구 사이트모음", "/categories/ai"),
+    (("포털", "검색엔진"), "검색·포털 링크모음", "/categories/search"),
+    (("스포츠", "경기 일정", "경기 결과"), "스포츠 사이트모음", "/categories/sports"),
+    (("OTT", "영상", "스트리밍"), "영상·OTT 링크모음", "/categories/video"),
 )
 
 
@@ -265,7 +265,7 @@ def render(article, related=(), category_links=()):
     if category_links:
         lines += ["## 이 주제의 사이트 목록", ""]
         for label, url in category_links:
-            if re.fullmatch(r"/categories/[a-z-]+/", url):
+            if re.fullmatch(r"/categories/[a-z-]+", url):
                 lines.append(f"- [{label}]({url})")
         lines.append("")
     lines += ["## 관련 정보", "", "- [링크위키 주소모음·링크모음 홈](/)",
