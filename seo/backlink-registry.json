@@ -34,15 +34,15 @@
       "id": "a6317876439db393",
       "platform": "DevElif",
       "submission_url": "https://develif.com/",
-      "public_url": "",
-      "submission_status": "unknown",
-      "audit_status": "unverified",
+      "public_url": "https://develif.com/s/website-search-and-address-guides-by-linkwiki",
+      "submission_status": "submitted",
+      "audit_status": "verified_link",
       "last_checked": "2026-10-29",
-      "http_status": null,
-      "link_found": false,
+      "http_status": 200,
+      "link_found": true,
       "rel": [],
-      "noindex": null,
-      "notes": "2026-10-29 리쑤화 이메일과 영문 링크위키 정보로 무료 등록 1차 제출. 사이트가 'Website name and description must be in English' 오류 반환. 영문 이름/설명 수정 후 2차 제출 요청하였으나 후속 브라우저 연결 중단으로 성공 여부 확인 불가. 공개 URL/백링크 미검증. 중복 재제출 전 조회 필수."
+      "noindex": false,
+      "notes": "2026-10-29 공개 상세페이지 직접 확인. 등록일은 사이트 표시상 2026-10-25 (이번 신규 신청 아님). linkwiki.info 향한 HTML a[href] 두 개 정상; rel='noopener noreferrer'로 nofollow 없음; robots='index, follow', canonical 자체 공개 URL. 10/29 영어 문구 제출 오류는 이미 등록된 기존 페이지와 연관 가능하나 직접적인 원인은 확정하지 않음. 재제출 금지."
     },
     {
       "id": "86bbbf38da1b7b64",
