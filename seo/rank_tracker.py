@@ -83,6 +83,12 @@ def collect(fetch, queries=KEYWORDS):
     return observations
 
 
+def coverage_for(observations, returned_results):
+    """Declare whether the provider supplied the full requested SERP depth."""
+    return {query: ("complete" if returned_results[query] >= query_depth(query)
+                    else "partial") for query in observations}
+
+
 def main():
     key = os.environ.get("SERPER_API_KEY", "").strip()
     if not key:
@@ -104,8 +110,7 @@ def main():
     history["samples"] = [x for x in history["samples"] if x["date"] != day]
     # A missing domain in a truncated provider response is not evidence that
     # the domain lies outside the requested top-N range.
-    coverage = {query: ("complete" if returned_results[query] >= query_depth(query)
-                         else "partial") for query in observations}
+    coverage = coverage_for(observations, returned_results)
     history["samples"].append({"date": day, "observed_at": now, "results": observations,
                                "returned_results": returned_results,
                                "sample_coverage": coverage})
