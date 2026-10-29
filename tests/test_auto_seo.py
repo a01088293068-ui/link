@@ -92,6 +92,16 @@ class SEOTests(unittest.TestCase):
         self.assertIn("/blog/good-entry/", seo.render(self.sample_article(), links))
         self.assertNotIn("/blog/unrelated/", seo.render(self.sample_article(), links))
 
+    def test_category_context_links_use_existing_canonical_paths(self):
+        self.assertEqual(seo.related_categories("AI 도구 사이트모음 비교"),
+                         [("AI 도구 사이트모음", "/categories/ai")])
+        self.assertEqual(seo.related_categories("스포츠 경기 일정 사이트 비교"),
+                         [("스포츠 사이트모음", "/categories/sports")])
+        self.assertEqual(seo.related_categories("주소 확인 방법"), [])
+        article = seo.render(self.sample_article(), category_links=seo.related_categories("웹툰 플랫폼"))
+        self.assertIn("[웹툰 링크모음](/categories/webtoon)", article)
+        self.assertNotIn("/categories/webtoon/", article)
+
     def test_render_rejects_unexpected_related_post_paths(self):
         article = self.sample_article()
         rendered = seo.render(article, [("외부", "https://untrusted.invalid/"), ("정상", "/blog/valid-post/")])
