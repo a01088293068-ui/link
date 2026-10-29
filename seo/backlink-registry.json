@@ -35,14 +35,14 @@
       "platform": "DevElif",
       "submission_url": "https://develif.com/",
       "public_url": "",
-      "submission_status": "not_submitted",
+      "submission_status": "unknown",
       "audit_status": "unverified",
       "last_checked": "2026-10-29",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "2026-10-29 라이브 사이트 등록폼 확인, 인터넷·웹 카테고리. 사이트명·설명·URL 입력 완료, 이메일 입력 및 최종 제출 대기. 사이트는 즉시 공개 dofollow를 표방하나 실제 링크 미검증."
+      "notes": "2026-10-29 리쑤화 이메일과 영문 링크위키 정보로 무료 등록 1차 제출. 사이트가 'Website name and description must be in English' 오류 반환. 영문 이름/설명 수정 후 2차 제출 요청하였으나 후속 브라우저 연결 중단으로 성공 여부 확인 불가. 공개 URL/백링크 미검증. 중복 재제출 전 조회 필수."
     },
     {
       "id": "86bbbf38da1b7b64",
