@@ -86,6 +86,25 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
                      f"{row.get('ctr', 0)*100:.1f}% | {row.get('position', 0):.1f} |")
     if not keyword_rows:
         lines.append('| 데이터 없음 | - | - | - | - |')
+    # Work queue: observed searches already close enough to deserve targeted improvement.
+    # Thresholds prevent one-off low-volume rows from dominating the report.
+    opportunities = sorted(
+        (row for row in keyword_rows
+         if int(row.get('impressions', 0)) >= 3
+         and 7 <= float(row.get('position', 0)) <= 30),
+        key=lambda row: (-int(row.get('impressions', 0)), float(row.get('position', 99)))
+    )[:15]
+    lines.extend(['', '## 먼저 개선할 연관 검색어 후보 (실제 노출 기반)', '',
+                  '- 노출 3회 이상, 평균 순위 7~30위인 검색어를 노출수 순서로 표시합니다.',
+                  '- 이 표는 검색량·난도 추정이 아니라 현재 속성에서 관측한 실적입니다.', '',
+                  '| 검색어 | 노출 | 클릭 | 평균 순위 |',
+                  '|---|---:|---:|---:|'])
+    for row in opportunities:
+        key = str((row.get('keys') or [''])[0]).replace('|', '\\|').replace('\\n', ' ')
+        lines.append(f"| {key} | {int(row.get('impressions', 0))} | "
+                     f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
+    if not opportunities:
+        lines.append('| 조건에 맞는 검색어 없음 (또는 검색어 데이터 미제공) | - | - | - |')
     lines.extend(['', '## 페이지 상위 30개', '', '| URL | 노출 | 클릭 | 평균 순위 |',
                   '|---|---:|---:|---:|'])
     for row in page_rows[:30]:
