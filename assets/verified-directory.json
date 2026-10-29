@@ -3,7 +3,7 @@
     "name": "마녀코믹스",
     "url": "https://www.mcomics.co.kr/",
     "category": "만화",
-    "description": "만화 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "국내 만화 콘텐츠를 찾아볼 수 있는 마녀코믹스 웹사이트로 연결됩니다."
   },
   {
     "name": "무툰",
@@ -189,13 +189,13 @@
     "name": "(미국)뉴욕코리아",
     "url": "https://www.newyorkkorea.net/main/index.html",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "미국 뉴욕 지역의 한인 생활 정보를 찾을 때 참고할 수 있는 뉴욕코리아 사이트입니다."
   },
   {
     "name": "(일본)제팬인포",
     "url": "https://japaninfo.kr/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "일본 현지 생활을 준비하거나 일본 관련 한국어 정보를 찾을 때 참고할 수 있는 제팬인포입니다."
   },
   {
     "name": "(태국)타이홀릭",
@@ -207,7 +207,7 @@
     "name": "(영국)영국사랑",
     "url": "https://www.04uk.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "영국 생활과 관련된 한인 정보, 게시판과 현지 소식을 살펴볼 수 있는 영국사랑입니다."
   },
   {
     "name": "(베트남)비나한인",
@@ -219,31 +219,31 @@
     "name": "(캐나다)캐나다피아",
     "url": "https://www.canadapia.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "캐나다 현지 한인 생활 정보를 찾아볼 수 있는 캐나다피아 사이트입니다."
   },
   {
     "name": "(태국)한아시아",
     "url": "https://www.hanasia.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "태국을 중심으로 현지 생활과 한인 소식을 찾아볼 수 있는 한아시아 사이트입니다."
   },
   {
     "name": "(멕시코)멕시코 한인신문",
     "url": "https://www.haninsinmun.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "멕시코 한인 사회와 관련된 한국어 소식을 찾을 수 있는 멕시코 한인신문입니다."
   },
   {
     "name": "(중국)교민세계",
     "url": "https://www.kyomin.org/?ckattempt=1",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "중국 지역 교민 정보를 다루는 교민세계 사이트로 연결됩니다."
   },
   {
     "name": "(중국)차이나톡",
     "url": "https://www.chinatalk.net/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "중국 생활에 관한 한국어 정보와 교민 관련 내용을 찾아볼 수 있는 차이나톡입니다."
   },
   {
     "name": "(일본)재펜뉴스",
@@ -261,7 +261,7 @@
     "name": "(홍콩)데일리홍콩",
     "url": "https://dailyhongkong.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "홍콩 지역의 소식을 한국어로 살펴볼 수 있는 데일리홍콩 뉴스 사이트입니다."
   },
   {
     "name": "(몽골)하이몽골리아",
@@ -273,55 +273,55 @@
     "name": "(독일)베를린리포트",
     "url": "https://berlinreport.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "독일 생활문답과 주거·유학 등 현지 정보를 나누는 한국어 커뮤니티입니다."
   },
   {
     "name": "(말레이시아)코리안프레스",
     "url": "https://koreanpress.net/index_kor.php",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "말레이시아 관련 한국어 뉴스와 한인 소식을 살펴볼 수 있는 코리안프레스입니다."
   },
   {
     "name": "(캄보디아)캄보디아 여행자클럽",
     "url": "https://www.ilovecambodia.co.kr/?ckattempt=1",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "캄보디아 여행과 현지 체류 정보를 찾는 이용자를 위한 여행자클럽 사이트입니다."
   },
   {
     "name": "(미국)워킹어스",
     "url": "https://www.workingus.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "미국 취업과 직장 생활, 이민 관련 질문을 살펴볼 수 있는 한인 커뮤니티 워킹어스입니다."
   },
   {
     "name": "(인도)인도웹",
     "url": "https://www.indoweb.org/love/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "인도 생활과 현지 한인 정보를 찾아볼 수 있는 인도웹 커뮤니티입니다."
   },
   {
     "name": "(캐나다)코사랑",
     "url": "https://www.kosarang.net/g4/index.php",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "캐나다 지역 한인 교민의 생활 정보를 살펴볼 수 있는 코사랑 사이트입니다."
   },
   {
     "name": "(헝가리)헝가리 한인포스트",
     "url": "https://www.hungaryej.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "헝가리 한인 사회와 관련된 소식을 찾을 수 있는 헝가리 한인포스트입니다."
   },
   {
     "name": "(프랑스)프랑스존",
     "url": "https://www.francezone.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "프랑스 한인 소식과 생활정보, 현지 뉴스 등을 제공하는 프랑스존입니다."
   },
   {
     "name": "(터키)튀르키예 한인회",
     "url": "https://turkeykorean.net/home/index.php",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "튀르키예 한인회 소식과 현지 교민 관련 정보를 확인할 수 있는 사이트입니다."
   },
   {
     "name": "(호주)호주채널",
@@ -333,7 +333,7 @@
     "name": "(전세계)코리안넷",
     "url": "https://www.korean.net/web/main/main",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "재외동포청의 공지와 재외동포 정책·지원사업 정보를 제공하는 코리안넷입니다."
   },
   {
     "name": "(호주)TOP Digital",
@@ -357,13 +357,13 @@
     "name": "(영국)한인헤럴드",
     "url": "https://haninherald.com/xe/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "영국 한인 사회의 소식을 한국어로 살펴볼 수 있는 한인헤럴드입니다."
   },
   {
     "name": "(호주)호주로",
     "url": "https://www.hojuro.com.au/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "호주 관련 한국어 생활정보와 현지 소식을 찾아볼 수 있는 호주로 사이트입니다."
   },
   {
     "name": "(스페인)스페인어게인",
@@ -375,7 +375,7 @@
     "name": "(홍콩)위클리홍콩",
     "url": "https://www.weeklyhk.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "홍콩의 지역 소식과 한인 관련 뉴스를 살펴볼 수 있는 위클리홍콩입니다."
   },
   {
     "name": "(브라질)한인투데이",
@@ -393,19 +393,19 @@
     "name": "(미국)미주중앙일보",
     "url": "https://www.koreadaily.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "미국 지역 뉴스와 미주 한인 사회 소식을 한국어로 전하는 미주중앙일보입니다."
   },
   {
     "name": "(미국)에스디사람",
     "url": "https://sdsaram.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "미국 샌디에이고 지역의 한인 생활 정보를 찾을 수 있는 에스디사람 사이트입니다."
   },
   {
     "name": "(UAE)UAE 한인회",
     "url": "https://www.uaekorean.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "아랍에미리트(UAE) 한인회 관련 안내와 교민 소식을 찾아볼 수 있는 사이트입니다."
   },
   {
     "name": "(유럽)EKNews",
@@ -441,25 +441,25 @@
     "name": "(사우디)사우디한인정보",
     "url": "https://koreanksa.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "사우디아라비아 지역의 한국어 교민 정보를 찾을 때 참고할 수 있는 사이트입니다."
   },
   {
     "name": "(미국)콜로라도 한인",
     "url": "https://www.kncolorado.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "미국 콜로라도 지역의 한인 소식과 생활 정보를 찾아볼 수 있는 사이트입니다."
   },
   {
     "name": "(중동)아랍코리아넷",
     "url": "https://forwarding.weebly.com/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "중동 지역 교민 정보를 안내하는 아랍코리아넷 연결 페이지입니다."
   },
   {
     "name": "(말레이시아)한인회",
     "url": "https://mykorean.org/",
     "category": "한인교민",
-    "description": "한인교민 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "말레이시아 한인회 관련 안내와 현지 교민 정보를 찾아볼 수 있는 사이트입니다."
   },
   {
     "name": "ChatGPT",
