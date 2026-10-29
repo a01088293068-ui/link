@@ -58,6 +58,22 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertNotIn('주소모음 |', queue)
         self.assertNotIn('희소 검색어 |', queue)
 
+    def test_query_page_pairs_identify_actual_landing_pages(self):
+        pairs = [
+            {'keys': ['주소모음 사이트 추천', 'https://linkwiki.info/guides/directory-comparison'],
+             'impressions': 14, 'clicks': 1, 'position': 13.2},
+            {'keys': ['링크모음', 'https://linkwiki.info/'],
+             'impressions': 30, 'clicks': 0, 'position': 45},
+            {'keys': ['검색량 적은 키워드', 'https://linkwiki.info/directory'],
+             'impressions': 1, 'clicks': 0, 'position': 17},
+        ]
+        report = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+                                       'sc-domain:linkwiki.info', query_page_rows=pairs)
+        section = report.split('## 검색어별 실제 노출 페이지')[1].split('## 페이지 상위')[0]
+        self.assertIn('주소모음 사이트 추천 | https://linkwiki.info/guides/directory-comparison | 14 | 1 | 13.2', section)
+        self.assertNotIn('링크모음 |', section)
+        self.assertNotIn('검색량 적은 키워드 |', section)
+
     def test_empty_opportunity_queue_has_explicit_note(self):
         report = monitor.format_report([], [], '2026-09-01', '2026-09-28',
                                        'sc-domain:linkwiki.info')
