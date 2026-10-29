@@ -55,11 +55,25 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         ]
         targets = monitor.inspection_targets(rows)
         self.assertIn('https://linkwiki.info/guides/choose-directory', targets)
-        self.assertIn('https://linkwiki.info/guides/choose-directory.html', targets)
+        self.assertNotIn('https://linkwiki.info/guides/choose-directory.html', targets)
         self.assertIn('https://linkwiki.info/categories/sports', targets)
-        self.assertIn('https://linkwiki.info/categories/sports.html', targets)
+        self.assertNotIn('https://linkwiki.info/categories/sports.html', targets)
         self.assertNotIn('https://other.example/private', targets)
-        self.assertIn('https://linkwiki.info/directory.html', targets)
+        self.assertIn('https://linkwiki.info/directory', targets)
+        self.assertLessEqual(len(targets), 15)
+
+    def test_inspection_legacy_html_observation_checks_both_urls(self):
+        rows = [
+            {'keys': ['https://linkwiki.info/categories/ai.html'], 'impressions': 9},
+            {'keys': ['https://linkwiki.info/guides/security.html'], 'impressions': 4},
+            {'keys': ['https://linkwiki.info/index.html'], 'impressions': 1},
+        ]
+        targets = monitor.inspection_targets(rows)
+        self.assertIn('https://linkwiki.info/categories/ai', targets)
+        self.assertIn('https://linkwiki.info/categories/ai.html', targets)
+        self.assertIn('https://linkwiki.info/guides/security', targets)
+        self.assertIn('https://linkwiki.info/guides/security.html', targets)
+        self.assertIn('https://linkwiki.info/', targets)
         self.assertLessEqual(len(targets), 15)
 
     def test_inspection_error_is_not_reported_as_not_indexed(self):
