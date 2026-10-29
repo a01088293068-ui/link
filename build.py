@@ -5,7 +5,7 @@ Cloudflare Pages: build command `python3 build.py`; output directory `dist`.
 No third-party dependencies, no external network calls, no overwrites of source.
 """
 from datetime import datetime, timezone
-from html import escape
+from html import escape, unescape
 from pathlib import Path
 from urllib.parse import quote, urlparse
 import json
@@ -259,6 +259,36 @@ def document(title, description, canonical, main_content, header, footer):
 </body></html>'''
 
 
+def add_breadcrumb_data(html, public_path):
+    """Add truthful hierarchy metadata to existing navigable guide/category pages."""
+    segments = public_path.strip("/").split("/")
+    if segments[0] not in {"categories", "guides", "blog"} or public_path == "/blog/":
+        return html
+    if 'type="application/ld+json"' in html:
+        return html
+    heading = re.search(r'<h1\\b[^>]*>(.*?)</h1>', html, re.S | re.I)
+    if not heading:
+        raise RuntimeError(f"Breadcrumb page missing heading: {public_path}")
+    page_name = unescape(re.sub(r'<[^>]+>', '', heading.group(1))).strip()
+    if not page_name:
+        raise RuntimeError(f"Breadcrumb page has blank heading: {public_path}")
+    items = [{"@type": "ListItem", "position": 1, "name": "홈", "item": SITE + "/"}]
+    if segments[0] == "categories" and public_path != "/categories/":
+        items.append({"@type": "ListItem", "position": 2, "name": "분야별 사이트",
+                      "item": SITE + "/categories/"})
+    elif segments[0] == "blog" and public_path != "/blog/":
+        items.append({"@type": "ListItem", "position": 2, "name": "사이트 탐색 정보",
+                      "item": SITE + "/blog/"})
+    items.append({"@type": "ListItem", "position": len(items) + 1,
+                  "name": page_name, "item": SITE + public_path})
+    schema = {"@context": "https://schema.org", "@type": "BreadcrumbList",
+              "itemListElement": items}
+    block = '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c") + '</script>'
+    if html.count("</head>") != 1:
+        raise RuntimeError(f"Breadcrumb page missing head: {public_path}")
+    return html.replace("</head>", block + "</head>", 1)
+
+
 def build():
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -386,6 +416,10 @@ def build():
     for page in OUT.rglob("*.html"):
         original = page.read_text(encoding="utf-8")
         normalized = normalize_page_links(original)
+        relative = page.relative_to(OUT).as_posix()
+        public_path = ("/" + relative.removesuffix("index.html")
+                       if page.name == "index.html" else "/" + relative.removesuffix(".html"))
+        normalized = add_breadcrumb_data(normalized, public_path)
         if normalized != original:
             page.write_text(normalized, encoding="utf-8")
 
