@@ -76,13 +76,40 @@ def audit_site(dist):
         if SITE + public_path not in locs:
             errors.append(f"indexable page missing from sitemap: {relative}")
         title_match = re.search(r"<title[^>]*>(.*?)</title>", content, re.I | re.S)
-        title = re.sub(r"\\s+", " ", title_match.group(1)).strip() if title_match else ""
+        title = re.sub(r"\s+", " ", title_match.group(1)).strip() if title_match else ""
         if not title:
             errors.append(f"missing HTML title: {relative}")
         elif title in titles_seen:
             errors.append(f"duplicate HTML title: {relative} and {titles_seen[title]}")
         else:
             titles_seen[title] = relative
+        # Validate all structured-data scripts and the canonical breadcrumb trail.
+        for script in re.findall(
+                r'<script\\b[^>]*\\btype="application/ld\\+json"[^>]*>(.*?)</script>',
+                content, re.I | re.S):
+            try:
+                data = json.loads(script)
+            except ValueError as error:
+                errors.append(f"invalid JSON-LD: {relative}: {error}")
+                continue
+            schemas = data.get("@graph", []) if isinstance(data, dict) and "@graph" in data else [data]
+            if not isinstance(schemas, list):
+                errors.append(f"invalid JSON-LD graph: {relative}")
+                continue
+            for schema in schemas:
+                if not isinstance(schema, dict) or schema.get("@type") != "BreadcrumbList":
+                    continue
+                items = schema.get("itemListElement")
+                if not isinstance(items, list) or len(items) < 2:
+                    errors.append(f"invalid breadcrumb list: {relative}")
+                    continue
+                positions = [item.get("position") if isinstance(item, dict) else None for item in items]
+                if positions != list(range(1, len(items) + 1)):
+                    errors.append(f"invalid breadcrumb positions: {relative}")
+                if not isinstance(items[-1], dict) or items[-1].get("item") != SITE + public_path:
+                    errors.append(f"breadcrumb URL mismatch: {relative}")
+                if not isinstance(items[0], dict) or items[0].get("item") != SITE + "/":
+                    errors.append(f"breadcrumb home mismatch: {relative}")
         for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"', content):
             if href.startswith(SITE + "/") or href.startswith("/") and not href.startswith("//"):
                 local_href = href[len(SITE):] if href.startswith(SITE + "/") else href
