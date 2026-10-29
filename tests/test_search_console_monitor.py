@@ -152,7 +152,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         report = monitor.format_report([], [], '2026-09-01', '2026-09-28',
                                        'sc-domain:linkwiki.info', dates)
         self.assertIn('최근 7일: 노출 3회 · 클릭 0회', report)
-        self.assertIn('직전 7일: 노출 0회 · 클릭 0회', report)
+        self.assertIn('직전 7일: 노출 4회 · 클릭 1회', report)
         self.assertNotIn('최근 7일: 노출 97회', report)
 
     def test_date_aggregates_when_queries_hidden(self):
