@@ -77,10 +77,10 @@ def inspection_targets(page_rows, limit=15):
             continue
         path = parts.path.rstrip('/')
         candidates = [observed]
-        if path.endswith('.html'):
-            candidates.insert(0, 'https://linkwiki.info' + path[:-5])
-        elif path == '/index.html':
+        if path == '/index.html':
             candidates.insert(0, 'https://linkwiki.info/')
+        elif path.endswith('.html'):
+            candidates.insert(0, 'https://linkwiki.info' + path[:-5])
         for url in candidates:
             if url not in seen and len(urls) < limit:
                 urls.append(url)
