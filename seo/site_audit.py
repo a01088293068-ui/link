@@ -166,6 +166,34 @@ def audit_site(dist):
         if card_urls != expected_urls:
             errors.append("directory card URL order/content differs from JSON source")
 
+    category_pages = {
+        "ai": "AI 도구", "search": "검색·포털", "sports": "스포츠",
+        "community": "커뮤니티", "korean": "한인교민",
+        "video": "영상·OTT", "webtoon": "만화·웹툰",
+        "comics-directory": "만화",
+    }
+    if isinstance(records, list):
+        for slug, category in category_pages.items():
+            category_page = dist / "categories" / f"{slug}.html"
+            if not category_page.is_file():
+                continue
+            page_content = category_page.read_text(encoding="utf-8")
+            # Category cards use two existing templates: .item and .v6-card.
+            blocks = re.findall(
+                r'<article\b[^>]*\bclass="(?:item|v6-card)"[^>]*>(.*?)</article>',
+                page_content, re.I | re.S)
+            actual_urls = []
+            for block in blocks:
+                links = re.findall(r'<a\b[^>]*\bhref="(https://[^"]+)"', block)
+                if len(links) != 1:
+                    errors.append(f"invalid category card destination: {slug}")
+                else:
+                    actual_urls.append(links[0])
+            expected_urls = [record.get("url") for record in records
+                             if isinstance(record, dict) and record.get("category") == category]
+            if actual_urls != expected_urls:
+                errors.append(f"category card URLs differ from JSON: {slug}")
+
     posts = sorted((dist / "blog").glob("*/index.html"))
     for post in posts:
         relative = post.relative_to(dist).as_posix().removesuffix("index.html")
