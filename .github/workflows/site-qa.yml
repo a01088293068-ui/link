@@ -14,6 +14,7 @@ on:
       - 'privacy.html'
       - 'build.py'
       - 'seo/site_audit.py'
+      - 'seo/check_directory_links.py'
       - 'seo/rank_tracker.py'
       - 'seo/search_console_monitor.py'
       - 'seo/auto_seo.py'
@@ -63,6 +64,7 @@ jobs:
       - name: Test build and content QA regressions
         run: |
           python3 -m unittest discover -s tests -p 'test_site_audit.py' -v
+          python3 -m unittest discover -s tests -p 'test_directory_reachability.py' -v
           python3 -m unittest discover -s tests -p 'test_seo_release_regression.py' -v
           python3 -m unittest discover -s tests -p 'test_auto_seo.py' -v
           python3 -m unittest discover -s tests -p 'test_rank_tracker.py' -v
