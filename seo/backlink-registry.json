@@ -233,12 +233,12 @@
       "public_url": "",
       "submission_status": "not_submitted",
       "audit_status": "unverified",
-      "last_checked": "",
+      "last_checked": "2026-10-29",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "공식 등록 폼 있음. 이메일 검증과 운영자 심사 필요"
+      "notes": "2026-10-29 리쑤화 이메일로 무료 등록 폼 작성 완료. Internet > Link Directories 분류; 최종 Submit 버튼은 Google reCAPTCHA가 로드되지 않아 disabled, 제출 미완료. 이메일 인증 필요, 무료 심사 수주~수개월 가능. 중복 제출 전 상태 확인."
     },
     {
       "id": "4a2da8d0ed594706",
