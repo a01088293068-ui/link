@@ -67,6 +67,19 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
         ]
     else:
         lines[6:6] = ['## 전체 검색 성과', '', '날짜별 검색 성과 데이터 없음', '']
+    if not keyword_rows and page_rows:
+        lines.extend(['', '검색어 행은 0개지만 페이지별 데이터가 있습니다. 검색어 익명 처리나 집계 기준 차이일 수 있으므로 노출 0회로 해석하지 마세요.', ''])
+    if len(daily) >= 14:
+        recent = daily[-7:]
+        previous = daily[-14:-7]
+        recent_impressions = sum(int(row.get('impressions', 0)) for row in recent)
+        previous_impressions = sum(int(row.get('impressions', 0)) for row in previous)
+        recent_clicks = sum(int(row.get('clicks', 0)) for row in recent)
+        previous_clicks = sum(int(row.get('clicks', 0)) for row in previous)
+        lines.extend(['', '## 최근 7일과 직전 7일 비교', '',
+                      f'- 최근 7일: 노출 {recent_impressions:,}회 · 클릭 {recent_clicks:,}회',
+                      f'- 직전 7일: 노출 {previous_impressions:,}회 · 클릭 {previous_clicks:,}회',
+                      '- 집계된 날짜가 14일 이상일 때만 비교하며, 데이터가 적으면 일별 변동이 큽니다.', ''])
     for row in keyword_rows[:30]:
         key = str((row.get('keys') or [''])[0]).replace('|', '\\|').replace('\n', ' ')
         lines.append(f"| {key} | {int(row.get('impressions', 0))} | {int(row.get('clicks', 0))} | "
