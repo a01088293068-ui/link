@@ -51,18 +51,19 @@ def query_performance(token, property_url, start_date, end_date, dimensions, lim
 
 INSPECT_URLS = (
     'https://linkwiki.info/',
-    'https://linkwiki.info/directory.html',
-    'https://linkwiki.info/categories/ai.html',
-    'https://linkwiki.info/guides/address-check.html',
-    'https://linkwiki.info/guides/directory-comparison.html',
+    'https://linkwiki.info/directory',
+    'https://linkwiki.info/categories/ai',
+    'https://linkwiki.info/guides/address-check',
+    'https://linkwiki.info/guides/directory-comparison',
 )
 
 
 def inspection_targets(page_rows, limit=15):
-    """Inspect observed Google landing URLs alongside their declared .html canonicals.
+    """Prioritize deployed extensionless canonicals and inspect observed variants.
 
-    Search Console can report pretty URLs while the deployed HTML declares the
-    corresponding .html URL canonical. Comparing both identifies mismatches.
+    Cloudflare serves .html files at extensionless canonical URLs. When Search
+    Console actually reports a .html URL, inspect both that observed address
+    and its canonical so a legacy redirect does not mask the indexed page.
     """
     from urllib.parse import urlsplit
     urls = list(INSPECT_URLS)
@@ -76,8 +77,10 @@ def inspection_targets(page_rows, limit=15):
             continue
         path = parts.path.rstrip('/')
         candidates = [observed]
-        if path and not path.endswith('.html') and '.' not in path.rsplit('/', 1)[-1]:
-            candidates.append('https://linkwiki.info' + path + '.html')
+        if path.endswith('.html'):
+            candidates.insert(0, 'https://linkwiki.info' + path[:-5])
+        elif path == '/index.html':
+            candidates.insert(0, 'https://linkwiki.info/')
         for url in candidates:
             if url not in seen and len(urls) < limit:
                 urls.append(url)
