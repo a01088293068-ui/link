@@ -48,7 +48,7 @@ def query_performance(token, property_url, start_date, end_date, dimensions, lim
         return json.load(response).get('rows', [])
 
 
-def format_report(keyword_rows, page_rows, start_date, end_date, property_url, date_rows=None):
+def format_report(keyword_rows, page_rows, start_date, end_date, property_url, date_rows=None, query_page_rows=None):
     lines = ['# 링크위키 Search Console 실적', '',
              f'- 속성: `{property_url}`', f'- 조회 기간: {start_date} ~ {end_date}',
              '- 데이터: Google Search Console API. 검색량이나 실시간 순위가 아닙니다.', '',
@@ -105,6 +105,27 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
                      f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
     if not opportunities:
         lines.append('| 조건에 맞는 검색어 없음 (또는 검색어 데이터 미제공) | - | - | - |')
+    # Connect each opportunity to the landing page Google actually displayed.
+    # Without query+page pairs a query-level average can hide the wrong target URL.
+    candidates = sorted(
+        (row for row in (query_page_rows or [])
+         if len(row.get('keys') or []) >= 2
+         and int(row.get('impressions', 0)) >= 3
+         and 7 <= float(row.get('position', 0)) <= 30),
+        key=lambda row: (-int(row.get('impressions', 0)), float(row.get('position', 99)))
+    )[:20]
+    lines.extend(['', '## 검색어별 실제 노출 페이지 (수정 대상)', '',
+                  '- 검색어와 노출 URL이 함께 관측된 경우만 표시합니다. 한 검색어에 여러 페이지가 나올 수 있습니다.',
+                  '| 검색어 | 노출 URL | 노출 | 클릭 | 평균 순위 |',
+                  '|---|---|---:|---:|---:|'])
+    for row in candidates:
+        keys = row['keys']
+        query = str(keys[0]).replace('|', '\\|').replace('\\n', ' ')
+        page = str(keys[1]).replace('|', '%7C')
+        lines.append(f"| {query} | {page} | {int(row.get('impressions', 0))} | "
+                     f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
+    if not candidates:
+        lines.append('| 검색어·페이지 쌍의 개선 후보 없음 | - | - | - | - |')
     lines.extend(['', '## 페이지 상위 30개', '', '| URL | 노출 | 클릭 | 평균 순위 |',
                   '|---|---:|---:|---:|'])
     for row in page_rows[:30]:
@@ -139,8 +160,9 @@ def main():
     keywords = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['query'])
     pages = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['page'])
     dates = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['date'])
+    query_pages = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['query', 'page'], limit=1000)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(format_report(keywords, pages, start, end, args.property, dates), encoding='utf-8')
+    args.output.write_text(format_report(keywords, pages, start, end, args.property, dates, query_pages), encoding='utf-8')
     print(f'Wrote {args.output}: {len(keywords)} queries, {len(pages)} pages')
 
 
