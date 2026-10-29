@@ -25,7 +25,7 @@ jobs:
           python-version: '3.12'
       - name: Test ranking monitor
         run: python3 -B -m unittest discover -s tests -p 'test_rank_tracker.py' -v
-      - name: Measure six Korean queries (first ten organic results only)
+      - name: Measure six Korean queries (request up to 30 organic results)
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
         run: python3 -B seo/rank_tracker.py
