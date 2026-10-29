@@ -541,14 +541,14 @@
       "platform": "TopSiteNet",
       "submission_url": "https://topsitenet.com/add-link/",
       "public_url": "",
-      "submission_status": "not_submitted",
+      "submission_status": "unknown",
       "audit_status": "unverified",
       "last_checked": "2026-10-29",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "공식 가이드·등록 폼 확인. Guest 무료 Regular Text Listing은 상호 링크 필수는 아니며 심사 안내 3~5일. 이메일·제목·설명·키워드·카테고리·산술 확인 필요. 성인/불쾌 콘텐츠 제외. 실제 홈페이지의 97개 일반 카테고리 목록은 브라우저로 확인했지만 하위 목적지 전체는 미검증. 아직 제출하지 않음."
+      "notes": "공식 가이드·등록 폼 확인. Guest 무료 Regular Text Listing은 상호 링크 필수는 아니며 심사 안내 3~5일. 이메일·제목·설명·키워드·카테고리·산술 확인 필요. 성인/불쾌 콘텐츠 제외. 실제 홈페이지의 97개 일반 카테고리 목록은 브라우저로 확인했지만 하위 목적지 전체는 미검증. 아직 제출하지 않음. 2026-10-29 리쑤화 이메일로 무료 Regular, Internet > Web Directories 양식·산술 인증 작성 후 Add Link 제출 버튼 클릭. 사이트가 'Personal category required. Visibility preference required.' 검증 오류 표시; 성공 메시지/접수번호 없음. 실제 제출 완료 아님, 폼 매핑 오류 의심."
     },
     {
       "id": "pornranked_20261029",
@@ -562,7 +562,7 @@
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "공식 Submit 폼 2026-10-29 확인. 무료 Standard listing 신청 가능, 등록 심사 24~48시간 안내, 이메일·카테고리 필수. 상호 링크는 별도 Featured 옵션으로 기본 무료 등록에 필수 아님. 사이트 주제 적합성은 편집자 심사 대상. 아직 제출하지 않음."
+      "notes": "공식 Submit 폼 2026-10-29 확인. 무료 Standard listing 신청 가능, 등록 심사 24~48시간 안내, 이메일·카테고리 필수. 상호 링크는 별도 Featured 옵션으로 기본 무료 등록에 필수 아님. 사이트 주제 적합성은 편집자 심사 대상. 아직 제출하지 않음. 2026-10-29 검색 노출 목표 대비 성인 분야 주제 부적합 및 저품질 디렉터리 신호 가능성 검토. 무료 사이트 등록 화면에는 18+ 확인이 표시되며, 불필요한 연관성 리스크로 실제 제출은 보류."
     }
   ]
 }
