@@ -135,13 +135,25 @@ class SearchConsoleMonitorTests(unittest.TestCase):
     def test_weekly_comparison_requires_fourteen_dates(self):
         days = [{'keys': [f'2026-09-{day:02}'], 'impressions': day, 'clicks': 1, 'position': 20}
                 for day in range(1, 15)]
-        report = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+        report = monitor.format_report([], [], '2026-09-01', '2026-09-14',
                                        'sc-domain:linkwiki.info', days)
         self.assertIn('최근 7일: 노출 77회 · 클릭 7회', report)
         self.assertIn('직전 7일: 노출 28회 · 클릭 7회', report)
-        short = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+        short = monitor.format_report([], [], '2026-09-02', '2026-09-14',
                                       'sc-domain:linkwiki.info', days[:13])
         self.assertNotIn('최근 7일과 직전 7일 비교', short)
+
+    def test_weekly_comparison_uses_calendar_days_when_missing_dates(self):
+        dates = [
+            {'keys': ['2026-09-01'], 'impressions': 90, 'clicks': 9, 'position': 2},
+            {'keys': ['2026-09-16'], 'impressions': 4, 'clicks': 1, 'position': 6},
+            {'keys': ['2026-09-28'], 'impressions': 3, 'clicks': 0, 'position': 8},
+        ]
+        report = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+                                       'sc-domain:linkwiki.info', dates)
+        self.assertIn('최근 7일: 노출 3회 · 클릭 0회', report)
+        self.assertIn('직전 7일: 노출 0회 · 클릭 0회', report)
+        self.assertNotIn('최근 7일: 노출 97회', report)
 
     def test_date_aggregates_when_queries_hidden(self):
         days = [
