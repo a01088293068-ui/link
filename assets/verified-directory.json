@@ -27,7 +27,7 @@
     "name": "웹툰가이드",
     "url": "https://www.webtoonguide.com/ko/",
     "category": "만화",
-    "description": "만화 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "웹툰 작품 정보와 관련 소식을 살펴볼 수 있는 웹사이트입니다."
   },
   {
     "name": "인벤",
@@ -39,7 +39,7 @@
     "name": "디시인사이드",
     "url": "https://gall.dcinside.com/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "다양한 주제의 갤러리에서 글과 댓글을 나누는 온라인 커뮤니티입니다."
   },
   {
     "name": "중고나라",
@@ -63,7 +63,7 @@
     "name": "에펨코리아",
     "url": "https://www.fmkorea.com/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "축구와 게임, 유머 등 관심사별 게시판을 운영하는 커뮤니티입니다."
   },
   {
     "name": "만개의레시피",
@@ -81,19 +81,19 @@
     "name": "빅카인즈",
     "url": "https://www.bigkinds.or.kr/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "뉴스 기사 검색과 데이터 분석 기능을 제공하는 뉴스 빅데이터 서비스입니다."
   },
   {
     "name": "인스티즈",
     "url": "https://www.instiz.net/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "연예 이슈와 일상 이야기를 공유하는 온라인 커뮤니티입니다."
   },
   {
     "name": "오늘의유머",
     "url": "https://www.todayhumor.co.kr/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "유머와 일상 이야기를 게시판에서 공유하는 커뮤니티입니다."
   },
   {
     "name": "포인핸드",
@@ -117,55 +117,55 @@
     "name": "개드립",
     "url": "https://www.dogdrip.net/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "유머와 화제의 글을 게시판에서 읽고 공유하는 커뮤니티입니다."
   },
   {
     "name": "클리앙",
     "url": "https://www.clien.net/service/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "IT 기기와 생활 정보를 주제로 의견을 나누는 커뮤니티입니다."
   },
   {
     "name": "MLB파크",
     "url": "https://mlbpark.donga.com/mp/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "야구를 비롯한 스포츠와 일상 주제의 게시판을 제공합니다."
   },
   {
     "name": "에브리타임",
     "url": "https://everytime.kr/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "대학별 커뮤니티와 시간표 기능을 이용할 수 있는 서비스입니다."
   },
   {
     "name": "퀘이사존",
     "url": "https://quasarzone.com/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "PC 하드웨어와 게임, IT 관련 정보 및 커뮤니티를 제공합니다."
   },
   {
     "name": "네이트판",
     "url": "https://pann.nate.com/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "일상 사연과 화제의 이야기를 게시판에서 공유하는 서비스입니다."
   },
   {
     "name": "비마이펫",
     "url": "https://bemypet.kr/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "반려동물 양육 정보와 관련 콘텐츠를 제공하는 서비스입니다."
   },
   {
     "name": "더쿠",
     "url": "https://theqoo.net/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "연예, 생활, 취미 등 주제별 게시판을 이용하는 커뮤니티입니다."
   },
   {
     "name": "오늘의집",
     "url": "https://ohou.se/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "집 꾸미기 사례와 인테리어 상품을 찾아볼 수 있는 서비스입니다."
   },
   {
     "name": "SLR",
@@ -183,7 +183,7 @@
     "name": "블라인드",
     "url": "https://www.teamblind.com/kr/",
     "category": "커뮤니티",
-    "description": "커뮤니티 분류의 등록 항목입니다. 아래 도메인을 확인한 후 방문하세요."
+    "description": "직장과 커리어 관련 이야기를 익명으로 나누는 커뮤니티입니다."
   },
   {
     "name": "(미국)뉴욕코리아",
