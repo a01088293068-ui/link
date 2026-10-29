@@ -47,6 +47,33 @@ class SiteAuditTests(unittest.TestCase):
             ], ensure_ascii=False), encoding="utf-8")
             self.assertTrue(any("invalid directory URL" in item for item in audit_site(root)))
 
+    def test_audit_catches_broken_json_ld_and_breadcrumb(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            (root / "blog").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(json.dumps([
+                {"name": "예시", "category": "검색", "description": "예시", "url": "https://example.com/"}
+            ], ensure_ascii=False), encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url>'
+                       f'<url><loc>{SITE}/test</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "test.html").write_text(
+                f'<html><head><title>검증</title><link rel="canonical" href="{SITE}/test">'
+                '<script type="application/ld+json">{"@type":"BreadcrumbList",'
+                '"itemListElement":[{"position":1,"item":"https://linkwiki.info/"},'
+                '{"position":2,"item":"https://linkwiki.info/wrong"}]}</script>'
+                '</head><body></body></html>', encoding="utf-8")
+            self.assertTrue(any("breadcrumb URL mismatch" in item for item in audit_site(root)))
+            (root / "test.html").write_text(
+                f'<html><head><title>검증</title><link rel="canonical" href="{SITE}/test">'
+                '<script type="application/ld+json">{broken}</script>'
+                '</head></html>', encoding="utf-8")
+            self.assertTrue(any("invalid JSON-LD" in item for item in audit_site(root)))
+
     def test_existing_generated_site_is_consistent(self):
         root = Path(__file__).resolve().parents[1] / "dist"
         if root.is_dir():
