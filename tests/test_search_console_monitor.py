@@ -27,6 +27,31 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertEqual(request.method, 'POST')
         self.assertEqual(rows[0]['clicks'], 2)
 
+    def test_index_inspection_reads_indexed_version_without_submission(self):
+        class Response:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return None
+            def read(self):
+                return (b'{"inspectionResult":{"indexStatusResult":'
+                        b'{"verdict":"PASS","coverageState":"Submitted and indexed",'
+                        b'"googleCanonical":"https://linkwiki.info/"}}}')
+        with patch.object(monitor, 'urlopen', return_value=Response()) as mocked:
+            row = monitor.inspect_index('token', 'sc-domain:linkwiki.info',
+                                        'https://linkwiki.info/')
+        self.assertEqual(row['verdict'], 'PASS')
+        self.assertEqual(row['google_canonical'], 'https://linkwiki.info/')
+        request = mocked.call_args.args[0]
+        self.assertEqual(request.method, 'POST')
+        self.assertIn('/urlInspection/index:inspect', request.full_url)
+        self.assertEqual(request.get_header('Authorization'), 'Bearer token')
+
+    def test_inspection_error_is_not_reported_as_not_indexed(self):
+        report = monitor.format_index_inspection([], 'HTTPError (inspect API unavailable or restricted)')
+        self.assertIn('색인 조회 일부 또는 전체 실패', report)
+        self.assertNotIn('색인되지 않음', report)
+
     def test_empty_report(self):
         result = monitor.format_report([], [], '2026-09-01', '2026-09-28', 'sc-domain:linkwiki.info')
         self.assertIn('데이터 없음', result)
