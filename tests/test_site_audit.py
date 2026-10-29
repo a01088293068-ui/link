@@ -92,6 +92,25 @@ class SiteAuditTests(unittest.TestCase):
                 encoding="utf-8")
             self.assertTrue(any("directory card URL" in item for item in audit_site(root)))
 
+    def test_audit_catches_category_cards_out_of_sync(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            (root / "blog").mkdir()
+            (root / "categories").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(json.dumps([
+                {"name": "예시", "category": "AI 도구", "description": "예시", "url": "https://example.com/"}
+            ], ensure_ascii=False), encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "categories/ai.html").write_text(
+                '<article class="item"><a href="https://wrong.example/">방문</a></article>',
+                encoding="utf-8")
+            self.assertTrue(any("category card URLs differ" in item for item in audit_site(root)))
+
     def test_existing_generated_site_is_consistent(self):
         root = Path(__file__).resolve().parents[1] / "dist"
         if root.is_dir():
