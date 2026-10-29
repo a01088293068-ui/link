@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError, URLError
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / 'seo' / 'search-console-report.md'
@@ -46,6 +47,49 @@ def query_performance(token, property_url, start_date, end_date, dimensions, lim
                       method='POST')
     with urlopen(request, timeout=30) as response:
         return json.load(response).get('rows', [])
+
+
+INSPECT_URLS = (
+    'https://linkwiki.info/',
+    'https://linkwiki.info/directory',
+    'https://linkwiki.info/categories/',
+    'https://linkwiki.info/categories/ai',
+    'https://linkwiki.info/guides/address-check',
+    'https://linkwiki.info/guides/directory-comparison',
+)
+
+
+def inspect_index(token, property_url, inspection_url):
+    """Read Google's indexed-version status; this does not request indexing."""
+    request = Request(
+        'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
+        json.dumps({'inspectionUrl': inspection_url, 'siteUrl': property_url,
+                    'languageCode': 'ko-KR'}).encode('utf-8'),
+        {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'},
+        method='POST')
+    with urlopen(request, timeout=20) as response:
+        data = json.load(response)
+    state = data.get('inspectionResult', {}).get('indexStatusResult', {})
+    return {'url': inspection_url, 'verdict': state.get('verdict', 'UNKNOWN'),
+            'coverage': state.get('coverageState', '정보 없음'),
+            'last_crawl': state.get('lastCrawlTime', ''),
+            'google_canonical': state.get('googleCanonical', '')}
+
+
+def format_index_inspection(rows, error=''):
+    lines = ['', '## Google 색인 상태 확인 (Google 색인에 저장된 버전)', '',
+             '- URL Inspection API 결과이며 실시간 접속 상태나 색인 신청 결과가 아닙니다.',
+             '| URL | 판정 | 상태 | 마지막 크롤링 | Google 선택 정규 URL |',
+             '|---|---|---|---|---|']
+    for row in rows:
+        safe = lambda value: str(value).replace('|', '%7C').replace('\\n', ' ')
+        lines.append('| ' + ' | '.join(safe(row.get(key, '')) for key in
+                     ('url', 'verdict', 'coverage', 'last_crawl', 'google_canonical')) + ' |')
+    if error:
+        lines.extend(['', '색인 조회 일부 또는 전체 실패: ' + error])
+    if not rows:
+        lines.append('| 조회 결과 없음 | - | - | - | - |')
+    return '\\n'.join(lines)
 
 
 def format_report(keyword_rows, page_rows, start_date, end_date, property_url, date_rows=None, query_page_rows=None):
@@ -180,7 +224,19 @@ def main():
     dates = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['date'])
     query_pages = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['query', 'page'], limit=1000)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(format_report(keywords, pages, start, end, args.property, dates, query_pages), encoding='utf-8')
+    inspections = []
+    inspection_error = ''
+    for url in INSPECT_URLS:
+        try:
+            inspections.append(inspect_index(token, args.property, url))
+        except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as error:
+            # An unavailable Inspection API must not erase the working
+            # performance report or disguise data as "not indexed".
+            inspection_error = type(error).__name__ + ' (inspect API unavailable or restricted)'
+            break
+    report = format_report(keywords, pages, start, end, args.property, dates, query_pages)
+    report += format_index_inspection(inspections, inspection_error)
+    args.output.write_text(report, encoding='utf-8')
     print(f'Wrote {args.output}: {len(keywords)} queries, {len(pages)} pages')
 
 
