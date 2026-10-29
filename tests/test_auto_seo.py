@@ -94,14 +94,27 @@ class SEOTests(unittest.TestCase):
     def test_render_and_quality_gate(self):
         article = {"title": "링크모음 사이트 비교 기준", "description": "링크모음 사이트를 비교할 때 실제 연결 주소, 카테고리, 검색 편의성, 운영 주체의 안내와 개인정보 입력 요청을 점검하는 방법을 차근차근 설명합니다.",
             "introduction": "사이트를 비교할 때 확인해야 하는 항목들입니다. " * 8,
-            "sections": [{"heading": f"확인 항목 {i}", "paragraphs": ["링크의 실제 이동 주소와 설명을 대조하고 공식 공지를 확인합니다. " * 6,
-              "검색창과 카테고리의 정확성을 직접 시험하고 불필요한 권한 요구를 확인합니다. " * 5]} for i in range(4)],
+            "sections": [{"heading": f"확인 항목 {i}", "paragraphs": [
+                self.unique_paragraphs()[i * 2] * 3,
+                self.unique_paragraphs()[i * 2 + 1] * 3]} for i in range(4)],
             "faq": [{"question": f"질문 {i}", "answer": "운영 주체와 이용 조건을 직접 확인하고 연결 주소가 공식적으로 안내된 주소인지 비교해 보세요. 불확실하면 접속을 멈추세요."} for i in range(3)]}
         draft = seo.render(article)
         self.assertIn("/directory.html", draft)
         self.assertIn("[링크위키 주소모음·링크모음 홈](/)", draft)
         self.assertFalse(seo.deterministic_review("링크모음 사이트 비교 기준", article, draft, []))
         self.assertTrue(seo.deterministic_review("링크모음 사이트 비교 기준", article, draft, [article["title"]]))
+
+    def test_repeated_paragraphs_within_one_article_are_rejected(self):
+        article = self.sample_article()
+        article["sections"][1]["paragraphs"][0] = article["sections"][0]["paragraphs"][0]
+        issues = seo.deterministic_review("링크모음 사이트 비교 기준", article, seo.render(article), [])
+        self.assertIn("repetitive paragraphs within article", issues)
+
+    def test_repeated_headings_within_one_article_are_rejected(self):
+        article = self.sample_article()
+        article["sections"][1]["heading"] = article["sections"][0]["heading"]
+        issues = seo.deterministic_review("링크모음 사이트 비교 기준", article, seo.render(article), [])
+        self.assertIn("repetitive section or FAQ headings", issues)
 
     def test_unsafe_bulk_cookie_deletion_advice_is_rejected(self):
         article = self.sample_article()
@@ -127,12 +140,25 @@ class SEOTests(unittest.TestCase):
         issues = seo.deterministic_review("멀티검색 링크모음 비교 방법", article, seo.render(article), [])
         self.assertNotIn("unrelated multi-search feature drift", issues)
 
+    def unique_paragraphs(self):
+        return [
+                "표시된 도메인의 철자를 먼저 읽고 사이트 운영자가 공지한 주소와 대조해 피싱 징후를 구분합니다.",
+                "검색 결과가 원하는 분야를 제대로 반환하는지 다른 표현을 입력해 보고 선택 기준을 기록합니다.",
+                "사이트 목록의 분류 체계가 실제 서비스와 일치하는지 여러 항목을 열어 직접 확인합니다.",
+                "광고 표시와 일반 링크가 구별되는지 살피고 예상하지 못한 결제 페이지에서는 중단합니다.",
+                "모바일 환경에서 메뉴 탐색이 가능한지 확인하되 기기별 배치 차이를 고려합니다.",
+                "개인정보 입력을 요구하는 페이지에서는 요청 목적과 운영 정책을 먼저 검토합니다.",
+                "접속 오류가 발생하면 현재 도메인과 이전에 저장한 즐겨찾기 주소의 차이를 비교합니다.",
+                "유사한 이름의 서비스를 혼동하지 않도록 운영 주체와 공식 안내 채널을 확인합니다."
+        ]
+
     def sample_article(self):
         return {"title": "링크모음 사이트 비교 기준",
                 "description": "링크모음 사이트를 비교하는 구체적인 기준을 설명하고 안전한 주소 확인 단계와 실수하기 쉬운 점검 방법을 정리한 이용 안내입니다.",
                 "introduction": "연결 주소의 정확성과 분류 기준을 확인하는 방법을 설명합니다. " * 8,
-                "sections": [{"heading": f"확인 단계 {i}", "paragraphs": ["표시된 도메인을 공식 운영자 안내와 직접 대조합니다. " * 5,
-                              "이동하기 전에 입력 요구와 목적지를 신중하게 살펴봅니다. " * 5]} for i in range(4)],
+                "sections": [{"heading": f"확인 단계 {i}", "paragraphs": [
+                    self.unique_paragraphs()[i * 2] * 3,
+                    self.unique_paragraphs()[i * 2 + 1] * 3]} for i in range(4)],
                 "faq": [{"question": f"질문 {i}", "answer": "서비스가 안내하는 공식 주소와 운영 정보를 확인하고 이상한 경고가 나타나면 진행을 멈추고 고객센터 안내를 확인하세요."} for i in range(3)]}
 
 
