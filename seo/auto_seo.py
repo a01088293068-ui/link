@@ -270,6 +270,23 @@ def deterministic_review(topic, article, text, titles):
         reasons.append("FAQ answers lack actionable detail")
     if not any(term in article["title"] for term in re.findall(r"[가-힣]{2,}", topic)[:3]):
         reasons.append("topic is not represented in title")
+    # Reject templated articles that repeat near-identical paragraphs or headings
+    # within a single draft. Cross-post overlap alone cannot catch this.
+    headings = [str(section.get("heading", "")).strip() for section in article["sections"] if isinstance(section, dict)]
+    questions = [str(faq.get("question", "")).strip() for faq in article["faq"] if isinstance(faq, dict)]
+    if any(not heading for heading in headings + questions) or any(
+        similarity(left, right) > .82
+        for items in (headings, questions)
+        for index, left in enumerate(items)
+        for right in items[index + 1:]
+    ):
+        reasons.append("repetitive section or FAQ headings")
+    paragraphs = [paragraph.strip() for section in article["sections"] if isinstance(section, dict)
+                  for paragraph in section.get("paragraphs", []) if isinstance(paragraph, str)]
+    if any(similarity(left, right) > .84
+           for index, left in enumerate(paragraphs)
+           for right in paragraphs[index + 1:]):
+        reasons.append("repetitive paragraphs within article")
     if any(similarity(article["title"], t) > .72 for t in titles):
         reasons.append("overlaps an existing title")
     if any(x in text for x in ("100% 보장", "무조건 1위", "검증된 업체", "절대 안전", "```", "http://")):
