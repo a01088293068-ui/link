@@ -1,0 +1,27 @@
+name: LinkWiki directory link freshness audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 4 * * 2,5'
+
+permissions:
+  contents: read
+
+jobs:
+  directory-link-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit registered external links
+        run: python3 seo/check_directory_links.py --output directory-reachability.json
+      - name: Upload private diagnostic report
+        uses: actions/upload-artifact@v4
+        with:
+          name: linkwiki-directory-reachability
+          path: directory-reachability.json
+          retention-days: 30
