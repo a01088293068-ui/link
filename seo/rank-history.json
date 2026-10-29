@@ -31,6 +31,36 @@
           "url": null
         }
       }
+    },
+    {
+      "date": "2026-10-29",
+      "observed_at": "2026-10-29T05:40:49+00:00",
+      "results": {
+        "링크모음": {
+          "position": null,
+          "url": null
+        },
+        "주소모음": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "링크모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "주소모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음 추천": {
+          "position": null,
+          "url": null
+        }
+      }
     }
   ]
 }
