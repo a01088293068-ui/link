@@ -160,6 +160,21 @@ def excerpt(body):
     return (text[:140].rstrip() + '…') if len(text) > 140 else text
 
 
+def stable_post_lastmod(path):
+    """Use a date embedded in an article filename, never checkout mtime.
+
+    GitHub Actions checkout updates filesystem mtimes even when content is unchanged.
+    Undated posts have no reliable modification date, so omit lastmod.
+    """
+    match = re.search(r"(?:^|[-_])(20\\d{6})(?:[-_.]|$)", path.stem)
+    if not match:
+        return None
+    try:
+        return datetime.strptime(match.group(1), "%Y%m%d").date().isoformat()
+    except ValueError:
+        return None
+
+
 def slug_for(path):
     # Existing GitHub filenames already provide stable, ASCII URLs.
     return re.sub(r'[^a-zA-Z0-9_-]', '-', path.stem).strip('-')[:90] or "article"
@@ -294,7 +309,7 @@ def build():
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(document(title, desc, canonical, article, header, footer), encoding="utf-8")
         posts.append({"title": title, "description": desc, "url": url, "date": display_date,
-                      "modified": datetime.fromtimestamp(source.stat().st_mtime, tz=timezone.utc).date().isoformat()})
+                      "modified": stable_post_lastmod(source)})
 
     def cards(entries):
         if not entries:
@@ -382,14 +397,20 @@ def build():
         if element.text:
             element.text = public_url(element.text)
     existing = {el.text for el in urlset.findall(f"{{{ns}}}url/{{{ns}}}loc")}
-    for entry in [{"url": "/categories/", "modified": datetime.now(timezone.utc).date().isoformat()},
-                  {"url": "/blog/", "modified": datetime.now(timezone.utc).date().isoformat()}] + posts:
+    # Hub content changes when its source changes, not on every CI deployment.
+    # Without a versioned source modification date, omit lastmod instead of
+    # inventing the build date. The blog index can use the latest dated post.
+    dated_posts = [entry["modified"] for entry in posts if entry["modified"]]
+    hub_entries = [{"url": "/categories/", "modified": None},
+                   {"url": "/blog/", "modified": max(dated_posts) if dated_posts else None}]
+    for entry in hub_entries + posts:
         loc = SITE + entry["url"]
         if loc in existing:
             continue
         element = ET.SubElement(urlset, f"{{{ns}}}url")
         ET.SubElement(element, f"{{{ns}}}loc").text = loc
-        ET.SubElement(element, f"{{{ns}}}lastmod").text = entry["modified"]
+        if entry["modified"]:
+            ET.SubElement(element, f"{{{ns}}}lastmod").text = entry["modified"]
         existing.add(loc)
     tree.write(OUT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     (OUT / "sitemap-v2.xml").write_bytes((OUT / "sitemap.xml").read_bytes())
