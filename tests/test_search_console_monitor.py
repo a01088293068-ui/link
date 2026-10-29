@@ -37,6 +37,23 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('주소모음 | 100 | 3 | 3.0% | 9.8', result)
 
 
+    def test_no_query_rows_with_page_rows_is_not_zero_impressions(self):
+        pages = [{'keys': ['https://linkwiki.info/'], 'impressions': 4, 'clicks': 0, 'position': 31}]
+        report = monitor.format_report([], pages, '2026-09-01', '2026-09-28', 'sc-domain:linkwiki.info')
+        self.assertIn('검색어 행은 0개지만 페이지별 데이터가 있습니다', report)
+        self.assertIn('노출 0회로 해석하지 마세요', report)
+
+    def test_weekly_comparison_requires_fourteen_dates(self):
+        days = [{'keys': [f'2026-09-{day:02}'], 'impressions': day, 'clicks': 1, 'position': 20}
+                for day in range(1, 15)]
+        report = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+                                       'sc-domain:linkwiki.info', days)
+        self.assertIn('최근 7일: 노출 77회 · 클릭 7회', report)
+        self.assertIn('직전 7일: 노출 28회 · 클릭 7회', report)
+        short = monitor.format_report([], [], '2026-09-01', '2026-09-28',
+                                      'sc-domain:linkwiki.info', days[:13])
+        self.assertNotIn('최근 7일과 직전 7일 비교', short)
+
     def test_date_aggregates_when_queries_hidden(self):
         days = [
             {'keys': ['2026-09-27'], 'impressions': 12, 'clicks': 1, 'position': 23.2},
