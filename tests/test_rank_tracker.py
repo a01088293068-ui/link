@@ -50,6 +50,16 @@ class RankTrackerTests(unittest.TestCase):
                    {"link": "https://linkwiki.info.evil.example/"}]
         self.assertIsNone(rank_tracker.find_result(results)["position"])
 
+    def test_partial_provider_results_are_not_a_complete_rank_check(self):
+        observations = {'주소모음': {'position': None, 'url': None},
+                        '링크모음': {'position': None, 'url': None},
+                        '웹툰 링크모음': {'position': None, 'url': None}}
+        counts = {'주소모음': 9, '링크모음': 30, '웹툰 링크모음': 10}
+        coverage = rank_tracker.coverage_for(observations, counts)
+        self.assertEqual(coverage['주소모음'], 'partial')
+        self.assertEqual(coverage['링크모음'], 'complete')
+        self.assertEqual(coverage['웹툰 링크모음'], 'complete')
+
     def test_missing_is_not_a_false_rank(self):
         result = rank_tracker.find_result([])
         self.assertEqual(result, {"position": None, "url": None})
