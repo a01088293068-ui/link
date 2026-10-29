@@ -37,12 +37,12 @@
       "public_url": "",
       "submission_status": "not_submitted",
       "audit_status": "unverified",
-      "last_checked": "",
+      "last_checked": "2026-10-29",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "홈페이지 등록 양식 확인. 공개 링크 품질 미확인"
+      "notes": "2026-10-29 라이브 사이트 등록폼 확인, 인터넷·웹 카테고리. 사이트명·설명·URL 입력 완료, 이메일 입력 및 최종 제출 대기. 사이트는 즉시 공개 dofollow를 표방하나 실제 링크 미검증."
     },
     {
       "id": "86bbbf38da1b7b64",
@@ -177,12 +177,12 @@
       "public_url": "",
       "submission_status": "not_submitted",
       "audit_status": "unverified",
-      "last_checked": "",
+      "last_checked": "2026-10-29",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "공식 사이트 무료 등록 안내. 공개 링크 품질 미확인"
+      "notes": "2026-10-29 실등록 양식 확인: 미국 지역 업종·주 선택 중심, 한국어 웹 디렉터리에 맞는 카테고리 부재. 제출하지 않음."
     },
     {
       "id": "f5fe9b590052a256",
@@ -231,14 +231,14 @@
       "platform": "SoMuch",
       "submission_url": "https://www.somuch.com/submit-links/",
       "public_url": "",
-      "submission_status": "not_submitted",
+      "submission_status": "unknown",
       "audit_status": "unverified",
       "last_checked": "2026-10-29",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "2026-10-29 리쑤화 이메일로 무료 등록 폼 작성 완료. Internet > Link Directories 분류; 최종 Submit 버튼은 Google reCAPTCHA가 로드되지 않아 disabled, 제출 미완료. 이메일 인증 필요, 무료 심사 수주~수개월 가능. 중복 제출 전 상태 확인."
+      "notes": "2026-10-29 리쑤화 이메일로 무료 등록 폼 작성 완료. Internet > Link Directories 분류; 최종 Submit 버튼은 Google reCAPTCHA가 로드되지 않아 disabled, 제출 미완료. 이메일 인증 필요, 무료 심사 수주~수개월 가능. 중복 제출 전 상태 확인. 2026-10-29 사용자 버튼 클릭 가능성 보고, 현재 페이지가 최초 Submission Guidelines 안내 화면으로 돌아왔으나 성공 확인 메시지/접수번호 없음. 접수 여부 불명, 중복 제출 금지."
     },
     {
       "id": "4a2da8d0ed594706",
@@ -261,12 +261,12 @@
       "public_url": "",
       "submission_status": "not_submitted",
       "audit_status": "unverified",
-      "last_checked": "",
+      "last_checked": "2026-10-29",
       "http_status": null,
       "link_found": false,
       "rel": [],
       "noindex": null,
-      "notes": "수동 심사형 무료 등록 안내. API 미확인"
+      "notes": "2026-10-29 홈과 Add Listing/Submit Link 탐색. 무료 등록 문구·Web Directories 카테고리는 있으나 등록 페이지에서 실제 양식이 표시되지 않음. 제출하지 않음."
     },
     {
       "id": "ceeff64a32ddc26b",
