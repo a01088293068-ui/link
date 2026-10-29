@@ -47,6 +47,21 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('/urlInspection/index:inspect', request.full_url)
         self.assertEqual(request.get_header('Authorization'), 'Bearer token')
 
+    def test_inspection_targets_include_real_google_url_and_html_canonical(self):
+        rows = [
+            {'keys': ['https://linkwiki.info/guides/choose-directory'], 'impressions': 8},
+            {'keys': ['https://other.example/private'], 'impressions': 50},
+            {'keys': ['https://linkwiki.info/categories/sports'], 'impressions': 5},
+        ]
+        targets = monitor.inspection_targets(rows)
+        self.assertIn('https://linkwiki.info/guides/choose-directory', targets)
+        self.assertIn('https://linkwiki.info/guides/choose-directory.html', targets)
+        self.assertIn('https://linkwiki.info/categories/sports', targets)
+        self.assertIn('https://linkwiki.info/categories/sports.html', targets)
+        self.assertNotIn('https://other.example/private', targets)
+        self.assertIn('https://linkwiki.info/directory.html', targets)
+        self.assertLessEqual(len(targets), 15)
+
     def test_inspection_error_is_not_reported_as_not_indexed(self):
         report = monitor.format_index_inspection([], 'HTTPError (inspect API unavailable or restricted)')
         self.assertIn('색인 조회 일부 또는 전체 실패', report)
