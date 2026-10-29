@@ -102,14 +102,22 @@ def main():
                               "gl=kr, hl=ko; returned_results records actual unique rows")
     day = now[:10]
     history["samples"] = [x for x in history["samples"] if x["date"] != day]
+    # A missing domain in a truncated provider response is not evidence that
+    # the domain lies outside the requested top-N range.
+    coverage = {query: ("complete" if returned_results[query] >= query_depth(query)
+                         else "partial") for query in observations}
     history["samples"].append({"date": day, "observed_at": now, "results": observations,
-                               "returned_results": returned_results})
+                               "returned_results": returned_results,
+                               "sample_coverage": coverage})
     history["samples"] = sorted(history["samples"], key=lambda x: x["date"])[-90:]
     HISTORY.parent.mkdir(parents=True, exist_ok=True)
     HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for keyword, result in observations.items():
         pos = result["position"]
-        print(f"{keyword}: {pos if pos is not None else 'not found'} (checked {returned_results[keyword]} results)")
+        display = str(pos) if pos is not None else (
+            "not found in complete sample" if coverage[keyword] == "complete"
+            else "not found in partial sample; full depth unknown")
+        print(f"{keyword}: {display} (checked {returned_results[keyword]} / {query_depth(keyword)} requested results)")
     print("Positions are one non-personalized API sample, not universal Google rankings.")
 
 
