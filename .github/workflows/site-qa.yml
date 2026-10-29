@@ -6,6 +6,10 @@ on:
     paths:
       - 'index.html'
       - 'directory.html'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'assets/verified-directory.json'
+      - 'assets/directory.js'
       - 'about.html'
       - 'privacy.html'
       - 'build.py'
@@ -20,6 +24,10 @@ on:
     paths:
       - 'index.html'
       - 'directory.html'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'assets/verified-directory.json'
+      - 'assets/directory.js'
       - 'about.html'
       - 'privacy.html'
       - 'build.py'
