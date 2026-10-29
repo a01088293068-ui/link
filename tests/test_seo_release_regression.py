@@ -30,7 +30,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
     def test_category_breadcrumb_schema_uses_real_navigation_hierarchy(self):
         source = '<html><head><title>분야</title></head><body><h1>스포츠 링크모음</h1></body></html>'
         result = add_breadcrumb_data(source, '/categories/sports')
-        block = re.search(r'<script type="application/ld\\+json">(.*?)</script>', result)
+        block = re.search(r'<script type="application/ld\+json">(.*?)</script>', result)
         self.assertIsNotNone(block)
         schema = json.loads(block.group(1))
         self.assertEqual(schema['@type'], 'BreadcrumbList')
