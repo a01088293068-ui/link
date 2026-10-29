@@ -423,6 +423,34 @@
       "link_found": false,
       "rel": [],
       "noindex": null
+    },
+    {
+      "id": "businessseek_20261029",
+      "platform": "BusinessSeek",
+      "submission_url": "https://www.businessseek.biz/link_submit.php",
+      "notes": "2026-10-29 무료 폼 확인: 영어 사이트만 등록 가능, 검토 최대 4개월. linkwiki.info는 한국어 중심이므로 제출 부적합/보류.",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-29",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null
+    },
+    {
+      "id": "prkatalog_20261029",
+      "platform": "PRKatalog",
+      "submission_url": "https://prkatalog.info/submit-site",
+      "notes": "2026-10-29 무료 dofollow 등록 가능 확인. 그러나 명시적 언어 조건은 English or Polish only(영어/폴란드어 버전 URL 요구). 한국어 중심 linkwiki.info는 제출 제외.",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-29",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null
     }
   ]
 }
