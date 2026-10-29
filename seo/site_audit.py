@@ -85,7 +85,7 @@ def audit_site(dist):
             titles_seen[title] = relative
         # Validate all structured-data scripts and the canonical breadcrumb trail.
         for script in re.findall(
-                r'<script\\b[^>]*\\btype="application/ld\\+json"[^>]*>(.*?)</script>',
+                r'<script\b[^>]*\btype="application/ld\+json"[^>]*>(.*?)</script>',
                 content, re.I | re.S):
             try:
                 data = json.loads(script)
