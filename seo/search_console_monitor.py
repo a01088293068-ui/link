@@ -134,6 +134,24 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
                      f"{int(row.get('clicks', 0))} | {row.get('position', 0):.1f} |")
     if not page_rows:
         lines.append('| 데이터 없음 | - | - | - |')
+    # Page-level improvements still work when Google anonymizes every query.
+    page_opportunities = sorted(
+        (row for row in page_rows
+         if int(row.get('impressions', 0)) >= 3
+         and 7 <= float(row.get('position', 0)) <= 50),
+        key=lambda row: (-int(row.get('impressions', 0)), float(row.get('position', 99)))
+    )[:15]
+    lines.extend(['', '## 노출 페이지 우선 개선 후보 (검색어 비공개 시에도 사용)', '',
+                  '- 검색어 행이 없어도 실제 노출 페이지의 평균 순위와 노출수를 기준으로 판단합니다.',
+                  '- 평균 순위 7~50위, 노출 3회 이상인 페이지를 노출수 순으로 정리합니다.',
+                  '| 페이지 URL | 노출 | 클릭 | 평균 순위 |',
+                  '|---|---:|---:|---:|'])
+    for row in page_opportunities:
+        page = str((row.get('keys') or [''])[0]).replace('|', '%7C')
+        lines.append(f"| {page} | {int(row.get('impressions', 0))} | "
+                     f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
+    if not page_opportunities:
+        lines.append('| 조건에 맞는 페이지 없음 | - | - | - |')
     if daily:
         lines.extend(['', '## 최근 날짜별 추세', '',
                       '| 날짜 | 노출 | 클릭 | 평균 순위 |',
