@@ -61,6 +61,24 @@ class SEOTests(unittest.TestCase):
         for subject in ('커뮤니티', '한인', 'AI 도구', '스포츠', '웹툰', 'OTT', '포털'):
             self.assertTrue(any(subject in topic for topic in seeds), subject)
 
+    def test_existing_category_titles_block_cannibalizing_topics(self):
+        with TemporaryDirectory() as folder:
+            directory = Path(folder)
+            (directory / "guides").mkdir()
+            (directory / "categories").mkdir()
+            (directory / "categories/ai.html").write_text(
+                '<html><head><title>AI 도구 사이트 모음 | 링크위키</title></head></html>',
+                encoding="utf-8")
+            (directory / "directory.html").write_text(
+                '<html><head><title>전체 링크모음 검색 | 링크위키</title></head></html>',
+                encoding="utf-8")
+            with patch.object(seo, "ROOT", directory):
+                titles = seo.static_guide_titles()
+                self.assertIn("AI 도구 사이트 모음", titles)
+                self.assertIn("전체 링크모음 검색", titles)
+                self.assertIsNone(seo.select_topic("AI 도구 사이트 모음",
+                    {"related": []}, [], titles))
+
     def test_topic_selection_skips_duplicate(self):
         found = seo.select_topic("주소모음 사이트 선택 기준",
             {"related": ["사이트 접속 오류 해결 방법", "주소모음 사이트 선택 기준"]},
