@@ -17,16 +17,39 @@ KEYWORDS = ("링크모음", "주소모음", "사이트모음",
             "링크모음 사이트", "주소모음 사이트", "사이트모음 추천")
 API_URL = "https://google.serper.dev/search"
 REQUESTED_RESULTS = 30
+PAGE_SIZE = 10
 
 
-def search(query, key):
-    body = json.dumps({"q": query, "gl": "kr", "hl": "ko", "num": REQUESTED_RESULTS}).encode()
+def search(query, key, page=1):
+    body = json.dumps({"q": query, "gl": "kr", "hl": "ko", "num": PAGE_SIZE, "page": page}).encode()
     request = Request(API_URL, body, {
         "X-API-KEY": key, "Content-Type": "application/json",
         "Accept": "application/json", "User-Agent": "LinkWiki-RankMonitor/1.0",
     }, method="POST")
     with urlopen(request, timeout=25) as response:
         return json.load(response).get("organic", [])
+
+
+def search_top_results(query, key):
+    """Gather unique organic URLs over up to three pages.
+
+    Serper may return only 10 organic rows even when num=30 is requested.
+    Stop if pagination has ended or the provider repeats a prior page.
+    """
+    unique = []
+    seen = set()
+    for page in range(1, REQUESTED_RESULTS // PAGE_SIZE + 1):
+        batch = search(query, key, page=page)
+        fresh = 0
+        for result in batch:
+            url = str(result.get("link", "")).strip()
+            if url and url not in seen:
+                seen.add(url)
+                unique.append(result)
+                fresh += 1
+        if len(batch) < PAGE_SIZE or fresh == 0:
+            break
+    return unique[:REQUESTED_RESULTS]
 
 
 def find_result(results, domain=TARGET):
@@ -51,7 +74,7 @@ def main():
         raise SystemExit("SERPER_API_KEY is missing")
     returned_results = {}
     def fetch(query):
-        results = search(query, key)
+        results = search_top_results(query, key)
         returned_results[query] = len(results)
         return results
     observations = collect(fetch)
@@ -60,7 +83,7 @@ def main():
         history = json.loads(HISTORY.read_text(encoding="utf-8"))
     else:
         history = {"schema": 1, "measurement": "Serper requested top 30, gl=kr, hl=ko", "samples": []}
-    history["measurement"] = "Serper requested top 30, gl=kr, hl=ko; returned_results records actual response size"
+    history["measurement"] = "Serper paginated top 30 (up to 3 pages), gl=kr, hl=ko; returned_results records unique rows"
     day = now[:10]
     history["samples"] = [x for x in history["samples"] if x["date"] != day]
     history["samples"].append({"date": day, "observed_at": now, "results": observations,
