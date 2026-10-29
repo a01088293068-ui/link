@@ -74,6 +74,24 @@ class SiteAuditTests(unittest.TestCase):
                 '</head></html>', encoding="utf-8")
             self.assertTrue(any("invalid JSON-LD" in item for item in audit_site(root)))
 
+    def test_audit_catches_directory_cards_out_of_sync(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            (root / "blog").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(json.dumps([
+                {"name": "예시", "category": "검색", "description": "예시", "url": "https://example.com/"}
+            ], ensure_ascii=False), encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "directory.html").write_text(
+                '<article class="v6-card"><a href="https://wrong.example/">방문</a></article>',
+                encoding="utf-8")
+            self.assertTrue(any("directory card URL" in item for item in audit_site(root)))
+
     def test_existing_generated_site_is_consistent(self):
         root = Path(__file__).resolve().parents[1] / "dist"
         if root.is_dir():
