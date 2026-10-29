@@ -266,7 +266,7 @@ def add_breadcrumb_data(html, public_path):
         return html
     if 'type="application/ld+json"' in html:
         return html
-    heading = re.search(r'<h1\\b[^>]*>(.*?)</h1>', html, re.S | re.I)
+    heading = re.search(r'<h1\b[^>]*>(.*?)</h1>', html, re.S | re.I)
     if not heading:
         raise RuntimeError(f"Breadcrumb page missing heading: {public_path}")
     page_name = unescape(re.sub(r'<[^>]+>', '', heading.group(1))).strip()
