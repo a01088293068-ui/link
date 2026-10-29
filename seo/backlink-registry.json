@@ -381,6 +381,20 @@
       "rel": [],
       "noindex": null,
       "notes": "무료 성인 분야 링크 등록 가능 안내 확인. 제출 전 별도 무료 계정 필요. 중복 등록 금지."
+    },
+    {
+      "id": "openwebside_757213b7_20261029",
+      "platform": "OpenWebSide",
+      "submission_url": "https://openwebside.com/my/products?submitted=757213b7-1ce9-41ed-9eb2-6bae9af82688",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-29",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "2026-10-29 리쑤화 계정으로 링크위키 등록 접수 #757213b7-1ce9-41ed-9eb2-6bae9af82688. 소유권 인증 완료, 관리자 심사 대기 1~3영업일 안내. GitHub index.html ows-verify 태그 갱신 (commit a029e6d). 공개 URL 및 HTML 링크는 아직 미확인. 중복 제출 금지."
     }
   ]
 }
