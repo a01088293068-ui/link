@@ -134,7 +134,11 @@ class SEOTests(unittest.TestCase):
                 self.unique_paragraphs()[i * 2 + 1] * 3]} for i in range(4)],
             "faq": [{"question": f"질문 {i}", "answer": "운영 주체와 이용 조건을 직접 확인하고 연결 주소가 공식적으로 안내된 주소인지 비교해 보세요. 불확실하면 접속을 멈추세요."} for i in range(3)]}
         draft = seo.render(article)
-        self.assertIn("/directory.html", draft)
+        self.assertIn("[링크위키 사이트 목록](/directory)", draft)
+        self.assertIn("[공식 주소 확인 방법](/guides/address-check)", draft)
+        self.assertIn("[안전한 사이트 이용](/guides/security)", draft)
+        self.assertNotIn("/directory.html", draft)
+        self.assertNotIn("/guides/address-check.html", draft)
         self.assertIn("[링크위키 주소모음·링크모음 홈](/)", draft)
         self.assertFalse(seo.deterministic_review("링크모음 사이트 비교 기준", article, draft, []))
         self.assertTrue(seo.deterministic_review("링크모음 사이트 비교 기준", article, draft, [article["title"]]))
