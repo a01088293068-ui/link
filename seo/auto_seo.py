@@ -273,9 +273,9 @@ def render(article, related=(), category_links=()):
                 lines.append(f"- [{label}]({url})")
         lines.append("")
     lines += ["## 관련 정보", "", "- [링크위키 주소모음·링크모음 홈](/)",
-              "- [링크위키 사이트 목록](/directory.html)",
-              "- [공식 주소 확인 방법](/guides/address-check.html)",
-              "- [안전한 사이트 이용](/guides/security.html)", "",
+              "- [링크위키 사이트 목록](/directory)",
+              "- [공식 주소 확인 방법](/guides/address-check)",
+              "- [안전한 사이트 이용](/guides/security)", "",
               "별도로 운영되는 [링크위키 본 서비스](https://linkwiki01.com/)를 이용할 때도 각 사이트의 주소와 이용 조건을 확인하세요.", ""]
     return "\n".join(lines)
 
