@@ -187,6 +187,124 @@
         "링크 접속 안됨": "complete",
         "사이트모음 추천 사이트": "complete"
       }
+    },
+    {
+      "date": "2026-10-31",
+      "observed_at": "2026-10-31T05:36:28+00:00",
+      "results": {
+        "링크모음": {
+          "position": null,
+          "url": null
+        },
+        "주소모음": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "링크모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "주소모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음 추천": {
+          "position": null,
+          "url": null
+        },
+        "커뮤니티 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "웹툰 링크모음": {
+          "position": null,
+          "url": null
+        },
+        "AI 도구 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "스포츠 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "영상 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "해외 한인 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "주소모음 사이트 추천": {
+          "position": null,
+          "url": null
+        },
+        "링크모음 사이트 추천": {
+          "position": null,
+          "url": null
+        },
+        "분야별 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "사이트 주소 확인 방법": {
+          "position": null,
+          "url": null
+        },
+        "링크 접속 안됨": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음 추천 사이트": {
+          "position": null,
+          "url": null
+        }
+      },
+      "returned_results": {
+        "링크모음": 29,
+        "주소모음": 30,
+        "사이트모음": 30,
+        "링크모음 사이트": 30,
+        "주소모음 사이트": 30,
+        "사이트모음 추천": 9,
+        "커뮤니티 사이트모음": 10,
+        "웹툰 링크모음": 10,
+        "AI 도구 사이트모음": 10,
+        "스포츠 사이트모음": 10,
+        "영상 사이트모음": 10,
+        "해외 한인 사이트모음": 10,
+        "주소모음 사이트 추천": 10,
+        "링크모음 사이트 추천": 10,
+        "분야별 사이트모음": 10,
+        "사이트 주소 확인 방법": 10,
+        "링크 접속 안됨": 10,
+        "사이트모음 추천 사이트": 10
+      },
+      "sample_coverage": {
+        "링크모음": "partial",
+        "주소모음": "complete",
+        "사이트모음": "complete",
+        "링크모음 사이트": "complete",
+        "주소모음 사이트": "complete",
+        "사이트모음 추천": "partial",
+        "커뮤니티 사이트모음": "complete",
+        "웹툰 링크모음": "complete",
+        "AI 도구 사이트모음": "complete",
+        "스포츠 사이트모음": "complete",
+        "영상 사이트모음": "complete",
+        "해외 한인 사이트모음": "complete",
+        "주소모음 사이트 추천": "complete",
+        "링크모음 사이트 추천": "complete",
+        "분야별 사이트모음": "complete",
+        "사이트 주소 확인 방법": "complete",
+        "링크 접속 안됨": "complete",
+        "사이트모음 추천 사이트": "complete"
+      }
     }
   ]
 }
