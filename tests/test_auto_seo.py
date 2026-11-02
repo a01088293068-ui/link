@@ -11,6 +11,20 @@ spec.loader.exec_module(seo)
 
 
 class SEOTests(unittest.TestCase):
+    def test_directory_context_uses_real_category_counts(self):
+        context = seo.directory_context()
+        self.assertEqual(context["total_sites"], sum(context["categories"].values()))
+        self.assertEqual(context["total_sites"], 97)
+        self.assertIn("검색·포털", context["categories"])
+        self.assertNotIn("금융·공공기관", context["categories"])
+
+    def test_generate_passes_verified_taxonomy_to_writer(self):
+        with patch.object(seo, "model_json", return_value={"title": "sample"}) as model:
+            seo.generate("사이트모음 비교 기준", {"organic": []}, [])
+        payload = model.call_args.args[1]
+        self.assertEqual(payload["verified_directory"], seo.directory_context())
+        self.assertIn("검색·포털", payload["verified_directory"]["categories"])
+
     def test_gemini_request_and_json(self):
         with patch.dict("os.environ", {"GEMINI_API_KEY": "test-key"}), patch.object(seo, "api_json", return_value={"candidates": [{"content": {"parts": [{"text": '{"pass": true}'}]}}]}) as request:
             self.assertEqual(seo.gemini_json("editor", {"title": "test"}), {"pass": True})
