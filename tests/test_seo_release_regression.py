@@ -47,6 +47,22 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('이 분야의 이용 가이드', html)
         self.assertIn('/blog/seo-20261030-26325b73af/', html)
 
+    def test_directory_landing_has_all_eight_crawlable_categories_with_counts(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        counts = {}
+        for record in records:
+            counts[record["category"]] = counts.get(record["category"], 0) + 1
+        html = (root / "dist/directory.html").read_text(encoding="utf-8")
+        nav = re.search(r'<nav aria-label="분야별 사이트모음 바로가기".*?</nav>',
+                        html, re.S)
+        self.assertIsNotNone(nav)
+        from build import CATEGORY_LANDING
+        for category, slug, _, _ in CATEGORY_LANDING:
+            self.assertIn(f'href="/categories/{slug}"', nav.group())
+            self.assertIn(f'{category} {counts[category]}개', nav.group())
+        self.assertEqual(nav.group().count('href="/categories/'), len(CATEGORY_LANDING) + 1)
+
     def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
         self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
         self.assertIsNone(stable_post_lastmod(Path('address-directory-safety-guide.md')))
