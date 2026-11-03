@@ -256,6 +256,31 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
     return '\n'.join(lines)
 
 
+
+def collect_index_inspections(token, property_url, urls, inspector=None):
+    """Keep checking after URL-specific failures, stop on auth/quota failures.
+
+    Errors are reported as unknown inspection results, never as not indexed.
+    """
+    inspector = inspector or inspect_index
+    results = []
+    errors = []
+    for url in urls:
+        try:
+            results.append(inspector(token, property_url, url))
+        except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as error:
+            status = error.code if isinstance(error, HTTPError) else None
+            issue = f"{url}: {type(error).__name__}"
+            if status is not None:
+                issue += f" (HTTP {status})"
+            errors.append(issue)
+            # Authentication, quota, and backend outages commonly affect the
+            # whole property. Avoid exhausting further API calls in those cases.
+            if status in (401, 403, 429, 500, 502, 503, 504):
+                break
+    return results, "; ".join(errors)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--property', default=os.environ.get('GSC_PROPERTY', 'sc-domain:linkwiki.info'))
@@ -272,16 +297,8 @@ def main():
     dates = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['date'])
     query_pages = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['query', 'page'], limit=1000)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    inspections = []
-    inspection_error = ''
-    for url in inspection_targets(pages):
-        try:
-            inspections.append(inspect_index(token, args.property, url))
-        except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as error:
-            # An unavailable Inspection API must not erase the working
-            # performance report or disguise data as "not indexed".
-            inspection_error = type(error).__name__ + ' (inspect API unavailable or restricted)'
-            break
+    inspections, inspection_error = collect_index_inspections(
+        token, args.property, inspection_targets(pages))
     report = format_report(keywords, pages, start, end, args.property, dates, query_pages)
     report += format_index_inspection(inspections, inspection_error)
     args.output.write_text(report, encoding='utf-8')
