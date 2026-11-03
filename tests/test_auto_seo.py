@@ -17,6 +17,17 @@ class SEOTests(unittest.TestCase):
         self.assertEqual(context["total_sites"], 97)
         self.assertIn("검색·포털", context["categories"])
         self.assertNotIn("금융·공공기관", context["categories"])
+        self.assertIn("커뮤니티", context["listed_examples_by_category"])
+        self.assertGreater(len(context["listed_examples_by_category"]["커뮤니티"]), 0)
+        self.assertTrue(all(
+            "name" in entry and "description" in entry
+            for examples in context["listed_examples_by_category"].values()
+            for entry in examples
+        ))
+        self.assertTrue(all(
+            len(examples) <= 3
+            for examples in context["listed_examples_by_category"].values()
+        ))
 
     def test_generate_passes_verified_taxonomy_to_writer(self):
         with patch.object(seo, "model_json", return_value={"title": "sample"}) as model:
