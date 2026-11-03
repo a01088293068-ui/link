@@ -58,6 +58,15 @@ INSPECT_URLS = (
 )
 
 
+
+def recent_published_post_urls(limit=3):
+    """Inspect recent generated articles even before they earn impressions."""
+    posts = ROOT / "content"
+    return [
+        "https://linkwiki.info/blog/" + path.stem + "/"
+        for path in sorted(posts.glob("seo-*.md"), reverse=True)[:limit]
+    ]
+
 def inspection_targets(page_rows, limit=15):
     """Prioritize deployed extensionless canonicals and inspect observed variants.
 
@@ -68,6 +77,10 @@ def inspection_targets(page_rows, limit=15):
     from urllib.parse import urlsplit
     urls = list(INSPECT_URLS)
     seen = set(urls)
+    for url in recent_published_post_urls():
+        if url not in seen and len(urls) < limit:
+            urls.append(url)
+            seen.add(url)
     for row in sorted(page_rows, key=lambda r: -int(r.get('impressions', 0))):
         observed = str((row.get('keys') or [''])[0]).strip()
         parts = urlsplit(observed)
