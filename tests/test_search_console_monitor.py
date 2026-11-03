@@ -135,6 +135,23 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('https://linkwiki.info/', targets)
         self.assertLessEqual(len(targets), 15)
 
+    def test_index_report_prioritizes_unknown_and_crawled_not_indexed_urls(self):
+        inspected = [
+            {"url": "https://linkwiki.info/", "verdict": "PASS",
+             "coverage": "Submitted and indexed"},
+            {"url": "https://linkwiki.info/directory", "verdict": "NEUTRAL",
+             "coverage": "Google에는 아직 알려지지 않은 URL입니다."},
+            {"url": "https://linkwiki.info/categories/ai", "verdict": "NEUTRAL",
+             "coverage": "크롤링됨 - 현재 색인이 생성되지 않음"},
+        ]
+        output = monitor.format_index_inspection(inspected)
+        self.assertIn("검사한 URL: 3개 · 색인 PASS: 1개", output)
+        self.assertIn("Google에 알려지지 않음: 1개", output)
+        self.assertIn("크롤링 후 미색인: 1개", output)
+        self.assertLess(output.index("https://linkwiki.info/directory —"),
+                        output.index("https://linkwiki.info/categories/ai —"))
+        self.assertIn("사이트 전체의 색인 수가 아닙니다", output)
+
     def test_inspection_error_is_not_reported_as_not_indexed(self):
         report = monitor.format_index_inspection([], 'HTTPError (inspect API unavailable or restricted)')
         self.assertIn('색인 조회 일부 또는 전체 실패', report)
