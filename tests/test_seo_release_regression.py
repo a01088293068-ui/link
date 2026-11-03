@@ -10,6 +10,23 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_latest_published_article_is_in_built_sitemap_with_matching_canonical(self):
+        root = Path(__file__).resolve().parents[1]
+        posts = sorted((root / "content").glob("seo-*.md"))
+        self.assertTrue(posts, "No published SEO article available for smoke test")
+        slug = posts[-1].stem
+        public_path = f"/blog/{slug}/"
+        url = "https://linkwiki.info" + public_path
+        output = root / "dist"
+        sitemap = (output / "sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn(f"<loc>{url}</loc>", sitemap)
+        html_path = output / "blog" / slug / "index.html"
+        self.assertTrue(html_path.is_file(), f"Missing published article: {html_path}")
+        html = html_path.read_text(encoding="utf-8")
+        self.assertIn(f'href="{url}"', html)
+        self.assertIn('name="robots" content="index,follow"', html)
+        self.assertNotIn('name="robots" content="noindex', html)
+
     def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
         self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
         self.assertIsNone(stable_post_lastmod(Path('address-directory-safety-guide.md')))
