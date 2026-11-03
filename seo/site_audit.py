@@ -49,9 +49,40 @@ def audit_site(dist):
     sitemap = dist / "sitemap.xml"
     try:
         root = ET.parse(sitemap).getroot()
-        locs = {entry.text for entry in root.iter() if entry.tag.endswith("}loc") and entry.text}
+        loc_list = [entry.text for entry in root.iter()
+                    if entry.tag.endswith("}loc") and entry.text]
+        locs = set(loc_list)
+        if len(locs) != len(loc_list):
+            errors.append("duplicate URL in sitemap")
     except (ET.ParseError, OSError) as error:
         return [f"sitemap cannot be read: {error}"]
+
+    robots_file = dist / "robots.txt"
+    if not robots_file.is_file():
+        errors.append("robots.txt missing from build")
+    else:
+        robots_text = robots_file.read_text(encoding="utf-8-sig")
+        robots_lines = [
+            line.split("#", 1)[0].strip()
+            for line in robots_text.splitlines()
+        ]
+        robots_lines = [line for line in robots_lines if line]
+        normalized = [line.lower().replace(" ", "") for line in robots_lines]
+        if "sitemap:https://linkwiki.info/sitemap.xml" not in normalized:
+            errors.append("robots.txt missing canonical sitemap URL")
+        # A global block is a critical crawlability regression. A targeted
+        # disallow for sensitive paths is allowed.
+        all_agents = False
+        for line in robots_lines:
+            if ":" not in line:
+                continue
+            key, value = line.split(":", 1)
+            key, value = key.strip().lower(), value.strip()
+            if key == "user-agent":
+                all_agents = value == "*"
+            elif key == "disallow" and all_agents and value == "/":
+                errors.append("robots.txt globally disallows crawling")
+                break
 
     v2 = dist / "sitemap-v2.xml"
     if not v2.is_file() or v2.read_bytes() != sitemap.read_bytes():
