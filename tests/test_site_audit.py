@@ -3,10 +3,45 @@ from tempfile import TemporaryDirectory
 import json
 import unittest
 
-from seo.site_audit import SITE, audit_site, page_file
+from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta
 
 
 class SiteAuditTests(unittest.TestCase):
+    def test_robots_noindex_is_detected_with_either_attribute_order(self):
+        samples = [
+            '<meta name="robots" content="noindex,follow">',
+            '<meta content="follow, noindex" name="robots">',
+            "<META CONTENT='none' NAME='googlebot'>",
+        ]
+        for html in samples:
+            with self.subTest(html=html):
+                self.assertTrue(has_noindex_meta(html))
+        self.assertFalse(has_noindex_meta('<meta name="robots" content="index,follow">'))
+        self.assertFalse(has_noindex_meta('<meta name="description" content="noindex notice">'))
+        self.assertFalse(has_noindex_meta('<meta name="robots" content="noindexing">'))
+
+    def test_audit_catches_index_blocker_in_sitemap_page(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "blog").mkdir()
+            (root / "assets").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(
+                json.dumps([{"name": "Test", "category": "검색·포털", "description": "Test",
+                             "url": "https://example.org/"}]), encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url>'
+                       f'<url><loc>{SITE}/test</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "test.html").write_text(
+                f'<html><head><title>Example</title><link rel="canonical" href="{SITE}/test">'
+                '<meta content="noindex,follow" name="robots"></head><body></body></html>',
+                encoding="utf-8")
+            issues = audit_site(root)
+            self.assertTrue(any("indexable page blocked by robots noindex: test.html" in issue
+                                for issue in issues), issues)
+
     def test_site_paths_do_not_escape_dist(self):
         root = Path("/tmp/linkwiki-site-fixture")
         self.assertIsNone(page_file(root, "/../../secret"))
