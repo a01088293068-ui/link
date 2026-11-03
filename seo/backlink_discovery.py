@@ -15,23 +15,44 @@ OUTPUT = ROOT / "seo/backlink-prospects.json"
 REPORT = ROOT / "seo/backlink-prospects.md"
 SEARCH_API = "https://google.serper.dev/search"
 QUERIES = (
-    '"submit website" "Korean" directory',
-    '"submit site" "web directory" editorial review',
-    '"suggest a resource" "web safety" websites',
-    '"submit resource" "website directory" links',
-    '"adult websites" "submit link" directory',
-    '"Korean websites" "submit" directory',
+    '"submit website" "editorial" "web directory"',
+    '"submit site" "reviewed" "directory"',
+    '"suggest a resource" "website directory"',
+    '"add website" "Korean" "directory"',
+    '"submit resource" "internet safety" "directory"',
+    '"add url" "curated web directory"',
 )
+
 BLOCKED_DOMAINS = {
     "google.com", "youtube.com", "facebook.com", "instagram.com", "x.com",
     "pinterest.com", "linkedin.com", "reddit.com", "github.com", "linkwiki.info",
 }
-NEGATIVE = ("buy backlinks", "guest post packages", "pbn", "link exchange",
-            "reciprocal link required", "casino backlinks", "1000 links",
-            "bulk submission", "paid links", "submit to 100")
+NEGATIVE = (
+    "buy backlinks", "guest post packages", "pbn", "link exchange",
+    "reciprocal link required", "casino backlinks", "1000 links",
+    "bulk submission", "paid links", "submit to 100", "adult websites",
+    "phonesex", "porn", "gambling", "betting", "casino", "seo agency",
+    "link building services", "link-building services", "backlink packages",
+    "submit website feedback", "submit inquiry", "staff directory",
+    "department directory", "employee directory",
+)
 RELEVANT = ("directory", "resource", "website", "site", "submit", "editorial",
-            "suggest", "korean", "adult", "curated", "listing", "link")
+            "suggest", "korean", "curated", "listing", "link")
 INTENT = ("submit", "suggest", "add site", "add url", "get listed", "listing", "contribute")
+# Avoid mistaking footer text ("submit website feedback") for an
+# editorial website listing opportunity. Require topical title evidence.
+SUBMISSION_TITLE = (
+    "submit website", "submit your website", "submit site", "submit a site",
+    "add website", "add your website", "add site", "add a site", "add url",
+    "suggest a resource", "submit resource", "submit a resource",
+    "get listed", "submit link", "submit a link", "website submission",
+    "directory submission", "web directory", "website directory",
+    "resource directory",
+)
+UNRELATED_PATHS = (
+    "/staff/", "/department/", "/employees/", "/terms-of-use",
+    "/privacy-policy", "/sitemap", "/news/", "/article/",
+)
 
 
 def hostname(url):
@@ -65,6 +86,19 @@ def assess(result, known):
     snippet = re.sub(r"\s+", " ", str(result.get("snippet") or "")).strip()[:420]
     content = (title + " " + snippet).lower()
     if any(term in content for term in NEGATIVE):
+        return None
+    path = urlsplit(url).path.lower()
+    if any(part in path for part in UNRELATED_PATHS):
+        return None
+    title_text = title.lower()
+    if not any(term in title_text for term in SUBMISSION_TITLE):
+        return None
+    # A generic "directory" or "website" is not evidence of third-party
+    # submission eligibility; snippets alone can be misleading.
+    has_editorial_context = any(term in content for term in
+                                 ("web directory", "website directory",
+                                  "curated", "editorial", "resource directory"))
+    if not has_editorial_context:
         return None
     relevance = sorted({word for word in RELEVANT if word in content})
     intent = sorted({word for word in INTENT if word in content})
