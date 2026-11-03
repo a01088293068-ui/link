@@ -48,13 +48,13 @@ def internal_inbound_links(dist):
     inbound = {}
     for source in Path(dist).rglob("*.html"):
         text = source.read_text(encoding="utf-8")
-        if not re.search(r"<html\\b", text, re.I):
+        if not re.search(r"<html\b", text, re.I):
             continue
         relative = source.relative_to(dist).as_posix()
         source_path = ("/" + relative.removesuffix("index.html")
                        if source.name == "index.html"
                        else "/" + relative.removesuffix(".html"))
-        for href in re.findall(r'<a\\b[^>]*\\bhref="([^"]+)"', text, re.I):
+        for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"', text, re.I):
             target = urlsplit(urljoin(SITE + source_path, href))
             if target.scheme != "https" or target.netloc != "linkwiki.info":
                 continue
