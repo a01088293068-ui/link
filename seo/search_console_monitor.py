@@ -127,6 +127,22 @@ def format_index_inspection(rows, error=''):
         safe = lambda value: str(value).replace('|', '%7C').replace('\n', ' ')
         lines.append('| ' + ' | '.join(safe(row.get(key, '')) for key in
                      ('url', 'verdict', 'coverage', 'last_crawl', 'google_canonical')) + ' |')
+    if rows:
+        indexed = sum(row.get('verdict') == 'PASS' for row in rows)
+        unknown = [row for row in rows if '알려지지' in str(row.get('coverage', ''))]
+        crawled = [row for row in rows if '크롤링됨' in str(row.get('coverage', ''))
+                   and '색인이 생성되지' in str(row.get('coverage', ''))]
+        lines.extend(['', '### 점검한 URL 중 색인 우선 조치',
+                      f'- 검사한 URL: {len(rows)}개 · 색인 PASS: {indexed}개 · '
+                      f'Google에 알려지지 않음: {len(unknown)}개 · '
+                      f'크롤링 후 미색인: {len(crawled)}개',
+                      '- 이 수치는 검사된 URL에 한정하며 사이트 전체의 색인 수가 아닙니다.',
+                      '- 미발견 URL: 내부 링크·사이트맵·실제 접근 상태부터 점검합니다.',
+                      '- 크롤링 후 미색인: 콘텐츠의 고유한 가치와 검색 의도 적합성을 검토합니다.',
+                      '- 조회 결과만으로 자동 색인 신청이나 검색 순위 상승을 보장하지 않습니다.', ''])
+        for row in (unknown + crawled)[:12]:
+            lines.append('- ' + str(row.get('url', '')) + ' — ' +
+                         str(row.get('coverage', '정보 없음')).replace('\\n', ' '))
     if error:
         lines.extend(['', '색인 조회 일부 또는 전체 실패: ' + error])
     if not rows:
