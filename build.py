@@ -289,6 +289,19 @@ def add_breadcrumb_data(html, public_path):
     return html.replace("</head>", block + "</head>", 1)
 
 
+
+def category_article_links(posts, slug, limit=3):
+    """Select published, relevant guides only; never invent article URLs."""
+    from seo.auto_seo import related_categories
+    selected = []
+    for post in posts:
+        if any(url == f"/categories/{slug}" for _, url in related_categories(post["title"])):
+            selected.append(post)
+        if len(selected) == limit:
+            break
+    return selected
+
+
 def build():
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -405,7 +418,16 @@ def build():
         marker = '</main>'
         if source.count(marker) != 1:
             raise RuntimeError(f"Category page layout changed: {slug}")
+        matched_posts = category_article_links(posts, slug)
+        related_articles = (
+            '<section class="wrap seo-related-links" aria-label="이 분야의 이용 가이드">'
+            '<h2>이 분야의 이용 가이드</h2>'
+            '<ul>' + ''.join(
+                f'<li><a href="{escape(post["url"], quote=True)}">{escape(post["title"])}</a></li>'
+                for post in matched_posts) + '</ul></section>'
+        ) if matched_posts else ''
         source = source.replace(marker,
+            related_articles +
             '<nav class="wrap seo-related-links" aria-label="다른 분야 탐색">'
             '<a href="/categories/">다른 분야 사이트모음 보기</a> · '
             '<a href="/directory">전체 사이트 검색</a></nav>' + marker, 1)
