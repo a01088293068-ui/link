@@ -42,6 +42,41 @@ class SiteAuditTests(unittest.TestCase):
             self.assertTrue(any("indexable page blocked by robots noindex: test.html" in issue
                                 for issue in issues), issues)
 
+    def test_audit_rejects_missing_empty_or_duplicate_meta_descriptions(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            (root / "blog").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(
+                json.dumps([{"name": "Example", "category": "검색·포털",
+                             "description": "Example", "url": "https://example.org/"}]),
+                encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url>'
+                       f'<url><loc>{SITE}/test</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            page = root / "test.html"
+            prefix = (f'<html><head><title>Example</title>'
+                      f'<link rel="canonical" href="{SITE}/test">')
+            for desc in (
+                "",
+                '<meta name="description" content="   ">',
+                '<meta name="description" content="One">'
+                '<meta content="Two" name="description">',
+            ):
+                with self.subTest(description=desc):
+                    page.write_text(prefix + desc + '</head><body></body></html>',
+                                    encoding="utf-8")
+                    errors = audit_site(root)
+                    self.assertTrue(any('missing, empty or duplicate meta description: test.html'
+                                        in item for item in errors), errors)
+            page.write_text(prefix + '<meta content="Actual helpful description" name="description">'
+                            '</head><body></body></html>', encoding="utf-8")
+            self.assertFalse(any('meta description: test.html' in item
+                                 for item in audit_site(root)))
+
     def test_site_paths_do_not_escape_dist(self):
         root = Path("/tmp/linkwiki-site-fixture")
         self.assertIsNone(page_file(root, "/../../secret"))
