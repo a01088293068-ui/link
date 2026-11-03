@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 import json
 import unittest
 
-from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta
+from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta, internal_inbound_links
 
 
 class SiteAuditTests(unittest.TestCase):
@@ -106,6 +106,51 @@ class SiteAuditTests(unittest.TestCase):
             self.assertNotIn("robots.txt missing canonical sitemap URL", errors)
             (root / "robots.txt").write_text('User-agent: *\nAllow: /\n', encoding="utf-8")
             self.assertIn("robots.txt missing canonical sitemap URL", audit_site(root))
+
+    def test_internal_inbound_links_detect_real_navigation_not_self_links(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "blog/post").mkdir(parents=True)
+            (root / "index.html").write_text(
+                '<html><body><a href="/directory.html">Directory</a>'
+                '<a href="/blog/post/">Read guide</a></body></html>', encoding="utf-8")
+            (root / "directory.html").write_text(
+                '<html><body><a href="/directory">Self</a>'
+                '<a href="https://other.example/directory">Off-site</a></body></html>',
+                encoding="utf-8")
+            (root / "blog/post/index.html").write_text(
+                '<html><body><a href="/blog/post/">Self</a></body></html>',
+                encoding="utf-8")
+            links = internal_inbound_links(root)
+            self.assertEqual(links["/directory"], {"/"})
+            self.assertEqual(links["/blog/post/"], {"/"})
+
+    def test_audit_catches_orphan_directory_and_published_article(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "blog/post").mkdir(parents=True)
+            (root / "assets").mkdir()
+            (root / "assets/verified-directory.json").write_text(
+                json.dumps([{"name": "Example", "category": "검색·포털",
+                             "description": "Example", "url": "https://example.org/"}]),
+                encoding="utf-8")
+            (root / "directory.html").write_text('<html><body>No inbound</body></html>', encoding="utf-8")
+            (root / "blog/post/index.html").write_text(
+                f'<html><head><link href="{SITE}/blog/post/" rel="canonical">'
+                '<title>Post</title></head><body>No inbound</body></html>', encoding="utf-8")
+            (root / "blog/index.html").write_text('<html><body>Index</body></html>', encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url>'
+                       f'<url><loc>{SITE}/blog/post/</loc></url>'
+                       f'<url><loc>{SITE}/directory</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "robots.txt").write_text(
+                'User-agent: *\\nAllow: /\\nSitemap: https://linkwiki.info/sitemap.xml\\n',
+                encoding="utf-8")
+            issues = audit_site(root)
+            self.assertIn('orphan core directory page: /directory', issues)
+            self.assertIn('orphan published article: blog/post/', issues)
 
     def test_site_paths_do_not_escape_dist(self):
         root = Path("/tmp/linkwiki-site-fixture")
