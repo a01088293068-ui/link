@@ -13,12 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
       - name: Check public SEO pages and crawl files
         shell: bash
         run: |
           set -euo pipefail
           BASE='https://linkwiki.info'
-          for path in / /directory /categories/ /guides/directory-comparison /robots.txt /sitemap.xml; do
+          for path in / /directory /categories/ /blog/ /guides/directory-comparison /robots.txt /sitemap.xml; do
             url="${BASE}${path}"
             echo "Checking ${url}"
             status=$(curl --location --silent --show-error --output /tmp/linkwiki-response --write-out '%{http_code}' --max-time 20 --retry 2 --retry-delay 2 "${url}")
@@ -32,7 +33,7 @@ jobs:
             if [[ "${path}" == '/sitemap.xml' ]]; then
               grep -Fq 'https://linkwiki.info/' /tmp/linkwiki-response || { echo '::error::Sitemap has no site URLs'; exit 1; }
             fi
-            if [[ "${path}" == '/' || "${path}" == '/directory' || "${path}" == '/categories/' || "${path}" == '/guides/directory-comparison' ]]; then
+            if [[ "${path}" == '/' || "${path}" == '/directory' || "${path}" == '/categories/' || "${path}" == '/blog/' || "${path}" == '/guides/directory-comparison' ]]; then
               grep -Eq '<html|<HTML' /tmp/linkwiki-response || { echo "::error::No HTML page at ${url}"; exit 1; }
               grep -Fq 'rel="canonical"' /tmp/linkwiki-response || { echo "::error::Canonical URL missing at ${url}"; exit 1; }
               expected_canonical="${BASE}${path}"
@@ -47,6 +48,31 @@ jobs:
             fi
             echo "PASS ${url}"
           done
+      - name: Verify latest published SEO article is crawlable and in sitemap
+        shell: bash
+        run: |
+          set -euo pipefail
+          latest=$(find content -maxdepth 1 -type f -name 'seo-*.md' -print | sort | tail -n 1)
+          if [[ -z "${latest}" ]]; then
+            echo "No published SEO article to inspect."
+            exit 0
+          fi
+          slug=$(basename "${latest}" .md)
+          url="https://linkwiki.info/blog/${slug}/"
+          echo "Checking published article ${url}"
+          status=$(curl --location --silent --show-error --output /tmp/linkwiki-post --write-out '%{http_code}' --max-time 20 --retry 2 --retry-delay 2 "${url}")
+          if [[ "${status}" != '200' ]]; then
+            echo "::error::Published SEO article returned HTTP ${status}: ${url}"
+            exit 1
+          fi
+          grep -Fq "href=\"${url}\"" /tmp/linkwiki-post || { echo "::error::Published article has incorrect canonical: ${url}"; exit 1; }
+          if grep -Eiq '<meta[^>]+name="robots"[^>]+noindex|<meta[^>]+content="[^"]*noindex[^"]*"[^>]+name="robots"' /tmp/linkwiki-post; then
+            echo "::error::Published article has noindex: ${url}"
+            exit 1
+          fi
+          curl --fail --silent --show-error --max-time 20 'https://linkwiki.info/sitemap.xml' -o /tmp/linkwiki-sitemap
+          grep -Fq "<loc>${url}</loc>" /tmp/linkwiki-sitemap || { echo "::error::Published article missing from sitemap: ${url}"; exit 1; }
+          echo "PASS published SEO article ${url}"
       - name: Check main-service outbound destination without blocking SEO checks
         if: always()
         shell: bash
