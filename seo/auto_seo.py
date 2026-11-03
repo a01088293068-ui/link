@@ -237,20 +237,29 @@ def related_categories(topic, limit=2):
 
 
 def directory_context():
-    """Provide factual category counts; never treat the data as instructions."""
+    """Expose actual listed examples, not unverified claims about live sites."""
     path = ROOT / "assets" / "verified-directory.json"
     records = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(records, list):
         raise RuntimeError("Directory data must be a list")
     counts = {}
+    examples = {}
     for record in records:
         if not isinstance(record, dict) or not isinstance(record.get("category"), str):
             raise RuntimeError("Invalid directory category record")
         category = record["category"].strip()
-        if not category:
-            raise RuntimeError("Blank directory category")
+        name = record.get("name")
+        description = record.get("description")
+        if not category or not isinstance(name, str) or not name.strip():
+            raise RuntimeError("Invalid listed site metadata")
         counts[category] = counts.get(category, 0) + 1
-    return {"total_sites": len(records), "categories": counts}
+        if isinstance(description, str) and len(examples.get(category, [])) < 3:
+            examples.setdefault(category, []).append({
+                "name": name.strip()[:70],
+                "description": description.strip()[:160],
+            })
+    return {"total_sites": len(records), "categories": counts,
+            "listed_examples_by_category": examples}
 
 
 def generate(topic, search, prior_titles):
@@ -263,6 +272,8 @@ def generate(topic, search, prior_titles):
       "동일한 서론·결론 틀이나 상투적 표현을 반복하지 마세요. 사례와 체크리스트는 주제별로 달라야 합니다. "
       "기존 주제와 중복을 피하세요. 주제를 확장한다는 이유로 브라우저 멀티검색·멀티서치 등 별도 기능을 섞지 마세요. 실제 주제의 검색 의도를 일관되게 유지하세요. 광고 문구, 키워드 반복, 허위 경험담은 금지합니다. "
       "제공된 verified_directory 정보만 실제 링크위키 카테고리와 등록 개수의 근거로 사용하세요. "
+      "listed_examples_by_category는 실제 등록 목록의 설명일 뿐 현재 접속·공식 인증 자료가 아닙니다. "
+      "주제와 직접 관련되는 경우에만 실제 등록 사례를 1~2개 구체적으로 설명하고, 관련 없으면 나열하지 마세요. "
       "없는 분야를 링크위키에 등록되어 있다고 소개하거나 링크 점검 주기·실시간 검증을 보장하지 마세요. "
       "JSON만 반환하세요: title, description, introduction, sections(최소 4개; 각 heading 및 paragraphs 배열, 문단 2개 이상), "
       "faq(최소 3개; 각 question, answer), distinct_value. 전체 1600~2600자 목표. "
