@@ -390,6 +390,27 @@ def build():
     counts = {}
     for record in records:
         counts[record["category"]] = counts.get(record["category"], 0) + 1
+    # Render all real directory categories as crawlable links on the primary
+    # /directory landing page. The counts come from published directory data,
+    # avoiding stale labels or navigation gaps as the dataset changes.
+    directory_path = OUT / "directory.html"
+    directory_html = directory_path.read_text(encoding="utf-8")
+    directory_nav_pattern = (r'<nav aria-label="분야별 사이트모음 바로가기"'
+                             r' class="lw-guide-nav">.*?</nav>')
+    if len(re.findall(directory_nav_pattern, directory_html, flags=re.S)) != 1:
+        raise RuntimeError("Directory category navigation changed; review required")
+    directory_nav = (
+        '<nav aria-label="분야별 사이트모음 바로가기" class="lw-guide-nav">'
+        + ''.join(
+            f'<a href="/categories/{slug}">{escape(category)} {counts[category]}개</a>'
+            for category, slug, _, _ in CATEGORY_LANDING
+            if counts.get(category, 0) > 0
+        )
+        + '<a href="/categories/">전체 분야 보기</a></nav>'
+    )
+    directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
+                            directory_html, count=1, flags=re.S)
+    directory_path.write_text(directory_html, encoding="utf-8")
     category_cards = []
     for category, slug, heading, purpose in CATEGORY_LANDING:
         count = counts.get(category, 0)
