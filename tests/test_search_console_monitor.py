@@ -1,5 +1,6 @@
 import importlib.util
 from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
@@ -10,6 +11,34 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_latest_published_posts_are_inspected_without_google_impressions(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            posts = root / 'content'
+            posts.mkdir()
+            for day in ('20261027', '20261028', '20261030', '20261102'):
+                (posts / f'seo-{day}-example.md').write_text('# SEO title', encoding='utf-8')
+            with patch.object(monitor, 'ROOT', root):
+                recent = monitor.recent_published_post_urls()
+                targets = monitor.inspection_targets([], limit=15)
+        self.assertEqual(len(recent), 3)
+        self.assertEqual(recent[0], 'https://linkwiki.info/blog/seo-20261102-example/')
+        self.assertNotIn('https://linkwiki.info/blog/seo-20261027-example/', recent)
+        self.assertTrue(all(url in targets for url in recent))
+        self.assertLessEqual(len(targets), 15)
+
+    def test_inspection_limit_is_respected_for_recent_posts(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            posts = root / 'content'
+            posts.mkdir()
+            (posts / 'seo-20261102-example.md').write_text('# SEO title', encoding='utf-8')
+            with patch.object(monitor, 'ROOT', root):
+                self.assertEqual(monitor.inspection_targets([], limit=5), list(monitor.INSPECT_URLS))
+                targets = monitor.inspection_targets([], limit=6)
+        self.assertEqual(len(targets), 6)
+        self.assertIn('https://linkwiki.info/blog/seo-20261102-example/', targets)
+
     def test_api_request_and_response(self):
         class Response:
             def __enter__(self):
