@@ -39,6 +39,36 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertEqual(len(targets), 6)
         self.assertIn('https://linkwiki.info/blog/seo-20261102-example/', targets)
 
+    def test_inspection_continues_after_single_url_not_found(self):
+        from urllib.error import HTTPError
+        calls = []
+        def inspector(token, property_url, url):
+            calls.append(url)
+            if url.endswith('/missing'):
+                raise HTTPError(url, 404, 'not found', {}, None)
+            return {'url': url, 'verdict': 'PASS'}
+        urls = ['https://linkwiki.info/missing', 'https://linkwiki.info/']
+        rows, error = monitor.collect_index_inspections('token', 'property', urls, inspector)
+        self.assertEqual(calls, urls)
+        self.assertEqual(rows, [{'url': urls[1], 'verdict': 'PASS'}])
+        self.assertIn('HTTP 404', error)
+        self.assertIn(urls[0], error)
+
+    def test_inspection_stops_after_auth_or_quota_error(self):
+        from urllib.error import HTTPError
+        for code in (401, 403, 429, 503):
+            with self.subTest(code=code):
+                calls = []
+                def inspector(token, property_url, url):
+                    calls.append(url)
+                    raise HTTPError(url, code, 'unavailable', {}, None)
+                rows, error = monitor.collect_index_inspections(
+                    'token', 'property', ['https://linkwiki.info/a', 'https://linkwiki.info/b'], inspector)
+                self.assertEqual(rows, [])
+                self.assertEqual(len(calls), 1)
+                self.assertIn(f'HTTP {code}', error)
+                self.assertNotIn('색인되지 않음', error)
+
     def test_api_request_and_response(self):
         class Response:
             def __enter__(self):
