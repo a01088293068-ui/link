@@ -77,6 +77,36 @@ class SiteAuditTests(unittest.TestCase):
             self.assertFalse(any('meta description: test.html' in item
                                  for item in audit_site(root)))
 
+    def test_audit_rejects_global_robots_block_and_duplicate_sitemap_urls(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            (root / "blog").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(
+                json.dumps([{"name": "Example", "category": "검색·포털",
+                             "description": "Example", "url": "https://example.org/"}]),
+                encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url>'
+                       f'<url><loc>{SITE}/blog/</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "robots.txt").write_text(
+                'User-agent: *\\nDisallow: /\\nSitemap: https://linkwiki.info/sitemap.xml\\n',
+                encoding="utf-8")
+            errors = audit_site(root)
+            self.assertIn("duplicate URL in sitemap", errors)
+            self.assertIn("robots.txt globally disallows crawling", errors)
+            (root / "robots.txt").write_text(
+                'User-agent: *\\nDisallow: /admin/\\n'
+                'Sitemap: https://linkwiki.info/sitemap.xml\\n', encoding="utf-8")
+            errors = audit_site(root)
+            self.assertNotIn("robots.txt globally disallows crawling", errors)
+            self.assertNotIn("robots.txt missing canonical sitemap URL", errors)
+            (root / "robots.txt").write_text('User-agent: *\\nAllow: /\\n', encoding="utf-8")
+            self.assertIn("robots.txt missing canonical sitemap URL", audit_site(root))
+
     def test_site_paths_do_not_escape_dist(self):
         root = Path("/tmp/linkwiki-site-fixture")
         self.assertIsNone(page_file(root, "/../../secret"))
