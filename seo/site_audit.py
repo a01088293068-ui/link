@@ -32,12 +32,12 @@ def page_file(dist, path):
 
 def has_noindex_meta(content):
     """Detect robots noindex regardless of HTML meta attribute order."""
-    for tag in re.findall(r'<meta\\b[^>]*>', content, flags=re.I | re.S):
+    for tag in re.findall(r'<meta\b[^>]*>', content, flags=re.I | re.S):
         attrs = {name.lower(): value for name, value in re.findall(
-            r'([a-zA-Z_:][-a-zA-Z0-9_:]*)\\s*=\\s*["\\']([^"\\']*)["\\']', tag)}
+            r"""([a-zA-Z_:][-a-zA-Z0-9_:]*)\s*=\s*["']([^"']*)["']""", tag)}
         if attrs.get("name", "").lower() not in ("robots", "googlebot"):
             continue
-        directives = re.split(r'[\\s,]+', attrs.get("content", "").lower())
+        directives = re.split(r'[\s,]+', attrs.get("content", "").lower())
         if "noindex" in directives or "none" in directives:
             return True
     return False
