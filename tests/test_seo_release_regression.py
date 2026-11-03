@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 from unittest.mock import patch
 import unittest
 
-from build import add_breadcrumb_data, normalize_page_links, stable_post_lastmod
+from build import add_breadcrumb_data, normalize_page_links, stable_post_lastmod, category_article_links
 import json
 import re
 from seo import auto_seo
@@ -26,6 +26,26 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn(f'href="{url}"', html)
         self.assertIn('name="robots" content="index,follow"', html)
         self.assertNotIn('name="robots" content="noindex', html)
+
+    def test_category_article_links_only_relevant_published_guides(self):
+        posts = [
+            {"title": "검색 포털 링크모음 목적별 비교", "url": "/blog/search-example/"},
+            {"title": "사이트모음 비교 기준", "url": "/blog/general-example/"},
+            {"title": "스포츠 경기 일정 사이트 비교", "url": "/blog/sports-example/"},
+        ]
+        self.assertEqual(category_article_links(posts, "search"),
+                         [posts[0]])
+        self.assertEqual(category_article_links(posts, "sports"),
+                         [posts[2]])
+        self.assertEqual(category_article_links(posts, "ai"), [])
+
+    def test_category_page_links_to_actual_search_post_after_build(self):
+        root = Path(__file__).resolve().parents[1]
+        output = root / "dist" / "categories" / "search.html"
+        self.assertTrue(output.is_file(), "Generated search category page missing")
+        html = output.read_text(encoding="utf-8")
+        self.assertIn('이 분야의 이용 가이드', html)
+        self.assertIn('/blog/seo-20261030-26325b73af/', html)
 
     def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
         self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
