@@ -7,7 +7,7 @@ from pathlib import Path
 import json
 import re
 import sys
-from urllib.parse import unquote, urlsplit
+from urllib.parse import unquote, urlsplit, urljoin
 import xml.etree.ElementTree as ET
 
 SITE = "https://linkwiki.info"
@@ -41,6 +41,32 @@ def has_noindex_meta(content):
         if "noindex" in directives or "none" in directives:
             return True
     return False
+
+
+def internal_inbound_links(dist):
+    """Map public URLs to distinct HTML pages linking to them."""
+    inbound = {}
+    for source in Path(dist).rglob("*.html"):
+        text = source.read_text(encoding="utf-8")
+        if not re.search(r"<html\\b", text, re.I):
+            continue
+        relative = source.relative_to(dist).as_posix()
+        source_path = ("/" + relative.removesuffix("index.html")
+                       if source.name == "index.html"
+                       else "/" + relative.removesuffix(".html"))
+        for href in re.findall(r'<a\\b[^>]*\\bhref="([^"]+)"', text, re.I):
+            target = urlsplit(urljoin(SITE + source_path, href))
+            if target.scheme != "https" or target.netloc != "linkwiki.info":
+                continue
+            path = target.path
+            if path.endswith(".html"):
+                path = path[:-5]
+            if path == "/index":
+                path = "/"
+            if path == source_path:
+                continue
+            inbound.setdefault(path, set()).add(source_path)
+    return inbound
 
 
 def audit_site(dist):
@@ -255,10 +281,17 @@ def audit_site(dist):
             if actual_urls != expected_urls:
                 errors.append(f"category card URLs differ from JSON: {slug}")
 
+    # Sitemap inclusion alone does not make a page discoverable through links.
+    # Require HTML entry points for the main list and every published article.
+    inbound = internal_inbound_links(dist)
+    if directory_page.is_file() and not inbound.get("/directory"):
+        errors.append("orphan core directory page: /directory")
     posts = sorted((dist / "blog").glob("*/index.html"))
     for post in posts:
         relative = post.relative_to(dist).as_posix().removesuffix("index.html")
         canonical = SITE + "/" + relative
+        if not inbound.get("/" + relative):
+            errors.append(f"orphan published article: {relative}")
         if canonical not in locs:
             errors.append(f"post absent from sitemap: {relative}")
         html = post.read_text(encoding="utf-8")
