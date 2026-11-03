@@ -29,6 +29,20 @@ def page_file(dist, path):
     return destination
 
 
+
+def has_noindex_meta(content):
+    """Detect robots noindex regardless of HTML meta attribute order."""
+    for tag in re.findall(r'<meta\\b[^>]*>', content, flags=re.I | re.S):
+        attrs = {name.lower(): value for name, value in re.findall(
+            r'([a-zA-Z_:][-a-zA-Z0-9_:]*)\\s*=\\s*["\\']([^"\\']*)["\\']', tag)}
+        if attrs.get("name", "").lower() not in ("robots", "googlebot"):
+            continue
+        directives = re.split(r'[\\s,]+', attrs.get("content", "").lower())
+        if "noindex" in directives or "none" in directives:
+            return True
+    return False
+
+
 def audit_site(dist):
     dist = Path(dist)
     errors = []
@@ -65,6 +79,8 @@ def audit_site(dist):
         content = page.read_text(encoding="utf-8")
         if "공개 전 미리보기" in content:
             errors.append(f"stale preview notice on public page: {relative}")
+        if has_noindex_meta(content):
+            errors.append(f"indexable page blocked by robots noindex: {relative}")
         # Search engine ownership proof files are plain text despite .html.
         if not re.search(r"<html\b", content, re.I):
             continue
