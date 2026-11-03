@@ -99,6 +99,20 @@ def audit_site(dist):
             errors.append(f"duplicate HTML title: {relative} and {titles_seen[title]}")
         else:
             titles_seen[title] = relative
+        # Every indexable HTML page needs a useful search-result description.
+        # This catches accidentally empty/missing metadata on new articles.
+        meta_descriptions = []
+        for meta_tag in re.findall(r'<meta\\b[^>]*>', content, re.I | re.S):
+            attributes = {
+                name.lower(): value
+                for name, value in re.findall(
+                    r"""([a-zA-Z_:][-a-zA-Z0-9_:]*)\\s*=\\s*["']([^"']*)["']""",
+                    meta_tag)
+            }
+            if attributes.get("name", "").lower() == "description":
+                meta_descriptions.append(attributes.get("content", "").strip())
+        if len(meta_descriptions) != 1 or not meta_descriptions[0]:
+            errors.append(f"missing, empty or duplicate meta description: {relative}")
         # Validate all structured-data scripts and the canonical breadcrumb trail.
         for script in re.findall(
                 r'<script\b[^>]*\btype="application/ld\+json"[^>]*>(.*?)</script>',
