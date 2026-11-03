@@ -93,18 +93,18 @@ class SiteAuditTests(unittest.TestCase):
             (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
             (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
             (root / "robots.txt").write_text(
-                'User-agent: *\\nDisallow: /\\nSitemap: https://linkwiki.info/sitemap.xml\\n',
+                'User-agent: *\nDisallow: /\nSitemap: https://linkwiki.info/sitemap.xml\n',
                 encoding="utf-8")
             errors = audit_site(root)
             self.assertIn("duplicate URL in sitemap", errors)
             self.assertIn("robots.txt globally disallows crawling", errors)
             (root / "robots.txt").write_text(
-                'User-agent: *\\nDisallow: /admin/\\n'
-                'Sitemap: https://linkwiki.info/sitemap.xml\\n', encoding="utf-8")
+                'User-agent: *\nDisallow: /admin/\n'
+                'Sitemap: https://linkwiki.info/sitemap.xml\n', encoding="utf-8")
             errors = audit_site(root)
             self.assertNotIn("robots.txt globally disallows crawling", errors)
             self.assertNotIn("robots.txt missing canonical sitemap URL", errors)
-            (root / "robots.txt").write_text('User-agent: *\\nAllow: /\\n', encoding="utf-8")
+            (root / "robots.txt").write_text('User-agent: *\nAllow: /\n', encoding="utf-8")
             self.assertIn("robots.txt missing canonical sitemap URL", audit_site(root))
 
     def test_site_paths_do_not_escape_dist(self):
