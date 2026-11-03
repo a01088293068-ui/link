@@ -102,11 +102,11 @@ def audit_site(dist):
         # Every indexable HTML page needs a useful search-result description.
         # This catches accidentally empty/missing metadata on new articles.
         meta_descriptions = []
-        for meta_tag in re.findall(r'<meta\\b[^>]*>', content, re.I | re.S):
+        for meta_tag in re.findall(r'<meta\b[^>]*>', content, re.I | re.S):
             attributes = {
                 name.lower(): value
                 for name, value in re.findall(
-                    r"""([a-zA-Z_:][-a-zA-Z0-9_:]*)\\s*=\\s*["']([^"']*)["']""",
+                    r"""([a-zA-Z_:][-a-zA-Z0-9_:]*)\s*=\s*["']([^"']*)["']""",
                     meta_tag)
             }
             if attributes.get("name", "").lower() == "description":
