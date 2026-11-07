@@ -290,6 +290,32 @@ def add_breadcrumb_data(html, public_path):
 
 
 
+def core_search_intent_section(total_sites, categories):
+    """One useful homepage entry point for the three primary search intents."""
+    if total_sites < 1 or not categories:
+        raise RuntimeError("Homepage keyword guide needs real directory records")
+    return (
+        '<section class="wrap seo-core-intent" aria-label="주소모음 링크모음 사이트모음 이용 안내">'
+        '<div class="v47-section-heading"><h2>주소모음·링크모음·사이트모음 이용하기</h2></div>'
+        '<p>링크위키는 사이트 이름과 도메인, 분야별 목록을 탐색하는 서비스입니다. '
+        f'현재 등록된 {total_sites}개 사이트를 검색하거나 분야별로 살펴볼 수 있습니다. '
+        '검색 결과에 표시된 주소의 공식성이나 현재 접속 가능 여부는 별도로 확인하세요.</p>'
+        '<div class="v6-grid">'
+        '<article class="v6-card"><h3>주소모음: 사이트 주소 찾기</h3>'
+        '<p>도메인이나 사이트 이름을 알고 있다면 목록 검색을 사용하세요. '
+        '검색 결과에서 설명과 연결 주소를 확인한 뒤 방문할 수 있습니다.</p>'
+        '<a href="/directory">주소모음에서 주소 검색하기</a></article>'
+        '<article class="v6-card"><h3>링크모음: 분야별 링크 탐색</h3>'
+        '<p>관심 분야부터 고르면 해당 분야에 등록된 링크와 간단한 서비스 설명을 볼 수 있습니다.</p>'
+        '<a href="/categories/">링크모음 분야별 보기</a></article>'
+        '<article class="v6-card"><h3>사이트모음: 사이트별 이용 목적 비교</h3>'
+        '<p>전체 목록에서 사이트 이름과 제공 기능에 관한 등록 설명을 비교하고 '
+        '필요한 서비스를 찾아보세요. 목록 순서는 추천 순위가 아닙니다.</p>'
+        '<a href="/directory">사이트모음 전체 목록 비교하기</a></article>'
+        '</div></section>'
+    )
+
+
 def directory_category_overview(records, categories, per_category=3):
     """Make practical comparisons from exact published listing metadata.
 
@@ -424,7 +450,12 @@ def build():
     position = '<section aria-label="링크모음 이용 방법"'
     if position not in home:
         raise RuntimeError("기존 메인 구조가 달라져 게시판 삽입 위치를 확인할 수 없습니다")
-    home = home.replace(position, panel + position, 1)
+    first_party_records = json.loads(
+        (OUT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
+    if not isinstance(first_party_records, list) or not first_party_records:
+        raise RuntimeError("Directory data required for homepage search-intent guide")
+    homepage_intents = core_search_intent_section(len(first_party_records), True)
+    home = home.replace(position, panel + homepage_intents + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
