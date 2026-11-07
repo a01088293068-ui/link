@@ -7,6 +7,13 @@ from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta, intern
 
 
 class SiteAuditTests(unittest.TestCase):
+    def test_indexable_directory_has_search_help_with_real_links(self):
+        root = Path(__file__).resolve().parents[1]
+        page = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertIn('aria-label="사이트모음 검색 및 확인 방법"', page)
+        self.assertIn('href="/guides/link-troubleshooting"', page)
+        self.assertIn("링크모음의 사이트 주소는 모두 공식 주소인가요?", page)
+
     def test_visible_directory_card_copy_matches_registered_metadata(self):
         from seo.site_audit import card_copy_errors
         record = {"name": "테스트 <도구>", "category": "AI 도구",
