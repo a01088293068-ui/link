@@ -55,7 +55,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         self.assertEqual(html.count('id="directory-category-schema"'), 1)
         match = re.search(
-            r'<script id="directory-category-schema" type="application/ld\\+json">(.*?)</script>',
+            r'<script id="directory-category-schema" type="application/ld\+json">(.*?)</script>',
             html, re.S)
         self.assertIsNotNone(match)
         data = json.loads(match.group(1))
