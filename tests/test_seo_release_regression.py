@@ -73,7 +73,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("q.replace(/\\s+/g,'')", script)
         self.assertIn("const lookup=coreIntent?'':q", script)
         self.assertIn(".includes(lookup)", script)
-        self.assertIn("전체 등록 목록", "전체 등록 목록")
+        self.assertIn("coreIntent?'전체 '", script)
         self.assertIn("v=20261107-primary-search", page)
         self.assertIn('id="v6-empty"', page)
         self.assertIn('id="v6-results"', page)
