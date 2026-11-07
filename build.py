@@ -525,7 +525,16 @@ def build():
         (OUT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
     if not isinstance(first_party_records, list) or not first_party_records:
         raise RuntimeError("Directory data required for homepage search-intent guide")
-    homepage_intents = core_search_intent_section(len(first_party_records))
+    # Keep published homepage counts consistent with the verified directory data.
+    # The source HTML preserves its editorial layout; only generated output changes.
+    actual_count = len(first_party_records)
+    home, count_replacements = re.subn(
+        r"\b\d+개(?= 등록 (?:사이트|항목))",
+        lambda match: f"{actual_count}개", home,
+    )
+    if count_replacements < 2:
+        raise RuntimeError("Homepage directory count labels changed; review required")
+    homepage_intents = core_search_intent_section(actual_count)
     home = home.replace(position, panel + homepage_intents + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
