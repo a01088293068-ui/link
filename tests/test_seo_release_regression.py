@@ -10,6 +10,19 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_home_search_submits_to_canonical_directory_without_html_redirect(self):
+        from build import polish_home_intent
+        root = Path(__file__).resolve().parents[1]
+        source = (root / "index.html").read_text(encoding="utf-8")
+        home = (root / "dist/index.html").read_text(encoding="utf-8")
+        form = '<form action="/directory" class="lw-search" method="get" role="search">'
+        self.assertEqual(home.count(form), 1)
+        self.assertNotIn('<form action="directory.html"', home)
+        self.assertIn('name="q"', home)
+        self.assertEqual(polish_home_intent(source).count(form), 1)
+        # The canonical search action must survive further build passes.
+        self.assertEqual(polish_home_intent(polish_home_intent(source)).count(form), 1)
+
     def test_primary_directory_metadata_and_dynamic_heading_match_three_intents(self):
         root = Path(__file__).resolve().parents[1]
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
