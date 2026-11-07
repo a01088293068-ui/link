@@ -150,6 +150,35 @@ def format_index_inspection(rows, error=''):
     return '\n'.join(lines)
 
 
+CORE_KEYWORDS = ("주소모음", "링크모음", "사이트모음")
+
+
+def core_keyword_rows(keyword_rows, query_page_rows=None):
+    """Use observed query rows only; merge internal whitespace variants."""
+    output = []
+    for target in CORE_KEYWORDS:
+        matched = [
+            row for row in keyword_rows
+            if ''.join(str((row.get("keys") or [""])[0]).split()) == target
+        ]
+        impressions = sum(int(row.get("impressions", 0)) for row in matched)
+        clicks = sum(int(row.get("clicks", 0)) for row in matched)
+        weighted = sum(float(row.get("position", 0)) * int(row.get("impressions", 0))
+                       for row in matched)
+        pages = sorted({
+            str(row["keys"][1]) for row in (query_page_rows or [])
+            if len(row.get("keys") or []) >= 2
+            and ''.join(str(row["keys"][0]).split()) == target
+        })
+        output.append({
+            "keyword": target, "impressions": impressions,
+            "clicks": clicks,
+            "position": round(weighted / impressions, 1) if impressions else None,
+            "pages": pages, "observed": bool(matched),
+        })
+    return output
+
+
 def format_report(keyword_rows, page_rows, start_date, end_date, property_url, date_rows=None, query_page_rows=None):
     lines = ['# 링크위키 Search Console 실적', '',
              f'- 속성: `{property_url}`', f'- 조회 기간: {start_date} ~ {end_date}',
@@ -194,6 +223,18 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
                      f"{row.get('ctr', 0)*100:.1f}% | {row.get('position', 0):.1f} |")
     if not keyword_rows:
         lines.append('| 데이터 없음 | - | - | - | - |')
+    lines.extend(['', '## 핵심 목표 키워드 3종 실적', '',
+                  '- 주소모음·링크모음·사이트모음과 띄어쓰기 변형의 실제 조회 결과입니다.',
+                  '- 검색어가 제공되지 않으면 순위를 추정하지 않습니다. 평균 순위는 노출수 가중값입니다.',
+                  '| 키워드 | 노출 | 클릭 | 평균 순위 | 실제 노출 페이지 |',
+                  '|---|---:|---:|---:|---|'])
+    for core in core_keyword_rows(keyword_rows, query_page_rows):
+        if not core["observed"]:
+            lines.append(f'| {core["keyword"]} | 데이터 없음 | - | - | - |')
+            continue
+        landing = ', '.join(core["pages"][:3]).replace('|', '%7C') if core["pages"] else '페이지 쌍 데이터 없음'
+        lines.append(f'| {core["keyword"]} | {core["impressions"]} | {core["clicks"]} | '
+                     f'{core["position"] if core["position"] is not None else "-"} | {landing} |')
     # Work queue: observed searches already close enough to deserve targeted improvement.
     # Thresholds prevent one-off low-volume rows from dominating the report.
     opportunities = sorted(
