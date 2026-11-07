@@ -14,6 +14,44 @@ def page(path, title, heading, more=""):
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
+    def test_detects_outdated_site_cards_even_with_matching_title_and_h1(self):
+        from seo.live_release_check import directory_cards
+        card = ('<article class="v6-card"><small>AI 도구</small><h3>ChatGPT</h3>'
+                '<p>글쓰기와 요약</p><span class="site-domain">chatgpt.com</span>'
+                '<a href="https://chatgpt.com/">방문</a></article>')
+        expected = page("/directory", "목록", "주소모음·링크모음·사이트모음", card)
+        self.assertEqual(len(directory_cards(expected)), 1)
+        for stale in (card.replace("글쓰기와 요약", "예전 설명"),
+                      card.replace("chatgpt.com</span>", "old.example</span>"),
+                      card.replace("https://chatgpt.com/", "https://other.example/"),
+                      ""):
+            live = expected.replace(card, stale)
+            self.assertTrue(any("deployed site cards differ" in issue
+                                for issue in check_page(expected, live, "/directory")))
+        self.assertFalse(any("deployed site cards differ" in x
+                             for x in check_page(expected, expected, "/directory")))
+
+    def test_directory_card_compare_ignores_attribute_and_whitespace_formatting(self):
+        from seo.live_release_check import directory_cards
+        card = ('<article class="v6-card" data-extra="1"><h3>ChatGPT</h3>'
+                '<small>AI 도구</small><p> 글쓰기 </p>'
+                '<span class="site-domain">chatgpt.com</span>'
+                '<a rel="nofollow" href="https://chatgpt.com/">방문</a></article>')
+        other = card.replace('class="v6-card" data-extra="1"', 'data-extra="2" class="v6-card"')
+        self.assertEqual(directory_cards(card), directory_cards(other))
+
+    def test_sitemap_core_lastmod_comparison_catches_stale_deployment(self):
+        from seo.live_release_check import check_core_sitemap_lastmod
+        def sitemap(day):
+            return ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                    '<url><loc>https://linkwiki.info/directory</loc>'
+                    f'<lastmod>{day}</lastmod></url></urlset>')
+        self.assertEqual(check_core_sitemap_lastmod(sitemap("2026-11-07"),
+                                                     sitemap("2026-11-07")), [])
+        problems = check_core_sitemap_lastmod(sitemap("2026-11-07"),
+                                              sitemap("2026-10-29"))
+        self.assertIn("sitemap.xml: deployed lastmod for /directory differs", problems[0])
+
     def test_directory_help_with_id_before_class_is_checked(self):
         from seo.live_release_check import release_content_sections
         help_html = ('<section id="site-list-guide" class="lw-safety-note seo-search-help" '
