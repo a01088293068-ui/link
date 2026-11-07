@@ -27,6 +27,7 @@ on:
       - 'content/**'
       - 'tests/**'
       - '.github/workflows/site-qa.yml'
+      - '.github/workflows/live-crawl-check.yml'
   pull_request:
     paths:
       - 'index.html'
@@ -52,6 +53,7 @@ on:
       - 'content/**'
       - 'tests/**'
       - '.github/workflows/site-qa.yml'
+      - '.github/workflows/live-crawl-check.yml'
   workflow_dispatch:
 
 permissions:
