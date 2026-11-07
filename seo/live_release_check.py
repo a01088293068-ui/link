@@ -70,6 +70,22 @@ def parse_page(text):
     return parser
 
 
+def release_content_sections(html, path):
+    """Extract deterministic substantive SEO sections from generated HTML."""
+    patterns = {
+        "/": (
+            r'<section class="wrap seo-directory-examples"[^>]*>.*?</section>',
+        ),
+        "/directory": (
+            r'<section class="seo-directory-category">.*?</section>',
+        ),
+    }
+    blocks = []
+    for expression in patterns.get(path, ()):
+        blocks.extend(re.findall(expression, html, flags=re.S))
+    return blocks
+
+
 def check_page(expected_html, live_html, path):
     """Report semantic and functionality drift between live and build."""
     expected, live = parse_page(expected_html), parse_page(live_html)
@@ -82,6 +98,12 @@ def check_page(expected_html, live_html, path):
         errors.append(f"{path}: deployed canonical differs or is duplicated")
     if live.noindex:
         errors.append(f"{path}: deployed robots noindex detected")
+    # Title/H1 can match while Cloudflare still serves stale SEO list content.
+    # Compare deterministic, data-backed visible sections as well.
+    expected_sections = release_content_sections(expected_html, path)
+    live_sections = release_content_sections(live_html, path)
+    if expected_sections and expected_sections != live_sections:
+        errors.append(f"{path}: deployed directory examples differ from current build")
     if path == "/":
         if '<form action="/directory" class="lw-search"' not in live_html:
             errors.append("/: homepage site search does not target canonical /directory")

@@ -14,6 +14,34 @@ def page(path, title, heading, more=""):
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
+    def test_detects_stale_deployed_site_examples_with_unchanged_title(self):
+        from seo.live_release_check import release_content_sections
+        home = page("/", "링크위키", "링크위키 주소모음", (
+            '<form action="/directory" class="lw-search" method="get" role="search"></form>'
+            '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
+            '<a href="/directory">전체</a><a href="/categories/">분야별</a></section>'
+            '<section class="wrap seo-directory-examples" aria-label="실제 등록 사이트 분야별 예시">'
+            '<article><h3>AI 도구</h3><p>등록 도메인: chatgpt.com</p></article></section>'))
+        stale = home.replace("chatgpt.com", "outdated.example")
+        self.assertEqual(len(release_content_sections(home, "/")), 1)
+        self.assertTrue(any("directory examples differ" in error
+                            for error in check_page(home, stale, "/")))
+        self.assertEqual(check_page(home, home, "/"), [])
+
+    def test_detects_stale_directory_category_overview(self):
+        from seo.live_release_check import release_content_sections
+        links = ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS)
+        directory = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색",
+                         '<input id="v6-query"><div id="v6-results"></div>'
+                         '<script id="directory-category-schema"></script>' + links +
+                         '<section class="seo-directory-category"><h3>AI 도구</h3>'
+                         '<p>등록 사이트 4개</p></section>')
+        stale = directory.replace("등록 사이트 4개", "등록 사이트 3개")
+        self.assertEqual(len(release_content_sections(directory, "/directory")), 1)
+        self.assertTrue(any("directory examples differ" in error
+                            for error in check_page(directory, stale, "/directory")))
+        self.assertEqual(check_page(directory, directory, "/directory"), [])
+
     def test_accepts_correct_live_home_and_directory(self):
         home = page("/", "링크위키", "링크위키 주소모음", (
             '<form action="/directory" class="lw-search" method="get" role="search"></form>'
