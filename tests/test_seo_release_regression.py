@@ -65,6 +65,19 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(data["mainEntity"]["numberOfItems"], len(CATEGORY_LANDING))
         self.assertNotIn("ratingValue", match.group(1))
 
+    def test_primary_keyword_queries_display_real_directory_not_false_empty_state(self):
+        root = Path(__file__).resolve().parents[1]
+        script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
+        page = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertIn("['주소모음','링크모음','사이트모음']", script)
+        self.assertIn("q.replace(/\\s+/g,'')", script)
+        self.assertIn("const lookup=coreIntent?'':q", script)
+        self.assertIn(".includes(lookup)", script)
+        self.assertIn("전체 등록 목록", "전체 등록 목록")
+        self.assertIn("v=20261107-primary-search", page)
+        self.assertIn('id="v6-empty"', page)
+        self.assertIn('id="v6-results"', page)
+
     def test_latest_published_article_is_in_built_sitemap_with_matching_canonical(self):
         root = Path(__file__).resolve().parents[1]
         posts = sorted((root / "content").glob("seo-*.md"))
