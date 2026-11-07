@@ -187,6 +187,20 @@ def coverage_for(observations, returned_results, sampled_positions=None):
     return status
 
 
+def verified_sample_coverage(sample, keyword):
+    """Only new position-aware measurements can prove complete SERP depth.
+
+    Older snapshots stored the number of unique URLs but not which organic
+    positions were actually observed. They cannot prove 1..30 continuity.
+    """
+    positions = sample.get("sampled_positions", {}).get(keyword)
+    depth = query_depth(keyword)
+    if isinstance(positions, list):
+        valid = {p for p in positions if isinstance(p, int) and not isinstance(p, bool)}
+        return "complete" if valid >= set(range(1, depth + 1)) else "partial"
+    return "legacy-unverified" if sample.get("sample_coverage", {}).get(keyword) == "complete" else "partial"
+
+
 def core_keyword_scorecard(history):
     """A factual, dated three-keyword progress report from observed SERP data.
 
@@ -212,9 +226,15 @@ def core_keyword_scorecard(history):
         depth = query_depth(keyword)
         scope = (f"{checked}/{depth}" if isinstance(checked, int) else "확인 범위 기록 없음")
         if isinstance(position, int) and position > 0:
+            if not isinstance(sample.get("sampled_positions", {}).get(keyword), list):
+                return (f"{position}위 (구형 API 표본 · 순위 근거 불완전, "
+                        f"{result.get('url') or 'URL 미기록'})", scope)
             return f"{position}위 (표본, {result.get('url') or 'URL 미기록'})", scope
-        if sample.get("sample_coverage", {}).get(keyword) == "complete":
+        status = verified_sample_coverage(sample, keyword)
+        if status == "complete":
             return "검사한 상위 30개에서 미발견", scope
+        if status == "legacy-unverified":
+            return "과거 표본 미발견 · 순위별 수집 증거 없음", scope
         return "표본 미발견 · 30위 내 여부 미확정", scope
 
     for keyword in PRIMARY_KEYWORDS:
@@ -225,6 +245,7 @@ def core_keyword_scorecard(history):
         "",
         "참고: 외부 API 표본의 순위는 모든 사용자·지역의 실제 검색 순위를 대표하지 않습니다.",
         "Search Console의 노출·클릭·색인 데이터와 함께 확인해야 합니다.",
+        "이전 날짜의 단순 URL 개수 기반 표본은 순위 연속성 증거가 없어 완전한 상위 30위 검사로 간주하지 않습니다.",
         "코드 빌드 성공, 색인 요청, 글 발행 수는 이 표의 순위 상승으로 계산하지 않습니다.",
         "",
     ]

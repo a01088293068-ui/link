@@ -3,6 +3,39 @@ from seo import rank_tracker
 
 
 class RankTrackerTests(unittest.TestCase):
+    def test_legacy_unique_count_does_not_prove_top_thirty_absence(self):
+        sample = {"date": "2026-11-06",
+                  "results": {"주소모음": {"position": None, "url": None}},
+                  "returned_results": {"주소모음": 30},
+                  "sample_coverage": {"주소모음": "complete"}}
+        self.assertEqual(rank_tracker.verified_sample_coverage(
+            sample, "주소모음"), "legacy-unverified")
+        report = rank_tracker.core_keyword_scorecard({"samples": [sample]})
+        self.assertIn("과거 표본 미발견 · 순위별 수집 증거 없음", report)
+        self.assertNotIn("검사한 상위 30개에서 미발견", report)
+
+    def test_position_aware_samples_override_stale_coverage_flag(self):
+        sample = {"date": "2026-11-07",
+                  "results": {"사이트모음": {"position": None, "url": None}},
+                  "returned_results": {"사이트모음": 30},
+                  "sampled_positions": {"사이트모음": list(range(2, 32))},
+                  "sample_coverage": {"사이트모음": "complete"}}
+        self.assertEqual(rank_tracker.verified_sample_coverage(
+            sample, "사이트모음"), "partial")
+        report = rank_tracker.core_keyword_scorecard({"samples": [sample]})
+        self.assertIn("표본 미발견 · 30위 내 여부 미확정", report)
+        sample["sampled_positions"]["사이트모음"] = list(range(1, 31))
+        self.assertEqual(rank_tracker.verified_sample_coverage(
+            sample, "사이트모음"), "complete")
+
+    def test_legacy_rank_is_labeled_as_uncertain_evidence(self):
+        sample = {"date": "2026-11-06",
+                  "results": {"링크모음": {"position": 7, "url": "https://linkwiki.info/"}},
+                  "returned_results": {"링크모음": 30},
+                  "sample_coverage": {"링크모음": "complete"}}
+        report = rank_tracker.core_keyword_scorecard({"samples": [sample]})
+        self.assertIn("7위 (구형 API 표본 · 순위 근거 불완전", report)
+
     def test_thirty_urls_with_missing_positions_are_not_complete(self):
         observations = {"주소모음": {"position": None, "url": None}}
         returned = {"주소모음": 30}
@@ -152,7 +185,7 @@ class RankTrackerTests(unittest.TestCase):
         report = rank_tracker.core_keyword_scorecard(history)
         self.assertIn("| 주소모음 | 표본 미발견 · 30위 내 여부 미확정 | 9/30 |", report)
         self.assertIn("링크모음 | 19위", report)
-        self.assertIn("| 사이트모음 | 검사한 상위 30개에서 미발견 | 30/30 |", report)
+        self.assertIn("| 사이트모음 | 과거 표본 미발견 · 순위별 수집 증거 없음 | 30/30 |", report)
         self.assertIn("직전 측정", report)
         self.assertIn("2026-11-07", report)
         self.assertNotIn("주소모음 | 30위 밖", report)
