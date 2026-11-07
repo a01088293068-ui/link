@@ -20,24 +20,48 @@ class SearchConsoleMonitorTests(unittest.TestCase):
                 (posts / f'seo-{day}-example.md').write_text('# SEO title', encoding='utf-8')
             with patch.object(monitor, 'ROOT', root):
                 recent = monitor.recent_published_post_urls()
-                targets = monitor.inspection_targets([], limit=15)
+                targets = monitor.inspection_targets([], limit=20)
         self.assertEqual(len(recent), 3)
         self.assertEqual(recent[0], 'https://linkwiki.info/blog/seo-20261102-example/')
         self.assertNotIn('https://linkwiki.info/blog/seo-20261027-example/', recent)
         self.assertTrue(all(url in targets for url in recent))
-        self.assertLessEqual(len(targets), 15)
+        self.assertLessEqual(len(targets), 20)
 
-    def test_inspection_limit_is_respected_for_recent_posts(self):
+    def test_inspection_prioritizes_all_eight_categories_and_respects_limit(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
-            posts = root / 'content'
-            posts.mkdir()
-            (posts / 'seo-20261102-example.md').write_text('# SEO title', encoding='utf-8')
+            (root / 'content').mkdir()
+            (root / 'content/seo-20261102-example.md').write_text('# SEO', encoding='utf-8')
             with patch.object(monitor, 'ROOT', root):
-                self.assertEqual(monitor.inspection_targets([], limit=5), list(monitor.INSPECT_URLS))
-                targets = monitor.inspection_targets([], limit=6)
-        self.assertEqual(len(targets), 6)
+                limited = monitor.inspection_targets([], limit=5)
+                targets = monitor.inspection_targets([], limit=20)
+        self.assertEqual(limited, list(monitor.INSPECT_URLS[:5]))
+        self.assertIn('https://linkwiki.info/', targets)
+        self.assertIn('https://linkwiki.info/directory', targets)
+        self.assertIn('https://linkwiki.info/categories/', targets)
+        for slug in ('community', 'korean', 'comics-directory', 'webtoon',
+                     'ai', 'search', 'sports', 'video'):
+            self.assertIn('https://linkwiki.info/categories/' + slug, targets)
         self.assertIn('https://linkwiki.info/blog/seo-20261102-example/', targets)
+        self.assertEqual(len(targets), len(set(targets)))
+
+    def test_english_and_korean_exclusion_states_are_counted(self):
+        rows = [
+            {"url": "https://linkwiki.info/", "verdict": "PASS",
+             "coverage": "Submitted and indexed"},
+            {"url": "https://linkwiki.info/directory", "verdict": "NEUTRAL",
+             "coverage": "Crawled - currently not indexed"},
+            {"url": "https://linkwiki.info/categories/ai", "verdict": "NEUTRAL",
+             "coverage": "URL is unknown to Google"},
+            {"url": "https://linkwiki.info/categories/sports", "verdict": "NEUTRAL",
+             "coverage": "크롤링됨 - 현재 색인이 생성되지 않음"},
+            {"url": "https://linkwiki.info/categories/video", "verdict": "NEUTRAL",
+             "coverage": "Google에 아직 알려지지 않은 URL입니다."},
+        ]
+        report = monitor.format_index_inspection(rows)
+        self.assertIn("검사한 URL: 5개 · 색인 PASS: 1개", report)
+        self.assertIn("Google에 알려지지 않음: 2개", report)
+        self.assertIn("크롤링 후 미색인: 2개", report)
 
     def test_inspection_continues_after_single_url_not_found(self):
         from urllib.error import HTTPError
