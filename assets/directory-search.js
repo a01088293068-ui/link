@@ -20,7 +20,31 @@
       site.url].filter(Boolean).join(' '));
     return terms.every(term => haystack.includes(term));
   }
-  const api = { norm, queryTerms, matches };
+  function score(site, searchText) {
+    const terms = queryTerms(searchText);
+    if (!terms.length) return 0;
+    if (!matches(site, searchText)) return -1;
+    const name = norm(site.name);
+    let host = '';
+    try { host = norm(new URL(site.url).hostname.replace(/^www\./, '')); }
+    catch (_) { host = ''; }
+    const phrase = terms.join(' ');
+    if (name === phrase || host === phrase || host === phrase.replace(/^www\./, '')) return 100;
+    if (name.startsWith(phrase)) return 85;
+    if (host.startsWith(phrase)) return 80;
+    if (name.includes(phrase)) return 70;
+    if (host.includes(phrase)) return 60;
+    if (terms.every(term => name.includes(term))) return 50;
+    if (terms.every(term => host.includes(term))) return 45;
+    return 10;
+  }
+  function sortResults(sites, searchText) {
+    return sites.map((site, index) => ({ site, index, relevance: score(site, searchText) }))
+      .filter(row => row.relevance >= 0)
+      .sort((a, b) => b.relevance - a.relevance || a.index - b.index)
+      .map(row => row.site);
+  }
+  const api = { norm, queryTerms, matches, score, sortResults };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.LinkWikiSearch = api;
 })(typeof window !== 'undefined' ? window : globalThis);
