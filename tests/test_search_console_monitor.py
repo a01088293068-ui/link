@@ -11,6 +11,23 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_report_search_query_table_remains_contiguous(self):
+        report = monitor.format_report(
+            [{'keys': ['주소모음'], 'impressions': 2, 'clicks': 1,
+              'ctr': .5, 'position': 11}], [],
+            '2026-10-01', '2026-10-28', 'sc-domain:linkwiki.info',
+            date_rows=[{'keys': ['2026-10-28'], 'impressions': 2,
+                        'clicks': 1, 'position': 11}])
+        expected = ('## 검색어 상위 30개\\n\\n'
+                    '| 검색어 | 노출 | 클릭 | CTR | 평균 순위 |\\n'
+                    '|---|---:|---:|---:|---:|\\n'
+                    '| 주소모음 | 2 | 1 | 50.0% | 11.0 |')
+        self.assertIn(expected, report)
+        self.assertLess(report.index('## 전체 검색 성과'),
+                        report.index('## 최근 7일과 직전 7일 비교'))
+        self.assertLess(report.index('## 최근 7일과 직전 7일 비교'),
+                        report.index('## 검색어 상위 30개'))
+
     def test_latest_published_posts_are_inspected_without_google_impressions(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
