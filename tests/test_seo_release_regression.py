@@ -65,16 +65,18 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(data["mainEntity"]["numberOfItems"], len(CATEGORY_LANDING))
         self.assertNotIn("ratingValue", match.group(1))
 
-    def test_primary_keyword_queries_display_real_directory_not_false_empty_state(self):
+    def test_primary_keyword_queries_and_multiword_search_are_wired(self):
         root = Path(__file__).resolve().parents[1]
         script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
+        search = (root / "dist/assets/directory-search.js").read_text(encoding="utf-8")
         page = (root / "dist/directory.html").read_text(encoding="utf-8")
         self.assertIn("['주소모음','링크모음','사이트모음']", script)
-        self.assertIn("q.replace(/\\s+/g,'')", script)
-        self.assertIn("const lookup=coreIntent?'':q", script)
-        self.assertIn(".includes(lookup)", script)
-        self.assertIn("coreIntent?'전체 '", script)
-        self.assertIn("v=20261107-primary-search", page)
+        self.assertIn("window.LinkWikiSearch.matches(s,q)", script)
+        self.assertIn("terms.every(term => haystack.includes(term))", search)
+        self.assertIn("const CORE = new Set", search)
+        self.assertIn("assets/directory-search.js?v=20261107-multiterm", page)
+        self.assertIn("assets/directory.js?v=20261107-multiterm", page)
+        self.assertLess(page.index('assets/directory-search.js'), page.index('assets/directory.js'))
         self.assertIn('id="v6-empty"', page)
         self.assertIn('id="v6-results"', page)
 
