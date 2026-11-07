@@ -11,6 +11,21 @@ spec.loader.exec_module(seo)
 
 
 class SEOTests(unittest.TestCase):
+    def test_category_comparison_requires_real_example_in_written_prose(self):
+        article = self.sample_article()
+        self.assertTrue(seo.category_example_missing("AI 도구 사이트모음 무료 플랜 비교", article))
+        article["introduction"] += " 등록된 ChatGPT와 Claude의 용도를 확인하세요."
+        self.assertFalse(seo.category_example_missing("AI 도구 사이트모음 무료 플랜 비교", article))
+        self.assertFalse(seo.category_example_missing("링크모음 접속 오류 해결 방법", self.sample_article()))
+
+    def test_generated_category_links_do_not_fake_article_specificity(self):
+        article = self.sample_article()
+        article["introduction"] = "실제 사례 없이 일반적인 기준만 소개합니다."
+        text = seo.render(article, category_links=seo.related_categories("스포츠 경기 일정 사이트 비교"))
+        self.assertIn("스포츠 사이트모음", text)
+        issues = seo.deterministic_review("스포츠 경기 일정 사이트 비교", article, text, [])
+        self.assertIn("category-specific guide lacks a verified local example", issues)
+
     def test_directory_context_uses_real_category_counts(self):
         context = seo.directory_context()
         self.assertEqual(context["total_sites"], sum(context["categories"].values()))

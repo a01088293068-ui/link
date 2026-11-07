@@ -312,6 +312,57 @@ def render(article, related=(), category_links=()):
     return "\n".join(lines)
 
 
+CATEGORY_NAME_BY_PATH = {
+    "/categories/community": "커뮤니티",
+    "/categories/korean": "한인교민",
+    "/categories/webtoon": "만화·웹툰",
+    "/categories/comics-directory": "만화",
+    "/categories/ai": "AI 도구",
+    "/categories/search": "검색·포털",
+    "/categories/sports": "스포츠",
+    "/categories/video": "영상·OTT",
+}
+
+
+def category_example_missing(topic, article):
+    """Category-specific comparison articles need a real, locally listed example.
+
+    Inspect model-produced prose only, not automatically appended category
+    links or footer text. Do not require examples for generic safety guides.
+    """
+    relevant_categories = {
+        CATEGORY_NAME_BY_PATH[url]
+        for terms, _, url in CATEGORY_RELATED
+        if any(term.casefold() in topic.casefold() for term in terms)
+    }
+    if not relevant_categories:
+        return False
+    context = directory_context()["listed_examples_by_category"]
+    verified_names = [
+        item["name"] for category in relevant_categories
+        for item in context.get(category, [])
+        if item.get("name")
+    ]
+    if not verified_names:
+        return True
+    prose = " ".join(
+        [str(article.get("introduction", ""))]
+        + [
+            str(paragraph)
+            for section in article.get("sections", [])
+            if isinstance(section, dict)
+            for paragraph in section.get("paragraphs", [])
+            if isinstance(paragraph, str)
+        ]
+        + [
+            str(item.get("answer", ""))
+            for item in article.get("faq", [])
+            if isinstance(item, dict)
+        ]
+    ).casefold()
+    return not any(name.casefold() in prose for name in verified_names)
+
+
 def deterministic_review(topic, article, text, titles):
     required = (("title", str), ("description", str), ("introduction", str),
                 ("sections", list), ("faq", list))
@@ -365,6 +416,8 @@ def deterministic_review(topic, article, text, titles):
         reasons.append("potentially unsafe troubleshooting advice")
     if not 70 <= len(article["description"]) <= 170:
         reasons.append("meta description length out of range")
+    if category_example_missing(topic, article):
+        reasons.append("category-specific guide lacks a verified local example")
     if content_overlap(text) > .34:
         reasons.append("near-duplicate article body")
     article_prose = json.dumps(article, ensure_ascii=False)
