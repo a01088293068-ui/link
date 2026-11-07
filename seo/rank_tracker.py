@@ -166,10 +166,25 @@ def competitor_report(history):
     return "\n".join(out)
 
 
-def coverage_for(observations, returned_results):
-    """Declare whether the provider supplied the full requested SERP depth."""
-    return {query: ("complete" if returned_results[query] >= query_depth(query)
-                    else "partial") for query in observations}
+def coverage_for(observations, returned_results, sampled_positions=None):
+    """A full sample must actually cover every organic position in the depth.
+
+    Thirty unique URLs do not establish positions 1..30 when the provider
+    supplies gaps, duplicated ordinals, or noncontiguous pages.
+    Historical callers without positions retain their original count-based
+    behavior; new observations always pass recorded ordinals.
+    """
+    status = {}
+    for query in observations:
+        depth = query_depth(query)
+        count = returned_results.get(query, 0)
+        if sampled_positions is None:
+            complete = count >= depth
+        else:
+            values = sampled_positions.get(query, [])
+            complete = set(values) >= set(range(1, depth + 1))
+        status[query] = "complete" if complete else "partial"
+    return status
 
 
 def core_keyword_scorecard(history):
@@ -221,10 +236,16 @@ def main():
     if not key:
         raise SystemExit("SERPER_API_KEY is missing")
     returned_results = {}
+    sampled_positions = {}
     competitor_top = {}
     def fetch(query):
         results = search_top_results(query, key, limit=query_depth(query))
         returned_results[query] = len(results)
+        sampled_positions[query] = sorted({
+            result["_sample_position"] for result in results
+            if isinstance(result.get("_sample_position"), int)
+            and not isinstance(result["_sample_position"], bool)
+        })
         if query in PRIMARY_KEYWORDS:
             competitor_top[query] = observed_competitors(results)
         return results
@@ -235,14 +256,16 @@ def main():
     else:
         history = {"schema": 1, "measurement": "Serper requested top 30, gl=kr, hl=ko", "samples": []}
     history["measurement"] = ("Serper paginated top 30 for core queries; top 10 for long-tail discovery, "
-                              "gl=kr, hl=ko; returned_results records actual unique rows")
+                              "gl=kr, hl=ko; returned_results records unique rows; "
+                              "sampled_positions records actual ordinal coverage")
     day = now[:10]
     history["samples"] = [x for x in history["samples"] if x["date"] != day]
     # A missing domain in a truncated provider response is not evidence that
     # the domain lies outside the requested top-N range.
-    coverage = coverage_for(observations, returned_results)
+    coverage = coverage_for(observations, returned_results, sampled_positions)
     history["samples"].append({"date": day, "observed_at": now, "results": observations,
                                "returned_results": returned_results,
+                               "sampled_positions": sampled_positions,
                                "sample_coverage": coverage, "competitor_top": competitor_top})
     history["samples"] = sorted(history["samples"], key=lambda x: x["date"])[-90:]
     HISTORY.parent.mkdir(parents=True, exist_ok=True)
