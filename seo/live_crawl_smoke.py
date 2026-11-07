@@ -30,22 +30,46 @@ class PageParser(HTMLParser):
             self.robots.append(attrs.get("content", "").lower())
 
 
+def google_noindex(directives):
+    """Recognize unscoped or Googlebot X-Robots-Tag and HTML noindex."""
+    for raw in directives:
+        # Commas separate individual directives; the optional agent prefix
+        # applies to the remainder of one X-Robots-Tag header value.
+        value = str(raw).strip().lower()
+        if ":" in value:
+            prefix, remainder = value.split(":", 1)
+            if prefix.strip() not in ("googlebot", "*"):
+                continue
+            value = remainder
+        if any(part.strip() in ("noindex", "none") for part in value.split(",")):
+            return True
+    return False
+
+
 def fetch(path):
     req = Request(ORIGIN + path, headers={"User-Agent": "LinkWiki-SEO-Smoke/1.0"})
     with urlopen(req, timeout=15) as res:
         final_url = res.geturl()
         if urlsplit(final_url).hostname != "linkwiki.info":
             raise RuntimeError("unexpected redirect destination")
-        return res.status, final_url, res.read(1_000_000).decode("utf-8", "replace")
+        return (res.status, final_url, res.read(1_000_000).decode("utf-8", "replace"),
+                res.headers.get_all("X-Robots-Tag", []))
 
 
 def inspect(fetcher=fetch):
     findings, records, bodies = [], [], {}
+    response_headers = {}
     for path in TARGETS:
         try:
-            status, final_url, body = fetcher(path)
+            response = fetcher(path)
+            if len(response) == 3:
+                status, final_url, body = response
+                x_robots = []
+            else:
+                status, final_url, body, x_robots = response
             records.append((path, status, final_url))
             bodies[path] = body
+            response_headers[path] = x_robots
             if status != 200:
                 findings.append(f"{path}: HTTP {status}")
             if urlsplit(final_url).path != path:
@@ -61,8 +85,10 @@ def inspect(fetcher=fetch):
         expected = ORIGIN + path
         if parser.canonicals != [expected]:
             findings.append(f"{path}: canonical {parser.canonicals!r} != {expected}")
-        if any("noindex" in item or "none" in item.split(",") for item in parser.robots):
-            findings.append(f"{path}: noindex directive found")
+        if google_noindex(parser.robots):
+            findings.append(f"{path}: HTML robots noindex directive found")
+        if google_noindex(response_headers.get(path, [])):
+            findings.append(f"{path}: X-Robots-Tag HTTP noindex directive found")
         if path == "/" and not any(link in ("/directory", "/directory.html", ORIGIN + "/directory") for link in parser.links):
             findings.append("/: no crawlable link to /directory")
     if "/robots.txt" in bodies:
