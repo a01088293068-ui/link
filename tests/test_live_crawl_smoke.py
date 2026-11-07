@@ -16,6 +16,30 @@ def good_fetch(path):
 
 
 class DeploymentSmokeTests(unittest.TestCase):
+    def test_x_robots_tag_blocks_directory_for_google(self):
+        def blocked(path):
+            status, url, body = good_fetch(path)
+            values = ["Googlebot: noindex, nofollow"] if path == "/directory" else []
+            return status, url, body, values
+        findings, _ = inspect(blocked)
+        self.assertIn("/directory: X-Robots-Tag HTTP noindex directive found", findings)
+
+    def test_otherbot_only_header_does_not_block_google(self):
+        def unrelated(path):
+            status, url, body = good_fetch(path)
+            return status, url, body, ["OtherBot: noindex"]
+        findings, _ = inspect(unrelated)
+        self.assertEqual(findings, [])
+
+    def test_html_noindex_is_still_detected(self):
+        def blocked(path):
+            status, url, body = good_fetch(path)
+            if path == "/":
+                body = body.replace("<head>", '<head><meta name="robots" content="noindex,follow">')
+            return status, url, body
+        findings, _ = inspect(blocked)
+        self.assertIn("/: HTML robots noindex directive found", findings)
+
     def test_valid_live_fixtures(self):
         problems, records = inspect(good_fetch)
         self.assertEqual(problems, [])
