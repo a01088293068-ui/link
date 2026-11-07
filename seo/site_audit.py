@@ -240,7 +240,7 @@ def audit_site(dist):
         home_html = homepage.read_text(encoding="utf-8")
         for label in ("등록 사이트", "등록 항목"):
             values = [int(value) for value in re.findall(
-                rf"(\\d+)개\\s+{re.escape(label)}", home_html)]
+                rf"(\d+)개\s+{re.escape(label)}", home_html)]
             if not values:
                 errors.append(f"homepage missing directory count: {label}")
             elif any(value != len(records) for value in values):
