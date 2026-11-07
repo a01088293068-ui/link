@@ -4,6 +4,7 @@
 This checks local build consistency, not Google's indexing status.
 """
 from pathlib import Path
+from html import unescape
 import json
 import re
 import sys
@@ -67,6 +68,42 @@ def internal_inbound_links(dist):
                 continue
             inbound.setdefault(path, set()).add(source_path)
     return inbound
+
+
+def card_copy(block, title_tag):
+    """Read visible site metadata from an existing static directory card."""
+    def contents(tag):
+        match = re.search(r'<'+tag+r'\b[^>]*>(.*?)</'+tag+r'>', block, re.I | re.S)
+        return unescape(re.sub(r'<[^>]+>', '', match.group(1))).strip() if match else None
+    name = contents(title_tag)
+    description = contents("p")
+    category = contents("small")
+    domain_tag = re.search(r'<span\b[^>]*\bclass="site-domain"[^>]*>(.*?)</span>',
+                           block, re.I | re.S)
+    domain = (unescape(re.sub(r'<[^>]+>', '', domain_tag.group(1))).strip()
+              if domain_tag else None)
+    return {"name": name, "description": description,
+            "category": category, "domain": domain}
+
+
+def card_copy_errors(blocks, records, title_tag, label):
+    """Detect stale names, descriptions and domains despite matching hrefs."""
+    errors = []
+    for number, (block, record) in enumerate(zip(blocks, records), 1):
+        if not isinstance(record, dict):
+            continue
+        actual = card_copy(block, title_tag)
+        url = record.get("url", "")
+        hostname = urlsplit(url).hostname if isinstance(url, str) else None
+        for field, expected in (
+            ("name", record.get("name")),
+            ("description", record.get("description")),
+            ("category", record.get("category")),
+            ("domain", hostname),
+        ):
+            if actual[field] != expected:
+                errors.append(f"{label} card #{number} {field} differs from JSON")
+    return errors
 
 
 def audit_site(dist):
@@ -265,6 +302,7 @@ def audit_site(dist):
             errors.append(f"directory card count differs from JSON: {len(card_blocks)} != {len(expected_urls)}")
         if card_urls != expected_urls:
             errors.append("directory card URL order/content differs from JSON source")
+        errors.extend(card_copy_errors(card_blocks, records, "h3", "directory"))
 
     category_pages = {
         "ai": "AI 도구", "search": "검색·포털", "sports": "스포츠",
@@ -293,6 +331,12 @@ def audit_site(dist):
                              if isinstance(record, dict) and record.get("category") == category]
             if actual_urls != expected_urls:
                 errors.append(f"category card URLs differ from JSON: {slug}")
+            expected_records = [record for record in records
+                                if isinstance(record, dict) and record.get("category") == category]
+            # Legacy category pages render .v6-card with h3; newer .item cards
+            # use strong. Both are supported and must match the same JSON data.
+            title_tag = "strong" if blocks and re.search(r'<strong\b', blocks[0], re.I) else "h3"
+            errors.extend(card_copy_errors(blocks, expected_records, title_tag, slug))
 
     # Sitemap inclusion alone does not make a page discoverable through links.
     # Require HTML entry points for the main list and every published article.
