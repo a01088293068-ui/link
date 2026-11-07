@@ -16,6 +16,7 @@ on:
       - 'build.py'
       - 'seo/site_audit.py'
       - 'seo/live_release_check.py'
+      - 'seo/live_crawl_smoke.py'
       - 'seo/check_directory_links.py'
       - 'seo/rank_tracker.py'
       - 'seo/search_console_monitor.py'
@@ -40,6 +41,8 @@ on:
       - 'build.py'
       - 'seo/site_audit.py'
       - 'seo/live_release_check.py'
+      - 'seo/live_crawl_smoke.py'
+      - 'seo/check_directory_links.py'
       - 'seo/rank_tracker.py'
       - 'seo/search_console_monitor.py'
       - 'seo/auto_seo.py'
@@ -76,7 +79,9 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p 'test_site_audit.py' -v
           python3 -m unittest discover -s tests -p 'test_live_release_check.py' -v
+          python3 -m unittest discover -s tests -p 'test_live_crawl_smoke.py' -v
           python3 -m unittest discover -s tests -p 'test_directory_reachability.py' -v
+          python3 -m unittest discover -s tests -p 'test_directory_link_audit.py' -v
           python3 -m unittest discover -s tests -p 'test_seo_release_regression.py' -v
           python3 -m unittest discover -s tests -p 'test_auto_seo.py' -v
           python3 -m unittest discover -s tests -p 'test_rank_tracker.py' -v
