@@ -11,6 +11,41 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_google_index_diagnostics_keep_actual_blocking_fields(self):
+        from seo.search_console_monitor import technical_index_obstacles, technical_index_diagnostic
+        blocked = {'url': 'https://linkwiki.info/directory', 'verdict': 'NEUTRAL',
+                   'coverage': 'Crawled - currently not indexed', 'robots_state': 'ALLOWED',
+                   'indexing_state': 'BLOCKED_BY_HTTP_HEADER', 'fetch_state': 'SUCCESSFUL',
+                   'user_canonical': 'https://linkwiki.info/directory',
+                   'google_canonical': ''}
+        self.assertIn('Google HTTP X-Robots-Tag noindex 확인', technical_index_obstacles(blocked))
+        report = technical_index_diagnostic([blocked])
+        self.assertIn('BLOCKED_BY_HTTP_HEADER', report)
+        self.assertIn('Google HTTP X-Robots-Tag noindex 확인', report)
+        self.assertIn('미조회', report)
+
+    def test_robots_fetch_and_canonical_have_distinct_diagnoses(self):
+        from seo.search_console_monitor import technical_index_obstacles
+        problems = technical_index_obstacles({
+            'robots_state': 'DISALLOWED', 'indexing_state': 'BLOCKED_BY_META_TAG',
+            'fetch_state': 'SOFT_404', 'user_canonical': 'https://linkwiki.info/directory',
+            'google_canonical': 'https://linkwiki.info/'})
+        self.assertIn('Google robots.txt 차단 확인', problems)
+        self.assertIn('Google HTML noindex 확인', problems)
+        self.assertIn('Google 페이지 가져오기: SOFT_404', problems)
+        self.assertTrue(any('canonical' in item for item in problems))
+        self.assertEqual(technical_index_obstacles({
+            'robots_state': 'ALLOWED', 'indexing_state': 'INDEXING_ALLOWED',
+            'fetch_state': 'SUCCESSFUL', 'google_canonical': '',
+            'user_canonical': 'https://linkwiki.info/directory'}), [])
+
+    def test_technical_blocker_takes_priority_over_generic_content_advice(self):
+        row = {'url': 'https://linkwiki.info/directory', 'verdict': 'NEUTRAL',
+               'coverage': 'Crawled - currently not indexed',
+               'robots_state': 'DISALLOWED'}
+        report = monitor.priority_index_checks([row])
+        self.assertIn('Google robots.txt 차단 확인', report)
+
     def test_branded_and_generic_search_are_separated_without_guessing(self):
         rows = [
             {'keys': ['링크위키'], 'impressions': 14, 'clicks': 8, 'position': 2},
