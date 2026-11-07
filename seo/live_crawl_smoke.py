@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+"""Read-only deployed SEO smoke check. HTTP signals are not Google index status."""
+from datetime import datetime, timezone
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.request import Request, urlopen
+from urllib.parse import urlsplit
+import json
+import sys
+import xml.etree.ElementTree as ET
+
+ORIGIN = "https://linkwiki.info"
+TARGETS = ("/", "/directory", "/categories/", "/robots.txt", "/sitemap.xml")
+
+
+class PageParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.canonicals = []
+        self.links = []
+        self.robots = []
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "link" and "canonical" in attrs.get("rel", "").lower().split():
+            self.canonicals.append(attrs.get("href", ""))
+        if tag == "a":
+            self.links.append(attrs.get("href", ""))
+        if tag == "meta" and attrs.get("name", "").lower() in ("robots", "googlebot"):
+            self.robots.append(attrs.get("content", "").lower())
+
+
+def fetch(path):
+    req = Request(ORIGIN + path, headers={"User-Agent": "LinkWiki-SEO-Smoke/1.0"})
+    with urlopen(req, timeout=15) as res:
+        final_url = res.geturl()
+        if urlsplit(final_url).hostname != "linkwiki.info":
+            raise RuntimeError("unexpected redirect destination")
+        return res.status, final_url, res.read(1_000_000).decode("utf-8", "replace")
+
+
+def inspect(fetcher=fetch):
+    findings, records, bodies = [], [], {}
+    for path in TARGETS:
+        try:
+            status, final_url, body = fetcher(path)
+            records.append((path, status, final_url))
+            bodies[path] = body
+            if status != 200:
+                findings.append(f"{path}: HTTP {status}")
+            if urlsplit(final_url).path != path:
+                findings.append(f"{path}: redirects to {final_url}")
+        except Exception as exc:
+            records.append((path, "ERROR", type(exc).__name__))
+            findings.append(f"{path}: {type(exc).__name__}: {str(exc)[:150]}")
+    for path in ("/", "/directory", "/categories/"):
+        if path not in bodies:
+            continue
+        parser = PageParser()
+        parser.feed(bodies[path])
+        expected = ORIGIN + path
+        if parser.canonicals != [expected]:
+            findings.append(f"{path}: canonical {parser.canonicals!r} != {expected}")
+        if any("noindex" in item or "none" in item.split(",") for item in parser.robots):
+            findings.append(f"{path}: noindex directive found")
+        if path == "/" and not any(link in ("/directory", "/directory.html", ORIGIN + "/directory") for link in parser.links):
+            findings.append("/: no crawlable link to /directory")
+    if "/robots.txt" in bodies:
+        robots = bodies["/robots.txt"].lower()
+        if "sitemap: https://linkwiki.info/sitemap.xml" not in robots:
+            findings.append("robots.txt: canonical sitemap not declared")
+        if "disallow: /\n" in robots:
+            findings.append("robots.txt: possible global Disallow: /")
+    if "/sitemap.xml" in bodies:
+        try:
+            root = ET.fromstring(bodies["/sitemap.xml"])
+            urls = [e.text for e in root.iter() if e.tag.endswith("}loc")]
+            if ORIGIN + "/directory" not in urls:
+                findings.append("sitemap.xml: /directory missing")
+            if ORIGIN + "/" not in urls:
+                findings.append("sitemap.xml: homepage missing")
+        except ET.ParseError:
+            findings.append("sitemap.xml: invalid XML")
+    return findings, records
+
+
+def main():
+    findings, records = inspect()
+    lines = ["# LinkWiki deployment SEO smoke check", "",
+             "Run: " + datetime.now(timezone.utc).isoformat(), "",
+             "This tests live HTTP responses, not Google indexing or rankings.", "",
+             "| URL | HTTP | final URL / error |", "|---|---|---|"]
+    for path, status, destination in records:
+        lines.append("| " + path + " | " + str(status) + " | " + destination.replace("|", "%7C") + " |")
+    lines.extend(["", "## Findings", ""])
+    lines.extend("- " + item for item in findings) if findings else lines.append("No live HTTP SEO blockers detected.")
+    output = Path("seo/live-crawl-report.md")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print("\n".join(lines))
+    return 1 if findings else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
