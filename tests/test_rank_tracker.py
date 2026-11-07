@@ -3,6 +3,15 @@ from seo import rank_tracker
 
 
 class RankTrackerTests(unittest.TestCase):
+    def test_checked_in_scorecard_matches_rank_history(self):
+        from pathlib import Path
+        import json
+        root = Path(__file__).resolve().parents[1]
+        history = json.loads((root / "seo/rank-history.json").read_text(encoding="utf-8"))
+        actual = (root / "seo/core-keyword-scorecard.md").read_text(encoding="utf-8")
+        self.assertEqual(actual, rank_tracker.core_keyword_scorecard(history))
+        self.assertIn("순위별 수집 증거 없음", actual)
+
     def test_legacy_unique_count_does_not_prove_top_thirty_absence(self):
         sample = {"date": "2026-11-06",
                   "results": {"주소모음": {"position": None, "url": None}},
