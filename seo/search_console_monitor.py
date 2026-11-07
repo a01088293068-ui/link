@@ -189,6 +189,47 @@ def technical_index_diagnostic(rows):
     return '\n'.join(lines)
 
 
+def crawl_after_significant_change(rows, changes):
+    """Compare Google index-copy crawl date with independently recorded edit date.
+
+    Same-date crawls are ambiguous because significant edits record calendar dates,
+    not timestamps. Missing last-crawl is unknown, not proof of no discovery.
+    """
+    inspected = {str(row.get('url', '')): row for row in rows}
+    out = ['', '### 실제 콘텐츠 변경 이후 Google 재크롤링 확인', '',
+           '| 핵심 URL | 최종 콘텐츠 변경일 | Google 마지막 크롤링 | 판정 |',
+           '|---|---|---|---|']
+    for path in ('/', '/directory', '/categories/'):
+        changed = changes.get(path)
+        if not changed:
+            continue
+        url = 'https://linkwiki.info' + path
+        item = inspected.get(url)
+        crawled = str((item or {}).get('last_crawl') or '')
+        if not item:
+            verdict = '조회 결과 없음 · 재크롤링 여부 불명'
+        elif not crawled:
+            verdict = '크롤링 시점 미제공 · 재크롤링 여부 불명'
+        else:
+            try:
+                crawl_day = date.fromisoformat(crawled[:10])
+                changed_day = date.fromisoformat(changed)
+            except ValueError:
+                verdict = '날짜 형식 오류 · 판정 불가'
+            else:
+                if crawl_day < changed_day:
+                    verdict = '최신 수정 이전 크롤링 · 변경 후 재크롤링 미확인'
+                elif crawl_day == changed_day:
+                    verdict = '같은 날짜 크롤링 · 수정 전후 순서 미확정'
+                else:
+                    verdict = '콘텐츠 변경 날짜 이후 재크롤링 확인'
+        out.append('| ' + ' | '.join(str(value).replace('|', '%7C') for value
+                                   in (url, changed, crawled or '-', verdict)) + ' |')
+    out.extend(['', '- 변경일은 실제로 수정한 핵심 페이지에만 적용하며 빌드일과 무관합니다.',
+                '- 재크롤링 확인은 색인 등록 또는 검색 순위 개선의 증거가 아닙니다.', ''])
+    return '\n'.join(out)
+
+
 def priority_index_checks(rows):
     """Summarize Google-reported status for the homepage and core directory.
 
@@ -269,6 +310,10 @@ def format_index_inspection(rows, error=''):
                          str(row.get('coverage', '정보 없음')).replace('\\n', ' '))
     lines.append(priority_index_checks(rows))
     lines.append(technical_index_diagnostic(rows))
+    change_log = ROOT / 'seo/significant-page-updates.json'
+    if change_log.is_file():
+        changes = json.loads(change_log.read_text(encoding='utf-8'))
+        lines.append(crawl_after_significant_change(rows, changes))
     if error:
         lines.extend(['', '색인 조회 일부 또는 전체 실패: ' + error])
     if not rows:
