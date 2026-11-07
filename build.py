@@ -328,14 +328,17 @@ def directory_collection_schema(records, categories):
             category = record.get("category")
             if isinstance(category, str):
                 counts[category] = counts.get(category, 0) + 1
+    active = [
+        (slug, heading) for category, slug, heading, _ in categories
+        if counts.get(category, 0)
+    ]
     items = [
         {
             "@type": "ListItem", "position": index + 1,
             "name": heading,
             "url": SITE + "/categories/" + slug,
         }
-        for index, (category, slug, heading, _) in enumerate(categories)
-        if counts.get(category, 0)
+        for index, (slug, heading) in enumerate(active)
     ]
     if not items:
         raise RuntimeError("Cannot build category schema without listed sites")
