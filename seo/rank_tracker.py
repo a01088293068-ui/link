@@ -15,6 +15,8 @@ HISTORY = ROOT / "seo/rank-history.json"
 TARGET = "linkwiki.info"
 CORE_KEYWORDS = ("링크모음", "주소모음", "사이트모음",
                  "링크모음 사이트", "주소모음 사이트", "사이트모음 추천")
+PRIMARY_KEYWORDS = ("주소모음", "링크모음", "사이트모음")
+SCORECARD = ROOT / "seo/core-keyword-scorecard.md"
 # Focused searches map to real category and guide pages, not doorway pages.
 LONGTAIL_KEYWORDS = (
     "커뮤니티 사이트모음", "웹툰 링크모음", "AI 도구 사이트모음",
@@ -89,6 +91,50 @@ def coverage_for(observations, returned_results):
                     else "partial") for query in observations}
 
 
+def core_keyword_scorecard(history):
+    """A factual, dated three-keyword progress report from observed SERP data.
+
+    A partial API sample is never described as top-30 exclusion. Without
+    recorded positions, performance is explicitly unknown beyond the sample.
+    """
+    samples = sorted(history.get("samples", []), key=lambda x: x.get("date", ""))
+    latest = samples[-1] if samples else {}
+    previous = samples[-2] if len(samples) >= 2 else {}
+    out = [
+        "# 링크위키 핵심 키워드 실측 성과표", "",
+        "측정일: " + (latest.get("date") or "데이터 없음"),
+        "기준: 한국 검색 API 비개인화 표본, 최대 상위 30개 자연 검색 결과", "",
+        "| 키워드 | 최신 측정 | 실제 검사 범위 | 직전 측정 |",
+        "|---|---|---:|---|",
+    ]
+    def describe(sample, keyword):
+        if not sample:
+            return "데이터 없음", "—"
+        result = sample.get("results", {}).get(keyword, {})
+        position = result.get("position")
+        checked = sample.get("returned_results", {}).get(keyword)
+        depth = query_depth(keyword)
+        scope = (f"{checked}/{depth}" if isinstance(checked, int) else "확인 범위 기록 없음")
+        if isinstance(position, int) and position > 0:
+            return f"{position}위 (표본, {result.get('url') or 'URL 미기록'})", scope
+        if sample.get("sample_coverage", {}).get(keyword) == "complete":
+            return "검사한 상위 30개에서 미발견", scope
+        return "표본 미발견 · 30위 내 여부 미확정", scope
+
+    for keyword in PRIMARY_KEYWORDS:
+        label, checked = describe(latest, keyword)
+        before, _ = describe(previous, keyword)
+        out.append(f"| {keyword} | {label} | {checked} | {before} |")
+    out += [
+        "",
+        "참고: 외부 API 표본의 순위는 모든 사용자·지역의 실제 검색 순위를 대표하지 않습니다.",
+        "Search Console의 노출·클릭·색인 데이터와 함께 확인해야 합니다.",
+        "코드 빌드 성공, 색인 요청, 글 발행 수는 이 표의 순위 상승으로 계산하지 않습니다.",
+        "",
+    ]
+    return "\n".join(out)
+
+
 def main():
     key = os.environ.get("SERPER_API_KEY", "").strip()
     if not key:
@@ -117,6 +163,7 @@ def main():
     history["samples"] = sorted(history["samples"], key=lambda x: x["date"])[-90:]
     HISTORY.parent.mkdir(parents=True, exist_ok=True)
     HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    SCORECARD.write_text(core_keyword_scorecard(history), encoding="utf-8")
     for keyword, result in observations.items():
         pos = result["position"]
         display = str(pos) if pos is not None else (
