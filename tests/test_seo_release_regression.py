@@ -28,6 +28,43 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn(keyword, html)
         self.assertNotIn("분야별 사이트모음·주소모음 검색", script)
 
+    def test_directory_schema_reflects_only_real_category_pages(self):
+        from build import directory_collection_schema, CATEGORY_LANDING
+        examples = [
+            {"name": "예시 검색", "category": "검색·포털"},
+            {"name": "예시 커뮤니티", "category": "커뮤니티"},
+        ]
+        output = directory_collection_schema(examples, CATEGORY_LANDING)
+        schema = json.loads(re.search(r'<script[^>]*>(.*?)</script>', output).group(1))
+        self.assertEqual(schema["@type"], "CollectionPage")
+        self.assertEqual(schema["url"], "https://linkwiki.info/directory")
+        items = schema["mainEntity"]["itemListElement"]
+        self.assertEqual(schema["mainEntity"]["numberOfItems"], 2)
+        self.assertEqual([item["position"] for item in items], [1, 2])
+        self.assertEqual({item["url"] for item in items}, {
+            "https://linkwiki.info/categories/community",
+            "https://linkwiki.info/categories/search",
+        })
+        self.assertNotIn("aggregateRating", output)
+        with self.assertRaises(RuntimeError):
+            directory_collection_schema([], CATEGORY_LANDING)
+
+    def test_built_directory_structured_data_matches_published_categories(self):
+        from build import CATEGORY_LANDING
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertEqual(html.count('id="directory-category-schema"'), 1)
+        match = re.search(
+            r'<script id="directory-category-schema" type="application/ld\\+json">(.*?)</script>',
+            html, re.S)
+        self.assertIsNotNone(match)
+        data = json.loads(match.group(1))
+        urls = {row["url"] for row in data["mainEntity"]["itemListElement"]}
+        self.assertEqual(urls, {"https://linkwiki.info/categories/" + slug
+                                for _, slug, _, _ in CATEGORY_LANDING})
+        self.assertEqual(data["mainEntity"]["numberOfItems"], len(CATEGORY_LANDING))
+        self.assertNotIn("ratingValue", match.group(1))
+
     def test_latest_published_article_is_in_built_sitemap_with_matching_canonical(self):
         root = Path(__file__).resolve().parents[1]
         posts = sorted((root / "content").glob("seo-*.md"))
