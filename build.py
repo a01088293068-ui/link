@@ -316,6 +316,47 @@ def core_search_intent_section(total_sites):
     )
 
 
+def directory_collection_schema(records, categories):
+    """Truthful CollectionPage and eight category navigation entries.
+
+    Uses published same-site categories rather than claiming that external
+    destinations are officially endorsed, reviewed or ranked.
+    """
+    counts = {}
+    for record in records:
+        if isinstance(record, dict):
+            category = record.get("category")
+            if isinstance(category, str):
+                counts[category] = counts.get(category, 0) + 1
+    items = [
+        {
+            "@type": "ListItem", "position": index + 1,
+            "name": heading,
+            "url": SITE + "/categories/" + slug,
+        }
+        for index, (category, slug, heading, _) in enumerate(categories)
+        if counts.get(category, 0)
+    ]
+    if not items:
+        raise RuntimeError("Cannot build category schema without listed sites")
+    data = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": SITE + "/directory#collection",
+        "url": SITE + "/directory",
+        "name": "주소모음·링크모음·사이트모음 통합 검색",
+        "inLanguage": "ko",
+        "mainEntity": {
+            "@type": "ItemList",
+            "name": "링크위키 분야별 등록 사이트",
+            "numberOfItems": len(items),
+            "itemListElement": items,
+        },
+    }
+    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    return '<script type="application/ld+json">' + payload.replace("</", "<\\/") + '</script>'
+
+
 def directory_category_overview(records, categories, per_category=3):
     """Make practical comparisons from exact published listing metadata.
 
@@ -492,6 +533,15 @@ def build():
     if directory_html.count(overview_marker) != 1:
         raise RuntimeError("Directory explanation layout changed; review required")
     directory_html = directory_html.replace(overview_marker, overview + overview_marker, 1)
+    # Provide a structured category map for the core search landing page.
+    # One declaration only; never generate unverified ratings or fake offers.
+    if 'id="directory-category-schema"' in directory_html:
+        raise RuntimeError("Directory category structured data already inserted")
+    schema = directory_collection_schema(records, CATEGORY_LANDING)
+    schema = schema.replace('<script ', '<script id="directory-category-schema" ', 1)
+    if directory_html.count("</head>") != 1:
+        raise RuntimeError("Directory head structure changed; schema review required")
+    directory_html = directory_html.replace("</head>", schema + "</head>", 1)
     directory_path.write_text(directory_html, encoding="utf-8")
     category_cards = []
     for category, slug, heading, purpose in CATEGORY_LANDING:
