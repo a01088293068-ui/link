@@ -17,6 +17,7 @@ CORE_KEYWORDS = ("링크모음", "주소모음", "사이트모음",
                  "링크모음 사이트", "주소모음 사이트", "사이트모음 추천")
 PRIMARY_KEYWORDS = ("주소모음", "링크모음", "사이트모음")
 SCORECARD = ROOT / "seo/core-keyword-scorecard.md"
+COMPETITOR_REPORT = ROOT / "seo/core-serp-competitors.md"
 # Focused searches map to real category and guide pages, not doorway pages.
 LONGTAIL_KEYWORDS = (
     "커뮤니티 사이트모음", "웹툰 링크모음", "AI 도구 사이트모음",
@@ -85,6 +86,67 @@ def collect(fetch, queries=KEYWORDS):
     return observations
 
 
+def observed_competitors(results, limit=5):
+    """Capture real sampled organic titles and URLs, not inferred rankings.
+
+    Exclude LinkWiki's own host, respect result order, and never invent
+    metrics such as authority scores or traffic.
+    """
+    competitors = []
+    for position, entry in enumerate(results, 1):
+        raw_url = entry.get("link")
+        if not isinstance(raw_url, str):
+            continue
+        parts = urlsplit(raw_url)
+        hostname = (parts.hostname or "").lower().removeprefix("www.")
+        if parts.scheme != "https" or not hostname or hostname == TARGET or hostname.endswith("." + TARGET):
+            continue
+        title = str(entry.get("title") or "").strip()
+        if not title:
+            continue
+        competitors.append({"position": position, "title": title[:180], "url": raw_url})
+        if len(competitors) >= limit:
+            break
+    return competitors
+
+
+def competitor_report(history):
+    """Summarize sampled top organic results for each primary search intent."""
+    samples = sorted(history.get("samples", []), key=lambda row: row.get("date", ""))
+    current = samples[-1] if samples else {}
+    out = [
+        "# 링크위키 핵심 키워드 검색 결과 경쟁 페이지 관찰",
+        "", "측정일: " + (current.get("date") or "데이터 없음"),
+        "데이터: 한국어·한국 지역 검색 API 자연 검색 표본. 검색 결과는 시점과 위치에 따라 달라질 수 있습니다.",
+        "기록 대상: 주소모음·링크모음·사이트모음 각 검색 결과의 앞쪽 최대 5개 외부 페이지.",
+        "광고·검색량·실제 트래픽·도메인 권위 등은 측정하지 않았습니다.",
+    ]
+    competitors = current.get("competitor_top", {})
+    coverage = current.get("sample_coverage", {})
+    counts = current.get("returned_results", {})
+    for keyword in PRIMARY_KEYWORDS:
+        out.extend(["", "## " + keyword, ""])
+        count = counts.get(keyword)
+        out.append(
+            f"- 검사한 자연 검색 결과: {count}/30개 · "
+            f"표본 범위: {coverage.get(keyword, '기록 없음')}"
+            if isinstance(count, int) else "- 검색 표본 데이터 없음"
+        )
+        out.extend(["", "| 표본 순서 | 검색 결과 제목 | URL |", "|---:|---|---|"])
+        rows = competitors.get(keyword, [])
+        for entry in rows:
+            name = str(entry["title"]).replace("|", "\\|").replace("\\n", " ")
+            url = str(entry["url"]).replace("|", "%7C")
+            out.append(f"| {entry['position']} | {name} | {url} |")
+        if not rows:
+            out.append("| - | 관측 데이터 없음 | - |")
+    out.extend(["", "상위 페이지의 제목·구성·검색 의도를 실제로 확인한 뒤 "
+                "링크위키의 등록 사이트 탐색 기능과 차별화할 점을 판단하세요.",
+                "이 표는 자동으로 획득한 검색 제목·URL에 한정하며 "
+                "다른 사이트의 콘텐츠를 복사하거나 가짜 링크를 만들기 위한 자료가 아닙니다.", ""])
+    return "\n".join(out)
+
+
 def coverage_for(observations, returned_results):
     """Declare whether the provider supplied the full requested SERP depth."""
     return {query: ("complete" if returned_results[query] >= query_depth(query)
@@ -140,9 +202,12 @@ def main():
     if not key:
         raise SystemExit("SERPER_API_KEY is missing")
     returned_results = {}
+    competitor_top = {}
     def fetch(query):
         results = search_top_results(query, key, limit=query_depth(query))
         returned_results[query] = len(results)
+        if query in PRIMARY_KEYWORDS:
+            competitor_top[query] = observed_competitors(results)
         return results
     observations = collect(fetch)
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -159,11 +224,12 @@ def main():
     coverage = coverage_for(observations, returned_results)
     history["samples"].append({"date": day, "observed_at": now, "results": observations,
                                "returned_results": returned_results,
-                               "sample_coverage": coverage})
+                               "sample_coverage": coverage, "competitor_top": competitor_top})
     history["samples"] = sorted(history["samples"], key=lambda x: x["date"])[-90:]
     HISTORY.parent.mkdir(parents=True, exist_ok=True)
     HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     SCORECARD.write_text(core_keyword_scorecard(history), encoding="utf-8")
+    COMPETITOR_REPORT.write_text(competitor_report(history), encoding="utf-8")
     for keyword, result in observations.items():
         pos = result["position"]
         display = str(pos) if pos is not None else (
