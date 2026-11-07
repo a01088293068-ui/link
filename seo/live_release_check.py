@@ -90,6 +90,80 @@ def release_content_sections(html, path):
     return blocks
 
 
+class DirectoryCardParser(HTMLParser):
+    """Extract visible site cards without depending on whitespace or attributes."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.cards = []
+        self.card = None
+        self.field = None
+
+    def handle_starttag(self, tag, pairs):
+        attrs = dict(pairs)
+        if tag == "article" and "v6-card" in attrs.get("class", "").split():
+            self.card = {"name": "", "category": "", "description": "",
+                         "domain": "", "url": ""}
+            return
+        if self.card is None:
+            return
+        self.field = {"h3": "name", "small": "category", "p": "description"}.get(tag)
+        if tag == "span" and "site-domain" in attrs.get("class", "").split():
+            self.field = "domain"
+        if tag == "a" and str(attrs.get("href", "")).startswith("https://"):
+            self.card["url"] = attrs["href"]
+
+    def handle_data(self, text):
+        if self.card is not None and self.field:
+            self.card[self.field] += text
+
+    def handle_endtag(self, tag):
+        if self.card is None:
+            return
+        if tag == "article":
+            self.cards.append(tuple(self.card[field].strip() for field in
+                                    ("name", "category", "description", "domain", "url")))
+            self.card = None
+            self.field = None
+        elif tag in ("h3", "small", "p", "span"):
+            self.field = None
+
+
+def directory_cards(html):
+    parser = DirectoryCardParser()
+    parser.feed(html)
+    return parser.cards
+
+
+def check_core_sitemap_lastmod(expected_xml, live_xml):
+    """Compare recorded meaningful modification dates, never the CI run date."""
+    try:
+        expected_root = ET.fromstring(expected_xml)
+        live_root = ET.fromstring(live_xml)
+    except ET.ParseError as exc:
+        return ["sitemap lastmod comparison XML invalid: " + str(exc)]
+    def values(root):
+        found = {}
+        for item in root:
+            loc, lastmod = None, None
+            for child in item:
+                if child.tag.endswith("}loc") or child.tag == "loc":
+                    loc = child.text
+                if child.tag.endswith("}lastmod") or child.tag == "lastmod":
+                    lastmod = child.text
+            if loc:
+                found[loc] = lastmod
+        return found
+    expected, live = values(expected_root), values(live_root)
+    problems = []
+    for path in ("/", "/directory", "/categories/"):
+        url = SITE + path
+        recorded = expected.get(url)
+        if recorded and live.get(url) != recorded:
+            problems.append(f"sitemap.xml: deployed lastmod for {path} differs from generated build "
+                            f"({live.get(url) or 'missing'} != {recorded})")
+    return problems
+
+
 def check_page(expected_html, live_html, path):
     """Report semantic and functionality drift between live and build."""
     expected, live = parse_page(expected_html), parse_page(live_html)
@@ -120,6 +194,11 @@ def check_page(expected_html, live_html, path):
             if link not in live.links:
                 errors.append(f"/categories/: missing category link {link}")
     if path == "/directory":
+        expected_cards = directory_cards(expected_html)
+        live_cards = directory_cards(live_html)
+        if expected_cards and expected_cards != live_cards:
+            errors.append(f"/directory: deployed site cards differ from generated build "
+                          f"({len(live_cards)} vs {len(expected_cards)} cards)")
         if not all(keyword in "".join(live.headings) for keyword in CORE):
             errors.append("/directory: three primary keywords missing from visible H1")
         if "v6-results" not in live.ids or "v6-query" not in live.ids:
@@ -168,7 +247,12 @@ def run(dist, fetch=fetch_public):
         except (OSError, RuntimeError, ValueError) as error:
             problems.append(f"{path}: fetch failed: {error}")
     try:
-        problems.extend(check_sitemap(fetch("/sitemap.xml")))
+        sitemap = fetch("/sitemap.xml")
+        problems.extend(check_sitemap(sitemap))
+        expected_sitemap = (dist / "sitemap.xml")
+        if expected_sitemap.is_file():
+            problems.extend(check_core_sitemap_lastmod(
+                expected_sitemap.read_text(encoding="utf-8"), sitemap))
     except (OSError, RuntimeError, ValueError) as error:
         problems.append(f"/sitemap.xml: fetch failed: {error}")
     try:
