@@ -10,6 +10,47 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_sitemap_lastmod_tracks_real_core_page_changes_only(self):
+        from build import apply_significant_lastmods, SITE
+        import xml.etree.ElementTree as ET
+        ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+        root = ET.Element(f"{{{ns}}}urlset")
+        for path in ("/", "/directory", "/categories/", "/guides/security"):
+            item = ET.SubElement(root, f"{{{ns}}}url")
+            ET.SubElement(item, f"{{{ns}}}loc").text = SITE + path
+            if path == "/":
+                ET.SubElement(item, f"{{{ns}}}lastmod").text = "2026-10-29"
+        updates = {"/": "2026-11-07", "/directory": "2026-11-07",
+                   "/categories/": "2026-11-07"}
+        apply_significant_lastmods(root, updates, ns)
+        values = {el.find(f"{{{ns}}}loc").text:
+                  el.find(f"{{{ns}}}lastmod").text if el.find(f"{{{ns}}}lastmod") is not None else None
+                  for el in root.findall(f"{{{ns}}}url")}
+        self.assertEqual(values[SITE + "/directory"], "2026-11-07")
+        self.assertEqual(values[SITE + "/"], "2026-11-07")
+        self.assertEqual(values[SITE + "/categories/"], "2026-11-07")
+        self.assertIsNone(values[SITE + "/guides/security"])
+        apply_significant_lastmods(root, updates, ns)
+        self.assertEqual(len(root.findall(f".//{{{ns}}}lastmod")), 3)
+        with self.assertRaisesRegex(RuntimeError, "absent from sitemap"):
+            apply_significant_lastmods(root, {"/unknown": "2026-11-07"}, ns)
+        with self.assertRaisesRegex(RuntimeError, "Invalid calendar"):
+            apply_significant_lastmods(root, {"/": "2026-11-31"}, ns)
+
+    def test_generated_sitemap_has_verified_significant_dates(self):
+        import xml.etree.ElementTree as ET
+        root = Path(__file__).resolve().parents[1]
+        data = json.loads((root / "seo/significant-page-updates.json").read_text(encoding="utf-8"))
+        tree = ET.parse(root / "dist/sitemap.xml")
+        ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+        values = {
+            item.find(ns + "loc").text: item.find(ns + "lastmod").text
+            if item.find(ns + "lastmod") is not None else None
+            for item in tree.getroot().findall(ns + "url")
+        }
+        for path, value in data.items():
+            self.assertEqual(values["https://linkwiki.info" + path], value)
+
     def test_build_help_uses_registered_counts_and_real_navigation(self):
         from build import directory_search_help, CATEGORY_LANDING
         import json
