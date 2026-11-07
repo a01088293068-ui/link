@@ -18,9 +18,9 @@ class SearchConsoleMonitorTests(unittest.TestCase):
             '2026-10-01', '2026-10-28', 'sc-domain:linkwiki.info',
             date_rows=[{'keys': ['2026-10-28'], 'impressions': 2,
                         'clicks': 1, 'position': 11}])
-        expected = ('## 검색어 상위 30개\\n\\n'
-                    '| 검색어 | 노출 | 클릭 | CTR | 평균 순위 |\\n'
-                    '|---|---:|---:|---:|---:|\\n'
+        expected = ('## 검색어 상위 30개\n\n'
+                    '| 검색어 | 노출 | 클릭 | CTR | 평균 순위 |\n'
+                    '|---|---:|---:|---:|---:|\n'
                     '| 주소모음 | 2 | 1 | 50.0% | 11.0 |')
         self.assertIn(expected, report)
         self.assertLess(report.index('## 전체 검색 성과'),
