@@ -23,7 +23,7 @@ test('Generic directory term plus specific clue finds an actual listing', () => 
     .map(s => s.name), ['Claude']);
   assert.deepEqual(listings.filter(site => matches(site, '주소모음 커뮤니티 중고'))
     .map(s => s.name), ['중고나라']);
-  assert.deepEqual(listings.filter(site => matches(site, '사이트 모음 naver.com'))
+  assert.deepEqual(listings.filter(site => matches(site, '사이트 모음 검색·포털 naver.com'))
     .map(s => s.name), ['네이버']);
 });
 
