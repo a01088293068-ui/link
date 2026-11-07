@@ -95,6 +95,46 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         for term in ('주소모음', '링크모음', '사이트모음'):
             self.assertIn(f'| {term} | 데이터 없음 | - | - | - |', report)
 
+    def test_core_filter_is_real_search_console_query_regex(self):
+        import json
+        rows = []
+        class Response:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return None
+            def read(self):
+                return b'{"rows":[]}'
+        with patch.object(monitor, 'urlopen', return_value=Response()) as mocked:
+            rows = monitor.query_performance(
+                "token", "sc-domain:linkwiki.info", "2026-10-01", "2026-10-28",
+                ["query"], filter_groups=monitor.CORE_QUERY_FILTERS)
+        self.assertEqual(rows, [])
+        payload = json.loads(mocked.call_args.args[0].data)
+        flt = payload["dimensionFilterGroups"][0]["filters"][0]
+        self.assertEqual(flt["dimension"], "query")
+        self.assertEqual(flt["operator"], "includingRegex")
+        self.assertIn("주소", flt["expression"])
+        self.assertIn("링크", flt["expression"])
+        self.assertIn("사이트", flt["expression"])
+        self.assertEqual(payload["dimensions"], ["query"])
+
+    def test_focused_keyword_rows_not_obscured_by_top_query_listing(self):
+        focused = [
+            {"keys": ["주소 모음"], "impressions": 2, "clicks": 1, "position": 64}
+        ]
+        report = monitor.format_report(
+            [{"keys": ["링크위키"], "impressions": 40, "clicks": 20, "position": 1}],
+            [], "2026-10-01", "2026-10-28", "sc-domain:linkwiki.info",
+            focused_keyword_rows=focused,
+            focused_query_page_rows=[{
+                "keys": ["주소 모음", "https://linkwiki.info/directory"],
+                "impressions": 2, "clicks": 1, "position": 64,
+            }])
+        self.assertIn("| 주소모음 | 2 | 1 | 64.0 | https://linkwiki.info/directory |", report)
+        self.assertIn("| 링크모음 | 데이터 없음 | - | - | - |", report)
+        self.assertNotIn("| 링크모음 | 40 | 20", report)
+
     def test_api_request_and_response(self):
         class Response:
             def __enter__(self):
