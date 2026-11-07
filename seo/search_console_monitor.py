@@ -252,6 +252,29 @@ def core_keyword_rows(keyword_rows, query_page_rows=None):
     return output
 
 
+def brand_vs_nonbrand_rows(keyword_rows):
+    """Separate observed branded queries without extrapolating anonymized traffic."""
+    result = {"브랜드 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0},
+              "일반 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0}}
+    for row in keyword_rows:
+        keys = row.get("keys") or []
+        if not keys:
+            continue
+        normalized = re.sub(r"[\s\W_]+", "", str(keys[0]).casefold())
+        group = "브랜드 검색" if normalized in ("링크위키", "linkwiki") else "일반 검색"
+        impressions = int(row.get("impressions", 0))
+        result[group]["impressions"] += impressions
+        result[group]["clicks"] += int(row.get("clicks", 0))
+        result[group]["weighted"] += float(row.get("position", 0)) * impressions
+    return [
+        {"name": name, "impressions": values["impressions"],
+         "clicks": values["clicks"],
+         "position": round(values["weighted"] / values["impressions"], 1)
+         if values["impressions"] else None}
+        for name, values in result.items()
+    ]
+
+
 def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                   date_rows=None, query_page_rows=None, focused_keyword_rows=None,
                   focused_query_page_rows=None, focused_error=''):
@@ -290,6 +313,15 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                       f'- 최근 7일: 노출 {recent_impressions:,}회 · 클릭 {recent_clicks:,}회',
                       f'- 직전 7일: 노출 {previous_impressions:,}회 · 클릭 {previous_clicks:,}회',
                       '- 조회 종료일 기준 연속된 7일씩 비교하며, 활동이 없는 날짜는 0회로 계산합니다.', ''])
+    lines.extend(['', '## 브랜드 검색과 일반 검색 (공개된 검색어 기준)', '',
+                  '- 비공개·익명 검색어는 포함되지 않으므로 전체 노출/클릭 합계와 다를 수 있습니다.',
+                  '- 일반 검색에는 주소모음·링크모음·사이트모음 및 브랜드명이 아닌 검색어가 포함됩니다.',
+                  '| 구분 | 확인된 노출 | 클릭 | 평균 순위 |',
+                  '|---|---:|---:|---:|'])
+    for group in brand_vs_nonbrand_rows(keyword_rows):
+        position = group["position"] if group["position"] is not None else '-'
+        lines.append(f'| {group["name"]} | {group["impressions"]} | '
+                     f'{group["clicks"]} | {position} |')
     lines.extend(['', '## 검색어 상위 30개', '',
                   '| 검색어 | 노출 | 클릭 | CTR | 평균 순위 |',
                   '|---|---:|---:|---:|---:|'])
