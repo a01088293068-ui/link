@@ -417,6 +417,46 @@ def homepage_directory_examples(records, categories):
     )
 
 
+RELATED_CATEGORY_PATHS = {
+    "community": (("sports", "스포츠 일정과 기록 찾기"),
+                  ("search", "검색·포털 서비스 살펴보기")),
+    "korean": (("search", "생활 정보 검색 서비스 찾기"),
+               ("community", "관심사별 커뮤니티 살펴보기")),
+    "comics-directory": (("webtoon", "웹툰 연재 플랫폼 보기"),
+                          ("video", "영상 서비스도 비교하기")),
+    "webtoon": (("comics-directory", "만화·웹소설 서비스 찾기"),
+               ("video", "영상·OTT 서비스 살펴보기")),
+    "ai": (("search", "검색·포털 서비스 비교하기"),
+           ("community", "정보 공유 커뮤니티 살펴보기")),
+    "search": (("ai", "AI 검색·질의응답 도구 보기"),
+              ("korean", "해외 한인 생활 정보 찾기")),
+    "sports": (("community", "스포츠 커뮤니티 찾기"),
+               ("video", "영상·OTT 서비스 비교하기")),
+    "video": (("sports", "스포츠 일정·결과 확인하기"),
+              ("webtoon", "웹툰 콘텐츠 플랫폼 보기")),
+}
+
+
+def related_category_navigation(slug):
+    """Two genuine follow-on categories per landing page, never fabricated URLs."""
+    valid = {path for _, path, _, _ in CATEGORY_LANDING}
+    neighbors = RELATED_CATEGORY_PATHS.get(slug)
+    if slug not in valid or not neighbors or len(neighbors) != 2:
+        raise RuntimeError(f"Unconfigured related categories: {slug}")
+    if any(other not in valid or other == slug for other, _ in neighbors):
+        raise RuntimeError(f"Invalid related category links: {slug}")
+    return (
+        '<section class="wrap seo-related-links" aria-label="연관 분야 이어서 찾기">'
+        '<h2>함께 살펴볼 분야</h2>'
+        '<p>현재 분야와 함께 비교하기 좋은 다른 사이트 목록입니다.</p>'
+        '<ul>' + ''.join(
+            f'<li><a href="/categories/{escape(other, quote=True)}">'
+            f'{escape(label)}</a></li>'
+            for other, label in neighbors
+        ) + '</ul></section>'
+    )
+
+
 def directory_search_help(records, categories):
     """Helpful, static, data-backed search instructions for directory visitors."""
     if not records or not categories:
@@ -759,7 +799,7 @@ def build():
                 for post in matched_posts) + '</ul></section>'
         ) if matched_posts else ''
         source = source.replace(marker,
-            related_articles +
+            related_articles + related_category_navigation(slug) +
             '<nav class="wrap seo-related-links" aria-label="다른 분야 탐색">'
             '<a href="/categories/">다른 분야 사이트모음 보기</a> · '
             '<a href="/directory">전체 사이트 검색</a></nav>' + marker, 1)
