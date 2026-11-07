@@ -127,7 +127,66 @@ def inspect_index(token, property_url, inspection_url):
     return {'url': inspection_url, 'verdict': state.get('verdict', 'UNKNOWN'),
             'coverage': state.get('coverageState', '정보 없음'),
             'last_crawl': state.get('lastCrawlTime', ''),
-            'google_canonical': state.get('googleCanonical', '')}
+            'google_canonical': state.get('googleCanonical', ''),
+            'user_canonical': state.get('userCanonical', ''),
+            'robots_state': state.get('robotsTxtState', ''),
+            'indexing_state': state.get('indexingState', ''),
+            'fetch_state': state.get('pageFetchState', ''),
+            'sitemaps': state.get('sitemap', []),
+            'referring_urls': state.get('referringUrls', [])}
+
+
+def technical_index_obstacles(item):
+    """Classify explicit Google inspection blockers, not inferred SEO quality."""
+    if not item:
+        return []
+    issues = []
+    robots = str(item.get('robots_state') or '')
+    indexing = str(item.get('indexing_state') or '')
+    fetched = str(item.get('fetch_state') or '')
+    declared = str(item.get('user_canonical') or '')
+    selected = str(item.get('google_canonical') or '')
+    if robots == 'DISALLOWED':
+        issues.append('Google robots.txt 차단 확인')
+    if indexing == 'BLOCKED_BY_META_TAG':
+        issues.append('Google HTML noindex 확인')
+    if indexing == 'BLOCKED_BY_HTTP_HEADER':
+        issues.append('Google HTTP X-Robots-Tag noindex 확인')
+    if fetched and fetched not in ('SUCCESSFUL', 'PAGE_FETCH_STATE_UNSPECIFIED'):
+        issues.append('Google 페이지 가져오기: ' + fetched)
+    if declared and selected and declared != selected:
+        issues.append('사이트 지정 canonical과 Google 선택 canonical 불일치')
+    return issues
+
+
+def technical_index_diagnostic(rows):
+    """Explain concrete blocking signals for priority pages without inventing causes."""
+    priority = ('https://linkwiki.info/directory',
+                'https://linkwiki.info/', 'https://linkwiki.info/categories/')
+    by_url = {str(row.get('url', '')): row for row in rows}
+    lines = ['', '### 핵심 URL 기술적 색인 차단 진단', '',
+             '| URL | robots.txt | 색인 허용 상태 | Google 페이지 가져오기 | 사이트 canonical | Google canonical |',
+             '|---|---|---|---|---|---|']
+    safe = lambda value: str(value or '정보 없음').replace('|', '%7C').replace('\n', ' ')
+    for url in priority:
+        row = by_url.get(url)
+        if row is None:
+            lines.append('| ' + safe(url) + ' | ' + ' | '.join(['미조회'] * 5) + ' |')
+            continue
+        lines.append('| ' + ' | '.join(safe(value) for value in (
+            url, row.get('robots_state'), row.get('indexing_state'),
+            row.get('fetch_state'), row.get('user_canonical'),
+            row.get('google_canonical'))) + ' |')
+        for issue in technical_index_obstacles(row):
+            lines.append('- ' + url + ': ' + issue)
+        if (not technical_index_obstacles(row)
+                and row.get('verdict') not in ('PASS', None, 'UNKNOWN')):
+            lines.append('- ' + url + ': 명시적인 기술 차단 신호가 확인되지 않았습니다. '
+                         '이 결과만으로 콘텐츠 품질이 미색인 원인이라고 단정할 수 없습니다.')
+    lines.extend(['', '- Google URL Inspection API의 색인 저장본 기준으로, '
+                  '현재 실시간 HTTP 상태와 다를 수 있습니다.',
+                  '- sitemap 및 발견 경로는 Google API에서 일부만 제공할 수 있습니다.', ''])
+    return '\n'.join(lines)
 
 
 def priority_index_checks(rows):
@@ -154,7 +213,10 @@ def priority_index_checks(rows):
             verdict = str(item.get('verdict') or 'UNKNOWN')
             canonical = str(item.get('google_canonical') or '-')
             coverage = str(item.get('coverage') or '')
-            if verdict == 'PASS' and canonical != '-' and canonical != url:
+            obstacles = technical_index_obstacles(item)
+            if obstacles:
+                action = '; '.join(obstacles)
+            elif verdict == 'PASS' and canonical != '-' and canonical != url:
                 action = 'Google 선택 정규 URL과 사이트 canonical 차이 검토'
             elif verdict == 'PASS':
                 action = '검색 실적과 검색어별 노출 URL 확인'
@@ -206,6 +268,7 @@ def format_index_inspection(rows, error=''):
             lines.append('- ' + str(row.get('url', '')) + ' — ' +
                          str(row.get('coverage', '정보 없음')).replace('\\n', ' '))
     lines.append(priority_index_checks(rows))
+    lines.append(technical_index_diagnostic(rows))
     if error:
         lines.extend(['', '색인 조회 일부 또는 전체 실패: ' + error])
     if not rows:
