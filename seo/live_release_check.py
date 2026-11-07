@@ -88,7 +88,7 @@ def check_page(expected_html, live_html, path):
         if "/directory" not in live.links or "/categories/" not in live.links:
             errors.append("/: links to primary directory and category hub missing")
     if path == "/directory":
-        if not set(CORE).issubset("".join(live.headings)):
+        if not all(keyword in "".join(live.headings) for keyword in CORE):
             errors.append("/directory: three primary keywords missing from visible H1")
         if "v6-results" not in live.ids or "v6-query" not in live.ids:
             errors.append("/directory: working search UI anchors missing")
