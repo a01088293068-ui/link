@@ -3,6 +3,49 @@ from seo import rank_tracker
 
 
 class RankTrackerTests(unittest.TestCase):
+    def test_short_first_serp_page_does_not_hide_second_page(self):
+        from unittest.mock import patch
+        pages = {
+            1: [{"link": f"https://a.example/{n}", "position": n}
+                for n in range(1, 10)],
+            2: [{"link": "https://linkwiki.info/directory", "position": 12}],
+            3: [],
+        }
+        with patch.object(rank_tracker, "search",
+                          side_effect=lambda query, key, page: pages[page]) as fetch:
+            results = rank_tracker.search_top_results("주소모음", "test")
+        self.assertEqual(fetch.call_count, 3)
+        self.assertEqual(len(results), 10)
+        self.assertEqual(rank_tracker.find_result(results)["position"], 12)
+        self.assertEqual(results[-1]["_sample_position"], 12)
+
+    def test_missing_provider_positions_preserve_page_offsets(self):
+        from unittest.mock import patch
+        pages = {
+            1: [{"link": f"https://example.org/{n}", "title": f"Example {n}"} for n in range(9)],
+            2: [{"link": "https://linkwiki.info/directory"}],
+            3: [],
+        }
+        with patch.object(rank_tracker, "search",
+                          side_effect=lambda query, key, page: pages[page]):
+            rows = rank_tracker.search_top_results("링크모음", "test")
+        self.assertEqual(rank_tracker.find_result(rows)["position"], 11)
+        self.assertEqual(rank_tracker.observed_competitors(rows, limit=10)[0]["position"], 1)
+
+    def test_provider_position_used_after_deduplication(self):
+        from unittest.mock import patch
+        repeated = [{"link": "https://example.org/a", "position": 1}]
+        pages = {
+            1: repeated + [{"link": f"https://example.org/{n}", "position": n}
+                            for n in range(2, 11)],
+            2: repeated + [{"link": "https://linkwiki.info/", "position": 15}],
+            3: [],
+        }
+        with patch.object(rank_tracker, "search",
+                          side_effect=lambda query, key, page: pages[page]):
+            rows = rank_tracker.search_top_results("사이트모음", "test")
+        self.assertEqual(rank_tracker.find_result(rows)["position"], 15)
+
     def test_paginates_when_provider_caps_each_response_at_ten(self):
         from unittest.mock import patch
         pages = {page: [{"link": f"https://example.org/{(page - 1) * 10 + i}"}
