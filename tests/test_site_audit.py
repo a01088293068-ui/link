@@ -7,6 +7,21 @@ from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta, intern
 
 
 class SiteAuditTests(unittest.TestCase):
+    def test_directory_seo_count_updates_but_category_count_stays_intact(self):
+        from build import sync_directory_count
+        sample = ('<title>97개 사이트</title>'
+                  '<meta name="description" content="97개 사이트의 목록">'
+                  '<meta property="og:title" content="97개 사이트">'
+                  '<meta property="og:description" content="97개 사이트의 목록">'
+                  '<p>97개 등록 사이트의 설명</p>'
+                  '<p>등록 사이트 97개</p><p>8개 분야</p>')
+        fixed = sync_directory_count(sample, 112)
+        self.assertEqual(fixed.count("112개"), 6)
+        self.assertNotIn("97개", fixed)
+        self.assertIn("8개 분야", fixed)
+        with self.assertRaises(RuntimeError):
+            sync_directory_count("<html>97개 사이트</html>", 112)
+
     def test_homepage_directory_count_is_checked_against_json(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)

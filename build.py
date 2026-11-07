@@ -324,6 +324,24 @@ def core_search_intent_section(total_sites):
     )
 
 
+def sync_directory_count(html, total_sites):
+    """Update SEO copy and visible directory count using actual published records."""
+    if total_sites < 1:
+        raise RuntimeError("Directory count requires nonempty verified records")
+    # Do not modify category counts such as '8개 분야'.
+    html, inline_count = re.subn(
+        r"\b\d+개(?=\s+(?:등록\s+)?사이트(?:의|\b))",
+        lambda _: f"{total_sites}개", html,
+    )
+    html, status_count = re.subn(
+        r"(등록 사이트\s+)\d+개",
+        lambda m: m.group(1) + f"{total_sites}개", html,
+    )
+    if inline_count < 5 or status_count != 1:
+        raise RuntimeError("Directory SEO count markers changed; review required")
+    return html
+
+
 def directory_collection_schema(records, categories):
     """Truthful CollectionPage and eight category navigation entries.
 
@@ -550,6 +568,7 @@ def build():
     # avoiding stale labels or navigation gaps as the dataset changes.
     directory_path = OUT / "directory.html"
     directory_html = directory_path.read_text(encoding="utf-8")
+    directory_html = sync_directory_count(directory_html, len(records))
     directory_nav_pattern = (r'<nav aria-label="분야별 사이트모음 바로가기"'
                              r' class="lw-guide-nav">.*?</nav>')
     if len(re.findall(directory_nav_pattern, directory_html, flags=re.S)) != 1:
