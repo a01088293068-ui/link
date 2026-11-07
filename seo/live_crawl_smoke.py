@@ -5,6 +5,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.parse import urlsplit
+from urllib.robotparser import RobotFileParser
 import json
 import sys
 import xml.etree.ElementTree as ET
@@ -65,11 +66,20 @@ def inspect(fetcher=fetch):
         if path == "/" and not any(link in ("/directory", "/directory.html", ORIGIN + "/directory") for link in parser.links):
             findings.append("/: no crawlable link to /directory")
     if "/robots.txt" in bodies:
-        robots = bodies["/robots.txt"].lower()
-        if "sitemap: https://linkwiki.info/sitemap.xml" not in robots:
+        robots = bodies["/robots.txt"]
+        declared_sitemaps = [
+            line.split(":", 1)[1].strip()
+            for raw in robots.splitlines()
+            if (line := raw.partition("#")[0].strip())
+            and line.lower().startswith("sitemap:")
+        ]
+        if ORIGIN + "/sitemap.xml" not in declared_sitemaps:
             findings.append("robots.txt: canonical sitemap not declared")
-        if "disallow: /\n" in robots:
-            findings.append("robots.txt: possible global Disallow: /")
+        rules = RobotFileParser()
+        rules.parse(robots.splitlines())
+        for path in ("/", "/directory", "/categories/"):
+            if not rules.can_fetch("Googlebot", ORIGIN + path):
+                findings.append(f"robots.txt: Googlebot disallowed {path}")
     if "/sitemap.xml" in bodies:
         try:
             root = ET.fromstring(bodies["/sitemap.xml"])
