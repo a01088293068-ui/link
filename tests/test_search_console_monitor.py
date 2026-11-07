@@ -11,6 +11,30 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_google_crawl_dates_are_compared_with_real_content_edit_dates(self):
+        from seo.search_console_monitor import crawl_after_significant_change
+        report = crawl_after_significant_change([
+            {'url': 'https://linkwiki.info/directory',
+             'last_crawl': '2026-11-03T13:00:00Z'},
+            {'url': 'https://linkwiki.info/', 'last_crawl': '2026-11-07T14:00:00Z'},
+            {'url': 'https://linkwiki.info/categories/',
+             'last_crawl': '2026-11-08T01:00:00Z'},
+        ], {'/': '2026-11-07', '/directory': '2026-11-07',
+            '/categories/': '2026-11-07'})
+        self.assertIn('최신 수정 이전 크롤링 · 변경 후 재크롤링 미확인', report)
+        self.assertIn('같은 날짜 크롤링 · 수정 전후 순서 미확정', report)
+        self.assertIn('콘텐츠 변경 날짜 이후 재크롤링 확인', report)
+
+    def test_missing_crawl_data_is_not_reported_as_unindexed(self):
+        from seo.search_console_monitor import crawl_after_significant_change
+        report = crawl_after_significant_change([], {'/directory': '2026-11-07'})
+        self.assertIn('조회 결과 없음 · 재크롤링 여부 불명', report)
+        report = crawl_after_significant_change(
+            [{'url': 'https://linkwiki.info/directory'}],
+            {'/directory': '2026-11-07'})
+        self.assertIn('크롤링 시점 미제공 · 재크롤링 여부 불명', report)
+        self.assertNotIn('색인 실패', report)
+
     def test_google_index_diagnostics_keep_actual_blocking_fields(self):
         from seo.search_console_monitor import technical_index_obstacles, technical_index_diagnostic
         blocked = {'url': 'https://linkwiki.info/directory', 'verdict': 'NEUTRAL',
