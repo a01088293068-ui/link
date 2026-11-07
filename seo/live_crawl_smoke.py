@@ -31,18 +31,24 @@ class PageParser(HTMLParser):
 
 
 def google_noindex(directives):
-    """Recognize unscoped or Googlebot X-Robots-Tag and HTML noindex."""
+    """Detect Google-applicable noindex in mixed X-Robots-Tag directives.
+
+    A header can mix unscoped directives and crawler-specific directives.
+    Do not discard an earlier unscoped noindex because a later token has a
+    bot prefix, or mistakenly attribute OtherBot rules to Googlebot.
+    """
     for raw in directives:
-        # Commas separate individual directives; the optional agent prefix
-        # applies to the remainder of one X-Robots-Tag header value.
-        value = str(raw).strip().lower()
-        if ":" in value:
-            prefix, remainder = value.split(":", 1)
-            if prefix.strip() not in ("googlebot", "*"):
-                continue
-            value = remainder
-        if any(part.strip() in ("noindex", "none") for part in value.split(",")):
-            return True
+        scope = None
+        for token in str(raw).lower().split(","):
+            directive = token.strip()
+            if ":" in directive:
+                agent, remaining = directive.split(":", 1)
+                agent = agent.strip()
+                if agent in ("googlebot", "googlebot-news", "*", "otherbot"):
+                    scope = agent
+                    directive = remaining.strip()
+            if scope in (None, "googlebot", "*") and directive in ("noindex", "none"):
+                return True
     return False
 
 

@@ -16,6 +16,21 @@ def good_fetch(path):
 
 
 class DeploymentSmokeTests(unittest.TestCase):
+    def test_mixed_unscoped_noindex_is_not_discarded_by_bot_suffix(self):
+        from seo.live_crawl_smoke import google_noindex
+        self.assertTrue(google_noindex(["noindex, Googlebot: nofollow"]))
+        self.assertTrue(google_noindex(["OtherBot: nofollow, Googlebot: noindex"]))
+        self.assertFalse(google_noindex(["OtherBot: noindex, Googlebot: follow"]))
+        self.assertFalse(google_noindex(["googlebot-news: noindex"]))
+
+    def test_mixed_header_flags_live_directory(self):
+        def mixed(path):
+            status, url, body = good_fetch(path)
+            header = ["noindex, Googlebot: follow"] if path == "/directory" else []
+            return status, url, body, header
+        findings, _ = inspect(mixed)
+        self.assertIn("/directory: X-Robots-Tag HTTP noindex directive found", findings)
+
     def test_x_robots_tag_blocks_directory_for_google(self):
         def blocked(path):
             status, url, body = good_fetch(path)
