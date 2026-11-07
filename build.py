@@ -290,6 +290,40 @@ def add_breadcrumb_data(html, public_path):
 
 
 
+def directory_category_overview(records, categories, per_category=3):
+    """Summarize registered services without invented facts or extra URLs."""
+    sections = []
+    for category, slug, heading, purpose in categories:
+        matching = [entry for entry in records
+                    if isinstance(entry, dict) and entry.get("category") == category]
+        if not matching:
+            continue
+        examples = [
+            entry["name"].strip()
+            for entry in matching
+            if isinstance(entry.get("name"), str) and entry["name"].strip()
+        ][:per_category]
+        if not examples:
+            continue
+        sections.append(
+            '<section class="seo-directory-category">'
+            f'<h3><a href="/categories/{escape(slug, quote=True)}">{escape(heading)}</a></h3>'
+            f'<p>{escape(purpose)}</p>'
+            f'<p>등록 사이트 {len(matching)}개 · 목록 예시: '
+            + escape(" · ".join(examples)) + '</p>'
+            '</section>'
+        )
+    return (
+        '<section class="lw-safety-note seo-directory-overview" '
+        'aria-label="분야별 사이트 목록 비교">'
+        '<h2>분야별 사이트모음 살펴보기</h2>'
+        '<p>아래 사이트명은 링크위키 등록 목록에서 가져온 예시입니다. '
+        '개별 서비스의 운영·가격·접속 상태를 보증하지 않습니다.</p>'
+        + ''.join(sections)
+        + '</section>'
+    )
+
+
 def category_article_links(posts, slug, limit=3):
     """Select published, relevant guides only; never invent article URLs."""
     from seo.auto_seo import related_categories
@@ -410,6 +444,13 @@ def build():
     )
     directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
                             directory_html, count=1, flags=re.S)
+    # Site descriptions are static and crawlable, not dependent on JavaScript.
+    # Keep existing search/filter controls and every directory card unchanged.
+    overview = directory_category_overview(records, CATEGORY_LANDING)
+    overview_marker = '<section aria-label="안전한 링크 이용"'
+    if directory_html.count(overview_marker) != 1:
+        raise RuntimeError("Directory explanation layout changed; review required")
+    directory_html = directory_html.replace(overview_marker, overview + overview_marker, 1)
     directory_path.write_text(directory_html, encoding="utf-8")
     category_cards = []
     for category, slug, heading, purpose in CATEGORY_LANDING:
