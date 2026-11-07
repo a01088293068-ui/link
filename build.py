@@ -360,11 +360,18 @@ def homepage_directory_examples(records, categories):
         ), None)
         if entry is None:
             raise RuntimeError(f"Missing descriptive directory example: {category}")
+        # Display the exact destination domain as useful pre-click context.
+        # A listed URL is not proof of official ownership or current uptime.
+        parsed = urlparse(str(entry.get("url", "")))
+        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+            raise RuntimeError(f"Invalid registered example URL: {category}")
+        domain = parsed.hostname
         cards.append(
             '<article class="v6-card">'
             f'<h3><a href="/categories/{escape(slug, quote=True)}">{escape(heading)}</a></h3>'
             f'<p><strong>{escape(entry["name"].strip())}</strong> — '
             f'{escape(entry["description"].strip())}</p>'
+            f'<p class="site-domain">등록 도메인: {escape(domain)}</p>'
             f'<a href="/categories/{escape(slug, quote=True)}">이 분야 사이트 더 보기</a>'
             '</article>'
         )

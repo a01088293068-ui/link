@@ -11,10 +11,13 @@ class SiteAuditTests(unittest.TestCase):
         from build import homepage_directory_examples
         categories = (("AI 도구", "ai", "AI 도구 사이트모음", "비교"),)
         records = [{"category": "AI 도구", "name": "테스트 <AI>",
-                    "description": "글쓰기 & 검색 도구"}]
+                    "description": "글쓰기 & 검색 도구",
+                    "url": "https://example.org/tools?ref=directory"}]
         rendered = homepage_directory_examples(records, categories)
         self.assertIn("테스트 &lt;AI&gt;", rendered)
         self.assertIn("글쓰기 &amp; 검색 도구", rendered)
+        self.assertIn("등록 도메인: example.org", rendered)
+        self.assertNotIn("ref=directory", rendered)
         self.assertIn('href="/categories/ai"', rendered)
         self.assertIn("인기 순위나 추천 등급이 아니며", rendered)
         self.assertNotIn("테스트 <AI>", rendered)
@@ -22,6 +25,10 @@ class SiteAuditTests(unittest.TestCase):
             homepage_directory_examples([], categories)
         with self.assertRaises(RuntimeError):
             homepage_directory_examples(records, (("스포츠", "sports", "스포츠", "비교"),))
+        with self.assertRaises(RuntimeError):
+            homepage_directory_examples(
+                [{"category": "AI 도구", "name": "test", "description": "test",
+                  "url": "http://example.org/"}], categories)
 
     def test_directory_seo_count_updates_but_category_count_stays_intact(self):
         from build import sync_directory_count
