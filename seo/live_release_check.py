@@ -83,6 +83,8 @@ def check_page(expected_html, live_html, path):
     if live.noindex:
         errors.append(f"{path}: deployed robots noindex detected")
     if path == "/":
+        if '<form action="/directory" class="lw-search"' not in live_html:
+            errors.append("/: homepage site search does not target canonical /directory")
         if "주소모음 링크모음 사이트모음 이용 안내" not in live_html:
             errors.append("/: core keyword search-intent section missing on live site")
         if "/directory" not in live.links or "/categories/" not in live.links:
