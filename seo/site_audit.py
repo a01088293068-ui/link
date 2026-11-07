@@ -335,7 +335,7 @@ def audit_site(dist):
                                 if isinstance(record, dict) and record.get("category") == category]
             # Legacy category pages render .v6-card with h3; newer .item cards
             # use strong. Both are supported and must match the same JSON data.
-            title_tag = "strong" if blocks and re.search(r'<strong\\b', blocks[0], re.I) else "h3"
+            title_tag = "strong" if blocks and re.search(r'<strong\b', blocks[0], re.I) else "h3"
             errors.extend(card_copy_errors(blocks, expected_records, title_tag, slug))
 
     # Sitemap inclusion alone does not make a page discoverable through links.
