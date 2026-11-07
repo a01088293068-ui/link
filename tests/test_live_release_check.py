@@ -76,10 +76,12 @@ class LiveReleaseCheckTests(unittest.TestCase):
                 for x in [SITE + "/", SITE + "/directory", SITE + "/categories/"] +
                          [SITE + x for x in CATEGORY_PATHS]) + "</urlset>"
             pages = {"/": home, "/directory": directory,
-                     "/sitemap.xml": sitemap, "/assets/directory.js": "old"}
-            self.assertTrue(any("core query behavior" in x for x in
+                     "/sitemap.xml": sitemap, "/assets/directory.js": "old",
+                     "/assets/directory-search.js": "old"}
+            self.assertTrue(any("multi-term search" in x for x in
                                 run(dist, fetch=lambda path: pages[path])))
-            pages["/assets/directory.js"] = "const lookup=coreIntent?'':q"
+            pages["/assets/directory.js"] = "window.LinkWikiSearch.matches(s,q)"
+            pages["/assets/directory-search.js"] = "terms.every(term => haystack.includes(term))"
             self.assertEqual(run(dist, fetch=lambda path: pages[path]), [])
 
 
