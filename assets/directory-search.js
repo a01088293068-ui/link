@@ -4,7 +4,9 @@
   const CORE = new Set(['주소모음', '링크모음', '사이트모음']);
   const norm = value => String(value ?? '').normalize('NFKC')
     .toLocaleLowerCase('ko').replace(/\s+/g, ' ').trim();
-  const tokens = value => norm(value).split(' ').filter(Boolean);
+  const tokens = value => norm(value)
+    .replace(/(주소|링크|사이트)\s+모음/g, '$1모음')
+    .split(' ').filter(Boolean);
   function queryTerms(value) {
     const words = tokens(value);
     // The three primary search intents identify the directory, not a listing.
