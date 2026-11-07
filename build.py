@@ -31,6 +31,39 @@ CATEGORY_LANDING = (
 )
 
 
+def apply_significant_lastmods(urlset, updates, ns):
+    """Use explicit, verified substantive edit dates, never build/check-out time.
+
+    Values stay stable on unrelated builds and must name a sitemap URL.
+    """
+    from datetime import date
+    if not isinstance(updates, dict):
+        raise RuntimeError("Significant page updates must be a JSON object")
+    entries = {}
+    for element in urlset.findall(f"{{{ns}}}url"):
+        loc = element.find(f"{{{ns}}}loc")
+        if loc is not None and loc.text:
+            entries[loc.text] = element
+    for path, day in updates.items():
+        if not isinstance(path, str) or not path.startswith("/") or "?" in path or "#" in path:
+            raise RuntimeError(f"Invalid significant-update path: {path}")
+        if not isinstance(day, str) or not re.fullmatch(r"20\d{2}-\d{2}-\d{2}", day):
+            raise RuntimeError(f"Invalid significant-update date: {path}")
+        try:
+            date.fromisoformat(day)
+        except ValueError as error:
+            raise RuntimeError(f"Invalid calendar date for: {path}") from error
+        url = SITE + path
+        if url not in entries:
+            raise RuntimeError(f"Significantly changed page absent from sitemap: {url}")
+        old = entries[url].find(f"{{{ns}}}lastmod")
+        if old is None:
+            old = ET.SubElement(entries[url], f"{{{ns}}}lastmod")
+        if old.text and old.text > day:
+            raise RuntimeError(f"Significant-update date predates sitemap date: {path}")
+        old.text = day
+
+
 def public_url(url):
     """Use Pages' extensionless public URL; keep files on disk as .html."""
     if url.startswith(SITE + "/"):
@@ -767,6 +800,11 @@ def build():
         if entry["modified"]:
             ET.SubElement(element, f"{{{ns}}}lastmod").text = entry["modified"]
         existing.add(loc)
+    # Document only dated, substantive content edits (not every CI build).
+    changes = ROOT / "seo" / "significant-page-updates.json"
+    if changes.is_file():
+        apply_significant_lastmods(
+            urlset, json.loads(changes.read_text(encoding="utf-8")), ns)
     tree.write(OUT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     (OUT / "sitemap-v2.xml").write_bytes((OUT / "sitemap.xml").read_bytes())
     from seo.site_audit import audit_site
