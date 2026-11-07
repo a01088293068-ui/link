@@ -80,8 +80,8 @@ class LiveReleaseCheckTests(unittest.TestCase):
                      "/assets/directory-search.js": "old"}
             self.assertTrue(any("multi-term search" in x for x in
                                 run(dist, fetch=lambda path: pages[path])))
-            pages["/assets/directory.js"] = "window.LinkWikiSearch.matches(s,q)"
-            pages["/assets/directory-search.js"] = "terms.every(term => haystack.includes(term))"
+            pages["/assets/directory.js"] = "window.LinkWikiSearch.sortResults"
+            pages["/assets/directory-search.js"] = "terms.every(term => haystack.includes(term)) function sortResults("
             self.assertEqual(run(dist, fetch=lambda path: pages[path]), [])
 
 
