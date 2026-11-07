@@ -88,6 +88,42 @@ class RankTrackerTests(unittest.TestCase):
         self.assertIn("측정일: 데이터 없음", report)
         self.assertIn("| 주소모음 | 데이터 없음", report)
 
+    def test_competitor_capture_uses_real_titles_and_excludes_own_domain(self):
+        rows = [
+            {"link": "https://linkwiki.info/directory", "title": "My own site"},
+            {"link": "https://address-example.kr/", "title": "주소모음 최신 사이트"},
+            {"link": "http://plain.example/", "title": "Insecure"},
+            {"link": "https://linkwiki.info.evil.test/", "title": "Unrelated hostname"},
+            {"link": "https://another.example/path", "title": "사이트모음 한눈에"},
+        ]
+        results = rank_tracker.observed_competitors(rows, limit=2)
+        self.assertEqual([r["position"] for r in results], [2, 4])
+        self.assertEqual(results[0]["title"], "주소모음 최신 사이트")
+        self.assertNotIn("linkwiki.info/directory", str(results))
+
+    def test_competitor_report_is_observed_data_not_guessed_ranks(self):
+        sample = {
+            "date": "2026-11-07",
+            "returned_results": {"주소모음": 30, "링크모음": 9},
+            "sample_coverage": {"주소모음": "complete", "링크모음": "partial"},
+            "competitor_top": {
+                "주소모음": [
+                    {"position": 1, "title": "주소모음 | 첫번째", "url": "https://example.org/"}
+                ]
+            }
+        }
+        report = rank_tracker.competitor_report({"samples": [sample]})
+        self.assertIn("측정일: 2026-11-07", report)
+        self.assertIn("| 1 | 주소모음 \| 첫번째 | https://example.org/ |", report)
+        self.assertIn("검사한 자연 검색 결과: 9/30개", report)
+        self.assertIn("관측 데이터 없음", report)
+        self.assertNotIn("도메인 권위: 95", report)
+
+    def test_competitor_report_empty_history_is_explicitly_unknown(self):
+        report = rank_tracker.competitor_report({"samples": []})
+        self.assertIn("측정일: 데이터 없음", report)
+        self.assertEqual(report.count("관측 데이터 없음"), 3)
+
     def test_missing_is_not_a_false_rank(self):
         result = rank_tracker.find_result([])
         self.assertEqual(result, {"position": None, "url": None})
