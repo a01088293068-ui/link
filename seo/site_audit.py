@@ -233,6 +233,19 @@ def audit_site(dist):
     except (OSError, ValueError) as error:
         errors.append(f"directory data cannot be read: {error}")
 
+    # Search-intent landing page counts must reflect the same directory source
+    # used for the indexable static listing. Detect stale editorial numbers.
+    homepage = dist / "index.html"
+    if homepage.is_file() and isinstance(records, list) and records:
+        home_html = homepage.read_text(encoding="utf-8")
+        for label in ("등록 사이트", "등록 항목"):
+            values = [int(value) for value in re.findall(
+                rf"(\\d+)개\\s+{re.escape(label)}", home_html)]
+            if not values:
+                errors.append(f"homepage missing directory count: {label}")
+            elif any(value != len(records) for value in values):
+                errors.append(f"homepage directory count mismatch: {label}")
+
     # The visible directory cards are statically crawlable. Keep them in sync
     # with the editable JSON source so Google and on-page search see the same list.
     directory_page = dist / "directory.html"
