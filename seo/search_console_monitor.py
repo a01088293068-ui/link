@@ -37,11 +37,14 @@ def access_token():
     return credentials.token
 
 
-def query_performance(token, property_url, start_date, end_date, dimensions, limit=100):
+def query_performance(token, property_url, start_date, end_date, dimensions, limit=100,
+                      filter_groups=None):
     endpoint = ('https://www.googleapis.com/webmasters/v3/sites/' +
                 quote(property_url, safe='') + '/searchAnalytics/query')
     payload = {'startDate': start_date, 'endDate': end_date, 'dimensions': dimensions,
                'rowLimit': limit, 'type': 'web'}
+    if filter_groups is not None:
+        payload['dimensionFilterGroups'] = filter_groups
     request = Request(endpoint, json.dumps(payload).encode('utf-8'),
                       {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'},
                       method='POST')
@@ -152,6 +155,17 @@ def format_index_inspection(rows, error=''):
 
 CORE_KEYWORDS = ("주소모음", "링크모음", "사이트모음")
 
+# Google Search Analytics API supports RE2 includingRegex query filters.
+# A dedicated filtered request prevents the top-ranked query list from
+# obscuring low-impression observations of our three target keywords.
+CORE_QUERY_FILTERS = [{
+    "groupType": "and",
+    "filters": [{
+        "dimension": "query", "operator": "includingRegex",
+        "expression": r"^(주소[[:space:]]*모음|링크[[:space:]]*모음|사이트[[:space:]]*모음)$",
+    }],
+}]
+
 
 def core_keyword_rows(keyword_rows, query_page_rows=None):
     """Use observed query rows only; merge internal whitespace variants."""
@@ -179,7 +193,9 @@ def core_keyword_rows(keyword_rows, query_page_rows=None):
     return output
 
 
-def format_report(keyword_rows, page_rows, start_date, end_date, property_url, date_rows=None, query_page_rows=None):
+def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
+                  date_rows=None, query_page_rows=None, focused_keyword_rows=None,
+                  focused_query_page_rows=None, focused_error=''):
     lines = ['# 링크위키 Search Console 실적', '',
              f'- 속성: `{property_url}`', f'- 조회 기간: {start_date} ~ {end_date}',
              '- 데이터: Google Search Console API. 검색량이나 실시간 순위가 아닙니다.', '',
@@ -228,7 +244,13 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url, d
                   '- 검색어가 제공되지 않으면 순위를 추정하지 않습니다. 평균 순위는 노출수 가중값입니다.',
                   '| 키워드 | 노출 | 클릭 | 평균 순위 | 실제 노출 페이지 |',
                   '|---|---:|---:|---:|---|'])
-    for core in core_keyword_rows(keyword_rows, query_page_rows):
+    if focused_error:
+        lines.append('- 별도 핵심 키워드 조회 실패: ' + focused_error)
+    source_keywords = (focused_keyword_rows if focused_keyword_rows is not None
+                       else keyword_rows)
+    source_pages = (focused_query_page_rows if focused_query_page_rows is not None
+                    else query_page_rows)
+    for core in core_keyword_rows(source_keywords, source_pages):
         if not core["observed"]:
             lines.append(f'| {core["keyword"]} | 데이터 없음 | - | - | - |')
             continue
@@ -353,10 +375,27 @@ def main():
     pages = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['page'])
     dates = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['date'])
     query_pages = query_performance(token, args.property, start.isoformat(), end.isoformat(), ['query', 'page'], limit=1000)
+    focused_keywords = None
+    focused_pages = None
+    focused_error = ''
+    try:
+        focused_keywords = query_performance(
+            token, args.property, start.isoformat(), end.isoformat(),
+            ['query'], limit=100, filter_groups=CORE_QUERY_FILTERS)
+        focused_pages = query_performance(
+            token, args.property, start.isoformat(), end.isoformat(),
+            ['query', 'page'], limit=1000, filter_groups=CORE_QUERY_FILTERS)
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+        focused_error = type(exc).__name__
+        if isinstance(exc, HTTPError):
+            focused_error += f' HTTP {exc.code}'
     args.output.parent.mkdir(parents=True, exist_ok=True)
     inspections, inspection_error = collect_index_inspections(
         token, args.property, inspection_targets(pages))
-    report = format_report(keywords, pages, start, end, args.property, dates, query_pages)
+    report = format_report(
+        keywords, pages, start, end, args.property, dates, query_pages,
+        focused_keyword_rows=focused_keywords,
+        focused_query_page_rows=focused_pages, focused_error=focused_error)
     report += format_index_inspection(inspections, inspection_error)
     args.output.write_text(report, encoding='utf-8')
     print(f'Wrote {args.output}: {len(keywords)} queries, {len(pages)} pages')
