@@ -60,6 +60,34 @@ class RankTrackerTests(unittest.TestCase):
         self.assertEqual(coverage['링크모음'], 'complete')
         self.assertEqual(coverage['웹툰 링크모음'], 'complete')
 
+    def test_primary_scorecard_distinguishes_confirmed_and_partial_absence(self):
+        history = {"samples": [
+            {"date": "2026-11-06",
+             "results": {"주소모음": {"position": None}, "링크모음": {"position": None},
+                         "사이트모음": {"position": None}},
+             "returned_results": {"주소모음": 9, "링크모음": 30, "사이트모음": 30},
+             "sample_coverage": {"주소모음": "partial", "링크모음": "complete",
+                                 "사이트모음": "complete"}},
+            {"date": "2026-11-07",
+             "results": {"주소모음": {"position": None}, "링크모음": {"position": 19,
+                "url": "https://linkwiki.info/directory"}, "사이트모음": {"position": None}},
+             "returned_results": {"주소모음": 9, "링크모음": 30, "사이트모음": 30},
+             "sample_coverage": {"주소모음": "partial", "링크모음": "complete",
+                                 "사이트모음": "complete"}}
+        ]}
+        report = rank_tracker.core_keyword_scorecard(history)
+        self.assertIn("| 주소모음 | 표본 미발견 · 30위 내 여부 미확정 | 9/30 |", report)
+        self.assertIn("링크모음 | 19위", report)
+        self.assertIn("| 사이트모음 | 검사한 상위 30개에서 미발견 | 30/30 |", report)
+        self.assertIn("직전 측정", report)
+        self.assertIn("2026-11-07", report)
+        self.assertNotIn("주소모음 | 30위 밖", report)
+
+    def test_primary_scorecard_without_samples_does_not_invent_results(self):
+        report = rank_tracker.core_keyword_scorecard({"samples": []})
+        self.assertIn("측정일: 데이터 없음", report)
+        self.assertIn("| 주소모음 | 데이터 없음", report)
+
     def test_missing_is_not_a_false_rank(self):
         result = rank_tracker.find_result([])
         self.assertEqual(result, {"position": None, "url": None})
