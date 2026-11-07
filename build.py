@@ -290,9 +290,9 @@ def add_breadcrumb_data(html, public_path):
 
 
 
-def core_search_intent_section(total_sites, categories):
+def core_search_intent_section(total_sites):
     """One useful homepage entry point for the three primary search intents."""
-    if total_sites < 1 or not categories:
+    if total_sites < 1:
         raise RuntimeError("Homepage keyword guide needs real directory records")
     return (
         '<section class="wrap seo-core-intent" aria-label="주소모음 링크모음 사이트모음 이용 안내">'
@@ -454,7 +454,7 @@ def build():
         (OUT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
     if not isinstance(first_party_records, list) or not first_party_records:
         raise RuntimeError("Directory data required for homepage search-intent guide")
-    homepage_intents = core_search_intent_section(len(first_party_records), True)
+    homepage_intents = core_search_intent_section(len(first_party_records))
     home = home.replace(position, panel + homepage_intents + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
