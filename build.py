@@ -396,7 +396,7 @@ def directory_search_help(records, categories):
     if not active:
         raise RuntimeError("No directory categories available")
     return (
-        '<section class="lw-safety-note seo-search-help" aria-label="사이트모음 검색 및 확인 방법">'
+        '<section id="site-list-guide" class="lw-safety-note seo-search-help" aria-label="사이트모음 검색 및 확인 방법">'
         '<h2>주소모음·링크모음 검색 사용 방법</h2>'
         '<ol>'
         '<li>찾는 사이트 이름이나 도메인을 알고 있으면 위 검색창에 입력합니다. '
@@ -500,7 +500,7 @@ def directory_category_overview(records, categories, per_category=3):
             '</section>'
         )
     return (
-        '<section class="lw-safety-note seo-directory-overview" '
+        '<section id="site-category-comparison" class="lw-safety-note seo-directory-overview" '
         'aria-label="분야별 사이트 목록 비교">'
         '<h2>분야별 사이트모음 비교 및 선택</h2>'
         '<p>아래는 실제 등록된 사이트의 이름과 목록 설명을 비교한 것입니다. '
@@ -661,7 +661,9 @@ def build():
             for category, slug, _, _ in CATEGORY_LANDING
             if counts.get(category, 0) > 0
         )
-        + '<a href="/categories/">전체 분야 보기</a></nav>'
+        + '<a href="/categories/">전체 분야 보기</a>'
+        + '<a href="#site-list-guide">검색 이용 안내</a>'
+        + '<a href="#site-category-comparison">분야별 등록 예시</a></nav>'
     )
     directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
                             directory_html, count=1, flags=re.S)
@@ -693,8 +695,8 @@ def build():
             f'<article class="v6-card"><h2><a href="/categories/{slug}">{escape(heading)}</a></h2>'
             f'<p>{escape(purpose)}</p><p>{count}개 등록 사이트</p>'
             '<p>등록 예시: ' + escape(', '.join(
-                item["name"] for item in records if item["category"] == category
-            )[:120]) + '</p>'
+                [item["name"] for item in records if item["category"] == category][:3]
+            )) + '</p>'
             f'<a href="/categories/{slug}">사이트 목록 보기</a></article>')
     hub = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 분야별 사이트</nav>'
            '<div class="blog-heading"><p class="eyebrow">LINKWIKI · DIRECTORY</p>'
