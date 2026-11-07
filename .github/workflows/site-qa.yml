@@ -10,6 +10,7 @@ on:
       - 'robots.txt'
       - 'assets/verified-directory.json'
       - 'assets/directory.js'
+      - 'assets/directory-search.js'
       - 'about.html'
       - 'privacy.html'
       - 'build.py'
@@ -33,6 +34,7 @@ on:
       - 'robots.txt'
       - 'assets/verified-directory.json'
       - 'assets/directory.js'
+      - 'assets/directory-search.js'
       - 'about.html'
       - 'privacy.html'
       - 'build.py'
@@ -63,6 +65,11 @@ jobs:
           python-version: '3.12'
       - name: Build Cloudflare Pages release
         run: python3 build.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test browser directory multi-term search
+        run: node --test tests/test_directory_search.cjs
       - name: Verify generated sitemap and canonical URLs
         run: python3 seo/site_audit.py dist
       - name: Test build and content QA regressions
