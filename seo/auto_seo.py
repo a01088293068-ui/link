@@ -337,11 +337,17 @@ def category_example_missing(topic, article):
     }
     if not relevant_categories:
         return False
-    context = directory_context()["listed_examples_by_category"]
+    # The model sees a concise three-example prompt, but validation must
+    # accept *any* published name in the matching category. Never reject a
+    # correct fourth-or-later entry just because it was omitted from the prompt.
+    records = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
     verified_names = [
-        item["name"] for category in relevant_categories
-        for item in context.get(category, [])
-        if item.get("name")
+        record["name"].strip()
+        for record in records
+        if isinstance(record, dict)
+        and record.get("category") in relevant_categories
+        and isinstance(record.get("name"), str)
+        and len(record["name"].strip()) >= 2
     ]
     if not verified_names:
         return True
@@ -360,7 +366,16 @@ def category_example_missing(topic, article):
             if isinstance(item, dict)
         ]
     ).casefold()
-    return not any(name.casefold() in prose for name in verified_names)
+    # Avoid a standalone short site name qualifying merely as a substring in
+    # an unrelated word. For ASCII names require alphanumeric boundaries.
+    def mentioned(name):
+        expression = re.escape(name.casefold())
+        if name[0].isascii() and name[0].isalnum():
+            expression = r"(?<![a-z0-9])" + expression
+        if name[-1].isascii() and name[-1].isalnum():
+            expression += r"(?![a-z0-9])"
+        return re.search(expression, prose) is not None
+    return not any(mentioned(name) for name in verified_names)
 
 
 def deterministic_review(topic, article, text, titles):
