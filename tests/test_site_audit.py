@@ -7,6 +7,29 @@ from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta, intern
 
 
 class SiteAuditTests(unittest.TestCase):
+    def test_homepage_directory_count_is_checked_against_json(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            (root / "blog").mkdir()
+            (root / "blog/index.html").write_text("index", encoding="utf-8")
+            (root / "assets/verified-directory.json").write_text(
+                json.dumps([{"name": "Example", "category": "검색·포털",
+                             "description": "Example", "url": "https://example.org/"}]),
+                encoding="utf-8")
+            sitemap = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       f'<url><loc>{SITE}/blog/</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            home = root / "index.html"
+            home.write_text("<html><body>97개 등록 사이트, 97개 등록 항목</body></html>", encoding="utf-8")
+            errors = audit_site(root)
+            self.assertTrue(any("homepage directory count mismatch: 등록 사이트" in x for x in errors))
+            self.assertTrue(any("homepage directory count mismatch: 등록 항목" in x for x in errors))
+            home.write_text("<html><body>1개 등록 사이트, 1개 등록 항목</body></html>", encoding="utf-8")
+            errors = audit_site(root)
+            self.assertFalse(any("homepage directory count" in x for x in errors), errors)
+
     def test_robots_noindex_is_detected_with_either_attribute_order(self):
         samples = [
             '<meta name="robots" content="noindex,follow">',
