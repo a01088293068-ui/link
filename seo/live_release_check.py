@@ -77,8 +77,11 @@ def release_content_sections(html, path):
             r'<section class="wrap seo-directory-examples"[^>]*>.*?</section>',
         ),
         "/directory": (
-            r'<section class="lw-safety-note seo-search-help"[^>]*>.*?</section>',
+            r'<section\b(?=[^>]*\bclass="[^"]*\bseo-search-help\b)[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
+        ),
+        "/categories/": (
+            r'<article class="v6-card">.*?</article>',
         ),
     }
     blocks = []
@@ -112,6 +115,10 @@ def check_page(expected_html, live_html, path):
             errors.append("/: core keyword search-intent section missing on live site")
         if "/directory" not in live.links or "/categories/" not in live.links:
             errors.append("/: links to primary directory and category hub missing")
+    if path == "/categories/":
+        for link in CATEGORY_PATHS:
+            if link not in live.links:
+                errors.append(f"/categories/: missing category link {link}")
     if path == "/directory":
         if not all(keyword in "".join(live.headings) for keyword in CORE):
             errors.append("/directory: three primary keywords missing from visible H1")
@@ -150,7 +157,8 @@ def fetch_public(path):
 
 def run(dist, fetch=fetch_public):
     expected_map = {"/": dist / "index.html",
-                    "/directory": dist / "directory.html"}
+                    "/directory": dist / "directory.html",
+                    "/categories/": dist / "categories" / "index.html"}
     problems = []
     for path, source in expected_map.items():
         expected = source.read_text(encoding="utf-8")
