@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add seo/rank-history.json seo/core-keyword-scorecard.md
+          git add seo/rank-history.json seo/core-keyword-scorecard.md seo/core-serp-competitors.md
           if ! git diff --cached --quiet; then
             git commit -m 'Record Korean search visibility snapshot'
             git push origin HEAD:main
