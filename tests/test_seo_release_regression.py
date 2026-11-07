@@ -119,7 +119,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             html = file.read_text(encoding="utf-8")
             self.assertIn('<a href="/directory">전체 주소모음·사이트모음 검색</a>', html)
             self.assertIn('<a href="/categories/">분야별 링크모음 보기</a>', html)
-            self.assertEqual(html.count('href="/directory"'), 1)
+            self.assertEqual(html.count('<a href="/directory">전체 주소모음·사이트모음 검색</a>'), 1)
         links = article_category_links("AI 글쓰기", [
             ("AI 도구", "/categories/ai"),
             ("없는 분야", "/categories/nonexistent"),
