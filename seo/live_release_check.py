@@ -74,7 +74,7 @@ def release_content_sections(html, path):
     """Extract deterministic substantive SEO sections from generated HTML."""
     patterns = {
         "/": (
-            r'<section class="wrap seo-directory-examples"\\b.*?</section>',
+            r'<section class="wrap seo-directory-examples"\b.*?</section>',
         ),
         "/directory": (
             r'<section class="seo-directory-category">.*?</section>',
