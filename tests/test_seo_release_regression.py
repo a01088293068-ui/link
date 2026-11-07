@@ -110,6 +110,27 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('name="robots" content="index,follow"', html)
         self.assertNotIn('name="robots" content="noindex', html)
 
+    def test_guide_article_links_to_primary_directory_and_relevant_categories(self):
+        from build import article_category_links
+        root = Path(__file__).resolve().parents[1]
+        guides = sorted((root / "dist/blog").glob("seo-*/index.html"))
+        self.assertGreater(len(guides), 0)
+        for file in guides:
+            html = file.read_text(encoding="utf-8")
+            self.assertIn('<a href="/directory">전체 주소모음·사이트모음 검색</a>', html)
+            self.assertIn('<a href="/categories/">분야별 링크모음 보기</a>', html)
+            self.assertEqual(html.count('href="/directory"'), 1)
+        links = article_category_links("AI 글쓰기", [
+            ("AI 도구", "/categories/ai"),
+            ("없는 분야", "/categories/nonexistent"),
+            ("AI 도구", "/categories/ai"),
+            ("검색·포털", "/categories/search"),
+        ])
+        self.assertEqual(links.count('href="/categories/ai"'), 1)
+        self.assertIn('href="/categories/search"', links)
+        self.assertNotIn("nonexistent", links)
+        self.assertEqual(article_category_links("일반 안내", []), "")
+
     def test_category_article_links_only_relevant_published_guides(self):
         posts = [
             {"title": "검색 포털 링크모음 목적별 비교", "url": "/blog/search-example/"},
