@@ -348,6 +348,8 @@ def audit_site(dist):
                              if isinstance(record, dict) and record.get("category") == category]
             if actual_urls != expected_urls:
                 errors.append(f"category card URLs differ from JSON: {slug}")
+            if page_content.count('aria-label="연관 분야 이어서 찾기"') != 1:
+                errors.append(f"related category navigation missing or duplicated: {slug}")
             expected_records = [record for record in records
                                 if isinstance(record, dict) and record.get("category") == category]
             # Legacy category pages render .v6-card with h3; newer .item cards
