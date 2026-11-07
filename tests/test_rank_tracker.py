@@ -3,6 +3,37 @@ from seo import rank_tracker
 
 
 class RankTrackerTests(unittest.TestCase):
+    def test_thirty_urls_with_missing_positions_are_not_complete(self):
+        observations = {"주소모음": {"position": None, "url": None}}
+        returned = {"주소모음": 30}
+        positions = {"주소모음": list(range(1, 30)) + [40]}
+        self.assertEqual(rank_tracker.coverage_for(
+            observations, returned, positions)["주소모음"], "partial")
+        history = {"samples": [{"date": "2026-11-07",
+                    "results": observations, "returned_results": returned,
+                    "sampled_positions": positions,
+                    "sample_coverage": rank_tracker.coverage_for(observations, returned, positions)}]}
+        report = rank_tracker.core_keyword_scorecard(history)
+        self.assertIn("표본 미발견 · 30위 내 여부 미확정", report)
+        self.assertNotIn("검사한 상위 30개에서 미발견", report)
+
+    def test_full_contiguous_ordinals_can_be_called_complete(self):
+        observations = {"사이트모음": {"position": None, "url": None}}
+        returned = {"사이트모음": 30}
+        positions = {"사이트모음": list(range(1, 31))}
+        self.assertEqual(rank_tracker.coverage_for(
+            observations, returned, positions)["사이트모음"], "complete")
+        positions["사이트모음"] = list(range(2, 32))
+        self.assertEqual(rank_tracker.coverage_for(
+            observations, returned, positions)["사이트모음"], "partial")
+
+    def test_duplicate_position_rows_do_not_prove_complete_sample(self):
+        observations = {"링크모음": {"position": None, "url": None}}
+        returned = {"링크모음": 30}
+        positions = {"링크모음": list(range(1, 30)) + [29]}
+        self.assertEqual(rank_tracker.coverage_for(
+            observations, returned, positions)["링크모음"], "partial")
+
     def test_short_first_serp_page_does_not_hide_second_page(self):
         from unittest.mock import patch
         pages = {
