@@ -384,6 +384,43 @@ def homepage_directory_examples(records, categories):
     )
 
 
+def directory_search_help(records, categories):
+    """Helpful, static, data-backed search instructions for directory visitors."""
+    if not records or not categories:
+        raise RuntimeError("Directory guidance needs published categories")
+    counts = {
+        category: sum(1 for item in records if item.get("category") == category)
+        for category, _, _, _ in categories
+    }
+    active = [(category, slug) for category, slug, _, _ in categories if counts[category]]
+    if not active:
+        raise RuntimeError("No directory categories available")
+    return (
+        '<section class="lw-safety-note seo-search-help" aria-label="사이트모음 검색 및 확인 방법">'
+        '<h2>주소모음·링크모음 검색 사용 방법</h2>'
+        '<ol>'
+        '<li>찾는 사이트 이름이나 도메인을 알고 있으면 위 검색창에 입력합니다. '
+        '여러 단어를 함께 입력하면 해당 조건을 충족하는 목록으로 좁혀집니다.</li>'
+        '<li>목적만 알고 있으면 분야 선택 버튼 또는 아래 카테고리 링크로 이동합니다. '
+        f'현재 {len(active)}개 분야에 {len(records)}개 사이트가 등록되어 있습니다.</li>'
+        '<li>목록의 설명과 등록 도메인을 비교한 뒤 방문합니다. '
+        '외부 사이트의 공식 인증이나 실시간 접속 가능 여부는 보증하지 않습니다.</li>'
+        '</ol>'
+        '<h3>자주 묻는 질문</h3>'
+        '<h4>사이트 이름을 몰라도 주소모음에서 찾을 수 있나요?</h4>'
+        '<p>네. 커뮤니티, AI 도구, 스포츠 등 용도나 분야별로 목록을 좁힐 수 있습니다. '
+        '<a href="/categories/">분야별 사이트모음</a>에서 등록된 분야를 확인하세요.</p>'
+        '<h4>링크모음의 사이트 주소는 모두 공식 주소인가요?</h4>'
+        '<p>아닙니다. 이 목록은 탐색용 등록 정보이며 운영 주체를 인증하지 않습니다. '
+        '<a href="/guides/address-check">공식 주소 확인 방법</a>에 따라 '
+        '방문 전 서비스 공지와 실제 주소를 대조하세요.</p>'
+        '<h4>사이트모음에서 검색한 링크가 열리지 않으면 어떻게 하나요?</h4>'
+        '<p>주소를 다시 확인하고 공식 운영 채널의 변경 공지를 살펴보세요. '
+        '<a href="/guides/link-troubleshooting">접속 오류 안내</a>도 참고할 수 있습니다.</p>'
+        '</section>'
+    )
+
+
 def directory_collection_schema(records, categories):
     """Truthful CollectionPage and eight category navigation entries.
 
@@ -448,7 +485,8 @@ def directory_category_overview(records, categories, per_category=3):
             continue
         listing = ''.join(
             '<li><strong>' + escape(entry["name"].strip()) + '</strong>'
-            ' — ' + escape(entry["description"].strip()) + '</li>'
+            ' — ' + escape(entry["description"].strip())
+            + ' (등록 도메인: ' + escape(urlparse(entry["url"]).hostname or "") + ')</li>'
             for entry in examples
         )
         sections.append(
@@ -633,7 +671,9 @@ def build():
     overview_marker = '<section aria-label="안전한 링크 이용"'
     if directory_html.count(overview_marker) != 1:
         raise RuntimeError("Directory explanation layout changed; review required")
-    directory_html = directory_html.replace(overview_marker, overview + overview_marker, 1)
+    help_section = directory_search_help(records, CATEGORY_LANDING)
+    directory_html = directory_html.replace(
+        overview_marker, help_section + overview + overview_marker, 1)
     # Provide a structured category map for the core search landing page.
     # One declaration only; never generate unverified ratings or fake offers.
     if 'id="directory-category-schema"' in directory_html:
@@ -652,6 +692,9 @@ def build():
         category_cards.append(
             f'<article class="v6-card"><h2><a href="/categories/{slug}">{escape(heading)}</a></h2>'
             f'<p>{escape(purpose)}</p><p>{count}개 등록 사이트</p>'
+            '<p>등록 예시: ' + escape(', '.join(
+                item["name"] for item in records if item["category"] == category
+            )[:120]) + '</p>'
             f'<a href="/categories/{slug}">사이트 목록 보기</a></article>')
     hub = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 분야별 사이트</nav>'
            '<div class="blog-heading"><p class="eyebrow">LINKWIKI · DIRECTORY</p>'

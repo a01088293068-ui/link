@@ -14,6 +14,16 @@ def page(path, title, heading, more=""):
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
+    def test_live_release_flags_missing_search_help_section(self):
+        from seo.live_release_check import release_content_sections
+        expected = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색",
+                        '<section class="lw-safety-note seo-search-help" aria-label="사용법">'
+                        '<h2>검색 사용 방법</h2></section>')
+        stale = expected.replace("검색 사용 방법", "예전 안내")
+        self.assertEqual(len(release_content_sections(expected, "/directory")), 1)
+        self.assertTrue(any("directory examples differ" in problem
+                            for problem in check_page(expected, stale, "/directory")))
+
     def test_detects_stale_deployed_site_examples_with_unchanged_title(self):
         from seo.live_release_check import release_content_sections
         home = page("/", "링크위키", "링크위키 주소모음", (

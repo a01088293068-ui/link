@@ -302,6 +302,18 @@ def audit_site(dist):
             errors.append(f"directory card count differs from JSON: {len(card_blocks)} != {len(expected_urls)}")
         if card_urls != expected_urls:
             errors.append("directory card URL order/content differs from JSON source")
+        if listing.count('class="lw-safety-note seo-search-help"') != 1:
+            errors.append("directory usage guide missing or duplicated")
+        if "사이트모음 검색 및 확인 방법" not in listing:
+            errors.append("directory search help missing accessible label")
+        for expected_path in ("/categories/", "/guides/address-check",
+                              "/guides/link-troubleshooting"):
+            if f'href="{expected_path}"' not in listing:
+                errors.append(f"directory guide missing help link: {expected_path}")
+        for slug in ("community", "korean", "comics-directory", "webtoon",
+                     "ai", "search", "sports", "video"):
+            if f'href="/categories/{slug}"' not in listing:
+                errors.append(f"directory missing category navigation: {slug}")
         errors.extend(card_copy_errors(card_blocks, records, "h3", "directory"))
 
     category_pages = {

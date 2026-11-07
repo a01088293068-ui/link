@@ -77,6 +77,7 @@ def release_content_sections(html, path):
             r'<section class="wrap seo-directory-examples"[^>]*>.*?</section>',
         ),
         "/directory": (
+            r'<section class="lw-safety-note seo-search-help"[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
         ),
     }

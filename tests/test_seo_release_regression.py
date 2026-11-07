@@ -10,6 +10,36 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_build_help_uses_registered_counts_and_real_navigation(self):
+        from build import directory_search_help, CATEGORY_LANDING
+        import json
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        section = directory_search_help(records, CATEGORY_LANDING)
+        self.assertIn(f"{len(records)}개 사이트", section)
+        self.assertIn('href="/guides/address-check"', section)
+        self.assertIn('href="/guides/link-troubleshooting"', section)
+        self.assertNotIn("FAQPage", section)
+        self.assertEqual(section.count("<h4>"), 3)
+        with self.assertRaises(RuntimeError):
+            directory_search_help([], CATEGORY_LANDING)
+        generated = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertEqual(generated.count('class="lw-safety-note seo-search-help"'), 1)
+        self.assertEqual(generated.count("주소모음·링크모음 검색 사용 방법"), 1)
+
+    def test_category_hub_shows_factual_registered_site_examples(self):
+        root = Path(__file__).resolve().parents[1]
+        generated = (root / "dist/categories/index.html").read_text(encoding="utf-8")
+        self.assertIn("등록 예시: ", generated)
+        self.assertIn("ChatGPT", generated)
+        self.assertIn("네이버 스포츠", generated)
+
+    def test_directory_examples_display_real_domains_without_implying_verification(self):
+        root = Path(__file__).resolve().parents[1]
+        generated = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertIn("등록 도메인: ", generated)
+        self.assertIn("서비스의 공식 인증·현재 접속 상태", generated)
+
     def test_home_search_submits_to_canonical_directory_without_html_redirect(self):
         from build import polish_home_intent
         root = Path(__file__).resolve().parents[1]
