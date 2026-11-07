@@ -412,6 +412,20 @@ def directory_category_overview(records, categories, per_category=3):
     )
 
 
+def article_category_links(title, categories):
+    """Link each guide only to existing, topically related directory categories."""
+    valid = {"/categories/" + slug for _, slug, _, _ in CATEGORY_LANDING}
+    output = []
+    for label, url in categories:
+        if url in valid and (label, url) not in output:
+            output.append((label, url))
+    return ''.join(
+        '<a href="' + escape(url, quote=True) + '">' +
+        escape(label) + ' 사이트 목록</a>'
+        for label, url in output[:2]
+    )
+
+
 def category_article_links(posts, slug, limit=3):
     """Select published, relevant guides only; never invent article URLs."""
     from seo.auto_seo import related_categories
@@ -462,12 +476,17 @@ def build():
         url = f"/blog/{quote(name)}/"
         canonical = SITE + url
         content_body = re.sub(r'^#\s+.*(?:\n|$)', '', body, count=1)
+        from seo.auto_seo import related_categories
+        related_links = article_category_links(title, related_categories(title))
         article = (f'<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / '
                    f'<a href="/blog/">사이트 정보</a></nav><article class="blog-article">'
                    f'<p class="eyebrow">LINKWIKI · 사이트 정보</p><h1>{escape(title)}</h1>'
                    + (f'<p class="blog-date">{display_date}</p>' if display_date else '') +
                    f'<div class="blog-content">{markdown(content_body)}</div>'
                    '<div class="blog-bottom"><a href="/">주소모음·링크모음 홈</a>'
+                   '<a href="/directory">전체 주소모음·사이트모음 검색</a>'
+                   '<a href="/categories/">분야별 링크모음 보기</a>'
+                   + related_links +
                    '<a href="/blog/">다른 이용 가이드 보기</a>'
                    '<a href="https://linkwiki01.com/" rel="noopener noreferrer">링크위키 바로가기</a></div></article></div>')
         target = OUT / "blog" / name / "index.html"
