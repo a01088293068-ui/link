@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const {norm, queryTerms, matches} = require('../assets/directory-search.js');
+const {norm, queryTerms, matches, sortResults, score} = require('../assets/directory-search.js');
 
 const listings = [
   {name: '중고나라', category: '커뮤니티',
@@ -44,4 +44,30 @@ test('Whitespace and Unicode compatibility forms are normalized', () => {
 test('Empty and directory-only terms preserve all site records', () => {
   assert.deepEqual(listings.filter(site => matches(site, '')), listings);
   assert.deepEqual(listings.filter(site => matches(site, '링크 모음')), listings);
+});
+
+test('Exact service names appear before incidental descriptions and domains', () => {
+  const entries = [
+    {name: '네이버 소개', category: '안내', description: '네이버 서비스', url: 'https://info.example/'},
+    {name: '네이버', category: '검색·포털', description: '포털', url: 'https://www.naver.com/'},
+    {name: '검색 사이트', category: '검색·포털', description: '네이버 링크', url: 'https://search.example/'},
+  ];
+  assert.deepEqual(sortResults(entries, '네이버').map(x => x.name),
+    ['네이버', '네이버 소개', '검색 사이트']);
+  assert.ok(score(entries[1], '네이버') > score(entries[0], '네이버'));
+});
+
+test('Exact domain matches come ahead of incidental mentions and shared links', () => {
+  const entries = [
+    {name: '중고나라', category: '커뮤니티', description: '중고 거래', url: 'https://cafe.naver.com/joonggonara'},
+    {name: '네이버', category: '검색·포털', description: '포털 서비스', url: 'https://www.naver.com/'},
+  ];
+  assert.deepEqual(sortResults(entries, 'naver.com').map(x => x.name),
+    ['네이버', '중고나라']);
+});
+
+test('Empty and generic searches retain the existing editorial listing order', () => {
+  assert.deepEqual(sortResults(listings, '').map(x => x.name), listings.map(x => x.name));
+  assert.deepEqual(sortResults(listings, '사이트 모음').map(x => x.name), listings.map(x => x.name));
+  assert.deepEqual(sortResults(listings, '없는 사이트'), []);
 });
