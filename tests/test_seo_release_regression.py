@@ -83,7 +83,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         self.assertEqual(html.count('aria-label="분야별 사이트 목록 비교"'), 1)
-        overview = html.split('aria-label="분야별 사이트 목록 비교"', 1)[1].split('</section>', 1)[0]
+        overview = html.split('aria-label="분야별 사이트 목록 비교"', 1)[1].split('<section aria-label="안전한 링크 이용"', 1)[0]
         from build import CATEGORY_LANDING
         for category, slug, _, _ in CATEGORY_LANDING:
             expected = next(record["name"] for record in records if record["category"] == category)
