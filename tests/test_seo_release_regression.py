@@ -10,6 +10,24 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_primary_directory_metadata_and_dynamic_heading_match_three_intents(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "dist/directory.html").read_text(encoding="utf-8")
+        script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
+        title = "주소모음·링크모음·사이트모음 검색 | 97개 사이트 - 링크위키"
+        heading = "주소모음·링크모음·사이트모음 통합 검색"
+        self.assertIn("<title>" + title + "</title>", html)
+        self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
+        self.assertIn("?'"+heading+"'", script)
+        self.assertIn('href="https://linkwiki.info/directory"', html)
+        self.assertIn('name="robots"', html)
+        self.assertIn('id="v6-form"', html)
+        self.assertIn('id="v6-results"', html)
+        self.assertEqual(html.count('<h1'), 1)
+        for keyword in ("주소모음", "링크모음", "사이트모음"):
+            self.assertIn(keyword, html)
+        self.assertNotIn("분야별 사이트모음·주소모음 검색", script)
+
     def test_latest_published_article_is_in_built_sitemap_with_matching_canonical(self):
         root = Path(__file__).resolve().parents[1]
         posts = sorted((root / "content").glob("seo-*.md"))
