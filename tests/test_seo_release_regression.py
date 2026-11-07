@@ -10,6 +10,26 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_all_eight_categories_offer_two_contextual_crawlable_paths(self):
+        from build import related_category_navigation, RELATED_CATEGORY_PATHS, CATEGORY_LANDING
+        from seo.site_audit import internal_inbound_links
+        root = Path(__file__).resolve().parents[1]
+        dist = root / "dist"
+        self.assertEqual(len(RELATED_CATEGORY_PATHS), len(CATEGORY_LANDING))
+        inbound = internal_inbound_links(dist)
+        for _, slug, _, _ in CATEGORY_LANDING:
+            block = related_category_navigation(slug)
+            page = (dist / "categories" / (slug + ".html")).read_text(encoding="utf-8")
+            self.assertIn(block, page)
+            self.assertEqual(block.count("<li>"), 2)
+            self.assertNotIn(f'href="/categories/{slug}"', block)
+            for target, _ in RELATED_CATEGORY_PATHS[slug]:
+                url = f"/categories/{target}"
+                self.assertIn(f'href="{url}"', block)
+                self.assertIn("/categories/" + slug, inbound[url])
+        with self.assertRaises(RuntimeError):
+            related_category_navigation("unlisted")
+
     def test_sitemap_lastmod_tracks_real_core_page_changes_only(self):
         from build import apply_significant_lastmods, SITE
         import xml.etree.ElementTree as ET
