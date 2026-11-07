@@ -140,11 +140,11 @@ def run(dist, fetch=fetch_public):
         problems.append(f"/sitemap.xml: fetch failed: {error}")
     try:
         live_search = fetch("/assets/directory-search.js")
-        if "terms.every(term => haystack.includes(term))" not in live_search:
+        if "terms.every(term => haystack.includes(term))" not in live_search or "function sortResults(" not in live_search:
             problems.append("/assets/directory-search.js: multi-term search not deployed")
         live_script = fetch("/assets/directory.js")
-        if "window.LinkWikiSearch.matches(s,q)" not in live_script:
-            problems.append("/assets/directory.js: multi-term search integration not deployed")
+        if "window.LinkWikiSearch.sortResults" not in live_script:
+            problems.append("/assets/directory.js: relevance search integration not deployed")
     except (OSError, RuntimeError, ValueError) as error:
         problems.append(f"/assets/directory.js: fetch failed: {error}")
     return problems
