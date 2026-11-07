@@ -342,6 +342,41 @@ def sync_directory_count(html, total_sites):
     return html
 
 
+def homepage_directory_examples(records, categories):
+    """Expose real registered sites in static HTML on the primary landing page.
+
+    Show one documented entry per category, without inventing live status,
+    rankings, official endorsements or changing the directory search UI.
+    """
+    if not isinstance(records, list) or not records:
+        raise RuntimeError("Homepage examples require verified directory data")
+    cards = []
+    for category, slug, heading, purpose in categories:
+        entry = next((
+            item for item in records
+            if isinstance(item, dict) and item.get("category") == category
+            and isinstance(item.get("name"), str) and item["name"].strip()
+            and isinstance(item.get("description"), str) and item["description"].strip()
+        ), None)
+        if entry is None:
+            raise RuntimeError(f"Missing descriptive directory example: {category}")
+        cards.append(
+            '<article class="v6-card">'
+            f'<h3><a href="/categories/{escape(slug, quote=True)}">{escape(heading)}</a></h3>'
+            f'<p><strong>{escape(entry["name"].strip())}</strong> — '
+            f'{escape(entry["description"].strip())}</p>'
+            f'<a href="/categories/{escape(slug, quote=True)}">이 분야 사이트 더 보기</a>'
+            '</article>'
+        )
+    return (
+        '<section class="wrap seo-directory-examples" aria-label="실제 등록 사이트 분야별 예시">'
+        '<div class="v47-section-heading"><h2>분야별 사이트모음 실제 등록 예시</h2></div>'
+        '<p>아래는 등록된 사이트 목록의 분야별 첫 번째 예시입니다. '
+        '인기 순위나 추천 등급이 아니며 접속 가능 여부를 실시간으로 보증하지 않습니다.</p>'
+        '<div class="v6-grid">' + ''.join(cards) + '</div></section>'
+    )
+
+
 def directory_collection_schema(records, categories):
     """Truthful CollectionPage and eight category navigation entries.
 
@@ -553,7 +588,8 @@ def build():
     if count_replacements < 2:
         raise RuntimeError("Homepage directory count labels changed; review required")
     homepage_intents = core_search_intent_section(actual_count)
-    home = home.replace(position, panel + homepage_intents + position, 1)
+    real_directory_examples = homepage_directory_examples(first_party_records, CATEGORY_LANDING)
+    home = home.replace(position, panel + homepage_intents + real_directory_examples + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
