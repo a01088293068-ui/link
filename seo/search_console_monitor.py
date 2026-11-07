@@ -55,7 +55,15 @@ def query_performance(token, property_url, start_date, end_date, dimensions, lim
 INSPECT_URLS = (
     'https://linkwiki.info/',
     'https://linkwiki.info/directory',
+    'https://linkwiki.info/categories/',
+    'https://linkwiki.info/categories/community',
+    'https://linkwiki.info/categories/korean',
+    'https://linkwiki.info/categories/comics-directory',
+    'https://linkwiki.info/categories/webtoon',
     'https://linkwiki.info/categories/ai',
+    'https://linkwiki.info/categories/search',
+    'https://linkwiki.info/categories/sports',
+    'https://linkwiki.info/categories/video',
     'https://linkwiki.info/guides/address-check',
     'https://linkwiki.info/guides/directory-comparison',
 )
@@ -70,7 +78,7 @@ def recent_published_post_urls(limit=3):
         for path in sorted(posts.glob("seo-*.md"), reverse=True)[:limit]
     ]
 
-def inspection_targets(page_rows, limit=15):
+def inspection_targets(page_rows, limit=20):
     """Prioritize deployed extensionless canonicals and inspect observed variants.
 
     Cloudflare serves .html files at extensionless canonical URLs. When Search
@@ -78,7 +86,7 @@ def inspection_targets(page_rows, limit=15):
     and its canonical so a legacy redirect does not mask the indexed page.
     """
     from urllib.parse import urlsplit
-    urls = list(INSPECT_URLS)
+    urls = list(INSPECT_URLS[:limit])
     seen = set(urls)
     for url in recent_published_post_urls():
         if url not in seen and len(urls) < limit:
@@ -132,9 +140,18 @@ def format_index_inspection(rows, error=''):
                      ('url', 'verdict', 'coverage', 'last_crawl', 'google_canonical')) + ' |')
     if rows:
         indexed = sum(row.get('verdict') == 'PASS' for row in rows)
-        unknown = [row for row in rows if '알려지지' in str(row.get('coverage', ''))]
-        crawled = [row for row in rows if '크롤링됨' in str(row.get('coverage', ''))
-                   and '색인이 생성되지' in str(row.get('coverage', ''))]
+        def coverage_kind(row):
+            state = str(row.get('coverage', '')).casefold()
+            if ('알려지지' in state or 'unknown to google' in state
+                    or 'url is unknown' in state):
+                return 'unknown'
+            if (('크롤링됨' in state or 'crawled' in state)
+                    and ('색인이 생성되지' in state or 'not indexed' in state)):
+                return 'crawled_not_indexed'
+            return 'other'
+
+        unknown = [row for row in rows if coverage_kind(row) == 'unknown']
+        crawled = [row for row in rows if coverage_kind(row) == 'crawled_not_indexed']
         lines.extend(['', '### 점검한 URL 중 색인 우선 조치',
                       f'- 검사한 URL: {len(rows)}개 · 색인 PASS: {indexed}개 · '
                       f'Google에 알려지지 않음: {len(unknown)}개 · '
