@@ -11,6 +11,27 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_priority_index_checks_distinguish_missing_from_unindexed(self):
+        rows = [
+            {'url': 'https://linkwiki.info/', 'verdict': 'PASS',
+             'google_canonical': 'https://linkwiki.info/'},
+            {'url': 'https://linkwiki.info/directory', 'verdict': 'NEUTRAL',
+             'coverage': 'URL is unknown to Google'},
+        ]
+        report = monitor.priority_index_checks(rows)
+        self.assertIn('https://linkwiki.info/directory | 핵심 주소모음 목록 | NEUTRAL', report)
+        self.assertIn('사이트맵 제출·홈페이지 내부 링크', report)
+        self.assertIn('https://linkwiki.info/categories/ | 카테고리 허브 | 조회 결과 없음', report)
+        self.assertIn('조회 결과가 없다는 사실은 Google 미발견', report)
+        self.assertNotIn('https://linkwiki.info/categories/ | 카테고리 허브 | NEUTRAL', report)
+
+    def test_priority_index_checks_detect_google_canonical_mismatch(self):
+        report = monitor.priority_index_checks([{
+            'url': 'https://linkwiki.info/directory', 'verdict': 'PASS',
+            'google_canonical': 'https://linkwiki.info/',
+        }])
+        self.assertIn('Google 선택 정규 URL과 사이트 canonical 차이 검토', report)
+
     def test_report_search_query_table_remains_contiguous(self):
         report = monitor.format_report(
             [{'keys': ['주소모음'], 'impressions': 2, 'clicks': 1,
