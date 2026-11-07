@@ -69,6 +69,32 @@ class SearchConsoleMonitorTests(unittest.TestCase):
                 self.assertIn(f'HTTP {code}', error)
                 self.assertNotIn('색인되지 않음', error)
 
+    def test_core_three_keyword_rows_aggregate_space_variants_and_weight_positions(self):
+        rows = [
+            {'keys': ['주소모음'], 'impressions': 3, 'clicks': 1, 'position': 20},
+            {'keys': ['주소 모음'], 'impressions': 1, 'clicks': 0, 'position': 40},
+            {'keys': ['링크 모음'], 'impressions': 2, 'clicks': 1, 'position': 12},
+            {'keys': ['링크위키'], 'impressions': 50, 'clicks': 20, 'position': 1},
+        ]
+        query_pages = [
+            {'keys': ['주소모음', 'https://linkwiki.info/'], 'impressions': 3},
+            {'keys': ['주소 모음', 'https://linkwiki.info/directory'], 'impressions': 1},
+        ]
+        actual = monitor.core_keyword_rows(rows, query_pages)
+        self.assertEqual([r['keyword'] for r in actual], ['주소모음', '링크모음', '사이트모음'])
+        self.assertEqual((actual[0]['impressions'], actual[0]['clicks'], actual[0]['position']), (4, 1, 25.0))
+        self.assertEqual(actual[0]['pages'],
+                         ['https://linkwiki.info/', 'https://linkwiki.info/directory'])
+        self.assertEqual(actual[1]['impressions'], 2)
+        self.assertFalse(actual[2]['observed'])
+        self.assertIsNone(actual[2]['position'])
+
+    def test_core_keyword_section_never_invents_unobserved_rankings(self):
+        report = monitor.format_report([], [], '2026-10-01', '2026-10-28', 'sc-domain:linkwiki.info')
+        self.assertIn('## 핵심 목표 키워드 3종 실적', report)
+        for term in ('주소모음', '링크모음', '사이트모음'):
+            self.assertIn(f'| {term} | 데이터 없음 | - | - | - |', report)
+
     def test_api_request_and_response(self):
         class Response:
             def __enter__(self):
