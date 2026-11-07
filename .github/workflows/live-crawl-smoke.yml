@@ -1,0 +1,31 @@
+name: LinkWiki deployed crawlability smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '40 4 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  live-seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify smoke-check behavior without network
+        run: python3 -B -m unittest discover -s tests -p 'test_live_crawl_smoke.py' -v
+      - name: Check deployed canonical URLs and sitemap
+        run: python3 seo/live_crawl_smoke.py
+      - name: Preserve actual HTTP diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployed-crawlability-report
+          path: seo/live-crawl-report.md
+          if-no-files-found: warn
+          retention-days: 30
