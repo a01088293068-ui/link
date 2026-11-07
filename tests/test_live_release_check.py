@@ -16,6 +16,7 @@ def page(path, title, heading, more=""):
 class LiveReleaseCheckTests(unittest.TestCase):
     def test_accepts_correct_live_home_and_directory(self):
         home = page("/", "링크위키", "링크위키 주소모음", (
+            '<form action="/directory" class="lw-search" method="get" role="search"></form>'
             '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
             '<a href="/directory">전체</a><a href="/categories/">분야별</a></section>'))
         directory = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색",
@@ -29,12 +30,14 @@ class LiveReleaseCheckTests(unittest.TestCase):
 
     def test_finds_live_drift_even_when_http_200(self):
         home = page("/", "링크위키", "키워드", (
+            '<form action="/directory" class="lw-search" method="get" role="search"></form>'
             '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
             '<a href="/directory">목록</a><a href="/categories/">분야</a></section>'))
         stale = page("/", "예전 제목", "키워드", '<a href="/directory">목록</a>')
         problems = check_page(home, stale, "/")
         self.assertTrue(any("title" in item for item in problems))
         self.assertTrue(any("intent section" in item for item in problems))
+        self.assertTrue(any("canonical /directory" in item for item in problems))
         self.assertTrue(any("category hub" in item for item in problems))
 
     def test_rejects_robots_noindex_duplicate_canonical_and_missing_categories(self):
@@ -63,7 +66,8 @@ class LiveReleaseCheckTests(unittest.TestCase):
         with TemporaryDirectory() as temp:
             dist = Path(temp)
             home = page("/", "홈", "주소모음", (
-                '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
+                '<form action="/directory" class="lw-search" method="get" role="search"></form>'
+            '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
                 '<a href="/directory">목록</a><a href="/categories/">분야</a></section>'))
             directory = page("/directory", "목록", "주소모음 링크모음 사이트모음",
                              '<input id="v6-query"><div id="v6-results"></div>'
