@@ -291,34 +291,44 @@ def add_breadcrumb_data(html, public_path):
 
 
 def directory_category_overview(records, categories, per_category=3):
-    """Summarize registered services without invented facts or extra URLs."""
+    """Make practical comparisons from exact published listing metadata.
+
+    Descriptions come from the directory source, not speculative rankings or
+    claims about current uptime, pricing or official affiliations.
+    """
     sections = []
     for category, slug, heading, purpose in categories:
         matching = [entry for entry in records
                     if isinstance(entry, dict) and entry.get("category") == category]
-        if not matching:
-            continue
         examples = [
-            entry["name"].strip()
-            for entry in matching
+            entry for entry in matching
             if isinstance(entry.get("name"), str) and entry["name"].strip()
+            and isinstance(entry.get("description"), str)
+            and entry["description"].strip()
         ][:per_category]
         if not examples:
             continue
+        listing = ''.join(
+            '<li><strong>' + escape(entry["name"].strip()) + '</strong>'
+            ' — ' + escape(entry["description"].strip()) + '</li>'
+            for entry in examples
+        )
         sections.append(
             '<section class="seo-directory-category">'
             f'<h3><a href="/categories/{escape(slug, quote=True)}">{escape(heading)}</a></h3>'
             f'<p>{escape(purpose)}</p>'
-            f'<p>등록 사이트 {len(matching)}개 · 목록 예시: '
-            + escape(" · ".join(examples)) + '</p>'
+            f'<p>등록 사이트 {len(matching)}개 · 아래는 등록 목록의 예시입니다.</p>'
+            '<ul>' + listing + '</ul>'
+            f'<p><a href="/categories/{escape(slug, quote=True)}">'
+            '이 분야 전체 등록 사이트 보기</a></p>'
             '</section>'
         )
     return (
         '<section class="lw-safety-note seo-directory-overview" '
         'aria-label="분야별 사이트 목록 비교">'
-        '<h2>분야별 사이트모음 살펴보기</h2>'
-        '<p>아래 사이트명은 링크위키 등록 목록에서 가져온 예시입니다. '
-        '개별 서비스의 운영·가격·접속 상태를 보증하지 않습니다.</p>'
+        '<h2>분야별 사이트모음 비교 및 선택</h2>'
+        '<p>아래는 실제 등록된 사이트의 이름과 목록 설명을 비교한 것입니다. '
+        '서비스의 공식 인증·현재 접속 상태·요금·안전성을 보증하지 않습니다.</p>'
         + ''.join(sections)
         + '</section>'
     )
