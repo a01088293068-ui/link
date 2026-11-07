@@ -11,6 +11,32 @@ spec.loader.exec_module(seo)
 
 
 class SEOTests(unittest.TestCase):
+    def test_category_guide_accepts_registered_fourth_site(self):
+        article = self.sample_article()
+        article["introduction"] += (
+            " Perplexity 서비스는 AI 도구 목록에 실제 등록되어 있으며 "
+            "출처 기반 질의응답을 지원한다고 설명되어 있습니다.")
+        self.assertFalse(seo.category_example_missing(
+            "AI 도구 사이트모음 비교", article))
+
+    def test_category_guide_rejects_similar_but_unlisted_ascii_name(self):
+        article = self.sample_article()
+        article["introduction"] += (
+            " SuperChatGPTClone은 현재 어떤 곳에도 등록된 항목이라는 증거가 없습니다.")
+        self.assertTrue(seo.category_example_missing(
+            "AI 도구 사이트모음 비교", article))
+
+    def test_unrelated_category_name_cannot_satisfy_guide(self):
+        article = self.sample_article()
+        article["introduction"] += " ChatGPT는 AI 도구로 등록되어 있습니다."
+        self.assertTrue(seo.category_example_missing(
+            "스포츠 경기 일정 사이트모음 비교", article))
+
+    def test_concise_writer_examples_remain_capped_at_three_per_category(self):
+        context = seo.directory_context()
+        self.assertLessEqual(len(context["listed_examples_by_category"]["AI 도구"]), 3)
+        self.assertEqual(context["categories"]["AI 도구"], 4)
+
     def test_category_comparison_requires_real_example_in_written_prose(self):
         article = self.sample_article()
         self.assertTrue(seo.category_example_missing("AI 도구 사이트모음 무료 플랜 비교", article))
