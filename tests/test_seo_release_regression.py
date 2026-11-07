@@ -74,6 +74,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("예시 검색", result)
         self.assertIn("예시 커뮤니티", result)
         self.assertIn("등록 사이트 2개", result)
+        self.assertIn("예시 검색</strong> —", result)
+        self.assertIn("이 분야 전체 등록 사이트 보기", result)
         self.assertIn("&lt;script&gt;위험&lt;/script&gt;", result)
         self.assertNotIn("<script>위험</script>", result)
         self.assertNotIn("검색·포털 97개", result)
@@ -90,6 +92,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn(expected, overview)
             self.assertIn(f'/categories/{slug}', overview)
         self.assertIn('id="v6-results"', html)
+        self.assertIn("사이트의 이름과 목록 설명을 비교", html)
+        first = next(record for record in records if record["category"] == "검색·포털")
+        self.assertIn(first["description"], html)
 
     def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
         self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
