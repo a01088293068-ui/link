@@ -7,6 +7,22 @@ from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta, intern
 
 
 class SiteAuditTests(unittest.TestCase):
+    def test_homepage_examples_use_real_records_and_escaped_text(self):
+        from build import homepage_directory_examples
+        categories = (("AI 도구", "ai", "AI 도구 사이트모음", "비교"),)
+        records = [{"category": "AI 도구", "name": "테스트 <AI>",
+                    "description": "글쓰기 & 검색 도구"}]
+        rendered = homepage_directory_examples(records, categories)
+        self.assertIn("테스트 &lt;AI&gt;", rendered)
+        self.assertIn("글쓰기 &amp; 검색 도구", rendered)
+        self.assertIn('href="/categories/ai"', rendered)
+        self.assertIn("인기 순위나 추천 등급이 아니며", rendered)
+        self.assertNotIn("테스트 <AI>", rendered)
+        with self.assertRaises(RuntimeError):
+            homepage_directory_examples([], categories)
+        with self.assertRaises(RuntimeError):
+            homepage_directory_examples(records, (("스포츠", "sports", "스포츠", "비교"),))
+
     def test_directory_seo_count_updates_but_category_count_stays_intact(self):
         from build import sync_directory_count
         sample = ('<title>97개 사이트</title>'
