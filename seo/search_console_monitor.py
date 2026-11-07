@@ -215,22 +215,20 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                   focused_query_page_rows=None, focused_error=''):
     lines = ['# 링크위키 Search Console 실적', '',
              f'- 속성: `{property_url}`', f'- 조회 기간: {start_date} ~ {end_date}',
-             '- 데이터: Google Search Console API. 검색량이나 실시간 순위가 아닙니다.', '',
-             '## 검색어 상위 30개', '', '| 검색어 | 노출 | 클릭 | CTR | 평균 순위 |',
-             '|---|---:|---:|---:|---:|']
+             '- 데이터: Google Search Console API. 검색량이나 실시간 순위가 아닙니다.', '']
     # Date-based totals include impressions from anonymized query rows.
     daily = sorted(date_rows or [], key=lambda row: (row.get('keys') or [''])[0])
     if daily:
         clicks = sum(int(row.get('clicks', 0)) for row in daily)
         impressions = sum(int(row.get('impressions', 0)) for row in daily)
         ctr = clicks / impressions * 100 if impressions else 0
-        lines[6:6] = [
+        lines.extend([
             '## 전체 검색 성과 (날짜별 합계)', '',
             f'- 노출: {impressions:,}회 · 클릭: {clicks:,}회 · CTR: {ctr:.1f}%',
             '- 검색어 표와 전체 합계는 익명 검색어 처리로 차이가 날 수 있습니다.', '',
-        ]
+        ])
     else:
-        lines[6:6] = ['## 전체 검색 성과', '', '날짜별 검색 성과 데이터 없음', '']
+        lines.extend(['## 전체 검색 성과', '', '날짜별 검색 성과 데이터 없음', ''])
     if not keyword_rows and page_rows:
         lines.extend(['', '검색어 행은 0개지만 페이지별 데이터가 있습니다. 검색어 익명 처리나 집계 기준 차이일 수 있으므로 노출 0회로 해석하지 마세요.', ''])
     # Compare true calendar weeks, not the last fourteen non-empty API rows.
@@ -250,6 +248,9 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                       f'- 최근 7일: 노출 {recent_impressions:,}회 · 클릭 {recent_clicks:,}회',
                       f'- 직전 7일: 노출 {previous_impressions:,}회 · 클릭 {previous_clicks:,}회',
                       '- 조회 종료일 기준 연속된 7일씩 비교하며, 활동이 없는 날짜는 0회로 계산합니다.', ''])
+    lines.extend(['', '## 검색어 상위 30개', '',
+                  '| 검색어 | 노출 | 클릭 | CTR | 평균 순위 |',
+                  '|---|---:|---:|---:|---:|'])
     for row in keyword_rows[:30]:
         key = str((row.get('keys') or [''])[0]).replace('|', '\\|').replace('\n', ' ')
         lines.append(f"| {key} | {int(row.get('impressions', 0))} | {int(row.get('clicks', 0))} | "
