@@ -129,6 +129,47 @@ def inspect_index(token, property_url, inspection_url):
             'google_canonical': state.get('googleCanonical', '')}
 
 
+def priority_index_checks(rows):
+    """Summarize Google-reported status for the homepage and core directory.
+
+    Only inspect observed API results. Missing API rows are *unknown*, not
+    evidence that Google has not discovered or indexed an address.
+    """
+    high_priority = (
+        ('https://linkwiki.info/directory', '핵심 주소모음 목록'),
+        ('https://linkwiki.info/', '홈페이지'),
+        ('https://linkwiki.info/categories/', '카테고리 허브'),
+    )
+    by_url = {str(item.get('url', '')): item for item in rows}
+    output = ['', '### 핵심 URL 색인 우선 점검', '',
+              '| URL | 역할 | 결과 | Google 선택 정규 URL | 다음 조치 |',
+              '|---|---|---|---|---|']
+    for url, role in high_priority:
+        item = by_url.get(url)
+        if not item:
+            verdict, canonical = '조회 결과 없음', '-'
+            action = 'URL Inspection API 재조회 및 접근 권한 확인'
+        else:
+            verdict = str(item.get('verdict') or 'UNKNOWN')
+            canonical = str(item.get('google_canonical') or '-')
+            coverage = str(item.get('coverage') or '')
+            if verdict == 'PASS' and canonical != '-' and canonical != url:
+                action = 'Google 선택 정규 URL과 사이트 canonical 차이 검토'
+            elif verdict == 'PASS':
+                action = '검색 실적과 검색어별 노출 URL 확인'
+            elif 'unknown to google' in coverage.casefold() or '알려지지' in coverage:
+                action = '사이트맵 제출·홈페이지 내부 링크·실제 HTTP 접근 확인'
+            elif 'not indexed' in coverage.casefold() or '색인이 생성되지' in coverage:
+                action = '페이지 고유 가치·중복 내용·canonical 검토'
+            else:
+                action = '색인 상세 상태 및 마지막 크롤링 확인'
+        safe = lambda value: str(value).replace('|', '%7C').replace('\\n', ' ')
+        output.append('| ' + ' | '.join(map(safe, (url, role, verdict, canonical, action))) + ' |')
+    output.extend(['', '- 위 점검은 API 조회 시점의 Google 색인 저장본에 한정됩니다.',
+                   '- 조회 결과가 없다는 사실은 Google 미발견 또는 미색인을 뜻하지 않습니다.', ''])
+    return '\\n'.join(output)
+
+
 def format_index_inspection(rows, error=''):
     lines = ['', '## Google 색인 상태 확인 (Google 색인에 저장된 버전)', '',
              '- URL Inspection API 결과이며 실시간 접속 상태나 색인 신청 결과가 아닙니다.',
@@ -163,6 +204,7 @@ def format_index_inspection(rows, error=''):
         for row in (unknown + crawled)[:12]:
             lines.append('- ' + str(row.get('url', '')) + ' — ' +
                          str(row.get('coverage', '정보 없음')).replace('\\n', ' '))
+    lines.append(priority_index_checks(rows))
     if error:
         lines.extend(['', '색인 조회 일부 또는 전체 실패: ' + error])
     if not rows:
