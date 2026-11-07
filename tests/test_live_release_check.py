@@ -14,6 +14,35 @@ def page(path, title, heading, more=""):
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
+    def test_directory_help_with_id_before_class_is_checked(self):
+        from seo.live_release_check import release_content_sections
+        help_html = ('<section id="site-list-guide" class="lw-safety-note seo-search-help" '
+                     'aria-label="사이트모음 검색 및 확인 방법">'
+                     '<h2>검색 안내</h2></section>')
+        expected = page("/directory", "검색", "주소모음·링크모음·사이트모음", help_html)
+        stale = expected.replace("검색 안내", "오래된 안내")
+        self.assertEqual(release_content_sections(expected, "/directory"), [help_html])
+        self.assertTrue(any("directory examples differ" in p
+                            for p in check_page(expected, stale, "/directory")))
+
+    def test_category_hub_detects_stale_registered_examples(self):
+        from seo.live_release_check import release_content_sections
+        links = ''.join(f'<a href="{link}">분야</a>' for link in CATEGORY_PATHS)
+        expected = page("/categories/", "분야별", "분야별 사이트모음",
+                        '<article class="v6-card"><p>등록 예시: ChatGPT</p></article>' + links)
+        stale = expected.replace("ChatGPT", "오래된 목록")
+        self.assertEqual(len(release_content_sections(expected, "/categories/")), 1)
+        self.assertTrue(any("directory examples differ" in p
+                            for p in check_page(expected, stale, "/categories/")))
+        self.assertEqual(check_page(expected, expected, "/categories/"), [])
+
+    def test_category_hub_missing_direct_category_link_is_detected(self):
+        complete = page("/categories/", "분야별", "분야별", ''.join(
+            f'<a href="{link}">보기</a>' for link in CATEGORY_PATHS))
+        broken = complete.replace(f'<a href="{CATEGORY_PATHS[0]}">보기</a>', '')
+        self.assertIn(f"/categories/: missing category link {CATEGORY_PATHS[0]}",
+                      check_page(complete, broken, "/categories/"))
+
     def test_live_release_flags_missing_search_help_section(self):
         from seo.live_release_check import release_content_sections
         expected = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색",
@@ -113,11 +142,15 @@ class LiveReleaseCheckTests(unittest.TestCase):
                              ''.join(f'<a href="{x}">바로가기</a>' for x in CATEGORY_PATHS))
             (dist / "index.html").write_text(home, encoding="utf-8")
             (dist / "directory.html").write_text(directory, encoding="utf-8")
+            hub = page("/categories/", "분야별", "분야별 사이트모음",
+                       ''.join(f'<a href="{link}">보기</a>' for link in CATEGORY_PATHS))
+            (dist / "categories").mkdir()
+            (dist / "categories/index.html").write_text(hub, encoding="utf-8")
             sitemap = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(
                 f"<url><loc>{x}</loc></url>"
                 for x in [SITE + "/", SITE + "/directory", SITE + "/categories/"] +
                          [SITE + x for x in CATEGORY_PATHS]) + "</urlset>"
-            pages = {"/": home, "/directory": directory,
+            pages = {"/": home, "/directory": directory, "/categories/": hub,
                      "/sitemap.xml": sitemap, "/assets/directory.js": "old",
                      "/assets/directory-search.js": "old"}
             self.assertTrue(any("multi-term search" in x for x in
