@@ -96,6 +96,30 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         first = next(record for record in records if record["category"] == "검색·포털")
         self.assertIn(first["description"], html)
 
+    def test_core_keywords_have_distinct_usable_homepage_paths(self):
+        from build import core_search_intent_section
+        section = core_search_intent_section(97)
+        for term in ("주소모음", "링크모음", "사이트모음"):
+            self.assertIn(f"<h3>{term}:", section)
+        self.assertIn("현재 등록된 97개 사이트", section)
+        self.assertIn('href="/directory"', section)
+        self.assertIn('href="/categories/"', section)
+        self.assertIn("목록 순서는 추천 순위가 아닙니다", section)
+        with self.assertRaises(RuntimeError):
+            core_search_intent_section(0)
+
+    def test_built_homepage_primary_intent_section_is_unique_and_navigable(self):
+        root = Path(__file__).resolve().parents[1]
+        homepage = (root / "dist/index.html").read_text(encoding="utf-8")
+        section_marker = 'aria-label="주소모음 링크모음 사이트모음 이용 안내"'
+        self.assertEqual(homepage.count(section_marker), 1)
+        section = homepage.split(section_marker, 1)[1].split('</section>', 1)[0]
+        for term in ("주소모음", "링크모음", "사이트모음"):
+            self.assertIn(f"<h3>{term}:", section)
+        for target in ('href="/directory"', 'href="/categories/"'):
+            self.assertIn(target, section)
+        self.assertIn("97개 사이트", section)
+
     def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
         self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
         self.assertIsNone(stable_post_lastmod(Path('address-directory-safety-guide.md')))
