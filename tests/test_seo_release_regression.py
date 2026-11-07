@@ -63,6 +63,34 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn(f'{category} {counts[category]}개', nav.group())
         self.assertEqual(nav.group().count('href="/categories/'), len(CATEGORY_LANDING) + 1)
 
+    def test_directory_category_overview_is_grounded_in_registered_sites(self):
+        from build import CATEGORY_LANDING, directory_category_overview
+        records = [
+            {"name": "예시 검색", "category": "검색·포털", "url": "https://example.com"},
+            {"name": "예시 커뮤니티", "category": "커뮤니티", "url": "https://example.org"},
+            {"name": "<script>위험</script>", "category": "커뮤니티", "url": "https://example.net"},
+        ]
+        result = directory_category_overview(records, CATEGORY_LANDING)
+        self.assertIn("예시 검색", result)
+        self.assertIn("예시 커뮤니티", result)
+        self.assertIn("등록 사이트 2개", result)
+        self.assertIn("&lt;script&gt;위험&lt;/script&gt;", result)
+        self.assertNotIn("<script>위험</script>", result)
+        self.assertNotIn("검색·포털 97개", result)
+
+    def test_built_directory_renders_all_real_category_examples_without_duplicates(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        html = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertEqual(html.count('aria-label="분야별 사이트 목록 비교"'), 1)
+        overview = html.split('aria-label="분야별 사이트 목록 비교"', 1)[1].split('</section>', 1)[0]
+        from build import CATEGORY_LANDING
+        for category, slug, _, _ in CATEGORY_LANDING:
+            expected = next(record["name"] for record in records if record["category"] == category)
+            self.assertIn(expected, overview)
+            self.assertIn(f'/categories/{slug}', overview)
+        self.assertIn('id="v6-results"', html)
+
     def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
         self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
         self.assertIsNone(stable_post_lastmod(Path('address-directory-safety-guide.md')))
