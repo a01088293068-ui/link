@@ -22,7 +22,7 @@ class RankTrackerTests(unittest.TestCase):
     def test_missing_provider_positions_preserve_page_offsets(self):
         from unittest.mock import patch
         pages = {
-            1: [{"link": f"https://example.org/{n}"} for n in range(9)],
+            1: [{"link": f"https://example.org/{n}", "title": f"Example {n}"} for n in range(9)],
             2: [{"link": "https://linkwiki.info/directory"}],
             3: [],
         }
