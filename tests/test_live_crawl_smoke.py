@@ -31,6 +31,39 @@ class DeploymentSmokeTests(unittest.TestCase):
         self.assertTrue(any("canonical" in issue for issue in problems))
         self.assertTrue(any("crawlable link" in issue for issue in problems))
 
+    def test_googlebot_block_is_detected_on_directory_only(self):
+        def blocked(path):
+            status, url, body = good_fetch(path)
+            if path == "/robots.txt":
+                body = ("User-agent: Googlebot\nDisallow: /directory\n\n"
+                        "User-agent: *\nAllow: /\n"
+                        "Sitemap: https://linkwiki.info/sitemap.xml\n")
+            return status, url, body
+        findings, _ = inspect(blocked)
+        self.assertIn("robots.txt: Googlebot disallowed /directory", findings)
+        self.assertNotIn("robots.txt: Googlebot disallowed /", findings)
+
+    def test_unrelated_bot_disallow_is_not_global_google_block(self):
+        def blocked(path):
+            status, url, body = good_fetch(path)
+            if path == "/robots.txt":
+                body = ("User-agent: OtherBot\nDisallow: /\n\n"
+                        "User-agent: *\nAllow: /\n"
+                        "Sitemap: https://linkwiki.info/sitemap.xml\n")
+            return status, url, body
+        findings, _ = inspect(blocked)
+        self.assertEqual(findings, [])
+
+    def test_robots_sitemap_parsing_ignores_comments_and_accepts_spacing(self):
+        def tagged(path):
+            status, url, body = good_fetch(path)
+            if path == "/robots.txt":
+                body = ("User-agent: *\nAllow: /\n"
+                        "Sitemap:https://linkwiki.info/sitemap.xml # valid\n")
+            return status, url, body
+        findings, _ = inspect(tagged)
+        self.assertEqual(findings, [])
+
     def test_fetch_failure_not_confused_with_unindexed(self):
         def broken(path):
             if path == "/directory":
