@@ -4,23 +4,53 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '40 1,13 * * *'
+  workflow_run:
+    workflows: ['LinkWiki SEO build QA']
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
 
 jobs:
   public-pages:
+    if: >-
+      ${{ github.event_name != 'workflow_run' ||
+          (github.event.workflow_run.conclusion == 'success' &&
+           github.event.workflow_run.event == 'push') }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
+    concurrency:
+      group: linkwiki-live-deploy-check
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Build expected SEO release
         run: python3 build.py
       - name: Verify live SEO release matches current sources
-        run: python3 seo/live_release_check.py --dist dist
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Cloudflare Pages can deploy after GitHub build QA finishes.
+          # Poll the same immutable expected commit up to five times, without
+          # treating temporary stale releases as successful deployments.
+          for attempt in 1 2 3 4 5; do
+            if python3 seo/live_release_check.py --dist dist; then
+              echo "PASS: public release matches expected commit ${GITHUB_SHA}"
+              exit 0
+            fi
+            if [[ "${attempt}" -eq 5 ]]; then
+              echo "::error::Public deployment still differs after 5 attempts."
+              exit 1
+            fi
+            echo "::warning::Public release may still be deploying (attempt ${attempt}/5). Retrying."
+            sleep 50
+          done
       - name: Check public SEO pages and crawl files
         shell: bash
         run: |
