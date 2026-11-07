@@ -27,6 +27,24 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(generated.count('class="lw-safety-note seo-search-help"'), 1)
         self.assertEqual(generated.count("주소모음·링크모음 검색 사용 방법"), 1)
 
+    def test_directory_guide_and_comparison_are_reachable_from_top_navigation(self):
+        root = Path(__file__).resolve().parents[1]
+        page = (root / "dist/directory.html").read_text(encoding="utf-8")
+        for anchor in ("site-list-guide", "site-category-comparison"):
+            self.assertEqual(page.count(f'id="{anchor}"'), 1)
+            self.assertIn(f'href="#{anchor}"', page)
+            self.assertLess(page.index(f'href="#{anchor}"'), page.index(f'id="{anchor}"'))
+
+    def test_hub_examples_do_not_truncate_community_or_korean_names(self):
+        root = Path(__file__).resolve().parents[1]
+        page = (root / "dist/categories/index.html").read_text(encoding="utf-8")
+        import json
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        for category in ("커뮤니티", "한인교민"):
+            first = [entry["name"] for entry in records if entry["category"] == category][:3]
+            self.assertIn("등록 예시: " + ", ".join(first), page)
+        self.assertNotIn("등록 예시: ", page.split("등록 예시: ", 1)[0])
+
     def test_category_hub_shows_factual_registered_site_examples(self):
         root = Path(__file__).resolve().parents[1]
         generated = (root / "dist/categories/index.html").read_text(encoding="utf-8")
