@@ -66,9 +66,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
     def test_directory_category_overview_is_grounded_in_registered_sites(self):
         from build import CATEGORY_LANDING, directory_category_overview
         records = [
-            {"name": "예시 검색", "category": "검색·포털", "url": "https://example.com"},
-            {"name": "예시 커뮤니티", "category": "커뮤니티", "url": "https://example.org"},
-            {"name": "<script>위험</script>", "category": "커뮤니티", "url": "https://example.net"},
+            {"name": "예시 검색", "category": "검색·포털", "url": "https://example.com", "description": "웹 검색에 이용하는 예시입니다."},
+            {"name": "예시 커뮤니티", "category": "커뮤니티", "url": "https://example.org", "description": "커뮤니티 게시판 예시입니다."},
+            {"name": "<script>위험</script>", "category": "커뮤니티", "url": "https://example.net", "description": "다른 게시판 예시입니다."},
         ]
         result = directory_category_overview(records, CATEGORY_LANDING)
         self.assertIn("예시 검색", result)
