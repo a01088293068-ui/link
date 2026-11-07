@@ -163,11 +163,11 @@ def priority_index_checks(rows):
                 action = '페이지 고유 가치·중복 내용·canonical 검토'
             else:
                 action = '색인 상세 상태 및 마지막 크롤링 확인'
-        safe = lambda value: str(value).replace('|', '%7C').replace('\\n', ' ')
+        safe = lambda value: str(value).replace('|', '%7C').replace('\n', ' ')
         output.append('| ' + ' | '.join(map(safe, (url, role, verdict, canonical, action))) + ' |')
     output.extend(['', '- 위 점검은 API 조회 시점의 Google 색인 저장본에 한정됩니다.',
                    '- 조회 결과가 없다는 사실은 Google 미발견 또는 미색인을 뜻하지 않습니다.', ''])
-    return '\\n'.join(output)
+    return '\n'.join(output)
 
 
 def format_index_inspection(rows, error=''):
