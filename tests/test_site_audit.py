@@ -7,6 +7,37 @@ from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta, intern
 
 
 class SiteAuditTests(unittest.TestCase):
+    def test_visible_directory_card_copy_matches_registered_metadata(self):
+        from seo.site_audit import card_copy_errors
+        record = {"name": "테스트 <도구>", "category": "AI 도구",
+                  "description": "검색 & 글쓰기", "url": "https://tools.example/"}
+        body = ('<small>AI 도구</small><h3>테스트 &lt;도구&gt;</h3>'
+                '<p>검색 &amp; 글쓰기</p>'
+                '<span class="site-domain">tools.example</span>'
+                '<a href="https://tools.example/">방문</a>')
+        self.assertEqual(card_copy_errors([body], [record], "h3", "directory"), [])
+        stale = body.replace("검색 &amp; 글쓰기", "오래된 설명")
+        self.assertIn("directory card #1 description differs from JSON",
+                      card_copy_errors([stale], [record], "h3", "directory"))
+        stale = body.replace("tools.example</span>", "other.example</span>")
+        self.assertIn("directory card #1 domain differs from JSON",
+                      card_copy_errors([stale], [record], "h3", "directory"))
+        stale = body.replace("테스트 &lt;도구&gt;", "테스트 다른 이름")
+        self.assertIn("directory card #1 name differs from JSON",
+                      card_copy_errors([stale], [record], "h3", "directory"))
+
+    def test_category_card_copy_is_checked_independently(self):
+        from seo.site_audit import card_copy_errors
+        record = {"name": "예시", "category": "검색·포털",
+                  "description": "포털 설명", "url": "https://example.org/"}
+        body = ('<strong>예시</strong><small>검색·포털</small><p>포털 설명</p>'
+                '<span class="site-domain">example.org</span>'
+                '<a href="https://example.org/">방문</a>')
+        self.assertEqual(card_copy_errors([body], [record], "strong", "search"), [])
+        stale = body.replace("<small>검색·포털</small>", "<small>다른 분야</small>")
+        self.assertIn("search card #1 category differs from JSON",
+                      card_copy_errors([stale], [record], "strong", "search"))
+
     def test_homepage_examples_use_real_records_and_escaped_text(self):
         from build import homepage_directory_examples
         categories = (("AI 도구", "ai", "AI 도구 사이트모음", "비교"),)
