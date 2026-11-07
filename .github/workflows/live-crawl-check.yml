@@ -14,6 +14,13 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build expected SEO release
+        run: python3 build.py
+      - name: Verify live SEO release matches current sources
+        run: python3 seo/live_release_check.py --dist dist
       - name: Check public SEO pages and crawl files
         shell: bash
         run: |
