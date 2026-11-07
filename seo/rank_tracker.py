@@ -45,25 +45,38 @@ def search(query, key, page=1):
 
 
 def search_top_results(query, key, limit=REQUESTED_RESULTS):
-    """Gather unique organic URLs over up to three pages.
+    """Collect distinct results with their actual SERP positions.
 
-    Serper may return only 10 organic rows even when num=30 is requested.
-    Stop if pagination has ended or the provider repeats a prior page.
+    A short provider page is not evidence that later pages are empty.
+    Position is the provider's positive ordinal when available, otherwise
+    the requested page offset plus the row index, *not* the compacted list
+    index after deduplication. Duplicate result URLs retain first appearance.
     """
     unique = []
     seen = set()
     for page in range(1, (limit + PAGE_SIZE - 1) // PAGE_SIZE + 1):
         batch = search(query, key, page=page)
         fresh = 0
-        for result in batch:
+        for index, result in enumerate(batch, 1):
+            if not isinstance(result, dict):
+                continue
             url = str(result.get("link", "")).strip()
-            if url and url not in seen:
-                seen.add(url)
-                unique.append(result)
-                fresh += 1
-        if len(batch) < PAGE_SIZE or fresh == 0:
+            if not url or url in seen:
+                continue
+            raw_position = result.get("position")
+            position = (raw_position if isinstance(raw_position, int)
+                        and not isinstance(raw_position, bool) and raw_position > 0
+                        else (page - 1) * PAGE_SIZE + index)
+            # Serper occasionally returns inconsistent positions; do not
+            # infer a top-30 result from an ordinal beyond our requested depth.
+            if position > limit:
+                continue
+            seen.add(url)
+            unique.append({**result, "_sample_position": position})
+            fresh += 1
+        if not batch or fresh == 0:
             break
-    return unique[:limit]
+    return unique
 
 
 def find_result(results, domain=TARGET):
@@ -71,7 +84,10 @@ def find_result(results, domain=TARGET):
         url = str(result.get("link") or "")
         host = (urlsplit(url).hostname or "").lower().removeprefix("www.")
         if host == domain or host.endswith("." + domain):
-            return {"position": index, "url": url}
+            position = result.get("_sample_position", result.get("position", index))
+            if not isinstance(position, int) or isinstance(position, bool) or position < 1:
+                position = index
+            return {"position": position, "url": url}
     return {"position": None, "url": None}
 
 
@@ -104,7 +120,10 @@ def observed_competitors(results, limit=5):
         title = str(entry.get("title") or "").strip()
         if not title:
             continue
-        competitors.append({"position": position, "title": title[:180], "url": raw_url})
+        observed = entry.get("_sample_position", entry.get("position", position))
+        if not isinstance(observed, int) or isinstance(observed, bool) or observed < 1:
+            observed = position
+        competitors.append({"position": observed, "title": title[:180], "url": raw_url})
         if len(competitors) >= limit:
             break
     return competitors
