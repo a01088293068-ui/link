@@ -553,6 +553,66 @@ def related_category_navigation(slug):
     )
 
 
+
+DIRECTORY_PURPOSE_COMPARISONS = (
+    ("경기 결과 확인과 영상 시청은 다른 작업입니다",
+     ("sports", "스포츠 일정·기록"), ("video", "영상·OTT"),
+     "경기 시작 시간과 점수만 필요하면 스포츠 정보 사이트를 먼저 보세요. "
+     "실제 경기 영상을 시청하려면 별도로 공식 중계권 보유 서비스와 지역별 시청 조건을 확인해야 합니다."),
+    ("AI 답변과 검색 원문을 구분해 활용하세요",
+     ("ai", "AI 질문·요약"), ("search", "검색·포털"),
+     "초안 작성과 긴 내용 요약에는 AI 도구를 비교하고, 확인 가능한 출처·최신 발표가 필요한 내용은 "
+     "검색·포털의 원문에서 발행일과 작성 주체를 검토하세요."),
+    ("웹툰 연재와 만화·웹소설 이용 방식이 다릅니다",
+     ("webtoon", "웹툰 연재 플랫폼"), ("comics-directory", "만화·웹소설"),
+     "요일별 연재 웹툰을 찾는지, 만화 단행본이나 웹소설을 읽으려는지 먼저 정하세요. "
+     "대여·소장 기간과 이용 요금은 선택한 작품의 실제 페이지에서 확인해야 합니다."),
+    ("지역 생활 질문과 관심사별 토론을 나눠 찾으세요",
+     ("korean", "해외 한인 생활"), ("community", "주제별 커뮤니티"),
+     "해외 취업·거주·정착 질문이라면 현지 지역이 명확한 한인 정보부터 살펴보고, "
+     "취미나 IT 등 주제별 경험은 커뮤니티에서 찾아보세요. 중요한 행정 규정은 공식 기관 공지를 우선합니다."),
+)
+
+
+def directory_purpose_comparison(records, categories):
+    """Original cross-category decisions, backed by actual registered entries."""
+    valid = {slug: category for category, slug, _, _ in categories}
+    if len(DIRECTORY_PURPOSE_COMPARISONS) != 4:
+        raise RuntimeError("Directory purpose comparisons incomplete")
+    articles = []
+    for title, (left_slug, left_label), (right_slug, right_label), advice in DIRECTORY_PURPOSE_COMPARISONS:
+        if left_slug not in valid or right_slug not in valid or left_slug == right_slug:
+            raise RuntimeError("Directory purpose comparison links invalid")
+        examples = []
+        for slug in (left_slug, right_slug):
+            found = next((item["name"] for item in records
+                          if isinstance(item, dict)
+                          and item.get("category") == valid[slug]
+                          and isinstance(item.get("name"), str)
+                          and item["name"].strip()), None)
+            if not found:
+                raise RuntimeError(f"Directory comparison site example missing: {slug}")
+            examples.append(found)
+        articles.append(
+            '<article class="seo-purpose-pair">'
+            '<h3>' + escape(title) + '</h3>'
+            '<p>' + escape(advice) + '</p>'
+            '<p><a href="/categories/' + escape(left_slug, quote=True) + '">'
+            + escape(left_label) + '</a> (등록 예시: ' + escape(examples[0]) + ') · '
+            '<a href="/categories/' + escape(right_slug, quote=True) + '">'
+            + escape(right_label) + '</a> (등록 예시: ' + escape(examples[1]) + ')</p>'
+            '</article>'
+        )
+    return (
+        '<section id="site-purpose-comparison" class="lw-safety-note seo-purpose-comparison" '
+        'aria-label="이용 목적별 사이트 비교">'
+        '<h2>필요한 일부터 정하는 사이트모음 선택법</h2>'
+        '<p>같은 주소모음 목록에 등록되어 있어도 사이트마다 쓰임새가 다릅니다. '
+        '아래는 실제 등록 분야를 목적별로 비교하는 방법이며 인기 순위나 추천 등급이 아닙니다.</p>'
+        + ''.join(articles) + '</section>'
+    )
+
+
 def directory_search_help(records, categories):
     """Helpful, static, data-backed search instructions for directory visitors."""
     if not records or not categories:
@@ -832,7 +892,8 @@ def build():
         )
         + '<a href="/categories/">전체 분야 보기</a>'
         + '<a href="#site-list-guide">검색 이용 안내</a>'
-        + '<a href="#site-category-comparison">분야별 등록 예시</a></nav>'
+        + '<a href="#site-category-comparison">분야별 등록 예시</a>'
+        + '<a href="#site-purpose-comparison">목적별 선택법</a></nav>'
     )
     directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
                             directory_html, count=1, flags=re.S)
@@ -844,7 +905,9 @@ def build():
         raise RuntimeError("Directory explanation layout changed; review required")
     help_section = directory_search_help(records, CATEGORY_LANDING)
     directory_html = directory_html.replace(
-        overview_marker, help_section + overview + overview_marker, 1)
+        overview_marker,
+        help_section + overview + directory_purpose_comparison(records, CATEGORY_LANDING) +
+        overview_marker, 1)
     # Provide a structured category map for the core search landing page.
     # One declaration only; never generate unverified ratings or fake offers.
     if 'id="directory-category-schema"' in directory_html:

@@ -10,6 +10,28 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_directory_purpose_chooser_is_genuinely_cross_category(self):
+        from build import directory_purpose_comparison, DIRECTORY_PURPOSE_COMPARISONS, CATEGORY_LANDING
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        html = directory_purpose_comparison(records, CATEGORY_LANDING)
+        output = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertIn(html, output)
+        self.assertEqual(html.count('class="seo-purpose-pair"'), 4)
+        self.assertIn('href="#site-purpose-comparison"', output)
+        self.assertLess(output.index('href="#site-purpose-comparison"'),
+                        output.index('id="site-purpose-comparison"'))
+        for title, (left, _), (right, _), advice in DIRECTORY_PURPOSE_COMPARISONS:
+            self.assertIn(title, html)
+            self.assertIn(advice, html)
+            self.assertIn(f'href="/categories/{left}"', html)
+            self.assertIn(f'href="/categories/{right}"', html)
+            for slug in (left, right):
+                category = next(cat for cat, code, _, _ in CATEGORY_LANDING if code == slug)
+                name = next(row["name"] for row in records if row["category"] == category)
+                self.assertIn(name, html)
+        self.assertNotIn("추천 1위", html)
+
     def test_category_editorial_guides_are_unique_and_grounded(self):
         from build import category_decision_guide, CATEGORY_DECISION_GUIDES, CATEGORY_LANDING
         root = Path(__file__).resolve().parents[1]
@@ -113,7 +135,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
     def test_directory_guide_and_comparison_are_reachable_from_top_navigation(self):
         root = Path(__file__).resolve().parents[1]
         page = (root / "dist/directory.html").read_text(encoding="utf-8")
-        for anchor in ("site-list-guide", "site-category-comparison"):
+        for anchor in ("site-list-guide", "site-category-comparison", "site-purpose-comparison"):
             self.assertEqual(page.count(f'id="{anchor}"'), 1)
             self.assertIn(f'href="#{anchor}"', page)
             self.assertLess(page.index(f'href="#{anchor}"'), page.index(f'id="{anchor}"'))
