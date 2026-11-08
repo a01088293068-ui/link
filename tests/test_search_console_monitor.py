@@ -11,6 +11,36 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_core_keyword_weekly_comparison_is_date_scoped_and_weighted(self):
+        rows = [
+            {'keys': ['주소모음', '2026-10-26'], 'impressions': 2, 'clicks': 1, 'position': 100},
+            {'keys': ['주소 모음', '2026-10-30'], 'impressions': 1, 'clicks': 0, 'position': 90},
+            {'keys': ['주소모음', '2026-11-01'], 'impressions': 3, 'clicks': 1, 'position': 30},
+            {'keys': ['링크모음', '2026-10-29'], 'impressions': 1, 'clicks': 0, 'position': 120},
+            {'keys': ['링크모음', '2026-11-05'], 'impressions': 2, 'clicks': 1, 'position': 40},
+            {'keys': ['주소모음', '2026-10-22'], 'impressions': 100, 'clicks': 50, 'position': 1},
+            {'keys': ['링크위키', '2026-11-05'], 'impressions': 300, 'clicks': 20, 'position': 1},
+        ]
+        comparison = monitor.core_keyword_weekly_comparison(rows, '2026-11-05')
+        address = comparison[0]
+        self.assertEqual(address['previous']['impressions'], 2)
+        self.assertEqual(address['recent']['impressions'], 4)
+        self.assertEqual(address['recent']['clicks'], 1)
+        self.assertEqual(address['recent']['position'], 45.0)
+        self.assertEqual(comparison[1]['recent']['position'], 40.0)
+        self.assertFalse(comparison[2]['recent']['observed'])
+        report = monitor.format_core_keyword_weekly_comparison(rows, '2026-11-05')
+        self.assertIn('주소모음 | 2회 · 1회 | 4회 · 1회 | +2회', report)
+        self.assertIn('45.0위', report)
+        self.assertIn('사이트모음 | 관측 없음 | 관측 없음 | 비교 불가', report)
+        self.assertNotIn('300회', report)
+
+    def test_core_keyword_weekly_query_failure_is_not_zero_impressions(self):
+        report = monitor.format_core_keyword_weekly_comparison([], '2026-11-05',
+                                                               'HTTPError HTTP 403')
+        self.assertIn('조회 실패', report)
+        self.assertNotIn('| 주소모음 | 관측 없음', report)
+
     def test_private_gsc_reporting_follows_successful_live_release(self):
         workflow = (Path(__file__).resolve().parents[1] /
                     '.github/workflows/search-console-monitor.yml').read_text(encoding='utf-8')
