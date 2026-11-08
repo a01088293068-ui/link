@@ -3,6 +3,35 @@ from seo import rank_tracker
 
 
 class RankTrackerTests(unittest.TestCase):
+    def test_provider_relative_positions_normalize_across_three_pages(self):
+        from unittest.mock import patch
+        pages = {
+            page: [{"link": f"https://example.org/{page}/{i}", "position": i,
+                    "title": f"Page {page} result {i}"} for i in range(1, 11)]
+            for page in (1, 2, 3)
+        }
+        pages[2][5]["link"] = "https://linkwiki.info/directory"
+        with patch.object(rank_tracker, "search", side_effect=lambda q, key, page: pages[page]):
+            rows = rank_tracker.search_top_results("주소모음", "test")
+        self.assertEqual(len(rows), 30)
+        self.assertEqual([x["_sample_position"] for x in rows], list(range(1, 31)))
+        self.assertEqual(rank_tracker.find_result(rows)["position"], 16)
+        self.assertEqual(rank_tracker.coverage_for(
+            {"주소모음": {}}, {"주소모음": 30},
+            {"주소모음": [x["_sample_position"] for x in rows]})["주소모음"], "complete")
+
+    def test_global_provider_ordinals_preserve_page_two_positions(self):
+        from unittest.mock import patch
+        pages = {
+            1: [{"link": f"https://first.example/{i}", "position": i}
+                for i in range(1, 11)],
+            2: [{"link": "https://linkwiki.info/", "position": 18}],
+            3: [],
+        }
+        with patch.object(rank_tracker, "search", side_effect=lambda q, key, page: pages[page]):
+            rows = rank_tracker.search_top_results("사이트모음", "test")
+        self.assertEqual(rank_tracker.find_result(rows)["position"], 18)
+
     def test_checked_in_scorecard_matches_rank_history(self):
         from pathlib import Path
         import json
