@@ -79,6 +79,7 @@ def release_content_sections(html, path):
         "/directory": (
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-search-help\b)[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
+            r'<section\b(?=[^>]*\bclass="[^"]*\bseo-purpose-comparison\b)[^>]*>.*?</section>',
         ),
         "/categories/": (
             r'<article class="v6-card">.*?</article>',
