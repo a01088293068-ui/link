@@ -437,6 +437,102 @@ RELATED_CATEGORY_PATHS = {
 }
 
 
+
+# Distinct editorial guidance is written for the visitor's actual task.
+# It is not a paraphrase of the registered site descriptions, a fake ranking,
+# or an unverified statement that a third-party service is currently available.
+CATEGORY_DECISION_GUIDES = {
+    "community": (
+        ("관심사에 맞는 게시판을 찾는 경우",
+         "게임·취미·일상처럼 다루는 주제를 먼저 정한 뒤 게시물의 실제 활동 시점, 새 글의 주제와 가입 조건을 확인하세요. 규모가 큰 커뮤니티라도 원하는 주제의 게시판은 조용할 수 있습니다."),
+        ("중고 거래나 지역 정보가 필요한 경우",
+         "일반 토론 게시판과 거래 게시판을 구분하세요. 판매자 신원 확인, 안전 결제 수단, 직접 만남 장소 등은 해당 서비스의 공지와 이용 규칙을 따라 점검하세요."),
+        ("정보의 진위를 확인하려는 경우",
+         "익명 게시글·댓글은 이용 경험일 수 있으나 공식 발표가 아닙니다. 게시 날짜와 근거 자료를 확인하고 중요한 내용은 기관·운영사의 원문과 대조하세요.")),
+    "korean": (
+        ("거주 도시의 생활 정보를 찾는 경우",
+         "국가 단위 안내와 도시별 게시판을 구분하세요. 같은 나라라도 주거·교통·학교·행정 절차는 도시와 지역에 따라 다를 수 있습니다."),
+        ("비자·행정 정보를 확인하려는 경우",
+         "교민 게시글의 경험담을 최신 규정으로 받아들이지 마세요. 관할 대사관·이민국 등 공공기관의 공식 안내와 신청 날짜를 별도로 확인하세요."),
+        ("구인·주거 정보를 살펴보는 경우",
+         "게시 날짜, 실제 지역, 연락 방식과 수수료 조건을 확인하세요. 서류 사본이나 계약금을 요청하는 게시글은 서비스 운영 정책과 신뢰할 수 있는 공식 경로를 먼저 검토하세요.")),
+    "comics-directory": (
+        ("읽고 싶은 작품이 정해진 경우",
+         "작품 이름과 제공 플랫폼을 확인하고 웹툰·전자책·웹소설 중 어떤 형식인지 구분하세요. 같은 제목이라도 판본이나 이용 형태가 다를 수 있습니다."),
+        ("장르를 둘러보는 경우",
+         "로맨스·무협·판타지 등 선호 장르를 먼저 정하고 회차형 서비스와 단행본형 서비스를 나누어 살펴보세요. 첫 화면의 노출 순서는 작품 품질 평가가 아닙니다."),
+        ("무료와 유료 이용 조건을 비교하는 경우",
+         "일부 무료 회차, 대여, 소장, 정기 구독은 서로 다른 조건입니다. 실제 결제 전에 열람 기간과 청소년 이용 제한을 해당 플랫폼에서 확인하세요.")),
+    "webtoon": (
+        ("연재 중인 작품을 따라보는 경우",
+         "연재 요일, 휴재 공지, 최신 회차 공개 방식과 플랫폼 계정 조건을 확인하세요. 광고에 표시된 공개일과 실제 작품 페이지의 일정이 다를 수 있습니다."),
+        ("한 번에 완결 작품을 읽고 싶은 경우",
+         "완결 여부와 회차 구성, 대여·소장 옵션을 확인하세요. 무료 미리보기만으로 전체 작품이 무료라고 판단하지 마세요."),
+        ("만화·웹소설과 비교하는 경우",
+         "세로형 웹툰, 페이지형 만화, 텍스트 웹소설은 읽는 방식이 다릅니다. 콘텐츠 형식부터 구분한 후 선호 장르에 맞는 서비스를 살펴보세요.")),
+    "ai": (
+        ("글쓰기나 아이디어 정리가 필요한 경우",
+         "초안의 문체·한국어 표현·재작성 편의성을 비교하고, 결과물에 잘못된 사실이 없는지 직접 검토하세요. 같은 질문을 여러 도구에 입력해 비교할 수 있습니다."),
+        ("자료 조사와 출처 확인이 중요한 경우",
+         "답변에 인용된 원문 링크가 실제 주장과 일치하는지 확인하세요. AI가 제시한 문헌이나 통계가 존재한다는 보장은 없습니다."),
+        ("문서·파일을 입력하려는 경우",
+         "지원 파일 형식, 업로드 제한, 저장·학습 관련 설정을 서비스별로 확인하세요. 비밀번호나 고객 정보 등 민감한 내용은 업로드하지 않는 편이 안전합니다.")),
+    "search": (
+        ("국내 생활 정보를 찾는 경우",
+         "검색 위치, 언어 및 게시 날짜 조건을 조정해 여러 결과를 비교하세요. 광고 영역과 일반 검색 결과가 섞이지 않았는지 확인하는 것이 좋습니다."),
+        ("해외 문서나 기술 자료를 찾는 경우",
+         "원문 언어로 검색하거나 검색 기간을 제한해 보세요. 요약 문장보다 원본 발행일과 작성 주체를 확인하면 오래된 정보를 걸러낼 수 있습니다."),
+        ("특정 서비스의 공식 주소를 찾는 경우",
+         "검색 순위 1위가 반드시 공식 사이트는 아닙니다. 운영사 공식 앱·공지에서 도메인을 확인하고 유사 철자 주소에 계정 정보를 입력하지 마세요.")),
+    "sports": (
+        ("경기 시작 시간과 일정을 확인하는 경우",
+         "경기장 현지 시간대와 내 지역 시간대를 구분하고 연기·취소 공지를 확인하세요. 일정 제공 사이트와 실제 주최 측 공지의 반영 시차가 있을 수 있습니다."),
+        ("실시간 점수와 기록을 확인하는 경우",
+         "종목·리그를 먼저 선택하고 업데이트 지연 여부를 살펴보세요. 중계 영상이 아닌 점수·통계 제공 서비스인지 구분해야 합니다."),
+        ("실제 중계 시청을 찾는 경우",
+         "점수 사이트가 영상 중계권도 가진 것은 아닙니다. 해당 리그 또는 공식 중계권 보유 서비스의 지역 제한·구독 조건을 확인하세요.")),
+    "video": (
+        ("영화·드라마를 정주행하려는 경우",
+         "원하는 작품이 현재 거주 지역에서 제공되는지 플랫폼 내 검색으로 확인하세요. 제공 작품은 시점과 지역에 따라 달라질 수 있습니다."),
+        ("요금과 이용 방식을 비교하는 경우",
+         "무료 광고형 시청, 개별 대여, 정기 구독을 구분하고 화질·동시 접속·해지 조건을 각 서비스에서 확인하세요."),
+        ("가족·어린이와 함께 이용하는 경우",
+         "연령 제한, 보호자 설정, 자막·더빙 옵션을 확인하세요. 앱이나 웹사이트에서 가능한 기능이 기기마다 다를 수 있습니다.")),
+}
+
+
+def category_decision_guide(slug, records, categories=CATEGORY_LANDING):
+    """Add original, task-specific advice while grounding examples in the list."""
+    catalog = {item_slug: category for category, item_slug, _, _ in categories}
+    topics = CATEGORY_DECISION_GUIDES.get(slug)
+    if slug not in catalog or not topics or len(topics) != 3:
+        raise RuntimeError(f"Category editorial guidance missing: {slug}")
+    examples = [
+        item["name"].strip()
+        for item in records
+        if isinstance(item, dict) and item.get("category") == catalog[slug]
+        and isinstance(item.get("name"), str) and item["name"].strip()
+    ]
+    if len(examples) < 2:
+        raise RuntimeError(f"Insufficient sourced category examples: {slug}")
+    items = ''.join(
+        '<li><h3>' + escape(heading) + '</h3><p>' + escape(advice) + '</p></li>'
+        for heading, advice in topics)
+    return (
+        '<section class="wrap seo-related-links seo-category-decision" '
+        'aria-label="이 분야의 목적별 선택 방법">'
+        '<h2>이 분야에서 사이트를 선택하는 방법</h2>'
+        '<p>목록에 실제 등록된 ' + escape(examples[0]) + ', '
+        + escape(examples[1]) + ' 등을 살펴보기 전에 '
+        '내가 필요한 기능을 정하고 비교 기준을 확인하세요. '
+        '이름이 등록됐다는 사실은 최신 접속 상태나 공식 인증을 보증하지 않습니다.</p>'
+        '<ol>' + items + '</ol>'
+        '<p><a href="/guides/address-check">사이트 주소 확인 방법</a> · '
+        '<a href="/directory">전체 등록 사이트에서 다시 검색</a></p>'
+        '</section>'
+    )
+
+
 def related_category_navigation(slug):
     """Two genuine follow-on categories per landing page, never fabricated URLs."""
     valid = {path for _, path, _, _ in CATEGORY_LANDING}
@@ -799,6 +895,7 @@ def build():
                 for post in matched_posts) + '</ul></section>'
         ) if matched_posts else ''
         source = source.replace(marker,
+            category_decision_guide(slug, records) +
             related_articles + related_category_navigation(slug) +
             '<nav class="wrap seo-related-links" aria-label="다른 분야 탐색">'
             '<a href="/categories/">다른 분야 사이트모음 보기</a> · '
