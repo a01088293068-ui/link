@@ -505,6 +505,45 @@ def format_core_keyword_weekly_comparison(rows, end_date, error=''):
 
 
 
+
+def format_core_landing_page_split(query_page_rows, error=''):
+    """Show which site URLs Google actually surfaced for each exact core query.
+
+    This does not infer indexation from absence of search analytics rows.
+    """
+    lines = ['', '## 핵심 키워드별 실제 노출 URL 분포', '',
+             '- Google Search Console 검색어×페이지 실측 데이터만 사용합니다.',
+             '- 한 검색어로 여러 URL이 노출되면 페이지별 목적과 내부 링크를 검토하세요.',
+             '| 키워드 | 노출 URL | 노출 | 클릭 | 평균 순위 |',
+             '|---|---|---:|---:|---:|']
+    if error:
+        return '\n'.join(lines + ['| 조회 실패 | - | - | - | - |', '',
+                                   '- 조회 오류: ' + str(error), ''])
+    observed = False
+    for keyword in CORE_KEYWORDS:
+        matched = []
+        for row in query_page_rows or []:
+            keys = row.get('keys') or []
+            if len(keys) < 2 or ''.join(str(keys[0]).split()) != keyword:
+                continue
+            url = str(keys[1])
+            if not url.startswith('https://linkwiki.info/'):
+                continue
+            matched.append(row)
+        for row in sorted(matched, key=lambda x: -int(x.get('impressions', 0)))[:10]:
+            observed = True
+            impressions = int(row.get('impressions', 0))
+            position = (f"{float(row.get('position', 0)):.1f}" if impressions else '-')
+            url = str(row['keys'][1]).replace('|', '%7C')
+            lines.append(f"| {keyword} | {url} | {impressions} | "
+                         f"{int(row.get('clicks', 0))} | {position} |")
+    if not observed:
+        lines.append('| 관측된 검색어·페이지 조합 없음 | - | - | - | - |')
+    lines.extend(['', '- 관측된 URL이 여러 개여도 자동으로 키워드 잠식이라고 단정하지 않습니다.',
+                  '- 검색어가 익명 처리되거나 노출이 적으면 이 표에 표시되지 않을 수 있습니다.', ''])
+    return '\n'.join(lines)
+
+
 def brand_vs_nonbrand_rows(keyword_rows):
     """Separate observed branded queries without extrapolating anonymized traffic."""
     result = {"브랜드 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0},
@@ -755,6 +794,7 @@ def main():
         focused_query_page_rows=focused_pages, focused_error=focused_error)
     report += format_core_keyword_weekly_comparison(
         weekly_core_rows, end.isoformat(), weekly_core_error)
+    report += format_core_landing_page_split(focused_pages, focused_error)
     report += format_index_inspection(inspections, inspection_error)
     sitemap_rows, sitemap_error = [], ''
     try:
