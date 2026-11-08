@@ -114,5 +114,24 @@ class DeploymentSmokeTests(unittest.TestCase):
         self.assertEqual(records[1][1], "ERROR")
 
 
+    def test_sitemap_rejects_legacy_duplicate_and_foreign_urls(self):
+        def bad_sitemap(path):
+            status, url, body = good_fetch(path)
+            if path == "/sitemap.xml":
+                body = ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                        '<url><loc>https://linkwiki.info/</loc></url>'
+                        '<url><loc>https://linkwiki.info/directory</loc></url>'
+                        '<url><loc>https://linkwiki.info/directory</loc></url>'
+                        '<url><loc>https://linkwiki.info/directory.html</loc></url>'
+                        '<url><loc>https://other.example/page</loc></url>'
+                        '</urlset>')
+            return status, url, body
+
+        findings, _ = inspect(bad_sitemap)
+        self.assertIn("sitemap.xml: duplicate URL entries", findings)
+        self.assertTrue(any("noncanonical URL" in x for x in findings))
+        self.assertTrue(any("off-origin or invalid URL" in x for x in findings))
+
+
 if __name__ == "__main__":
     unittest.main()
