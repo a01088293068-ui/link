@@ -10,6 +10,28 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_category_editorial_guides_are_unique_and_grounded(self):
+        from build import category_decision_guide, CATEGORY_DECISION_GUIDES, CATEGORY_LANDING
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(CATEGORY_DECISION_GUIDES), 8)
+        seen_headings = set()
+        for category, slug, _, _ in CATEGORY_LANDING:
+            html = category_decision_guide(slug, records)
+            page = (root / "dist/categories" / (slug + ".html")).read_text(encoding="utf-8")
+            self.assertIn(html, page, slug)
+            self.assertEqual(html.count("<li><h3>"), 3, slug)
+            self.assertEqual(page.count('aria-label="이 분야의 목적별 선택 방법"'), 1, slug)
+            self.assertIn('href="/guides/address-check"', html)
+            names = [x["name"] for x in records if x["category"] == category]
+            self.assertIn(names[0], html)
+            self.assertIn(names[1], html)
+            headings = re.findall(r"<li><h3>(.*?)</h3>", html)
+            self.assertTrue(seen_headings.isdisjoint(headings), slug)
+            seen_headings.update(headings)
+        with self.assertRaisesRegex(RuntimeError, "missing"):
+            category_decision_guide("nonexistent", records)
+
     def test_all_eight_categories_offer_two_contextual_crawlable_paths(self):
         from build import related_category_navigation, RELATED_CATEGORY_PATHS, CATEGORY_LANDING
         from seo.site_audit import internal_inbound_links
