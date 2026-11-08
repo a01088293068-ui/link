@@ -120,6 +120,15 @@ def inspect(fetcher=fetch):
                 findings.append("sitemap.xml: /directory missing")
             if ORIGIN + "/" not in urls:
                 findings.append("sitemap.xml: homepage missing")
+            # Detect redirecting or duplicate URLs before sending them to Google.
+            if len(urls) != len(set(urls)):
+                findings.append("sitemap.xml: duplicate URL entries")
+            for url in urls:
+                parts = urlsplit(url or "")
+                if parts.scheme != "https" or parts.netloc != "linkwiki.info":
+                    findings.append(f"sitemap.xml: off-origin or invalid URL {url!r}")
+                elif parts.query or parts.fragment or parts.path.endswith(".html"):
+                    findings.append(f"sitemap.xml: noncanonical URL {url!r}")
         except ET.ParseError:
             findings.append("sitemap.xml: invalid XML")
     return findings, records
