@@ -418,6 +418,93 @@ def core_keyword_rows(keyword_rows, query_page_rows=None):
     return output
 
 
+
+def core_keyword_weekly_comparison(rows, end_date):
+    """Compare two disjoint seven-day windows of *observed* keyword-date rows.
+
+    GSC may anonymize low-volume queries: missing rows are zero observed rows,
+    never proof that the keyword had no real searches or Google impressions.
+    Distinguish no-row from a genuine reported position.
+    """
+    end = date.fromisoformat(str(end_date))
+    by_key = {key: {"recent": [], "previous": []} for key in CORE_KEYWORDS}
+    for row in rows or []:
+        keys = row.get('keys') or []
+        if len(keys) < 2:
+            continue
+        raw_key, day_string = str(keys[0]), str(keys[1])
+        key = ''.join(raw_key.split())
+        if key not in by_key:
+            continue
+        try:
+            day = date.fromisoformat(day_string)
+        except ValueError:
+            continue
+        age = (end - day).days
+        if not 0 <= age < 14:
+            continue
+        by_key[key]['recent' if age < 7 else 'previous'].append(row)
+
+    def summarize(selected):
+        impressions = sum(int(row.get('impressions', 0)) for row in selected)
+        clicks = sum(int(row.get('clicks', 0)) for row in selected)
+        weighted = sum(float(row.get('position', 0)) *
+                       int(row.get('impressions', 0)) for row in selected)
+        return {
+            'impressions': impressions, 'clicks': clicks,
+            'position': round(weighted / impressions, 1) if impressions else None,
+            'observed': bool(selected),
+        }
+
+    return [
+        {'keyword': key,
+         'recent': summarize(windows['recent']),
+         'previous': summarize(windows['previous'])}
+        for key, windows in by_key.items()
+    ]
+
+
+def format_core_keyword_weekly_comparison(rows, end_date, error=''):
+    """Render genuine week-over-week impressions, clicks and weighted ranks."""
+    lines = [
+        '', '## 주소모음·링크모음·사이트모음 최근 7일 노출 변화', '',
+        '- Google Search Console 검색어×날짜 필터 결과만 사용합니다. '
+        '브랜드 검색, 검색량 추정치, 외부 검색 API 순위는 포함하지 않습니다.',
+        f'- 비교 기간: 최근 7일 {end_date} 종료 / 직전 7일은 그 이전 7일.',
+        '- 데이터 없음은 GSC에 공개된 해당 검색어 행이 없다는 뜻이며 '
+        '실제 노출 0회를 보장하지 않습니다.',
+        '| 키워드 | 직전 7일 노출·클릭 | 최근 7일 노출·클릭 | '
+        '관측 노출 변화 | 직전 평균 순위 | 최근 평균 순위 |',
+        '|---|---:|---:|---:|---:|---:|',
+    ]
+    if error:
+        lines.append('- 별도 핵심 키워드 일별 조회 실패: ' + str(error))
+        lines.append('| 조회 실패 | - | - | - | - | - |')
+        return '\n'.join(lines)
+    for item in core_keyword_weekly_comparison(rows, end_date):
+        prior, recent = item['previous'], item['recent']
+        def count_text(window):
+            return (f"{window['impressions']}회 · {window['clicks']}회"
+                    if window['observed'] else '관측 없음')
+        delta = (f"{recent['impressions'] - prior['impressions']:+d}회 (관측 기준)"
+                 if prior['observed'] or recent['observed'] else '비교 불가')
+        def rank_text(window):
+            return f"{window['position']:.1f}위" if window['position'] is not None else '-'
+        lines.append('| ' + ' | '.join((
+            item['keyword'], count_text(prior), count_text(recent), delta,
+            rank_text(prior), rank_text(recent)
+        )) + ' |')
+    lines.extend([
+        '', '- 표본이 적으면 평균 순위 변화가 크게 흔들립니다. '
+        '순위 변화가 없거나 검색어 행이 없다고 곧바로 개선 실패를 단정하지 않습니다.',
+        '- 이 비교는 완료된 GSC 집계일 기준이며, 오늘의 실시간 검색 결과가 아닙니다.',
+        ''
+    ])
+    return '\n'.join(lines)
+
+
+
+
 def brand_vs_nonbrand_rows(keyword_rows):
     """Separate observed branded queries without extrapolating anonymized traffic."""
     result = {"브랜드 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0},
@@ -647,6 +734,18 @@ def main():
         focused_error = type(exc).__name__
         if isinstance(exc, HTTPError):
             focused_error += f' HTTP {exc.code}'
+    # Use one dedicated filtered query×date request for exact disjoint
+    # week comparisons, without mixing homepage/brand impressions.
+    weekly_core_rows, weekly_core_error = [], ''
+    try:
+        weekly_core_rows = query_performance(
+            token, args.property,
+            (end - timedelta(days=13)).isoformat(), end.isoformat(),
+            ['query', 'date'], limit=1000, filter_groups=CORE_QUERY_FILTERS)
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+        weekly_core_error = type(exc).__name__
+        if isinstance(exc, HTTPError):
+            weekly_core_error += f' HTTP {exc.code}'
     args.output.parent.mkdir(parents=True, exist_ok=True)
     inspections, inspection_error = collect_index_inspections(
         token, args.property, inspection_targets(pages))
@@ -654,6 +753,8 @@ def main():
         keywords, pages, start, end, args.property, dates, query_pages,
         focused_keyword_rows=focused_keywords,
         focused_query_page_rows=focused_pages, focused_error=focused_error)
+    report += format_core_keyword_weekly_comparison(
+        weekly_core_rows, end.isoformat(), weekly_core_error)
     report += format_index_inspection(inspections, inspection_error)
     sitemap_rows, sitemap_error = [], ''
     try:
