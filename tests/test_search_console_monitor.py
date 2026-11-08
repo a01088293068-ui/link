@@ -11,6 +11,16 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_private_gsc_reporting_follows_successful_live_release(self):
+        workflow = (Path(__file__).resolve().parents[1] /
+                    '.github/workflows/search-console-monitor.yml').read_text(encoding='utf-8')
+        self.assertIn("workflows: ['LinkWiki public crawlability smoke check']", workflow)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", workflow)
+        self.assertIn("vars.GSC_MONITOR_ENABLED == 'true'", workflow)
+        self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
+        self.assertIn("name: search-console-performance", workflow)
+        self.assertNotIn("contents: write", workflow)
+
     def test_google_string_zero_error_count_is_not_a_failure(self):
         report = monitor.format_sitemap_health([{
             'path': 'https://linkwiki.info/sitemap.xml',
