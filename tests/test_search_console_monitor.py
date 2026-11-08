@@ -11,6 +11,47 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_gsc_sitemap_health_distinguishes_submission_and_download(self):
+        absent = monitor.format_sitemap_health([])
+        self.assertIn('제출 기록이 확인되지 않았습니다', absent)
+        self.assertIn('robots.txt', absent)
+        present = monitor.format_sitemap_health([{
+            'path': 'https://linkwiki.info/sitemap.xml',
+            'lastSubmitted': '2026-11-01T00:00:00Z',
+            'lastDownloaded': '2026-11-08T01:00:00Z',
+            'warnings': 0, 'errors': 0,
+        }])
+        self.assertIn('제출 기록: 확인', present)
+        self.assertIn('2026-11-08T01:00:00Z', present)
+        self.assertIn('색인은 보장되지 않습니다', present)
+        bad = monitor.format_sitemap_health([{
+            'path': 'https://linkwiki.info/sitemap.xml', 'errors': 2
+        }])
+        self.assertIn('사이트맵 처리 오류', bad)
+        self.assertIn('조회 실패', monitor.format_sitemap_health([], 'HTTPError HTTP 403'))
+
+    def test_sitemap_health_api_is_read_only(self):
+        from io import BytesIO
+        from unittest.mock import patch
+        class Response:
+            def __enter__(self): return BytesIO(b'{"sitemap":[{"path":"https://linkwiki.info/sitemap.xml"}]}')
+            def __exit__(self, *args): return False
+        with patch.object(monitor, 'urlopen', return_value=Response()) as open_url:
+            rows = monitor.list_submitted_sitemaps('fake-token', 'sc-domain:linkwiki.info')
+        self.assertEqual(rows[0]['path'], 'https://linkwiki.info/sitemap.xml')
+        request = open_url.call_args.args[0]
+        self.assertEqual(request.get_method(), 'GET')
+        self.assertIn('sc-domain%3Alinkwiki.info', request.full_url)
+
+    def test_crawl_edit_report_includes_all_eight_updated_category_urls(self):
+        report = monitor.crawl_after_significant_change(
+            [], {'/': '2026-11-07', '/directory': '2026-11-08',
+                 '/categories/ai': '2026-11-08',
+                 '/categories/video': '2026-11-08'})
+        self.assertIn('https://linkwiki.info/categories/ai', report)
+        self.assertIn('https://linkwiki.info/categories/video', report)
+        self.assertIn('조회 결과 없음 · 재크롤링 여부 불명', report)
+
     def test_google_crawl_dates_are_compared_with_real_content_edit_dates(self):
         from seo.search_console_monitor import crawl_after_significant_change
         report = crawl_after_significant_change([

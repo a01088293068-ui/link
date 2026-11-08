@@ -113,6 +113,54 @@ def inspection_targets(page_rows, limit=20):
     return urls
 
 
+def list_submitted_sitemaps(token, property_url):
+    """Read actual GSC sitemap registration/processing state; no submission."""
+    endpoint = ('https://www.googleapis.com/webmasters/v3/sites/' +
+                quote(property_url, safe='') + '/sitemaps')
+    request = Request(endpoint, headers={'Authorization': f'Bearer {token}',
+                                         'Accept': 'application/json'}, method='GET')
+    with urlopen(request, timeout=25) as response:
+        data = json.load(response)
+    return data.get('sitemap', [])
+
+
+def format_sitemap_health(sitemaps, error=''):
+    """Distinguish Google-submitted sitemap from robots.txt discovery hint."""
+    source = 'https://linkwiki.info/sitemap.xml'
+    matched = next((row for row in sitemaps if row.get('path') == source), None)
+    lines = ['', '## Google Search Console 사이트맵 제출·처리 상태', '']
+    if error:
+        lines.append('- 조회 실패 · 제출 여부 확인 불가: ' + str(error))
+    elif matched is None:
+        lines.extend([
+            '- **Search Console에 기본 사이트맵 제출 기록이 확인되지 않았습니다.**',
+            '- robots.txt에 Sitemap 주소가 있어도 Search Console 제출 이력을 뜻하지 않습니다.',
+            '- 우선 제출 여부와 등록 속성(sc-domain:linkwiki.info)을 확인하고, '
+            '미제출이면 Google Search Console 사이트맵에 ' + source + ' 을 등록하세요.',
+        ])
+    else:
+        submitted = str(matched.get('lastSubmitted') or '정보 없음')
+        downloaded = str(matched.get('lastDownloaded') or '아직 없음')
+        pending = bool(matched.get('isPending', False))
+        warning = matched.get('warnings', 0)
+        errors = matched.get('errors', 0)
+        lines.extend([
+            '- 기본 사이트맵 Search Console 제출 기록: 확인',
+            '- 제출: ' + submitted + ' · Google 마지막 다운로드: ' + downloaded,
+            '- 처리 대기: ' + ('예' if pending else '아니오') +
+            ' · 오류: ' + str(errors) + ' · 경고: ' + str(warning),
+        ])
+        if errors:
+            lines.append('- **사이트맵 처리 오류를 Search Console에서 확인하세요.**')
+        elif not downloaded or downloaded == '아직 없음':
+            lines.append('- Google의 다운로드가 아직 확인되지 않았습니다.')
+        else:
+            lines.append('- 사이트맵이 제출·다운로드됐더라도 개별 URL 색인은 보장되지 않습니다.')
+    lines.extend(['', '- 이 결과는 Google API에 기록된 사이트맵 정보이며, '
+                  '실제 재크롤링·색인 완료를 의미하지 않습니다.', ''])
+    return '\n'.join(lines)
+
+
 def inspect_index(token, property_url, inspection_url):
     """Read Google's indexed-version status; this does not request indexing."""
     request = Request(
@@ -167,6 +215,9 @@ def technical_index_diagnostic(rows):
     lines = ['', '### 핵심 URL 기술적 색인 차단 진단', '',
              '| URL | robots.txt | 색인 허용 상태 | Google 페이지 가져오기 | 사이트 canonical | Google canonical |',
              '|---|---|---|---|---|---|']
+    priority += tuple('https://linkwiki.info/categories/' + slug for slug in (
+        'community', 'korean', 'comics-directory', 'webtoon',
+        'ai', 'search', 'sports', 'video'))
     safe = lambda value: str(value or '정보 없음').replace('|', '%7C').replace('\n', ' ')
     for url in priority:
         row = by_url.get(url)
@@ -199,7 +250,11 @@ def crawl_after_significant_change(rows, changes):
     out = ['', '### 실제 콘텐츠 변경 이후 Google 재크롤링 확인', '',
            '| 핵심 URL | 최종 콘텐츠 변경일 | Google 마지막 크롤링 | 판정 |',
            '|---|---|---|---|']
-    for path in ('/', '/directory', '/categories/'):
+    paths = ('/', '/directory', '/categories/') + tuple(
+        '/categories/' + slug for slug in (
+            'community', 'korean', 'comics-directory', 'webtoon',
+            'ai', 'search', 'sports', 'video'))
+    for path in paths:
         changed = changes.get(path)
         if not changed:
             continue
@@ -598,6 +653,14 @@ def main():
         focused_keyword_rows=focused_keywords,
         focused_query_page_rows=focused_pages, focused_error=focused_error)
     report += format_index_inspection(inspections, inspection_error)
+    sitemap_rows, sitemap_error = [], ''
+    try:
+        sitemap_rows = list_submitted_sitemaps(token, args.property)
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+        sitemap_error = type(exc).__name__
+        if isinstance(exc, HTTPError):
+            sitemap_error += f' HTTP {exc.code}'
+    report += format_sitemap_health(sitemap_rows, sitemap_error)
     args.output.write_text(report, encoding='utf-8')
     print(f'Wrote {args.output}: {len(keywords)} queries, {len(pages)} pages')
 
