@@ -11,6 +11,16 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_google_string_zero_error_count_is_not_a_failure(self):
+        report = monitor.format_sitemap_health([{
+            'path': 'https://linkwiki.info/sitemap.xml',
+            'isPending': True, 'errors': '0', 'warnings': '0',
+            'lastSubmitted': '2026-10-27T06:35:03Z',
+        }])
+        self.assertIn('Google이 아직 사이트맵 처리를 완료하지 않았습니다', report)
+        self.assertNotIn('사이트맵 처리 오류를 Search Console에서 확인하세요', report)
+        self.assertIn('오류: 0 · 경고: 0', report)
+
     def test_gsc_sitemap_health_distinguishes_submission_and_download(self):
         absent = monitor.format_sitemap_health([])
         self.assertIn('제출 기록이 확인되지 않았습니다', absent)
