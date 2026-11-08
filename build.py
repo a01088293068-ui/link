@@ -613,6 +613,43 @@ def directory_purpose_comparison(records, categories):
     )
 
 
+def directory_relevant_guides(posts):
+    """Visible contextual guide entry points using only published article URLs."""
+    intents = (
+        ("사이트를 어떻게 검색하나요?", ("검색 기능 활용법", "검색 기능", "검색")),
+        ("사이트모음은 어떤 기준으로 비교하나요?", ("비교 기준", "사이트모음 비교")),
+        ("광고 링크는 어떻게 구분하나요?", ("광고 구분", "광고")),
+    )
+    items = []
+    used = set()
+    for question, tokens in intents:
+        chosen = next((post for post in posts
+                       if post.get("url") not in used
+                       and any(token in post.get("title", "") for token in tokens)
+                       and post.get("url", "").startswith("/blog/")
+                       and post.get("title")), None)
+        if chosen is None:
+            continue
+        used.add(chosen["url"])
+        items.append(
+            '<li><strong>' + escape(question) + '</strong> '
+            '<a href="' + escape(chosen["url"], quote=True) + '">'
+            + escape(chosen["title"]) + '</a></li>'
+        )
+    if len(items) < 2:
+        raise RuntimeError("Directory needs two distinct, published task-specific guides")
+    return (
+        '<section id="site-related-guides" class="lw-safety-note seo-directory-guides" '
+        'aria-label="목적에 맞는 실제 이용 가이드">'
+        '<h2>사이트 목록을 더 정확하게 이용하는 방법</h2>'
+        '<p>찾을 주소가 없거나 두 사이트를 비교해야 한다면, '
+        '아래 실제 발행된 안내 글에서 점검 순서를 확인하세요.</p>'
+        '<ul>' + ''.join(items) + '</ul>'
+        '<p><a href="/blog/">다른 이용 가이드 모두 보기</a></p>'
+        '</section>'
+    )
+
+
 def directory_search_help(records, categories):
     """Helpful, static, data-backed search instructions for directory visitors."""
     if not records or not categories:
@@ -893,7 +930,8 @@ def build():
         + '<a href="/categories/">전체 분야 보기</a>'
         + '<a href="#site-list-guide">검색 이용 안내</a>'
         + '<a href="#site-category-comparison">분야별 등록 예시</a>'
-        + '<a href="#site-purpose-comparison">목적별 선택법</a></nav>'
+        + '<a href="#site-purpose-comparison">목적별 선택법</a>'
+        + '<a href="#site-related-guides">관련 이용 가이드</a></nav>'
     )
     directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
                             directory_html, count=1, flags=re.S)
@@ -907,7 +945,7 @@ def build():
     directory_html = directory_html.replace(
         overview_marker,
         help_section + overview + directory_purpose_comparison(records, CATEGORY_LANDING) +
-        overview_marker, 1)
+        directory_relevant_guides(posts) + overview_marker, 1)
     # Provide a structured category map for the core search landing page.
     # One declaration only; never generate unverified ratings or fake offers.
     if 'id="directory-category-schema"' in directory_html:
