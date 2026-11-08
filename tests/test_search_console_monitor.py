@@ -556,5 +556,25 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertLess(result.index('## 검색어 상위'), result.index('## 최근 날짜별 추세'))
 
 
+    def test_core_landing_page_split_uses_only_observed_site_rows(self):
+        rows = [
+            {'keys': ['주소모음', 'https://linkwiki.info/directory'],
+             'impressions': 7, 'clicks': 2, 'position': 12.4},
+            {'keys': ['링크 모음', 'https://linkwiki.info/'],
+             'impressions': 3, 'clicks': 0, 'position': 22.0},
+            {'keys': ['사이트모음', 'https://other.example/'],
+             'impressions': 10, 'clicks': 3, 'position': 1.0},
+        ]
+        report = monitor.format_core_landing_page_split(rows)
+        self.assertIn('| 주소모음 | https://linkwiki.info/directory | 7 | 2 | 12.4 |', report)
+        self.assertIn('| 링크모음 | https://linkwiki.info/ | 3 | 0 | 22.0 |', report)
+        self.assertNotIn('other.example', report)
+        self.assertIn('관측된 URL이 여러 개여도', report)
+
+    def test_core_landing_page_split_handles_absent_rows(self):
+        report = monitor.format_core_landing_page_split([])
+        self.assertIn('관측된 검색어·페이지 조합 없음', report)
+
+
 if __name__ == '__main__':
     unittest.main()
