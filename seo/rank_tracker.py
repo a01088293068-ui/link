@@ -48,9 +48,10 @@ def search_top_results(query, key, limit=REQUESTED_RESULTS):
     """Collect distinct results with their actual SERP positions.
 
     A short provider page is not evidence that later pages are empty.
-    Position is the provider's positive ordinal when available, otherwise
-    the requested page offset plus the row index, *not* the compacted list
-    index after deduplication. Duplicate result URLs retain first appearance.
+    Position comes from the provider, normalizing page-relative 1..10
+    ordinals on later pages to global positions 11..30. If missing, use the
+    page offset plus the row index, not the compacted deduplicated row index.
+    Duplicate URLs retain their first appearance.
     """
     unique = []
     seen = set()
@@ -64,9 +65,14 @@ def search_top_results(query, key, limit=REQUESTED_RESULTS):
             if not url or url in seen:
                 continue
             raw_position = result.get("position")
-            position = (raw_position if isinstance(raw_position, int)
-                        and not isinstance(raw_position, bool) and raw_position > 0
-                        else (page - 1) * PAGE_SIZE + index)
+            offset = (page - 1) * PAGE_SIZE
+            if isinstance(raw_position, int) and not isinstance(raw_position, bool) and raw_position > 0:
+                # Some provider responses reset "position" to 1..10 on each
+                # paginated API call. Others use global 11..30 ordinals.
+                # Normalize page-relative values while preserving global ones.
+                position = offset + raw_position if page > 1 and raw_position <= PAGE_SIZE else raw_position
+            else:
+                position = offset + index
             # Serper occasionally returns inconsistent positions; do not
             # infer a top-30 result from an ordinal beyond our requested depth.
             if position > limit:
