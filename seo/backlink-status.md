@@ -1,6 +1,6 @@
 # 링크위키 백링크 현황
 
-기록 시각: 2026-11-01T02:27:00+00:00 (UTC)
+기록 시각: 2026-11-08T02:29:27+00:00 (UTC)
 대상: linkwiki.info
 등록처: 40개
 
@@ -20,7 +20,7 @@
 |---|---|---|---|---|
 | Anoox | submitted | unverified |  |  |
 | B3 Directory | not_submitted | unverified | 2026-10-29 |  |
-| DevElif | submitted | verified_link | 2026-11-01 | https://develif.com/s/website-search-and-address-guides-by-linkwiki |
+| DevElif | submitted | verified_link | 2026-11-08 | https://develif.com/s/website-search-and-address-guides-by-linkwiki |
 | ExactSeek | pending_review | unverified |  |  |
 | FreeWebSubmission | submitted | unverified |  |  |
 | FWS - Amidalla | not_submitted | unverified |  |  |
@@ -39,8 +39,8 @@
 | Tiny Web Directory | not_submitted | unverified | 2026-10-29 |  |
 | Viesearch | pending_review | unverified |  |  |
 | Zearches | not_submitted | unverified | 2026-10-29 |  |
-| TOP Adult Directory | submitted | fetch_error | 2026-11-01 | https://topadultdir.com/en/www/linkwiki-korean-web-directory/97 |
-| saaskr | submitted | verified_link | 2026-11-01 | https://saaskr.com/saas/linkwiki-info |
+| TOP Adult Directory | submitted | fetch_error | 2026-11-08 | https://topadultdir.com/en/www/linkwiki-korean-web-directory/97 |
+| saaskr | submitted | verified_link | 2026-11-08 | https://saaskr.com/saas/linkwiki-info |
 | 사이트다 | unknown | unverified | 2026-10-28 |  |
 | VibeLabs | unknown | unverified | 2026-10-28 |  |
 | SpicyRanked | pending_review | unverified | 2026-10-28 |  |
