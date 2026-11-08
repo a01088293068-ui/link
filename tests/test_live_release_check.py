@@ -14,6 +14,30 @@ def page(path, title, heading, more=""):
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
+    def test_each_category_deployment_checks_distinct_editorial_copy(self):
+        from seo.live_release_check import release_content_sections
+        for path in CATEGORY_PATHS:
+            with self.subTest(path=path):
+                block = ('<section class="wrap seo-related-links seo-category-decision" '
+                         'aria-label="이 분야의 목적별 선택 방법">'
+                         '<h2>이 분야에서 사이트를 선택하는 방법</h2>'
+                         '<ol><li><h3>목적별 안내</h3><p>이 분야의 정보 검토</p></li></ol>'
+                         '</section>')
+                expected = page(path, "분야별 사이트", "사이트 탐색", block)
+                stale = expected.replace("이 분야의 정보 검토", "예전 정보")
+                self.assertEqual(release_content_sections(expected, path), [block])
+                self.assertTrue(any("directory examples differ" in issue
+                                    for issue in check_page(expected, stale, path)))
+
+    def test_category_sitemap_lastmod_mismatch_detected(self):
+        from seo.live_release_check import check_core_sitemap_lastmod
+        path = "/categories/ai"
+        def sitemap(day):
+            return ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                    f'<url><loc>{SITE + path}</loc><lastmod>{day}</lastmod></url></urlset>')
+        errors = check_core_sitemap_lastmod(sitemap("2026-11-08"), sitemap("2026-11-07"))
+        self.assertIn("deployed lastmod for /categories/ai differs", errors[0])
+
     def test_detects_outdated_site_cards_even_with_matching_title_and_h1(self):
         from seo.live_release_check import directory_cards
         card = ('<article class="v6-card"><small>AI 도구</small><h3>ChatGPT</h3>'
@@ -184,6 +208,12 @@ class LiveReleaseCheckTests(unittest.TestCase):
                        ''.join(f'<a href="{link}">보기</a>' for link in CATEGORY_PATHS))
             (dist / "categories").mkdir()
             (dist / "categories/index.html").write_text(hub, encoding="utf-8")
+            for category_path in CATEGORY_PATHS:
+                slug = category_path.rsplit("/", 1)[-1]
+                category_html = page(category_path, slug, "카테고리",
+                    '<section class="wrap seo-related-links seo-category-decision"><h2>목적별 선택</h2></section>')
+                (dist / "categories" / (slug + ".html")).write_text(
+                    category_html, encoding="utf-8")
             sitemap = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(
                 f"<url><loc>{x}</loc></url>"
                 for x in [SITE + "/", SITE + "/directory", SITE + "/categories/"] +
@@ -191,6 +221,10 @@ class LiveReleaseCheckTests(unittest.TestCase):
             pages = {"/": home, "/directory": directory, "/categories/": hub,
                      "/sitemap.xml": sitemap, "/assets/directory.js": "old",
                      "/assets/directory-search.js": "old"}
+            for category_path in CATEGORY_PATHS:
+                slug = category_path.rsplit("/", 1)[-1]
+                pages[category_path] = page(category_path, slug, "카테고리",
+                    '<section class="wrap seo-related-links seo-category-decision"><h2>목적별 선택</h2></section>')
             self.assertTrue(any("multi-term search" in x for x in
                                 run(dist, fetch=lambda path: pages[path])))
             pages["/assets/directory.js"] = "window.LinkWikiSearch.sortResults"
