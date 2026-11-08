@@ -110,6 +110,15 @@ jobs:
           curl --fail --silent --show-error --max-time 20 'https://linkwiki.info/sitemap.xml' -o /tmp/linkwiki-sitemap
           grep -Fq "<loc>${url}</loc>" /tmp/linkwiki-sitemap || { echo "::error::Published article missing from sitemap: ${url}"; exit 1; }
           echo "PASS published SEO article ${url}"
+      - name: Install Google authentication for optional stalled-sitemap recovery
+        if: github.event_name == 'workflow_run'
+        run: python3 -m pip install 'google-auth>=2,<3' 'requests>=2,<3'
+      - name: Recover Google sitemap only if pending and never downloaded for 7+ days
+        if: github.event_name == 'workflow_run'
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GSC_PROPERTY: ${{ vars.GSC_PROPERTY }}
+        run: python3 seo/recover_stalled_sitemap.py --dist dist
       - name: Check main-service outbound destination without blocking SEO checks
         if: always()
         shell: bash
