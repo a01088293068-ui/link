@@ -247,7 +247,7 @@ def polish_home_intent(home):
     if home.count(legacy_form) == 1:
         home = home.replace(legacy_form, canonical_form, 1)
     elif home.count(canonical_form) != 1:
-        raise RuntimeError("Homepage search form action changed; review required")
+        raise RuntimeError("Homepage structure changed: search form action; review required")
     edits = (
         (
             '분야별 사이트를 비교하고, 주소 확인부터 접속 문제 해결까지 링크위키에서 살펴보세요.',
