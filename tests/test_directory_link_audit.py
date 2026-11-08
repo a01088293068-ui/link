@@ -50,12 +50,14 @@ class DirectoryLinkAuditTests(unittest.TestCase):
         with patch.object(audit, "urlopen", side_effect=error):
             result = audit.check(self.record)
         self.assertEqual(result["result"], "access_restricted")
+        self.assertEqual(result["final_url"], self.record["url"])
 
     def test_missing_url_is_separate_from_redirect_alert(self):
         error = HTTPError("https://example.org/path", 404, "Not Found", None, None)
         with patch.object(audit, "urlopen", side_effect=error):
             result = audit.check(self.record)
         self.assertEqual(result["result"], "not_found")
+        self.assertEqual(result["final_url"], self.record["url"])
 
 
 if __name__ == "__main__":
