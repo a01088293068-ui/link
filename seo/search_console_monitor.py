@@ -142,17 +142,19 @@ def format_sitemap_health(sitemaps, error=''):
         submitted = str(matched.get('lastSubmitted') or '정보 없음')
         downloaded = str(matched.get('lastDownloaded') or '아직 없음')
         pending = bool(matched.get('isPending', False))
-        warning = matched.get('warnings', 0)
-        errors = matched.get('errors', 0)
+        warning = int(matched.get('warnings') or 0)
+        errors = int(matched.get('errors') or 0)
         lines.extend([
             '- 기본 사이트맵 Search Console 제출 기록: 확인',
             '- 제출: ' + submitted + ' · Google 마지막 다운로드: ' + downloaded,
             '- 처리 대기: ' + ('예' if pending else '아니오') +
             ' · 오류: ' + str(errors) + ' · 경고: ' + str(warning),
         ])
-        if errors:
+        if errors > 0:
             lines.append('- **사이트맵 처리 오류를 Search Console에서 확인하세요.**')
-        elif not downloaded or downloaded == '아직 없음':
+        elif pending:
+            lines.append('- **Google이 아직 사이트맵 처리를 완료하지 않았습니다.** 다운로드 기록 및 제출 상태를 확인하세요.')
+        elif downloaded == '아직 없음':
             lines.append('- Google의 다운로드가 아직 확인되지 않았습니다.')
         else:
             lines.append('- 사이트맵이 제출·다운로드됐더라도 개별 URL 색인은 보장되지 않습니다.')
