@@ -306,7 +306,7 @@ def audit_site(dist):
             errors.append("directory usage guide missing or duplicated")
         if "사이트모음 검색 및 확인 방법" not in listing:
             errors.append("directory search help missing accessible label")
-        for anchor in ("site-list-guide", "site-category-comparison", "site-purpose-comparison"):
+        for anchor in ("site-list-guide", "site-category-comparison", "site-purpose-comparison", "site-related-guides"):
             if listing.count(f'id="{anchor}"') != 1:
                 errors.append(f"directory section anchor missing/duplicate: {anchor}")
             if f'href="#{anchor}"' not in listing:
@@ -315,6 +315,8 @@ def audit_site(dist):
             errors.append("directory purpose-led comparison missing or duplicated")
         if listing.count('class="seo-purpose-pair"') != 4:
             errors.append("directory purpose comparisons incomplete")
+        if listing.count('class="lw-safety-note seo-directory-guides"') != 1:
+            errors.append("directory published guide pathways missing or duplicated")
         for expected_path in ("/categories/", "/guides/address-check",
                               "/guides/link-troubleshooting"):
             if f'href="{expected_path}"' not in listing:

@@ -10,6 +10,28 @@ from seo import auto_seo
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_directory_guide_links_are_published_and_task_relevant(self):
+        from build import directory_relevant_guides
+        from seo.site_audit import internal_inbound_links
+        root = Path(__file__).resolve().parents[1]
+        page = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertEqual(page.count('id="site-related-guides"'), 1)
+        self.assertIn('href="#site-related-guides"', page)
+        section = re.search(
+            r'<section id="site-related-guides".*?</section>', page, re.S).group()
+        self.assertIn("사이트를 어떻게 검색하나요?", section)
+        self.assertIn("사이트모음은 어떤 기준으로 비교하나요?", section)
+        self.assertIn("광고 링크는 어떻게 구분하나요?", section)
+        urls = re.findall(r'href="(/blog/[^"]+/)"', section)
+        self.assertEqual(len(urls), 3)
+        self.assertEqual(len(set(urls)), 3)
+        inbound = internal_inbound_links(root / "dist")
+        for url in urls:
+            self.assertTrue((root / "dist" / url.lstrip("/") / "index.html").is_file())
+            self.assertIn("/directory", inbound[url])
+        with self.assertRaisesRegex(RuntimeError, "two distinct"):
+            directory_relevant_guides([])
+
     def test_directory_purpose_chooser_is_genuinely_cross_category(self):
         from build import directory_purpose_comparison, DIRECTORY_PURPOSE_COMPARISONS, CATEGORY_LANDING
         root = Path(__file__).resolve().parents[1]
@@ -135,7 +157,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
     def test_directory_guide_and_comparison_are_reachable_from_top_navigation(self):
         root = Path(__file__).resolve().parents[1]
         page = (root / "dist/directory.html").read_text(encoding="utf-8")
-        for anchor in ("site-list-guide", "site-category-comparison", "site-purpose-comparison"):
+        for anchor in ("site-list-guide", "site-category-comparison", "site-purpose-comparison", "site-related-guides"):
             self.assertEqual(page.count(f'id="{anchor}"'), 1)
             self.assertIn(f'href="#{anchor}"', page)
             self.assertLess(page.index(f'href="#{anchor}"'), page.index(f'id="{anchor}"'))
