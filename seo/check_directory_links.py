@@ -27,7 +27,9 @@ def check(record, timeout=8):
             final_url = response.url
     except HTTPError as error:
         status = error.code
-        final_url = error.url
+        # HTTPError exposes geturl() across Python versions; .url is unreliable
+        # on macOS system Python 3.9 and can raise KeyError via tempfile.
+        final_url = error.geturl()
     except (URLError, TimeoutError, OSError) as error:
         return {"name": record["name"], "url": url, "result": "unreachable",
                 "detail": type(error).__name__}
