@@ -15,6 +15,15 @@ class HomeIntentTests(unittest.TestCase):
         self.assertIn("실시간 접속 확인을 보증하지 않습니다", modified)
         self.assertEqual(modified.count('class="lw-search-quicklinks"'), 1)
 
+    def test_home_primary_keyword_intent_is_visible_and_consistent(self):
+        source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
+        for phrase in ("주소모음", "링크모음", "사이트모음"):
+            self.assertIn(phrase, source.split("</title>", 1)[0])
+        self.assertIn('<h1 class="home-keyword-heading">주소모음·링크모음·사이트모음, 97개 사이트 검색</h1>', source)
+        self.assertIn('href="https://linkwiki.info/" rel="canonical"', source)
+        self.assertIn('name="description"', source)
+        self.assertIn("사이트 이름이나 도메인을 입력해 주소를 찾거나", source)
+
     def test_home_structure_mismatch_is_explicit(self):
         with self.assertRaisesRegex(RuntimeError, "Homepage structure changed"):
             build.polish_home_intent("invalid template")
