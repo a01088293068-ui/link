@@ -84,6 +84,11 @@ def release_content_sections(html, path):
             r'<article class="v6-card">.*?</article>',
         ),
     }
+    if path in CATEGORY_PATHS:
+        patterns[path] = (
+            r'<section\b(?=[^>]*\bclass="[^"]*\bseo-category-decision\b)[^>]*>.*?</section>',
+            r'<article class="v6-card">.*?</article>',
+        )
     blocks = []
     for expression in patterns.get(path, ()):
         blocks.extend(re.findall(expression, html, flags=re.S))
@@ -155,7 +160,7 @@ def check_core_sitemap_lastmod(expected_xml, live_xml):
         return found
     expected, live = values(expected_root), values(live_root)
     problems = []
-    for path in ("/", "/directory", "/categories/"):
+    for path in ("/", "/directory", "/categories/") + CATEGORY_PATHS:
         url = SITE + path
         recorded = expected.get(url)
         if recorded and live.get(url) != recorded:
@@ -238,6 +243,10 @@ def run(dist, fetch=fetch_public):
     expected_map = {"/": dist / "index.html",
                     "/directory": dist / "directory.html",
                     "/categories/": dist / "categories" / "index.html"}
+    expected_map.update({
+        path: dist / "categories" / (path.rsplit("/", 1)[-1] + ".html")
+        for path in CATEGORY_PATHS
+    })
     problems = []
     for path, source in expected_map.items():
         expected = source.read_text(encoding="utf-8")
