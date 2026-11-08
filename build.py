@@ -275,7 +275,8 @@ def polish_home_intent(home):
             continue
         elif old.startswith("분야별 사이트를 비교하고,"):
             # The homepage now uses a more specific, fact-checked 97-site summary.
-            if "97개 등록 사이트를 분야별로 검색하고 비교하세요." not in home:
+            if ("97개 등록 사이트를 분야별로 검색하고 비교하세요." not in home
+                    and "97개 등록 사이트 설명과 이동 주소를 한곳에서 비교할 수 있습니다." not in home):
                 raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
         else:
             raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
