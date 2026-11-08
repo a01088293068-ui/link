@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "measurement": "Serper paginated top 30 for core queries; top 10 for long-tail discovery, gl=kr, hl=ko; returned_results records actual unique rows",
+  "measurement": "Serper paginated top 30 for core queries; top 10 for long-tail discovery, gl=kr, hl=ko; returned_results records unique rows; sampled_positions records actual ordinal coverage",
   "samples": [
     {
       "date": "2026-10-28",
@@ -1211,6 +1211,425 @@
             "position": 5,
             "title": "사이트모음 · 분야별 사이트추천 | 사이트나라넷",
             "url": "https://sitenara.net/"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-11-08",
+      "observed_at": "2026-11-08T05:45:41+00:00",
+      "results": {
+        "링크모음": {
+          "position": null,
+          "url": null
+        },
+        "주소모음": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "링크모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "주소모음 사이트": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음 추천": {
+          "position": null,
+          "url": null
+        },
+        "커뮤니티 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "웹툰 링크모음": {
+          "position": null,
+          "url": null
+        },
+        "AI 도구 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "스포츠 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "영상 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "해외 한인 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "주소모음 사이트 추천": {
+          "position": null,
+          "url": null
+        },
+        "링크모음 사이트 추천": {
+          "position": null,
+          "url": null
+        },
+        "분야별 사이트모음": {
+          "position": null,
+          "url": null
+        },
+        "사이트 주소 확인 방법": {
+          "position": null,
+          "url": null
+        },
+        "링크 접속 안됨": {
+          "position": null,
+          "url": null
+        },
+        "사이트모음 추천 사이트": {
+          "position": null,
+          "url": null
+        }
+      },
+      "returned_results": {
+        "링크모음": 29,
+        "주소모음": 30,
+        "사이트모음": 30,
+        "링크모음 사이트": 30,
+        "주소모음 사이트": 27,
+        "사이트모음 추천": 25,
+        "커뮤니티 사이트모음": 10,
+        "웹툰 링크모음": 10,
+        "AI 도구 사이트모음": 10,
+        "스포츠 사이트모음": 10,
+        "영상 사이트모음": 10,
+        "해외 한인 사이트모음": 10,
+        "주소모음 사이트 추천": 10,
+        "링크모음 사이트 추천": 10,
+        "분야별 사이트모음": 10,
+        "사이트 주소 확인 방법": 10,
+        "링크 접속 안됨": 10,
+        "사이트모음 추천 사이트": 10
+      },
+      "sampled_positions": {
+        "링크모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "주소모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "사이트모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "링크모음 사이트": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "주소모음 사이트": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "사이트모음 추천": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "커뮤니티 사이트모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "웹툰 링크모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "AI 도구 사이트모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "스포츠 사이트모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "영상 사이트모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "해외 한인 사이트모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "주소모음 사이트 추천": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "링크모음 사이트 추천": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "분야별 사이트모음": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "사이트 주소 확인 방법": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "링크 접속 안됨": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "사이트모음 추천 사이트": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "sample_coverage": {
+        "링크모음": "partial",
+        "주소모음": "partial",
+        "사이트모음": "partial",
+        "링크모음 사이트": "partial",
+        "주소모음 사이트": "partial",
+        "사이트모음 추천": "partial",
+        "커뮤니티 사이트모음": "complete",
+        "웹툰 링크모음": "complete",
+        "AI 도구 사이트모음": "complete",
+        "스포츠 사이트모음": "complete",
+        "영상 사이트모음": "complete",
+        "해외 한인 사이트모음": "complete",
+        "주소모음 사이트 추천": "complete",
+        "링크모음 사이트 추천": "complete",
+        "분야별 사이트모음": "complete",
+        "사이트 주소 확인 방법": "complete",
+        "링크 접속 안됨": "complete",
+        "사이트모음 추천 사이트": "complete"
+      },
+      "competitor_top": {
+        "링크모음": [
+          {
+            "position": 1,
+            "title": "주소모음·링크모음 | 최신 사이트 주소 안내 | 주소핫",
+            "url": "https://xn--9l4bi0hv0bpway04b.com/"
+          },
+          {
+            "position": 2,
+            "title": "여기여 | 주소모음·링크모음·최신주소 안내",
+            "url": "https://calaratjadaguide.com/"
+          },
+          {
+            "position": 3,
+            "title": "주소모음 링크모음 | 여기여 최신주소링크 사이트 안내 | 2026년 ...",
+            "url": "https://xn--ok0b92t9xjba155k.com/"
+          },
+          {
+            "position": 4,
+            "title": "호빵넷 | 링크모음·주소모음, 분야별 공식 사이트 안내",
+            "url": "https://hoppang.net/"
+          },
+          {
+            "position": 5,
+            "title": "【까망이】 - 주소모음 링크모음 최신주소사이트",
+            "url": "https://www.spreaker.com/episode/kkamang-i-jusomo-eum-lingkeumo-eum-choesinjusosaiteu--49461470"
+          }
+        ],
+        "주소모음": [
+          {
+            "position": 1,
+            "title": "주소모음·링크모음 | 최신 사이트 주소 안내 | 주소핫",
+            "url": "https://xn--9l4bi0hv0bpway04b.com/"
+          },
+          {
+            "position": 2,
+            "title": "여기여 | 주소모음·링크모음·최신주소 안내",
+            "url": "https://calaratjadaguide.com/"
+          },
+          {
+            "position": 3,
+            "title": "주소모아 | 주소모음 2026 최신 정보 및 인기사이트 링크모음 순위",
+            "url": "https://juso-moeum.com/"
+          },
+          {
+            "position": 4,
+            "title": "【까망이】 - 주소모음 링크모음 최신주소사이트",
+            "url": "https://www.spreaker.com/episode/kkamang-i-jusomo-eum-lingkeumo-eum-choesinjusosaiteu--49461470"
+          },
+          {
+            "position": 5,
+            "title": "주소찾기 사이트주소 · 최신링크 활용 안내 [ 레이더 주소모음 ]",
+            "url": "https://www.youtube.com/watch?v=8L-bhQLpJ-s"
+          }
+        ],
+        "사이트모음": [
+          {
+            "position": 1,
+            "title": "주소모음·링크모음 | 최신 사이트 주소 안내 | 주소핫",
+            "url": "https://xn--9l4bi0hv0bpway04b.com/"
+          },
+          {
+            "position": 2,
+            "title": "여기여 | 주소모음·링크모음·최신주소 안내",
+            "url": "https://calaratjadaguide.com/"
+          },
+          {
+            "position": 3,
+            "title": "웹 디렉토리 - 유용한 웹사이트 모음",
+            "url": "https://site.url.kr/"
+          },
+          {
+            "position": 4,
+            "title": "알아두면 유용한 사이트 모음 (2020.ver) - 네이버 블로그",
+            "url": "https://m.blog.naver.com/together2019/221794038466"
+          },
+          {
+            "position": 5,
+            "title": "모르면 손해보는 유용한 사이트 모음 TOP5 - 라이프 스타일",
+            "url": "https://www.youtube.com/shorts/9SjqKSf8UHw"
           }
         ]
       }
