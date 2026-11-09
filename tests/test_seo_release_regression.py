@@ -86,7 +86,10 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn("검색·포털·공공정보 사이트모음", html)
             self.assertIn("국민건강보험공단·국민연금공단", html)
             self.assertIn("민원·복지·건강보험·연금·학술정보 사이트", html)
-            self.assertEqual(html.count('<article class="item"'), 36)
+            self.assertIn("국내 공공서비스를 목적별로 찾는 방법", html)
+            self.assertIn("국민신문고는 기관에 민원", html)
+            self.assertIn("식품안전나라는 식품 회수", html)
+            self.assertEqual(html.count('<article class="item"'), 42)
             self.assertNotIn('name="robots" content="noindex"', html)
         self.assertIn('href="https://linkwiki.info/categories/search"', built)
 
@@ -96,7 +99,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
         actual_names = {row["name"] for row in records}
         names = ("정부24", "복지로", "한국장학재단",
-                 "학술연구정보서비스 RISS", "국가통계포털 KOSIS", "국가법령정보센터")
+                 "학술연구정보서비스 RISS", "국가통계포털 KOSIS", "국가법령정보센터",
+                 "국민신문고", "위택스", "국립중앙도서관", "국가전자도서관")
         self.assertTrue(set(names).issubset(actual_names))
         html = category_decision_guide("search", records)
         built = (root / "dist/categories/search.html").read_text(encoding="utf-8")
