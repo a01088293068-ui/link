@@ -362,6 +362,23 @@ class SiteAuditTests(unittest.TestCase):
                 encoding="utf-8")
             self.assertTrue(any("category card URLs differ" in item for item in audit_site(root)))
 
+    def test_homepage_lastmod_tracks_declared_significant_edit(self):
+        """The generated sitemap should not silently lag edited home content."""
+        import xml.etree.ElementTree as ET
+        root = Path(__file__).resolve().parents[1]
+        dist = root / "dist"
+        if not (dist / "sitemap.xml").exists():
+            self.skipTest("build output not present")
+        declared = json.loads((root / "seo/significant-page-updates.json").read_text(encoding="utf-8"))
+        tree = ET.parse(dist / "sitemap.xml")
+        entries = {}
+        for element in tree.getroot():
+            loc = element.findtext("{*}loc")
+            lastmod = element.findtext("{*}lastmod")
+            if loc:
+                entries[loc] = lastmod
+        self.assertEqual(entries["https://linkwiki.info/"], declared["/"])
+
     def test_existing_generated_site_is_consistent(self):
         root = Path(__file__).resolve().parents[1] / "dist"
         if root.is_dir():
