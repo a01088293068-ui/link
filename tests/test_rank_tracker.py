@@ -15,6 +15,9 @@ class RankTrackerTests(unittest.TestCase):
         self.assertIn("git checkout -B rank-measure-current origin/main", workflow)
         self.assertLess(workflow.index("git checkout -B rank-measure-current"),
                         workflow.index("id: freshness"))
+        self.assertIn("name: linkwiki-korean-rank-snapshot", workflow)
+        self.assertIn("if: always() && steps.freshness.outputs.needs_measure == 'true'", workflow)
+        self.assertIn("retention-days: 30", workflow)
         self.assertEqual(workflow.count("if: steps.freshness.outputs.needs_measure == 'true'"), 2)
 
     def test_provider_relative_positions_normalize_across_three_pages(self):
