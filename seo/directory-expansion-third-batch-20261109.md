@@ -28,7 +28,7 @@
 - Final independently executed build and full regression tests: **passed**, https://github.com/a01088293068-ui/link/actions/runs/42581611064 .
 - Independent live directory HTML extractor retrieved `https://linkwiki.info/directory` showing **154** and 187 extracted links.
 - Live category pages contained new entries: Ideogram, Swisscows, NFL and Hacker News in their correct categories.
-- Live homepage read showed **154 in body** but the title was still **136** on the first and repeat fetch. This indicates a potentially stale/mixed deployment or cache; the GitHub source title is 154, and QA built output passed. Do **not** claim independently verified correct live homepage metadata until rechecked.
+- Live homepage initially showed **154 in the body** but an older **136** title during propagation; subsequently re-fetched the public homepage and confirmed title and body both **154**, along with public /directory title and body both **154**. Do not mistake intermediate propagation state for the final release.
 - Public crawlability smoke workflow run: https://github.com/a01088293068-ui/link/actions/runs/42581638518 (status was in progress when this note was drafted; check final conclusion before claiming success).
 
 ## Search interpretation
