@@ -664,6 +664,29 @@ def directory_search_help(records, categories):
     active = [(category, slug) for category, slug, _, _ in categories if counts[category]]
     if not active:
         raise RuntimeError("No directory categories available")
+    # Demonstrate the real search URL using data-backed registered examples.
+    # No invented recommendations, rankings or uptime claims.
+    samples = []
+    for category in ("검색·포털", "AI 도구", "스포츠"):
+        selected = next(
+            (entry for entry in records
+             if entry.get("category") == category
+             and isinstance(entry.get("name"), str)
+             and entry["name"].strip()), None)
+        if selected:
+            name = selected["name"].strip()
+            samples.append(
+                '<li><a href="/directory?q=' + quote(name, safe="") + '">'
+                + escape(name) + ' 이름으로 검색하기</a> · '
+                + escape(category) + ' 등록 항목</li>'
+            )
+    example_section = (
+        '<div class="lw-search-examples"><h3>실제 등록 사이트 검색 예시</h3>'
+        '<p>항목을 선택하면 검색어가 입력된 전체 목록으로 이동합니다. '
+        '예시는 인기 순위나 실시간 접속 확인 결과가 아닙니다.</p>'
+        '<ul>' + ''.join(samples) + '</ul></div>'
+        if samples else ''
+    )
     return (
         '<section id="site-list-guide" class="lw-safety-note seo-search-help" aria-label="사이트모음 검색 및 확인 방법">'
         '<h2>주소모음·링크모음 검색 사용 방법</h2>'
@@ -677,6 +700,7 @@ def directory_search_help(records, categories):
         '두 목록 사이에서 선택이 어렵다면 '
         '<a href="/guides/directory-comparison">사이트 목록 비교 기준</a>을 참고하세요.</li>'
         '</ol>'
+        + example_section +
         '<h3>자주 묻는 질문</h3>'
         '<h4>사이트 이름을 몰라도 주소모음에서 찾을 수 있나요?</h4>'
         '<p>네. 커뮤니티, AI 도구, 스포츠 등 용도나 분야별로 목록을 좁힐 수 있습니다. '
