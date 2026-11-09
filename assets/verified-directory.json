@@ -1108,5 +1108,23 @@
     "url": "https://www.kbs.co.kr/",
     "category": "영상·OTT",
     "description": "KBS 방송 프로그램과 편성, 관련 영상 및 뉴스 정보를 확인할 수 있습니다."
+  },
+  {
+    "name": "학술연구정보서비스 RISS",
+    "url": "https://www.riss.kr/",
+    "category": "검색·포털",
+    "description": "국내 학위논문과 학술자료, 대학 도서관 소장 정보를 검색할 수 있는 학술연구정보서비스입니다."
+  },
+  {
+    "name": "복지로",
+    "url": "https://www.bokjiro.go.kr/",
+    "category": "검색·포털",
+    "description": "복지서비스를 검색하고 대상 여부와 온라인 신청 안내를 확인할 수 있는 대한민국 복지포털입니다."
+  },
+  {
+    "name": "한국장학재단",
+    "url": "https://www.kosaf.go.kr/ko/main.do",
+    "category": "검색·포털",
+    "description": "국가장학금과 학자금대출 등 교육 지원사업의 신청 정보와 공지사항을 제공합니다."
   }
 ]
