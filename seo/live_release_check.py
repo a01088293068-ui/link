@@ -301,6 +301,13 @@ def fetch_public(path):
         final = urlsplit(response.geturl())
         if final.scheme != "https" or final.hostname != "linkwiki.info":
             raise RuntimeError("Unexpected cross-origin or insecure redirect: " + url)
+        # A 200 response reached through /directory.html or another URL is
+        # not proof the extensionless canonical was served directly. Such
+        # redirects can leave Google inspecting a different URL variant.
+        if path in ("/", "/directory", "/categories/") + CATEGORY_PATHS:
+            if final.path != path or final.query or final.fragment:
+                raise RuntimeError("Canonical URL redirected or gained query parameters: "
+                                   + url + " -> " + response.geturl())
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}: {url}")
         if path in ("/", "/directory", "/categories/") + CATEGORY_PATHS:
