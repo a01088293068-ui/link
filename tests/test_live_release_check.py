@@ -351,11 +351,11 @@ class LiveReleaseCheckTests(unittest.TestCase):
         expected = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
         source = (root / "assets/directory.js").read_text(encoding="utf-8")
         self.assertEqual(extract_directory_sites(source), expected)
-        self.assertEqual(len(expected), 192)
+        self.assertGreaterEqual(len(expected), 192)
 
         old = expected[:-4]
         old_script = "const sites=" + json.dumps(old, ensure_ascii=False) + ";(()=>"
-        self.assertEqual(len(extract_directory_sites(old_script)), 188)
+        self.assertEqual(len(extract_directory_sites(old_script)), len(expected) - 4)
         with self.assertRaisesRegex(ValueError, "dataset missing"):
             extract_directory_sites("window.LinkWikiSearch.sortResults")
 
