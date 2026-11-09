@@ -72,3 +72,14 @@ jobs:
             git commit -m 'Record Korean search visibility snapshot'
             git push origin HEAD:main
           fi
+      - name: Preserve measured snapshot even if Git push fails
+        if: always() && steps.freshness.outputs.needs_measure == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: linkwiki-korean-rank-snapshot
+          path: |
+            seo/rank-history.json
+            seo/core-keyword-scorecard.md
+            seo/core-serp-competitors.md
+          if-no-files-found: error
+          retention-days: 30
