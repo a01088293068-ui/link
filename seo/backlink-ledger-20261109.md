@@ -87,3 +87,11 @@ Current test report: https://github.com/a01088293068-ui/link/actions/runs/425649
 - MeWebLink remains inconclusive/404, excluded.
 - Three submitted-but-not-approved remain GainWeb, Site Promotion Directory, Launching Next.
 - For SEO measurement, external link found != known indexed Google backlink != ranking influence. See reports before inferring effect.
+
+## Google-observed referring domain discovery: Sidedock (2026-11-09)
+
+- Search Console stored inspection of indexed homepage listed `https://sidedock.io/` as a referring page (evidence run https://agent.tinyfish.ai/runs/6d7db746-7b8d-4a24-8b8c-6fbc9b9e6978).
+- Investigated exact public listing at https://sidedock.io/products/%EB%A7%81%ED%81%AC%EC%9C%84%ED%82%A4linkwiki and maker profile https://sidedock.io/profile/linkwiki . Both separately fetched and had actual `https://linkwiki.info/` anchors.
+- Existing public listing, **not** newly submitted; two pages under sidedock.io count as **one referring domain**.
+- Added listing URL to read-only weekly GitHub Actions `seo/backlink-public-check.py` for independent HTTP HTML anchor verification.
+- Expected publicly linked referring-domain count: **5** only if CI sees a successful direct href. No Google rank effect is claimed.
