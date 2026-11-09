@@ -143,12 +143,18 @@ const queries = [
   ['안전운전 통합민원', '안전운전 통합민원'],
   ['표준국어대사전', '표준국어대사전'],
   ['서울시 교통정보 TOPIS', '서울시 교통정보 TOPIS'],
+  ['주소모음·링크모음 국민신문고', '국민신문고'],
+  ['링크모음, 위택스', '위택스'],
+  ['주소모음|표준국어대사전', '표준국어대사전'],
 ];
 for (const [query, expected] of queries) {
   const found = search.sortResults(rows, query);
   if (!found.length || found[0].name !== expected) {
     throw new Error(query + ' did not rank expected service first');
   }
+}
+if (search.sortResults(rows, '주소모음·링크모음·사이트모음').length !== rows.length) {
+  throw new Error('punctuated directory intent excluded registered sites');
 }
 if (search.sortResults(rows, '주소모음').length !== rows.length) {
   throw new Error('generic address directory intent excluded registered sites');
