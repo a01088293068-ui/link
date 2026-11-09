@@ -35,6 +35,33 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('사이트모음 | 관측 없음 | 관측 없음 | 비교 불가', report)
         self.assertNotIn('300회', report)
 
+    def test_korean_market_core_filter_and_distinct_report_title(self):
+        groups = monitor.KOREA_CORE_QUERY_FILTERS
+        self.assertEqual(len(groups), 1)
+        filters = groups[0]['filters']
+        self.assertEqual(filters[0]['dimension'], 'query')
+        self.assertEqual(filters[1], {
+            'dimension': 'country', 'operator': 'equals', 'expression': 'kor',
+        })
+        rows = [
+            {'keys': ['주소모음', '2026-11-05'],
+             'impressions': 5, 'clicks': 2, 'position': 21.0}
+        ]
+        korea = monitor.format_core_keyword_weekly_comparison(
+            rows, '2026-11-05', scope='korea')
+        global_report = monitor.format_core_keyword_weekly_comparison(
+            rows, '2026-11-05')
+        self.assertIn('대한민국 이용자 기준 최근 7일', korea)
+        self.assertNotIn('대한민국 이용자 기준', global_report)
+        self.assertIn('주소모음 | 관측 없음 | 5회 · 2회', korea)
+        self.assertIn('21.0위', korea)
+
+    def test_korean_market_api_errors_remain_explicit(self):
+        report = monitor.format_core_keyword_weekly_comparison(
+            [], '2026-11-05', 'HTTPError HTTP 403', scope='korea')
+        self.assertIn('조회 실패', report)
+        self.assertNotIn('| 주소모음 | 관측 없음', report)
+
     def test_core_keyword_weekly_query_failure_is_not_zero_impressions(self):
         report = monitor.format_core_keyword_weekly_comparison([], '2026-11-05',
                                                                'HTTPError HTTP 403')
