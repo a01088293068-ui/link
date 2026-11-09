@@ -99,6 +99,40 @@ class SiteAuditTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             sync_directory_count("<html>97개 사이트</html>", 112)
 
+    def test_audit_excludes_legitimate_category_counts_from_overall_total(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            records = [
+                {"name": f"Example {i}", "category": "검색·포털",
+                 "description": "테스트용 자료", "url": f"https://example.org/{i}"}
+                for i in range(12)
+            ]
+            (root / "assets/verified-directory.json").write_text(
+                json.dumps(records), encoding="utf-8")
+            (root / "index.html").write_text(
+                "<html><body>12개 등록 사이트 12개 등록 항목 "
+                "등록 사이트 12개</body></html>", encoding="utf-8")
+            (root / "directory.html").write_text(
+                '<html><body><h1>12개 등록 사이트</h1>'
+                '<p>등록 사이트 12개</p>'
+                '<section id="site-category-comparison">'
+                '<p>검색·포털 등록 사이트 3개</p>'
+                '</section></body></html>', encoding="utf-8")
+            issues = audit_site(root)
+            self.assertFalse(any(
+                "visible directory size mismatch" in issue for issue in issues),
+                issues)
+            # A stale number in the primary status is still an error.
+            page = root / "directory.html"
+            page.write_text(page.read_text(encoding="utf-8").replace(
+                "등록 사이트 12개</p>", "등록 사이트 11개</p>"),
+                encoding="utf-8")
+            issues = audit_site(root)
+            self.assertTrue(any(
+                "directory.html: visible directory size mismatch" in issue
+                for issue in issues))
+
     def test_audit_detects_stale_visible_counts_in_both_primary_pages(self):
         from seo.live_release_check import visible_site_counts
         from seo.site_audit import audit_site
