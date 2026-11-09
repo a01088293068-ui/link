@@ -14,9 +14,11 @@ on:
 # Multiple deployments can complete close together. Cancel obsolete inspections
 # so Google's API is queried for the latest release instead of the same
 # dated Search Console snapshot several times in parallel.
+# Deployment bursts may cancel redundant deployment-driven scans, but must
+# never cancel the independent daily Search Console snapshot.
 concurrency:
-  group: linkwiki-gsc-readonly-monitor
-  cancel-in-progress: true
+  group: ${{ github.event_name == 'workflow_run' && 'linkwiki-gsc-after-deploy' || 'linkwiki-gsc-independent' }}
+  cancel-in-progress: ${{ github.event_name == 'workflow_run' }}
 
 permissions:
   contents: read
