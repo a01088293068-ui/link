@@ -219,6 +219,34 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn(keyword, html)
         self.assertNotIn("분야별 사이트모음·주소모음 검색", script)
 
+    def test_homepage_and_directory_have_distinct_search_intent_titles(self):
+        root = Path(__file__).resolve().parents[1] / "dist"
+        home = (root / "index.html").read_text(encoding="utf-8")
+        directory = (root / "directory.html").read_text(encoding="utf-8")
+        import re
+        get_title = lambda html: re.search(r"<title>(.*?)</title>", html, re.S).group(1)
+        home_title = get_title(home)
+        directory_title = get_title(directory)
+        self.assertNotEqual(home_title, directory_title)
+        self.assertIn("97개 사이트", directory_title)
+        self.assertIn("전체 목록", directory_title)
+        self.assertIn("97개 사이트", home_title)
+        # The directory remains the indexable target, never the legacy .html URL.
+        self.assertIn('href="https://linkwiki.info/directory"', directory)
+        self.assertNotIn('href="https://linkwiki.info/directory.html" rel="canonical"', directory)
+
+    def test_directory_count_rewrites_korean_object_particle_and_preserves_category_count(self):
+        from build import sync_directory_count
+        sample = ('<title>97개 사이트 목록</title><meta content="97개 사이트를 비교" />'
+                  '<meta property="og:title" content="97개 사이트" />'
+                  '<p>97개 등록 사이트의 설명</p><p>97개 사이트 검색</p>'
+                  '<p>등록 사이트 97개</p><p>8개 분야</p>')
+        changed = sync_directory_count(sample, 98)
+        self.assertIn("98개 사이트를 비교", changed)
+        self.assertIn("98개 등록 사이트의 설명", changed)
+        self.assertIn("등록 사이트 98개", changed)
+        self.assertIn("8개 분야", changed)
+
     def test_directory_schema_reflects_only_real_category_pages(self):
         from build import directory_collection_schema, CATEGORY_LANDING
         examples = [
