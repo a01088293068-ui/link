@@ -1,7 +1,7 @@
 # LinkWiki backlink evidence ledger — 2026-11-09
 
 Target canonical: https://linkwiki.info/ . Link service at linkwiki01.com is separate and not substituted.
-Registration identity on forms requiring email: historical LinkWiki outreach Gmail `a01088293068@gmail.com` (not the TinyFish account owner's Nix Gmail). Do not describe a login as authenticated without a saved, verified target-site session.
+Registration identity on forms requiring email: historical LinkWiki outreach Gmail `리쑤화 운영 계정 이메일 (비공개)` (not the TinyFish account owner's Nix Gmail). Do not describe a login as authenticated without a saved, verified target-site session.
 
 ## Public backlinks and submissions (verified by website/browser evidence)
 
