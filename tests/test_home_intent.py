@@ -2,6 +2,7 @@ from pathlib import Path
 import unittest
 
 import build
+import json
 
 
 class HomeIntentTests(unittest.TestCase):
@@ -19,7 +20,8 @@ class HomeIntentTests(unittest.TestCase):
         source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
         for phrase in ("주소모음", "링크모음", "사이트모음"):
             self.assertIn(phrase, source.split("</title>", 1)[0])
-        self.assertIn('<h1 class="home-keyword-heading">주소모음·링크모음·사이트모음, 97개 사이트 검색</h1>', source)
+        count = len(json.loads((Path(__file__).resolve().parents[1] / "assets/verified-directory.json").read_text(encoding="utf-8")))
+        self.assertIn(f'<h1 class="home-keyword-heading">주소모음·링크모음·사이트모음, {count}개 사이트 검색</h1>', source)
         self.assertIn('href="https://linkwiki.info/" rel="canonical"', source)
         self.assertIn('name="description"', source)
         self.assertIn("사이트 이름이나 도메인을 입력해 주소를 찾거나", source)
