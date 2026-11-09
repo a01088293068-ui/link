@@ -286,7 +286,7 @@ def google_index_blocked_by_header(header_values):
             part = directive.strip().lower()
             if ":" in part:
                 agent, rule = part.split(":", 1)
-                if agent.strip() not in ("googlebot", "googlebot-news"):
+                if agent.strip() != "googlebot":
                     continue
                 part = rule.strip()
             if re.search(r"(?:^|[\\s;,])(?:noindex|none)(?:$|[\\s;,])", part):
