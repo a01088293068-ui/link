@@ -46,3 +46,20 @@ Earlier GitHub GSC API artifact ending Nov 6 recorded 73 impressions, 27 clicks 
 5. SEO rankings for three generic search terms remain weak, and no page text edits or backlink counts should be claimed to have changed their rankings until a fresh comparable GSC interval is available.
 
 No indexing requests, site verification changes, security modifications, credentials, or payment were performed.
+
+## Read-only stored URL Inspection — 2026-11-09
+
+Verified with authenticated property view:
+https://agent.tinyfish.ai/runs/6d7db746-7b8d-4a24-8b8c-6fbc9b9e6978
+
+| URL | Google stored status | Last crawl | Fetch / robots / canonical |
+|---|---|---|---|
+| `https://linkwiki.info/` | Indexed | 2026-10-29 05:37:37 (GSC UI timezone) | Fetch successful, robots allowed, user canonical self, Google canonical inspected URL |
+| `https://linkwiki.info/directory` | **Crawled — currently not indexed** | 2026-11-08 03:29:34 (GSC UI timezone) | Googlebot smartphone, fetch successful, robots allowed, self-canonical selected by Google |
+| `https://linkwiki.info/directory.html` | URL unknown to Google | not provided | No stored crawl/fetch/canonical status |
+
+Important: the browser agent suggested that /directory was de-duplicated in favor of the root URL, **but GSC did not provide evidence for that hypothesis**. Self-canonical agreement and successful fetch do not prove a thin-content/duplicate cause. Do not assert de-duplication as fact. It may be assessed as one hypothesis among others.
+
+- No referring sitemap detected in individual stored inspections for / and /directory, despite GSC displaying a successful older sitemap-v2. Sitemap reporting and per-URL discovery records can differ.
+- A live test/indexing request appears to have been accidentally clicked by the browser agent and then cancelled. There is no confirmed completed new indexing request; future checks must stay strictly read-only.
+- Next: wait for a Google crawl **after** dated November 9 changes before attributing index changes to new content or robots sitemap discovery hints. Do not repeatedly submit unchanged sitemaps.
