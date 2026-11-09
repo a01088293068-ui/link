@@ -154,6 +154,21 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(generated.count('class="lw-safety-note seo-search-help"'), 1)
         self.assertEqual(generated.count("주소모음·링크모음 검색 사용 방법"), 1)
 
+    def test_canonical_directory_has_local_only_address_verifier(self):
+        from build import directory_address_inspector
+        root = Path(__file__).resolve().parents[1]
+        generated = (root / "dist/directory.html").read_text(encoding="utf-8")
+        section = directory_address_inspector()
+        self.assertIn('id="lw-address-form"', section)
+        self.assertIn('id="lw-address-result"', section)
+        self.assertIn("외부 사이트에도 접속하지 않습니다", section)
+        self.assertEqual(generated.count('id="address-inspector"'), 1)
+        self.assertEqual(generated.count('id="lw-address-form"'), 1)
+        self.assertEqual(generated.count('/assets/address-inspector.js'), 1)
+        self.assertEqual(generated.count('class="v6-card"'), 97)
+        self.assertIn('href="https://linkwiki.info/directory"', generated)
+        self.assertNotIn('name="robots" content="noindex"', generated)
+
     def test_directory_search_examples_link_to_real_registered_names(self):
         from build import directory_search_help, CATEGORY_LANDING
         from urllib.parse import parse_qs, urlsplit
