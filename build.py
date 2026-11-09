@@ -658,6 +658,7 @@ def directory_relevant_guides(posts):
 KOREAN_FIRST_SEARCH_NAMES = (
     "뤼튼", "미리캔버스", "카카오맵", "국가법령정보센터",
     "대한축구협회", "치지직", "탑툰", "조아라",
+    "정부24", "고용24", "기상청 날씨누리", "국가통계포털 KOSIS",
 )
 
 
