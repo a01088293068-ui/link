@@ -14,6 +14,22 @@ def page(path, title, heading, more=""):
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
+    def test_release_to_google_monitor_workflow_chain_uses_real_names(self):
+        root = Path(__file__).resolve().parents[1]
+        workflows = root / ".github/workflows"
+        quality = (workflows / "seo-quality-gate.yml").read_text(encoding="utf-8")
+        live = (workflows / "live-crawl-check.yml").read_text(encoding="utf-8")
+        gsc = (workflows / "search-console-monitor.yml").read_text(encoding="utf-8")
+        quality_name = next(line.removeprefix("name: ").strip()
+                            for line in quality.splitlines() if line.startswith("name: "))
+        live_name = next(line.removeprefix("name: ").strip()
+                         for line in live.splitlines() if line.startswith("name: "))
+        self.assertIn("workflows: ['" + quality_name + "']", live)
+        self.assertIn("workflows: ['" + live_name + "']", gsc)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", live)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", gsc)
+        self.assertNotIn("workflows: ['LinkWiki SEO build QA']", live)
+
     def test_live_workflow_preserves_failure_diagnostics(self):
         root = Path(__file__).resolve().parents[1]
         workflow = (root / ".github/workflows/live-crawl-check.yml").read_text(encoding="utf-8")
