@@ -30,6 +30,14 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertIn("github.event.workflow_run.conclusion == 'success'", gsc)
         self.assertNotIn("workflows: ['LinkWiki SEO build QA']", live)
 
+    def test_live_release_log_identifies_checked_out_source_sha(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/live-crawl-check.yml").read_text(encoding="utf-8")
+        self.assertIn("Expected release commit: $(git rev-parse HEAD)", workflow)
+        self.assertIn("PASS: public release matches checked-out commit $(git rev-parse HEAD)", workflow)
+        self.assertNotIn("matches expected commit ${GITHUB_SHA}", workflow)
+        self.assertIn("github.event.workflow_run.head_sha || github.sha", workflow)
+
     def test_live_workflow_preserves_failure_diagnostics(self):
         root = Path(__file__).resolve().parents[1]
         workflow = (root / ".github/workflows/live-crawl-check.yml").read_text(encoding="utf-8")
