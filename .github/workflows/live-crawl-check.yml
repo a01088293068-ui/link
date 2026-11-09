@@ -32,6 +32,11 @@ jobs:
           python-version: '3.12'
       - name: Build expected SEO release
         run: python3 build.py
+      - name: Record the exact source commit verified by this run
+        shell: bash
+        run: |
+          echo "Expected release commit: $(git rev-parse HEAD)"
+          echo "Trigger event: ${{ github.event_name }}"
       - name: Verify live SEO release matches current sources
         shell: bash
         run: |
@@ -44,7 +49,7 @@ jobs:
           for attempt in 1 2 3 4 5; do
             echo "Release verification attempt ${attempt}/5" | tee -a seo/live-release-diagnosis.log
             if python3 seo/live_release_check.py --dist dist 2>&1 | tee -a seo/live-release-diagnosis.log; then
-              echo "PASS: public release matches expected commit ${GITHUB_SHA}"
+              echo "PASS: public release matches checked-out commit $(git rev-parse HEAD)"
               exit 0
             fi
             if [[ "${attempt}" -eq 5 ]]; then
