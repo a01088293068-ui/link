@@ -289,7 +289,7 @@ def google_index_blocked_by_header(header_values):
                 if agent.strip() != "googlebot":
                     continue
                 part = rule.strip()
-            if re.search(r"(?:^|[\\s;,])(?:noindex|none)(?:$|[\\s;,])", part):
+            if re.search(r"(?:^|[\s;,])(?:noindex|none)(?:$|[\s;,])", part):
                 return True
     return False
 
