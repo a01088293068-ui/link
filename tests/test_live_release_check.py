@@ -82,6 +82,9 @@ class LiveReleaseCheckTests(unittest.TestCase):
         from seo.live_release_check import fetch_public, google_index_blocked_by_header
 
         self.assertTrue(google_index_blocked_by_header(["noindex, nofollow"]))
+        self.assertTrue(google_index_blocked_by_header(["noindex follow"]))
+        self.assertTrue(google_index_blocked_by_header(["index noindex"]))
+        self.assertFalse(google_index_blocked_by_header(["index follow"]))
         self.assertTrue(google_index_blocked_by_header(["googlebot: noindex"]))
         self.assertTrue(google_index_blocked_by_header(["none"]))
         self.assertFalse(google_index_blocked_by_header(["otherbot: noindex"]))
