@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 import json
 import sys
-from seo.site_audit import SITE, internal_inbound_links
+from site_audit import SITE, internal_inbound_links
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
