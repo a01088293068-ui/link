@@ -14,6 +14,14 @@ def page(path, title, heading, more=""):
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
+    def test_live_workflow_preserves_failure_diagnostics(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/live-crawl-check.yml").read_text(encoding="utf-8")
+        self.assertIn("python3 seo/live_release_check.py --dist dist 2>&1 | tee -a seo/live-release-diagnosis.log", workflow)
+        self.assertIn("name: linkwiki-live-release-diagnosis", workflow)
+        self.assertIn("path: seo/live-release-diagnosis.log", workflow)
+        self.assertIn("if: always()", workflow)
+
     def test_each_category_deployment_checks_distinct_editorial_copy(self):
         from seo.live_release_check import release_content_sections
         for path in CATEGORY_PATHS:
