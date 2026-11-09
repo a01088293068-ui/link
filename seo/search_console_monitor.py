@@ -427,6 +427,44 @@ def format_search_visibility_inspection_conflicts(page_rows, inspection_rows,
     return "\n".join(lines)
 
 
+def format_google_discovery_evidence(rows):
+    """Show Google's reported discovery hints without inferring non-discovery.
+
+    The URL Inspection API may omit sitemaps and referring pages even for an
+    indexed URL. An empty array is not proof that no discovery route exists.
+    """
+    priority = (
+        "https://linkwiki.info/directory",
+        "https://linkwiki.info/",
+        "https://linkwiki.info/categories/",
+    )
+    observed = {str(row.get("url", "")): row for row in rows}
+    lines = [
+        "", "### Google이 보고한 핵심 URL 발견 경로", "",
+        "- 사이트맵·참조 페이지는 URL Inspection API가 보고한 항목만 표시합니다.",
+        "- 정보 미제공은 발견 경로가 없다는 뜻이 아닙니다.",
+        "| URL | 보고된 사이트맵 | 보고된 참조 페이지 |",
+        "|---|---|---|",
+    ]
+
+    def display(values):
+        if not isinstance(values, list) or not values:
+            return "정보 미제공"
+        actual = [str(value).replace("|", "%7C").replace("\n", " ")
+                  for value in values if isinstance(value, str) and value.strip()]
+        return ", ".join(actual[:3]) + (f" 외 {len(actual) - 3}개" if len(actual) > 3 else "") if actual else "정보 미제공"
+
+    for url in priority:
+        row = observed.get(url)
+        if row is None:
+            status, source = "URL 검사 미수행", "URL 검사 미수행"
+        else:
+            status = display(row.get("sitemaps"))
+            source = display(row.get("referring_urls"))
+        lines.append(f"| {url} | {status} | {source} |")
+    return "\n".join(lines)
+
+
 def format_index_inspection(rows, error=''):
     lines = ['', '## Google 색인 상태 확인 (Google 색인에 저장된 버전)', '',
              '- URL Inspection API 결과이며 실시간 접속 상태나 색인 신청 결과가 아닙니다.',
@@ -462,6 +500,7 @@ def format_index_inspection(rows, error=''):
             lines.append('- ' + str(row.get('url', '')) + ' — ' +
                          str(row.get('coverage', '정보 없음')).replace('\\n', ' '))
     lines.append(priority_index_checks(rows))
+    lines.append(format_google_discovery_evidence(rows))
     lines.append(technical_index_diagnostic(rows))
     change_log = ROOT / 'seo/significant-page-updates.json'
     if change_log.is_file():
