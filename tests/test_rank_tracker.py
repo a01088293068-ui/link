@@ -41,6 +41,18 @@ class RankTrackerTests(unittest.TestCase):
         self.assertEqual(actual, rank_tracker.core_keyword_scorecard(history))
         self.assertIn("순위별 수집 증거 없음", actual)
 
+    def test_scorecard_discloses_verifiable_positions_not_just_url_count(self):
+        history = {"samples": [{
+            "date": "2026-11-09",
+            "results": {"주소모음": {"position": None, "url": None}},
+            "returned_results": {"주소모음": 30},
+            "sampled_positions": {"주소모음": list(range(1, 11))},
+        }]}
+        report = rank_tracker.core_keyword_scorecard(history)
+        self.assertIn("30/30건 · 확인 위치 10/30", report)
+        self.assertIn("표본 미발견 · 30위 내 여부 미확정", report)
+        self.assertNotIn("검사한 상위 30개에서 미발견", report)
+
     def test_legacy_unique_count_does_not_prove_top_thirty_absence(self):
         sample = {"date": "2026-11-06",
                   "results": {"주소모음": {"position": None, "url": None}},
