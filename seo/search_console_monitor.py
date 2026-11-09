@@ -256,10 +256,24 @@ def technical_index_diagnostic(rows):
             row.get('google_canonical'))) + ' |')
         for issue in technical_index_obstacles(row):
             lines.append('- ' + url + ': ' + issue)
-        if (not technical_index_obstacles(row)
-                and row.get('verdict') not in ('PASS', None, 'UNKNOWN')):
-            lines.append('- ' + url + ': 명시적인 기술 차단 신호가 확인되지 않았습니다. '
-                         '이 결과만으로 콘텐츠 품질이 미색인 원인이라고 단정할 수 없습니다.')
+        coverage = str(row.get('coverage') or '').casefold()
+        no_crawl_data = (
+            ('알려지지' in coverage or 'unknown to google' in coverage
+             or 'url is unknown' in coverage)
+            or (not row.get('last_crawl')
+                and str(row.get('robots_state') or '') in
+                ('', 'ROBOTS_TXT_STATE_UNSPECIFIED')
+                and str(row.get('fetch_state') or '') in
+                ('', 'PAGE_FETCH_STATE_UNSPECIFIED'))
+        )
+        if no_crawl_data:
+            lines.append('- ' + url + ': Google 크롤링·색인 기술 정보 미제공. '
+                         '차단이 없다고 판단할 수 없습니다. 공개 HTML 내부 링크와 '
+                         'Google 발견 경로를 별도로 검토하세요.')
+        elif (not technical_index_obstacles(row)
+              and row.get('verdict') not in ('PASS', None, 'UNKNOWN')):
+            lines.append('- ' + url + ': 저장된 크롤링 정보에서 명시적 차단은 보이지 않습니다. '
+                         '콘텐츠 품질이 미색인 원인이라는 뜻은 아닙니다.')
     lines.extend(['', '- Google URL Inspection API의 색인 저장본 기준으로, '
                   '현재 실시간 HTTP 상태와 다를 수 있습니다.',
                   '- sitemap 및 발견 경로는 Google API에서 일부만 제공할 수 있습니다.', ''])
