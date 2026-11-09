@@ -68,3 +68,15 @@
 - https://www.somuch.com/submit-links/submit-link
 - https://curlie.org/docs/en/add.html
 - https://developers.google.com/search/docs/essentials/spam-policies
+
+
+## 실제 자동화 실행 결과 (2026-11-09)
+
+| 플랫폼 | 실제 실행 | 결과 | 확인 증거 |
+|---|---|---|---|
+| Zearches | 입력 및 제출 시도 완료 | **중복 제출 거절**. 'NOT PUBLISHED; already submitted' 코드 `duplicate_limit`; 신규 공개 URL 없음. 기존 등록/공개 여부는 별도 검증 필요 | https://agent.tinyfish.ai/runs/7a263131-b23c-417e-9514-00709977a860 |
+| LinkCentre | 실제 등록 화면 진입 및 URL 입력 | 계정 생성 페이지로 이동. **회원가입 필수**로 제출 미완료 | https://agent.tinyfish.ai/runs/77dfa90c-06ac-4f09-baca-402bbc34d171 |
+
+- 현재 세션에서 **새로 확보·검증된 공개 백링크는 0개**.
+- LinkCentre에 리쑤화 계정 로그인/가입을 위한 TinyFish 기본 프로필 설정 안내를 생성함. 사용자가 인증과 프로필 저장을 완료한 뒤 재시도 필요.
+- Zearches는 중복 제출 제한이 확인됐으므로 반복하지 않는다. 기존 공개 URL 확인 없이 확보로 기록하지 않는다.
