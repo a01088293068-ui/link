@@ -488,6 +488,19 @@ CORE_QUERY_FILTERS = [{
 }]
 
 
+
+# Search Console country codes are three-letter ISO 3166-1 alpha-3.
+# Keep Korean-market measurements separate from global measurements.
+KOREA_CORE_QUERY_FILTERS = [{
+    "groupType": "and",
+    "filters": [
+        {"dimension": "query", "operator": "includingRegex",
+         "expression": r"^(주소[[:space:]]*모음|링크[[:space:]]*모음|사이트[[:space:]]*모음)$"},
+        {"dimension": "country", "operator": "equals", "expression": "kor"},
+    ],
+}]
+
+
 # Broader discovery is kept separate from exact-query performance. A site can
 # rank well for '주소모음 위키' yet rank poorly for the head term '주소모음'.
 FAMILY_QUERY_FILTERS = [{
@@ -960,6 +973,19 @@ def main():
         weekly_core_error = type(exc).__name__
         if isinstance(exc, HTTPError):
             weekly_core_error += f' HTTP {exc.code}'
+    # A dedicated Korea-only comparison avoids conflating global positions
+    # with Google Search traffic from South Korea.
+    korea_core_rows, korea_core_error = [], ''
+    try:
+        korea_core_rows = query_performance(
+            token, args.property,
+            (end - timedelta(days=13)).isoformat(), end.isoformat(),
+            ['query', 'date'], limit=1000,
+            filter_groups=KOREA_CORE_QUERY_FILTERS)
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+        korea_core_error = type(exc).__name__
+        if isinstance(exc, HTTPError):
+            korea_core_error += f' HTTP {exc.code}'
     args.output.parent.mkdir(parents=True, exist_ok=True)
     inspections, inspection_error = collect_index_inspections(
         token, args.property, inspection_targets(pages))
@@ -970,6 +996,12 @@ def main():
     report += format_core_family_keyword_report(family_keyword_rows, family_error)
     report += format_core_keyword_weekly_comparison(
         weekly_core_rows, end.isoformat(), weekly_core_error)
+    report += '\n\n## 한국 검색 이용자 기준 핵심 키워드 추이\n'
+    report += ('\n- Google Search Console 국가 필터: 대한민국(kor). '
+               '한국어 검색 전체 또는 구글 한국 도메인 순위와 동일하지 않습니다.\n'
+               '- 아래 평균 순위는 실제 한국 이용자 대상 검색 노출의 가중 평균입니다.\n')
+    report += format_core_keyword_weekly_comparison(
+        korea_core_rows, end.isoformat(), korea_core_error)
     report += format_core_landing_page_split(focused_pages, focused_error)
     report += format_index_inspection(inspections, inspection_error)
     report += format_search_visibility_inspection_conflicts(
