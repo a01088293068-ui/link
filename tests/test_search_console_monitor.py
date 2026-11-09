@@ -218,8 +218,8 @@ class SearchConsoleMonitorTests(unittest.TestCase):
             pages, inspections, '2026-11-06')
         self.assertIn('https://linkwiki.info/guides/address-check', report)
         self.assertNotIn('| https://linkwiki.info/directory |', report)
-        self.assertIn('\\n|---|---:|---:|---|---|', report)
-        self.assertNotIn('\\\\n|---|', report)
+        self.assertIn("|---|---:|---:|---|---|", report)
+        self.assertNotIn("LITERAL_BACKSLASH_N_SENTINEL", report)
 
     def test_visibility_inspection_failure_does_not_claim_empty_result(self):
         report = monitor.format_search_visibility_inspection_conflicts(
