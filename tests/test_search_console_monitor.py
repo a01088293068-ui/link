@@ -35,6 +35,29 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn("seo/search-console-report.md", workflow)
         self.assertIn("retention-days: 30", workflow)
 
+    def test_google_discovery_report_does_not_confuse_missing_hints_with_no_discovery(self):
+        directory = "https://linkwiki.info/directory"
+        rows = [{
+            "url": directory,
+            "verdict": "NEUTRAL",
+            "coverage": "Crawled - currently not indexed",
+            "sitemaps": ["https://linkwiki.info/sitemap.xml"],
+            "referring_urls": ["https://linkwiki.info/", "https://example.org/review"],
+        }, {
+            "url": "https://linkwiki.info/",
+            "verdict": "PASS",
+            "sitemaps": [],
+            "referring_urls": [],
+        }]
+        output = monitor.format_google_discovery_evidence(rows)
+        self.assertIn("https://linkwiki.info/sitemap.xml", output)
+        self.assertIn("https://example.org/review", output)
+        self.assertIn("정보 미제공", output)
+        self.assertIn("URL 검사 미수행", output)
+        self.assertNotIn("발견 경로 없음", output)
+        combined = monitor.format_index_inspection(rows)
+        self.assertIn("Google이 보고한 핵심 URL 발견 경로", combined)
+
     def test_core_keyword_weekly_comparison_is_date_scoped_and_weighted(self):
         rows = [
             {'keys': ['주소모음', '2026-10-26'], 'impressions': 2, 'clicks': 1, 'position': 100},
