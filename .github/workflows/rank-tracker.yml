@@ -2,8 +2,17 @@ name: LinkWiki Korean search visibility tracking
 
 on:
   workflow_dispatch:
+  # Changes to the measurement engine also trigger a same-day verification.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rank-tracker.yml'
+      - 'seo/rank_tracker.py'
+      - 'tests/test_rank_tracker.py'
   schedule:
     - cron: '05 5 * * *'
+    # Backup window if GitHub drops a scheduled run during the busy UTC morning.
+    - cron: '35 17 * * *'
 
 permissions:
   contents: write
@@ -25,11 +34,27 @@ jobs:
           python-version: '3.12'
       - name: Test ranking monitor
         run: python3 -B -m unittest discover -s tests -p 'test_rank_tracker.py' -v
+      - name: Avoid duplicate daily SERP API usage
+        id: freshness
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          from datetime import datetime, timezone
+          from pathlib import Path
+          import json
+          path = Path("seo/rank-history.json")
+          history = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+          today = datetime.now(timezone.utc).date().isoformat()
+          already_measured = any(row.get("date") == today for row in history.get("samples", []))
+          print("needs_measure=" + ("false" if already_measured else "true"))
+          PY
       - name: Measure Korean core and long-tail keywords (up to 30 results for core)
+        if: steps.freshness.outputs.needs_measure == 'true'
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
         run: python3 -B seo/rank_tracker.py
       - name: Save 90-day observations
+        if: steps.freshness.outputs.needs_measure == 'true'
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
