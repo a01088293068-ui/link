@@ -89,8 +89,11 @@ def search_top_results(query, key, limit=REQUESTED_RESULTS):
             seen.add(url)
             unique.append({**result, "_sample_position": position})
             fresh += 1
-        if not batch or fresh == 0:
-            break
+        # Keep sampling the remaining requested pages even when a provider
+        # page is empty or contains only previously seen URLs. Later windows
+        # may still contain distinct results, while skipped ordinal slots
+        # must remain explicitly partial coverage.
+        # The loop is already bounded by the requested depth.
     return unique
 
 
