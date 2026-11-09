@@ -41,7 +41,10 @@ def search(query, key, page=1):
         "Accept": "application/json", "User-Agent": "LinkWiki-RankMonitor/1.0",
     }, method="POST")
     with urlopen(request, timeout=25) as response:
-        return json.load(response).get("organic", [])
+        payload = json.load(response)
+    if not isinstance(payload, dict) or not isinstance(payload.get("organic"), list):
+        raise ValueError("Search provider response is missing organic result data")
+    return payload["organic"]
 
 
 def search_top_results(query, key, limit=REQUESTED_RESULTS):
