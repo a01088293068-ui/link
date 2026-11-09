@@ -653,6 +653,40 @@ def directory_relevant_guides(posts):
     )
 
 
+# Real services helpful to Korean users, intentionally curated instead of
+# claiming a measured popularity or safety ranking.
+KOREAN_FIRST_SEARCH_NAMES = (
+    "뤼튼", "미리캔버스", "카카오맵", "국가법령정보센터",
+    "대한축구협회", "치지직", "탑툰", "조아라",
+)
+
+
+def korean_first_shortcuts(records):
+    """Prominent navigation to actual registered Korean-oriented services."""
+    by_name = {
+        entry.get("name"): entry for entry in records
+        if isinstance(entry, dict) and entry.get("name")
+    }
+    entries = []
+    for name in KOREAN_FIRST_SEARCH_NAMES:
+        record = by_name.get(name)
+        if not record:
+            raise RuntimeError("Korean shortcut is missing registered entry: " + name)
+        entries.append(
+            '<li><a href="/directory?q=' + quote(name, safe="") + '">'
+            + escape(name) + '</a> · ' + escape(record["category"]) + '</li>'
+        )
+    return (
+        '<section class="lw-safety-note korean-first-shortcuts" '
+        'aria-label="국내 사이트 먼저 찾기">'
+        '<h2>국내 사이트 먼저 찾기</h2>'
+        '<p>한국어 이용자가 자주 찾는 용도별 국내 서비스의 등록 예시입니다. '
+        '목록 순서는 인기·안전 등급이 아니며, 접속 전 공식 운영 주체와 이용 조건을 확인하세요.</p>'
+        '<ul>' + ''.join(entries) + '</ul>'
+        '</section>'
+    )
+
+
 def directory_search_help(records, categories):
     """Helpful, static, data-backed search instructions for directory visitors."""
     if not records or not categories:
@@ -968,7 +1002,7 @@ def build():
         raise RuntimeError("Homepage directory count labels changed; review required")
     homepage_intents = core_search_intent_section(actual_count)
     real_directory_examples = homepage_directory_examples(first_party_records, CATEGORY_LANDING)
-    home = home.replace(position, panel + homepage_intents + real_directory_examples + position, 1)
+    home = home.replace(position, panel + homepage_intents + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
@@ -984,6 +1018,12 @@ def build():
     directory_path = OUT / "directory.html"
     directory_html = directory_path.read_text(encoding="utf-8")
     directory_html = sync_directory_count(directory_html, len(records))
+    # Put Korean site navigation above the 171-card grid, where visitors see it.
+    shortcut_anchor = '<form class="v6-search" id="v6-form"'
+    if directory_html.count(shortcut_anchor) != 1:
+        raise RuntimeError("Directory primary search form changed")
+    directory_html = directory_html.replace(
+        shortcut_anchor, korean_first_shortcuts(records) + shortcut_anchor, 1)
     directory_nav_pattern = (r'<nav aria-label="분야별 사이트모음 바로가기"'
                              r' class="lw-guide-nav">.*?</nav>')
     if len(re.findall(directory_nav_pattern, directory_html, flags=re.S)) != 1:
