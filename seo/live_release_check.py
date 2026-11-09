@@ -132,6 +132,10 @@ def release_content_sections(html, path):
         patterns[path] = (
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-category-decision\b)[^>]*>.*?</section>',
             r'<article class="v6-card">.*?</article>',
+            # Category listing pages use the "item" card variant.
+            # Compare real rendered entries so an old 36-site category
+            # cannot pass after the published directory grows to 44.
+            r'<article\\b(?=[^>]*\\bclass="[^"]*\\bitem\\b)[^>]*>.*?</article>',
         )
     blocks = []
     for expression in patterns.get(path, ()):
