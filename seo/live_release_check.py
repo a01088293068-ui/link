@@ -31,6 +31,7 @@ class PageMetadata(HTMLParser):
         self.title = []
         self.headings = []
         self.canonicals = []
+        self.descriptions = []
         self.noindex = False
         self.links = set()
         self.ids = set()
@@ -43,6 +44,8 @@ class PageMetadata(HTMLParser):
             self.in_h1 = True
         if tag == "link" and "canonical" in attrs.get("rel", "").lower().split():
             self.canonicals.append(attrs.get("href", ""))
+        if tag == "meta" and attrs.get("name", "").lower() == "description":
+            self.descriptions.append(attrs.get("content", ""))
         if tag == "meta" and attrs.get("name", "").lower() in ("robots", "googlebot"):
             self.noindex |= bool(re.search(r"(?:^|[\s,])(?:noindex|none)(?:$|[\s,])",
                                            attrs.get("content", "").lower()))
@@ -177,6 +180,8 @@ def check_page(expected_html, live_html, path):
     errors = []
     if "".join(expected.title).strip() != "".join(live.title).strip():
         errors.append(f"{path}: deployed title differs from generated build")
+    if expected.descriptions != live.descriptions:
+        errors.append(f"{path}: deployed meta description differs from generated build")
     if ["".join(expected.headings).strip()] != ["".join(live.headings).strip()]:
         errors.append(f"{path}: deployed H1 differs from generated build")
     if live.canonicals != [SITE + path]:
