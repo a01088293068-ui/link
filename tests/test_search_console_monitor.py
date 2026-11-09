@@ -392,6 +392,38 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn("| 링크모음 | 데이터 없음 | - | - | - |", report)
         self.assertNotIn("| 링크모음 | 40 | 20", report)
 
+    def test_core_family_aggregates_exact_vs_longtail_without_inflating_rank(self):
+        rows = [
+            {"keys": ["주소모음"], "impressions": 1, "clicks": 1, "position": 111.0},
+            {"keys": ["주소 모음"], "impressions": 1, "clicks": 0, "position": 90.0},
+            {"keys": ["주소모음 위키"], "impressions": 4, "clicks": 1, "position": 6.0},
+            {"keys": ["링크모음"], "impressions": 3, "clicks": 0, "position": 123.0},
+            {"keys": ["링크모음 웹사이트"], "impressions": 2, "clicks": 0, "position": 144.5},
+            {"keys": ["주소모음 링크모음"], "impressions": 2, "clicks": 0, "position": 30.0},
+            {"keys": ["링크위키"], "impressions": 40, "clicks": 15, "position": 2.0},
+        ]
+        result = {item["keyword"]: item for item in monitor.core_family_keyword_rows(rows)}
+        self.assertEqual(result["주소모음"]["exact"]["impressions"], 2)
+        self.assertEqual(result["주소모음"]["exact"]["position"], 100.5)
+        self.assertEqual(result["주소모음"]["related"]["impressions"], 6)
+        self.assertEqual(result["주소모음"]["related"]["position"], 14.0)
+        self.assertEqual(result["링크모음"]["related"]["impressions"], 2)
+        self.assertFalse(result["사이트모음"]["exact"]["observed"])
+        self.assertEqual(sum(item[part]["impressions"] for item in result.values()
+                             for part in ("exact", "related")), 13)
+        formatted = monitor.format_core_family_keyword_report(rows)
+        self.assertIn("100.5", formatted)
+        self.assertIn("관측 없음", formatted)
+
+    def test_core_family_filter_is_unanchored_but_exact_filter_stays_anchored(self):
+        self.assertFalse(monitor.FAMILY_QUERY_FILTERS[0]["filters"][0]["expression"].startswith("^"))
+        self.assertTrue(monitor.CORE_QUERY_FILTERS[0]["filters"][0]["expression"].startswith("^"))
+
+    def test_core_family_failed_query_is_not_reported_as_zero(self):
+        output = monitor.format_core_family_keyword_report([], "HTTPError HTTP 403")
+        self.assertIn("조회 오류", output)
+        self.assertNotIn("| 사이트모음 | 관측 없음", output)
+
     def test_api_request_and_response(self):
         class Response:
             def __enter__(self):
