@@ -191,6 +191,42 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('저장된 크롤링 정보에서 명시적 차단은 보이지 않습니다', out)
         self.assertNotIn('Google 크롤링·색인 기술 정보 미제공', out)
 
+    def test_gsc_search_impressions_are_not_erased_by_stale_url_inspection(self):
+        pages = [
+            {'keys': ['https://linkwiki.info/guides/address-check'],
+             'impressions': 3, 'clicks': 1},
+            {'keys': ['https://linkwiki.info/'],
+             'impressions': 72, 'clicks': 26},
+            {'keys': ['https://linkwiki.info/directory'],
+             'impressions': 0, 'clicks': 0},
+        ]
+        inspections = [
+            {'url': 'https://linkwiki.info/guides/address-check',
+             'verdict': 'NEUTRAL', 'coverage': '크롤링됨 - 현재 색인이 생성되지 않음',
+             'last_crawl': '2026-10-19T06:04:57Z'},
+            {'url': 'https://linkwiki.info/', 'verdict': 'PASS'},
+            {'url': 'https://linkwiki.info/directory',
+             'verdict': 'NEUTRAL', 'coverage': 'Crawled - currently not indexed'},
+        ]
+        differences = monitor.compare_search_visibility_with_inspection(
+            pages, inspections, '2026-11-06')
+        self.assertEqual(len(differences), 1)
+        self.assertEqual(differences[0]['impressions'], 3)
+        self.assertEqual(differences[0]['url'],
+                         'https://linkwiki.info/guides/address-check')
+        report = monitor.format_search_visibility_inspection_conflicts(
+            pages, inspections, '2026-11-06')
+        self.assertIn('https://linkwiki.info/guides/address-check', report)
+        self.assertNotIn('| https://linkwiki.info/directory |', report)
+        self.assertIn('\\n|---|', report)
+        self.assertNotIn('\\\\n|---|', report)
+
+    def test_visibility_inspection_failure_does_not_claim_empty_result(self):
+        report = monitor.format_search_visibility_inspection_conflicts(
+            [], [], '2026-11-06', 'HTTPError HTTP 403')
+        self.assertIn('URL 검사 조회 실패', report)
+        self.assertNotIn('불일치 관측 없음', report)
+
     def test_robots_fetch_and_canonical_have_distinct_diagnoses(self):
         from seo.search_console_monitor import technical_index_obstacles
         problems = technical_index_obstacles({
