@@ -62,6 +62,8 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(google_index_blocked_by_header(["none"]))
         self.assertFalse(google_index_blocked_by_header(["otherbot: noindex"]))
         self.assertFalse(google_index_blocked_by_header(["googlebot-image: noindex"]))
+        self.assertFalse(google_index_blocked_by_header(["googlebot-news: noindex"]))
+        self.assertTrue(google_index_blocked_by_header(["googlebot: none"]))
         self.assertFalse(google_index_blocked_by_header(["index, follow"]))
 
         class FakeResponse:
