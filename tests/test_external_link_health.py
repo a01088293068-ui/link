@@ -40,6 +40,43 @@ class ExternalLinkHealthTests(unittest.TestCase):
             opener=type("Fake", (), {"open": error_if_called})())
         self.assertEqual(result["status"], "invalid_url")
 
+    def test_false_404_from_head_is_rechecked_using_get(self):
+        from urllib.error import HTTPError
+        class Response:
+            status = 200
+            headers = {}
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+        class MockOpener:
+            methods = []
+            def open(self, request, timeout=None):
+                self.methods.append(request.get_method())
+                if request.get_method() == "HEAD":
+                    raise HTTPError(request.full_url, 404, "HEAD blocked", {}, None)
+                return Response()
+        opener = MockOpener()
+        outcome = module.check_entry({"name": "working", "category": "한인교민",
+                                      "url": "https://example.com/"}, opener)
+        self.assertEqual(opener.methods, ["HEAD", "GET"])
+        self.assertEqual(outcome["status"], "reachable")
+        self.assertEqual(outcome["method"], "GET")
+
+    def test_real_get_404_remains_only_candidate(self):
+        from urllib.error import HTTPError
+        class MockOpener:
+            methods = []
+            def open(self, request, timeout=None):
+                self.methods.append(request.get_method())
+                raise HTTPError(request.full_url, 404, "404", {}, None)
+        opener = MockOpener()
+        outcome = module.check_entry({"name": "unavailable", "category": "test",
+                                      "url": "https://example.com/"}, opener)
+        self.assertEqual(opener.methods, ["HEAD", "GET"])
+        self.assertEqual(outcome["status"], "broken_candidate")
+        self.assertEqual(outcome["method"], "GET")
+
     def test_report_is_candid_about_uncertain_statuses(self):
         text = module.markdown_report([
             {"name": "OK", "category": "AI", "url": "https://example.com",
