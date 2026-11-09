@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 import argparse
+import json
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -317,6 +318,17 @@ def fetch_public(path):
         return response.read().decode("utf-8", errors="replace")
 
 
+def extract_directory_sites(script):
+    """Read the public search dataset without evaluating JavaScript."""
+    match = re.search(r"const sites=(\\[.*?\\]);\\s*\\(\\(\\)=>", script, re.S)
+    if match is None:
+        raise ValueError("directory JavaScript site dataset missing")
+    records = json.loads(match.group(1))
+    if not isinstance(records, list):
+        raise ValueError("directory JavaScript site dataset is not a list")
+    return records
+
+
 def run(dist, fetch=fetch_public):
     expected_map = {"/": dist / "index.html",
                     "/directory": dist / "directory.html",
@@ -349,6 +361,18 @@ def run(dist, fetch=fetch_public):
         live_script = fetch("/assets/directory.js")
         if "window.LinkWikiSearch.sortResults" not in live_script:
             problems.append("/assets/directory.js: relevance search integration not deployed")
+        # A previous 188-site search bundle must not pass after 192 cards
+        # deploy. Compare the exact data, not just the presence of search code.
+        expected_script = dist / "assets" / "directory.js"
+        if expected_script.is_file():
+            source_sites = extract_directory_sites(expected_script.read_text(encoding="utf-8"))
+            try:
+                deployed_sites = extract_directory_sites(live_script)
+                if deployed_sites != source_sites:
+                    problems.append("/assets/directory.js: deployed search dataset differs from release "
+                                    f"({len(deployed_sites)} vs {len(source_sites)} records)")
+            except ValueError as error:
+                problems.append(f"/assets/directory.js: invalid deployed site data: {error}")
     except (OSError, RuntimeError, ValueError) as error:
         problems.append(f"/assets/directory.js: fetch failed: {error}")
     return problems
