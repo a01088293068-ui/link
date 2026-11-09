@@ -163,6 +163,34 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('Google HTTP X-Robots-Tag noindex 확인', report)
         self.assertIn('미조회', report)
 
+    def test_unknown_google_url_does_not_claim_no_technical_block(self):
+        unknown = {
+            'url': 'https://linkwiki.info/categories/community',
+            'verdict': 'NEUTRAL',
+            'coverage': 'Google에는 아직 알려지지 않은 URL입니다.',
+            'robots_state': 'ROBOTS_TXT_STATE_UNSPECIFIED',
+            'indexing_state': 'INDEXING_STATE_UNSPECIFIED',
+            'fetch_state': 'PAGE_FETCH_STATE_UNSPECIFIED',
+        }
+        out = monitor.technical_index_diagnostic([unknown])
+        self.assertIn('Google 크롤링·색인 기술 정보 미제공', out)
+        self.assertIn('차단이 없다고 판단할 수 없습니다', out)
+        self.assertNotIn('명시적인 기술 차단 신호가 확인되지 않았습니다', out)
+
+    def test_crawled_not_indexed_with_confirmed_allowed_fetch_has_distinct_diagnosis(self):
+        crawled = {
+            'url': 'https://linkwiki.info/directory',
+            'verdict': 'NEUTRAL',
+            'coverage': '크롤링됨 - 현재 색인이 생성되지 않음',
+            'robots_state': 'ALLOWED', 'indexing_state': 'INDEXING_ALLOWED',
+            'fetch_state': 'SUCCESSFUL', 'last_crawl': '2026-11-08T08:29:34Z',
+            'user_canonical': 'https://linkwiki.info/directory',
+            'google_canonical': 'https://linkwiki.info/directory',
+        }
+        out = monitor.technical_index_diagnostic([crawled])
+        self.assertIn('저장된 크롤링 정보에서 명시적 차단은 보이지 않습니다', out)
+        self.assertNotIn('Google 크롤링·색인 기술 정보 미제공', out)
+
     def test_robots_fetch_and_canonical_have_distinct_diagnoses(self):
         from seo.search_console_monitor import technical_index_obstacles
         problems = technical_index_obstacles({
