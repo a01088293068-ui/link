@@ -231,6 +231,14 @@ def core_keyword_scorecard(history):
         checked = sample.get("returned_results", {}).get(keyword)
         depth = query_depth(keyword)
         scope = (f"{checked}/{depth}" if isinstance(checked, int) else "확인 범위 기록 없음")
+        # Returned URLs can be numerous even when the provider only proves
+        # positions 1..10. Expose that gap instead of implying top-30 coverage.
+        recorded_positions = sample.get("sampled_positions", {}).get(keyword)
+        if isinstance(recorded_positions, list):
+            verified = {p for p in recorded_positions
+                        if isinstance(p, int) and not isinstance(p, bool)
+                        and 1 <= p <= depth}
+            scope += f"건 · 확인 위치 {len(verified)}/{depth}"
         if isinstance(position, int) and position > 0:
             if not isinstance(sample.get("sampled_positions", {}).get(keyword), list):
                 return (f"{position}위 (구형 API 표본 · 순위 근거 불완전, "
