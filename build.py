@@ -377,42 +377,44 @@ def sync_directory_count(html, total_sites):
 
 
 def homepage_directory_examples(records, categories):
-    """Expose real registered sites in static HTML on the primary landing page.
+    """Expose two real listed services per category in static homepage HTML.
 
-    Show one documented entry per category, without inventing live status,
-    rankings, official endorsements or changing the directory search UI.
+    More visitors can judge the relevance of a category before navigating.
+    No artificial rankings, live-status promises, or external endorsements.
     """
     if not isinstance(records, list) or not records:
         raise RuntimeError("Homepage examples require verified directory data")
     cards = []
     for category, slug, heading, purpose in categories:
-        entry = next((
+        entries = [
             item for item in records
             if isinstance(item, dict) and item.get("category") == category
             and isinstance(item.get("name"), str) and item["name"].strip()
             and isinstance(item.get("description"), str) and item["description"].strip()
-        ), None)
-        if entry is None:
+        ][:2]
+        if not entries:
             raise RuntimeError(f"Missing descriptive directory example: {category}")
-        # Display the exact destination domain as useful pre-click context.
-        # A listed URL is not proof of official ownership or current uptime.
-        parsed = urlparse(str(entry.get("url", "")))
-        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
-            raise RuntimeError(f"Invalid registered example URL: {category}")
-        domain = parsed.hostname
+        excerpts = []
+        for entry in entries:
+            parsed = urlparse(str(entry.get("url", "")))
+            if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+                raise RuntimeError(f"Invalid registered example URL: {category}")
+            excerpts.append(
+                '<p><strong>' + escape(entry["name"].strip()) + '</strong> — '
+                + escape(entry["description"].strip()) + '</p>'
+                '<p class="site-domain">등록 도메인: ' + escape(parsed.hostname) + '</p>'
+            )
         cards.append(
             '<article class="v6-card">'
             f'<h3><a href="/categories/{escape(slug, quote=True)}">{escape(heading)}</a></h3>'
-            f'<p><strong>{escape(entry["name"].strip())}</strong> — '
-            f'{escape(entry["description"].strip())}</p>'
-            f'<p class="site-domain">등록 도메인: {escape(domain)}</p>'
+            + ''.join(excerpts) +
             f'<a href="/categories/{escape(slug, quote=True)}">이 분야 사이트 더 보기</a>'
             '</article>'
         )
     return (
         '<section class="wrap seo-directory-examples" aria-label="실제 등록 사이트 분야별 예시">'
         '<div class="v47-section-heading"><h2>분야별 사이트모음 실제 등록 예시</h2></div>'
-        '<p>아래는 등록된 사이트 목록의 분야별 첫 번째 예시입니다. '
+        '<p>아래는 실제 등록된 사이트의 분야별 예시이며, 각 분야에서 최대 두 곳을 보여줍니다. '
         '인기 순위나 추천 등급이 아니며 접속 가능 여부를 실시간으로 보증하지 않습니다.</p>'
         '<div class="v6-grid">' + ''.join(cards) + '</div></section>'
     )
