@@ -22,6 +22,7 @@ SITES = {
     "SaaSKR": "https://saaskr.com/saas/linkwiki-info",
     "Sidedock": "https://sidedock.io/products/%EB%A7%81%ED%81%AC%EC%9C%84%ED%82%A4linkwiki",
     "Tistory address guide": "https://blacktetherscan.tistory.com/2",
+    "StartupAccelerator": "https://startupaccelerator.dev/project/linkwiki",
 }
 REPORT = ROOT / "seo/backlink-public-check-report.md"
 
