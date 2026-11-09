@@ -180,6 +180,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         generated = korean_first_shortcuts(records)
         self.assertEqual(generated.count('class="lw-safety-note korean-first-shortcuts"'), 1)
         self.assertEqual(generated.count('href="/directory?q='), len(KOREAN_FIRST_SEARCH_NAMES))
+        for new_name in ("학술연구정보서비스 RISS", "복지로", "한국장학재단"):
+            self.assertIn(new_name, KOREAN_FIRST_SEARCH_NAMES)
+            self.assertIn(">" + new_name + "</a>", generated)
         for page in ("index.html", "directory.html"):
             content = (root / "dist" / page).read_text(encoding="utf-8")
             self.assertEqual(content.count('class="lw-safety-note korean-first-shortcuts"'), 1)
