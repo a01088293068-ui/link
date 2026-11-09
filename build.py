@@ -680,12 +680,27 @@ def directory_search_help(records, categories):
                 + escape(name) + ' 이름으로 검색하기</a> · '
                 + escape(category) + ' 등록 항목</li>'
             )
+    domain_samples = []
+    for category in ("검색·포털", "AI 도구"):
+        selected = next(
+            (entry for entry in records
+             if entry.get("category") == category
+             and isinstance(entry.get("url"), str)
+             and urlparse(entry["url"]).scheme == "https"
+             and urlparse(entry["url"]).hostname), None)
+        if selected:
+            hostname = urlparse(selected["url"]).hostname
+            domain_samples.append(
+                '<li><a href="/directory?q=' + quote(hostname, safe="") + '">'
+                + escape(hostname) + ' 도메인으로 검색하기</a> · '
+                + escape(category) + ' 등록 항목</li>'
+            )
     example_section = (
         '<div class="lw-search-examples"><h3>실제 등록 사이트 검색 예시</h3>'
         '<p>항목을 선택하면 검색어가 입력된 전체 목록으로 이동합니다. '
         '예시는 인기 순위나 실시간 접속 확인 결과가 아닙니다.</p>'
-        '<ul>' + ''.join(samples) + '</ul></div>'
-        if samples else ''
+        '<ul>' + ''.join(samples + domain_samples) + '</ul></div>'
+        if samples or domain_samples else ''
     )
     return (
         '<section id="site-list-guide" class="lw-safety-note seo-search-help" aria-label="사이트모음 검색 및 확인 방법">'
