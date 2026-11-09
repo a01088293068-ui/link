@@ -78,6 +78,22 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "missing"):
             category_decision_guide("nonexistent", records)
 
+    def test_korean_search_guide_reflects_actual_official_directory_entries(self):
+        from build import category_decision_guide
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        actual_names = {row["name"] for row in records}
+        names = ("정부24", "복지로", "한국장학재단",
+                 "학술연구정보서비스 RISS", "국가통계포털 KOSIS", "국가법령정보센터")
+        self.assertTrue(set(names).issubset(actual_names))
+        html = category_decision_guide("search", records)
+        built = (root / "dist/categories/search.html").read_text(encoding="utf-8")
+        for name in names:
+            self.assertIn(name, html)
+            self.assertIn(name, built)
+        self.assertIn("학술자료", html)
+        self.assertIn("민원 신청", html)
+
     def test_all_eight_categories_offer_two_contextual_crawlable_paths(self):
         from build import related_category_navigation, RELATED_CATEGORY_PATHS, CATEGORY_LANDING
         from seo.site_audit import internal_inbound_links
