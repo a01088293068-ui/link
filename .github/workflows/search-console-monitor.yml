@@ -11,6 +11,13 @@ on:
     types: [completed]
     branches: [main]
 
+# Multiple deployments can complete close together. Cancel obsolete inspections
+# so Google's API is queried for the latest release instead of the same
+# dated Search Console snapshot several times in parallel.
+concurrency:
+  group: linkwiki-gsc-readonly-monitor
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
