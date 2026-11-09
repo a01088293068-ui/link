@@ -19,6 +19,18 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn("cron: '25 3 * * *'", workflow)
         self.assertIn("name: search-console-performance", workflow)
 
+    def test_gsc_failure_keeps_diagnostic_artifact_without_secrets(self):
+        workflow = (SOURCE.parents[1] /
+                    ".github/workflows/search-console-monitor.yml").read_text(encoding="utf-8")
+        self.assertIn("id: gsc_fetch", workflow)
+        self.assertIn("status: missing_google_service_account_secret", workflow)
+        self.assertIn("status: google_api_or_report_error", workflow)
+        self.assertIn("status: completed", workflow)
+        self.assertIn("if: always() && steps.gsc_fetch.outcome != 'skipped'", workflow)
+        self.assertIn("seo/search-console-run-status.txt", workflow)
+        self.assertIn("seo/search-console-report.md", workflow)
+        self.assertIn("retention-days: 30", workflow)
+
     def test_core_keyword_weekly_comparison_is_date_scoped_and_weighted(self):
         rows = [
             {'keys': ['주소모음', '2026-10-26'], 'impressions': 2, 'clicks': 1, 'position': 100},
