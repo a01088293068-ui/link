@@ -95,3 +95,23 @@ Current test report: https://github.com/a01088293068-ui/link/actions/runs/425649
 - Existing public listing, **not** newly submitted; two pages under sidedock.io count as **one referring domain**.
 - Added listing URL to read-only weekly GitHub Actions `seo/backlink-public-check.py` for independent HTTP HTML anchor verification.
 - Expected publicly linked referring-domain count: **5** only if CI sees a successful direct href. No Google rank effect is claimed.
+
+## Discovery audit, read-only (2026-11-09): additional public referring domains
+
+Independent final CI result: https://github.com/a01088293068-ui/link/actions/runs/42571134484
+
+| New-to-ledger domain | Live public reference | Read-only HTML anchor verification | Caution |
+|---|---|---|---|
+| blacktetherscan.tistory.com | https://blacktetherscan.tistory.com/2 | `public_link_found` -> https://linkwiki.info/; also has a live link to https://linkwiki.info/guides/address-check | An article in the same blog explicitly says it was written by LinkWiki's operator. Treat as **self-authored outreach, not independent endorsement** |
+| startupaccelerator.dev | https://startupaccelerator.dev/project/linkwiki | `public_link_found` -> https://linkwiki.info/ with `nofollow` | Previously published, not submitted in this session. No SEO authority inference |
+| phindex.si | https://phindex.si/en/products/linkwiki.info | `public_link_found` -> https://linkwiki.info/?ref=phindex.si (query parameter ignored in counting referring domain, URL stays on verified target host) | Existing product aggregation, not newly published in this session |
+
+Already confirmed referring domains retained: develif.com, launch.ignlab.net, openwebside.com, saaskr.com, sidedock.io.
+
+- **Total independently HTML-verified public referring domains: 8** (5 earlier + 3 newly discovered). These are *not* 8 newly acquired links.
+- **Newly published during our actual submission workflow remains 1 (DevElif)**; all other entries above were already available before this discovery batch.
+- **Submitted but unapproved remains 3 (GainWeb, Site Promotion Directory, Launching Next)**; site-limited search found no published pages at this check. Lack of a search result is not proof of rejection.
+- MeWebLink still returns HTTP 404 to independent CI and is not counted.
+- KLDP post https://kldp.org/node/168323 has a search snippet mentioning the URL, but fetch did NOT expose a direct click-through hyperlink. **Not counted.**
+- Historical pre-2026 PTC listings mentioning a prior user of linkwiki.info were omitted as unrelated to the current site; do not infer endorsement or penalization.
+- Public anchor existence is not equivalent to Google indexing the external page or passing ranking signals; some anchors have `nofollow/ugc`.
