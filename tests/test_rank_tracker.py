@@ -11,6 +11,10 @@ class RankTrackerTests(unittest.TestCase):
         self.assertIn("cron: '35 17 * * *'", workflow)
         self.assertIn("'seo/rank_tracker.py'", workflow)
         self.assertIn("already_measured = any(", workflow)
+        self.assertIn("git fetch origin main", workflow)
+        self.assertIn("git checkout -B rank-measure-current origin/main", workflow)
+        self.assertLess(workflow.index("git checkout -B rank-measure-current"),
+                        workflow.index("id: freshness"))
         self.assertEqual(workflow.count("if: steps.freshness.outputs.needs_measure == 'true'"), 2)
 
     def test_provider_relative_positions_normalize_across_three_pages(self):
