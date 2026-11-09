@@ -84,7 +84,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         built = (root / "dist/categories/search.html").read_text(encoding="utf-8")
         for html in (source, built):
             self.assertIn("검색·포털·공공정보 사이트모음", html)
-            self.assertIn("국민건강보험공단·국민연금공단", html)
+            self.assertIn("국민신문고·위택스·국민건강보험공단", html)
             self.assertIn("민원·복지·건강보험·연금·학술정보 사이트", html)
             self.assertIn("국내 공공서비스를 목적별로 찾는 방법", html)
             self.assertIn("국민신문고는 기관에 민원", html)
