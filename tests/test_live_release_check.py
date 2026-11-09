@@ -22,6 +22,36 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertIn("path: seo/live-release-diagnosis.log", workflow)
         self.assertIn("if: always()", workflow)
 
+    def test_live_page_rejects_old_site_counts_even_when_h1_is_current(self):
+        from seo.live_release_check import visible_site_counts
+        for path in ("/", "/directory"):
+            expected = page(
+                path, "주소모음·링크모음·사이트모음", "188개 사이트 검색",
+                "<p>현재 등록된 188개 사이트를 검색합니다.</p>"
+                "<p>등록 사이트 188개</p>"
+            )
+            stale = expected.replace(
+                "현재 등록된 188개 사이트", "현재 등록된 185개 사이트"
+            ).replace("등록 사이트 188개</p>", "등록 사이트 183개</p>")
+            self.assertEqual(visible_site_counts(expected), [188, 188, 188])
+            self.assertEqual(visible_site_counts(stale), [183, 185, 188])
+            self.assertTrue(any(
+                "deployed visible site counts differ" in issue
+                for issue in check_page(expected, stale, path)
+            ))
+            self.assertFalse(any(
+                "deployed visible site counts differ" in issue
+                for issue in check_page(expected, expected, path)
+            ))
+
+    def test_site_count_comparison_ignores_scripts_and_metadata(self):
+        from seo.live_release_check import visible_site_counts
+        markup = ('<html><head><meta content="185개 사이트"></head><body>'
+                  '<script>const html = "183개 사이트";</script>'
+                  '<h1>188개 사이트 검색</h1>'
+                  '<p>등록 <strong>사이트</strong> 188개</p></body></html>')
+        self.assertEqual(visible_site_counts(markup), [188, 188])
+
     def test_live_release_detects_stale_search_snippet_with_unchanged_title(self):
         path = "/categories/search"
         expected = page(path, "검색·포털·공공정보 사이트모음", "검색·포털 링크모음")
