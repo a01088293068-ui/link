@@ -3,6 +3,16 @@ from seo import rank_tracker
 
 
 class RankTrackerTests(unittest.TestCase):
+    def test_ranking_workflow_has_missed_schedule_recovery_and_daily_dedup(self):
+        from pathlib import Path
+        workflow = (Path(__file__).resolve().parents[1] /
+                    ".github/workflows/rank-tracker.yml").read_text(encoding="utf-8")
+        self.assertIn("cron: '05 5 * * *'", workflow)
+        self.assertIn("cron: '35 17 * * *'", workflow)
+        self.assertIn("'seo/rank_tracker.py'", workflow)
+        self.assertIn("already_measured = any(", workflow)
+        self.assertEqual(workflow.count("if: steps.freshness.outputs.needs_measure == 'true'"), 2)
+
     def test_provider_relative_positions_normalize_across_three_pages(self):
         from unittest.mock import patch
         pages = {
