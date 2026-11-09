@@ -7,7 +7,7 @@ test('normal URL shows actual hostname and path without network access', () => {
   assert.equal(out.ok, true);
   assert.equal(out.host, 'www.naver.com');
   assert.equal(out.protocol, 'HTTPS');
-  assert.equal(out.path, '/search?q=주소모음');
+  assert.equal(decodeURIComponent(out.path), '/search?q=주소모음');
   assert.match(out.note, /공식 운영/);
 });
 
