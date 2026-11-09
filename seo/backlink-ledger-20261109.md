@@ -7,7 +7,7 @@ Registration identity on forms requiring email: historical LinkWiki outreach Gma
 
 | Provider | State | Public listing URL | Evidence | Notes |
 |---|---|---|---|---|
-| MeWebLink | **Existing public listing** | https://meweblink.com/website/linkwiki | https://agent.tinyfish.ai/runs/b5b8411f-4663-4be3-955b-005e07994d36 | Accepted, direct href https://linkwiki.info/ seen. Pre-existing listing, **not newly created on this run**. Provider says links are `ugc nofollow`; not guaranteed SEO authority. Existing category "Other". Duplicate attempt rejected; no repeat. |
+| MeWebLink | **Conflicting evidence — NOT counted as verified public** | https://meweblink.com/website/linkwiki | https://agent.tinyfish.ai/runs/b5b8411f-4663-4be3-955b-005e07994d36 | Browser agent initially reported existing accepted link, but independent TinyFish live fetch returned `page_not_found` HTTP **404** on 2026-11-09. Do not count without a fresh 200 + href recheck. Duplicate attempt was rejected. |
 | DevElif | **Newly published on 2026-11-09** | https://develif.com/s/website-search-and-address-guides-by-linkwiki | https://agent.tinyfish.ai/runs/5e82a713-090d-4190-93d4-874520fd7604 | Real form submission completed and public listing returned a direct href to https://linkwiki.info/. Provider describes link as dofollow. Contact email: historic LinkWiki outreach address. |
 | Zearches | Previous submission exists, **not verified public** | none verified | https://agent.tinyfish.ai/runs/7a263131-b23c-417e-9514-00709977a860 | `duplicate_limit` rejected new submission; does not prove public link. |
 | LinkCentre | Submission **not completed** | none | https://agent.tinyfish.ai/runs/77dfa90c-06ac-4f09-baca-402bbc34d171 | Mandatory free-account creation; no authenticated LinkCentre site account confirmed. |
@@ -22,7 +22,7 @@ Never count a pending job as submitted or published. Update after finished.
 
 ## Accounting and quality
 
-- Existing public backlinks newly discovered in this session: **1** (MeWebLink).
+- Existing public backlinks newly discovered in this session: **0 independently reverified** (MeWebLink reported by browser agent but returned 404 during independent fresh fetch).
 - Newly published public backlinks created in this session: **1** (DevElif), verified by target-site automation on 2026-11-09.
 - Submitted-but-unapproved: independently track only with positive submission receipt.
 - An existing or `nofollow` directory backlink may help discovery, but is not evidence of ranking improvement.
@@ -40,10 +40,16 @@ Never count a pending job as submitted or published. Update after finished.
 
 ## Latest totals (after seven completed site-agent checks)
 
-- Confirmed public backlinks to `https://linkwiki.info/`: **2** (one existing MeWebLink, one newly published DevElif).
+- Confirmed independently rechecked public backlinks to `https://linkwiki.info/`: **1** (newly published DevElif). MeWebLink 404 excluded.
 - Confirmed newly submitted but not publicly approved: **3** (GainWeb, Site Promotion Directory, Launching Next).
 - Checked but not submitted: SoMuch (step limit), Secret Search Engine Labs (firewall), Cipinet (human reCAPTCHA), LinkCentre (registration gate).
 - Previous submission duplicate and publication unverified: Zearches.
 - Never count a submission receipt as a public backlink.
 
 - PitchWall free project launch attempted: https://agent.tinyfish.ai/runs/2300ade3-47a0-42e0-8f57-72192d0e6cfb ; status pending verification. No paid upgrade authorized.
+
+## Secondary independent backlink verification (2026-11-09)
+
+- DevElif listing `https://develif.com/s/website-search-and-address-guides-by-linkwiki`: successful TinyFish fresh page fetch, same final_url, canonical correct, robots `index, follow`, outbound links include `https://linkwiki.info/`. **Counted.**
+- MeWebLink `https://meweblink.com/website/linkwiki`: TinyFish fresh page fetch gave `page_not_found`, HTTP 404 despite earlier agent-reported page. **Excluded until verified.**
+- PitchWall https://agent.tinyfish.ai/runs/2300ade3-47a0-42e0-8f57-72192d0e6cfb : login required (Google/GitHub/Microsoft/Discord), no submission. Do not assume TinyFish Nix account equals LinkWiki outreach account.
