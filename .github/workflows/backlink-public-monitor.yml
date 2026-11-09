@@ -2,6 +2,11 @@ name: LinkWiki public backlink monitor
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'seo/backlink-public-check.py'
+      - 'tests/test_backlink_public_check.py'
+      - '.github/workflows/backlink-public-monitor.yml'
   schedule:
     - cron: '15 5 * * 1'
 
