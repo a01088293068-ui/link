@@ -51,22 +51,36 @@ jobs:
       - name: Test Search Console report formatting
         run: python3 -B -m unittest discover -s tests -p 'test_search_console_monitor.py' -v
       - name: Fetch private performance report
+        id: gsc_fetch
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           GSC_PROPERTY: ${{ vars.GSC_PROPERTY }}
+        shell: bash
         run: |
+          set -euo pipefail
+          mkdir -p seo
+          echo 'status: started' > seo/search-console-run-status.txt
           if [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
+            echo 'status: missing_google_service_account_secret' > seo/search-console-run-status.txt
             echo 'GOOGLE_SERVICE_ACCOUNT_JSON secret is missing.'
             exit 1
           fi
           if [ -z "$GSC_PROPERTY" ]; then
             export GSC_PROPERTY='sc-domain:linkwiki.info'
           fi
-          python3 seo/search_console_monitor.py
-      - name: Retain report privately for 30 days
+          if python3 seo/search_console_monitor.py; then
+            echo 'status: completed' > seo/search-console-run-status.txt
+          else
+            echo 'status: google_api_or_report_error' > seo/search-console-run-status.txt
+            exit 1
+          fi
+      - name: Retain Search Console report or failure status for 30 days
+        if: always() && steps.gsc_fetch.outcome != 'skipped'
         uses: actions/upload-artifact@v4
         with:
           name: search-console-performance
-          path: seo/search-console-report.md
-          if-no-files-found: error
+          path: |
+            seo/search-console-report.md
+            seo/search-console-run-status.txt
+          if-no-files-found: warn
           retention-days: 30
