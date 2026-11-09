@@ -416,6 +416,76 @@ CORE_QUERY_FILTERS = [{
 }]
 
 
+# Broader discovery is kept separate from exact-query performance. A site can
+# rank well for '주소모음 위키' yet rank poorly for the head term '주소모음'.
+FAMILY_QUERY_FILTERS = [{
+    "groupType": "and",
+    "filters": [{
+        "dimension": "query", "operator": "includingRegex",
+        "expression": r"(주소[[:space:]]*모음|링크[[:space:]]*모음|사이트[[:space:]]*모음)",
+    }],
+}]
+
+
+def core_family_keyword_rows(rows):
+    """Split literal core keywords from related queries, without double counting.
+
+    Rows may match more than one family (e.g., 주소모음 링크모음). For that
+    case, assign the first family in CORE_KEYWORDS so the overall sum is
+    disjoint. This is a measurement convention, not a ranking signal.
+    """
+    groups = {
+        key: {"exact": [], "related": []} for key in CORE_KEYWORDS
+    }
+    for row in rows or []:
+        keys = row.get("keys") or []
+        if not keys:
+            continue
+        query = str(keys[0])
+        compact = ''.join(query.split())
+        matched = next((key for key in CORE_KEYWORDS if key in compact), None)
+        if matched is None:
+            continue
+        groups[matched]["exact" if compact == matched else "related"].append(row)
+
+    def aggregate(items):
+        impressions = sum(int(row.get("impressions", 0)) for row in items)
+        clicks = sum(int(row.get("clicks", 0)) for row in items)
+        weighted = sum(float(row.get("position", 0)) *
+                       int(row.get("impressions", 0)) for row in items)
+        return {"impressions": impressions, "clicks": clicks,
+                "position": round(weighted / impressions, 1) if impressions else None,
+                "observed": bool(items)}
+
+    return [{"keyword": keyword, "exact": aggregate(data["exact"]),
+             "related": aggregate(data["related"])}
+            for keyword, data in groups.items()]
+
+
+def format_core_family_keyword_report(rows, error=''):
+    lines = [
+        '', '## 핵심 키워드와 연관 검색어 분리 측정', '',
+        '- 정확 일치(띄어쓰기 변형 포함)와 검색어에 키워드가 포함된 '
+        '연관 검색을 **별도** 집계합니다. 연관 검색 순위를 핵심 단일 키워드 '
+        '순위로 해석하지 않습니다.',
+        '- 두 개 이상의 핵심 표현이 한 검색어에 함께 있을 때는 '
+        '주소모음 → 링크모음 → 사이트모음 순서로 한 번만 집계합니다.',
+        '- 미관측은 검색어 데이터 미제공을 뜻하며 검색량 0을 보장하지 않습니다.',
+        '| 핵심 표현 | 정확 검색 노출 / 클릭 / 평균 순위 | 연관 검색 노출 / 클릭 / 평균 순위 |',
+        '|---|---|---|',
+    ]
+    if error:
+        lines.append('| 조회 오류 | ' + str(error) + ' | - |')
+        return '\n'.join(lines)
+    def show(item):
+        return (f"{item['impressions']} / {item['clicks']} / "
+                f"{item['position']:.1f}" if item['observed'] and
+                item['position'] is not None else '관측 없음')
+    for row in core_family_keyword_rows(rows):
+        lines.append(f"| {row['keyword']} | {show(row['exact'])} | {show(row['related'])} |")
+    return '\n'.join(lines)
+
+
 def core_keyword_rows(keyword_rows, query_page_rows=None):
     """Use observed query rows only; merge internal whitespace variants."""
     output = []
@@ -797,6 +867,15 @@ def main():
         focused_error = type(exc).__name__
         if isinstance(exc, HTTPError):
             focused_error += f' HTTP {exc.code}'
+    family_keyword_rows, family_error = [], ''
+    try:
+        family_keyword_rows = query_performance(
+            token, args.property, start.isoformat(), end.isoformat(),
+            ['query'], limit=1000, filter_groups=FAMILY_QUERY_FILTERS)
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+        family_error = type(exc).__name__
+        if isinstance(exc, HTTPError):
+            family_error += f' HTTP {exc.code}'
     # Use one dedicated filtered query×date request for exact disjoint
     # week comparisons, without mixing homepage/brand impressions.
     weekly_core_rows, weekly_core_error = [], ''
@@ -816,6 +895,7 @@ def main():
         keywords, pages, start, end, args.property, dates, query_pages,
         focused_keyword_rows=focused_keywords,
         focused_query_page_rows=focused_pages, focused_error=focused_error)
+    report += format_core_family_keyword_report(family_keyword_rows, family_error)
     report += format_core_keyword_weekly_comparison(
         weekly_core_rows, end.isoformat(), weekly_core_error)
     report += format_core_landing_page_split(focused_pages, focused_error)
