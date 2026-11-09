@@ -84,8 +84,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         built = (root / "dist/categories/search.html").read_text(encoding="utf-8")
         for html in (source, built):
             self.assertIn("검색·포털·공공정보 사이트모음", html)
-            self.assertIn("정부24·복지로·RISS·KOSIS", html)
-            self.assertIn("공공서비스·학술정보 검색 사이트", html)
+            self.assertIn("국민건강보험공단·국민연금공단", html)
+            self.assertIn("민원·복지·건강보험·연금·학술정보 사이트", html)
             self.assertEqual(html.count('<article class="item"'), 36)
             self.assertNotIn('name="robots" content="noindex"', html)
         self.assertIn('href="https://linkwiki.info/categories/search"', built)
