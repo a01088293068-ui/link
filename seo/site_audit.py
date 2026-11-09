@@ -293,7 +293,14 @@ def audit_site(dist):
             page = dist / name
             if not page.is_file():
                 continue
-            numbers = visible_site_counts(page.read_text(encoding="utf-8"))
+            html = page.read_text(encoding="utf-8")
+            # The generated category overview legitimately contains "등록
+            # 사이트 42개" for one category. It must not be compared to the
+            # total 198-site landing-page count. The overall count appears
+            # before that separately audited overview.
+            if name == "directory.html":
+                html = html.split('id="site-category-comparison"', 1)[0]
+            numbers = visible_site_counts(html)
             if not numbers:
                 errors.append(f"{name}: visible directory size missing")
             elif any(number != len(records) for number in numbers):
