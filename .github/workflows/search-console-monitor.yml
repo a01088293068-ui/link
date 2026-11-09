@@ -7,7 +7,7 @@ on:
   # Reinspect Google's indexed copy after the *live* deployment is verified.
   # A green build alone does not establish that Cloudflare has published.
   workflow_run:
-    workflows: ['LinkWiki public crawlability smoke check']
+    workflows: ['LinkWiki deployed crawlability smoke']
     types: [completed]
     branches: [main]
 
