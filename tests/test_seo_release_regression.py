@@ -8,6 +8,8 @@ import json
 import re
 from seo import auto_seo
 
+PUBLISHED_COUNT = len(json.loads((Path(__file__).resolve().parents[1] / 'assets/verified-directory.json').read_text(encoding='utf-8')))
+
 
 class SEOReleaseRegressionTests(unittest.TestCase):
     def test_directory_guide_links_are_published_and_task_relevant(self):
@@ -165,7 +167,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(generated.count('id="address-inspector"'), 1)
         self.assertEqual(generated.count('id="lw-address-form"'), 1)
         self.assertEqual(generated.count('/assets/address-inspector.js'), 1)
-        self.assertEqual(generated.count('class="v6-card"'), 97)
+        self.assertEqual(generated.count('class="v6-card"'), PUBLISHED_COUNT)
         self.assertIn('href="https://linkwiki.info/directory"', generated)
         self.assertNotIn('name="robots" content="noindex"', generated)
 
@@ -246,10 +248,10 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
-        title = "사이트모음 전체 목록: 97개 사이트 검색 | 링크위키"
+        title = f"사이트모음 전체 목록: {PUBLISHED_COUNT}개 사이트 검색 | 링크위키"
         heading = "주소모음·링크모음·사이트모음 통합 검색"
         self.assertIn("<title>" + title + "</title>", html)
-        self.assertIn("전체 사이트모음에서 97개 사이트", html)
+        self.assertIn(f"전체 사이트모음에서 {PUBLISHED_COUNT}개 사이트", html)
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
@@ -272,9 +274,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         home_title = get_title(home)
         directory_title = get_title(directory)
         self.assertNotEqual(home_title, directory_title)
-        self.assertIn("97개 사이트", directory_title)
+        self.assertIn(f"{PUBLISHED_COUNT}개 사이트", directory_title)
         self.assertIn("전체 목록", directory_title)
-        self.assertIn("97개 사이트", home_title)
+        self.assertIn(f"{PUBLISHED_COUNT}개 사이트", home_title)
         # The directory remains the indexable target, never the legacy .html URL.
         self.assertIn('href="https://linkwiki.info/directory"', directory)
         self.assertNotIn('href="https://linkwiki.info/directory.html" rel="canonical"', directory)
@@ -479,7 +481,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn(f"<h3>{term}:", section)
         for target in ('href="/directory"', 'href="/categories/"'):
             self.assertIn(target, section)
-        self.assertIn("97개 사이트", section)
+        self.assertIn(f"{PUBLISHED_COUNT}개 사이트", section)
 
     def test_post_sitemap_date_comes_from_filename_not_filesystem_mtime(self):
         self.assertEqual(stable_post_lastmod(Path('seo-20261027-9c0ac627e0.md')), '2026-10-27')
