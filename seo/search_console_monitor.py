@@ -369,6 +369,64 @@ def priority_index_checks(rows):
     return '\n'.join(output)
 
 
+def compare_search_visibility_with_inspection(page_rows, inspection_rows, end_date):
+    """Surface disagreement between two GSC products, not imagined penalties.
+
+    Search Analytics covers observed search appearances over a past window.
+    URL Inspection returns Google's latest exposed stored status. Neither
+    proves the other is wrong; dates can lag independently.
+    """
+    if not inspection_rows:
+        return []
+    inspected = {str(x.get("url") or ""): x for x in inspection_rows}
+    findings = []
+    for row in page_rows or []:
+        keys = row.get("keys") or []
+        if not keys:
+            continue
+        url = str(keys[0])
+        item = inspected.get(url)
+        impressions = int(row.get("impressions") or 0)
+        if item is None or impressions <= 0 or item.get("verdict") == "PASS":
+            continue
+        findings.append({
+            "url": url, "impressions": impressions,
+            "clicks": int(row.get("clicks") or 0),
+            "inspection": str(item.get("coverage") or "정보 없음"),
+            "last_crawl": str(item.get("last_crawl") or ""),
+            "end_date": str(end_date),
+        })
+    return sorted(findings, key=lambda x: (-x["impressions"], x["url"]))
+
+
+def format_search_visibility_inspection_conflicts(page_rows, inspection_rows,
+                                                 end_date, inspection_error=''):
+    lines = [
+        "", "### 검색 실적과 URL 검사 상태 간의 시점 차이", "",
+        "- 검색 성과는 기간 중 실제 검색 노출 기록이며 URL 검사는 Google이 제공하는 "
+        "별도 저장 상태입니다. 두 데이터가 서로 다른 시점에 갱신될 수 있습니다.",
+        "- 아래에 표시된 페이지를 '검색에 전혀 나타나지 않는 URL'로 단정하지 마세요.",
+        "| 노출 URL | 조회 기간 노출 | 클릭 | URL 검사 저장 상태 | 마지막 기록된 크롤링 |",
+        "|---|---:|---:|---|---|",
+    ]
+    if inspection_error:
+        return "\\n".join(lines + [
+            "| URL 검사 조회 실패 | - | - | " + str(inspection_error) + " | - |",
+            "",
+        ])
+    conflicts = compare_search_visibility_with_inspection(
+        page_rows, inspection_rows, end_date)
+    if not conflicts:
+        lines.append("| 불일치 관측 없음 | - | - | - | - |")
+    for entry in conflicts:
+        safe = lambda value: str(value).replace("|", "%7C").replace("\\n", " ")
+        lines.append("| " + " | ".join(safe(x) for x in (
+            entry["url"], entry["impressions"], entry["clicks"],
+            entry["inspection"], entry["last_crawl"] or "-")) + " |")
+    lines += ["", "- 이 불일치는 Google의 수동 조치나 품질 평가 확정 근거가 아닙니다.", ""]
+    return "\\n".join(lines)
+
+
 def format_index_inspection(rows, error=''):
     lines = ['', '## Google 색인 상태 확인 (Google 색인에 저장된 버전)', '',
              '- URL Inspection API 결과이며 실시간 접속 상태나 색인 신청 결과가 아닙니다.',
@@ -914,6 +972,8 @@ def main():
         weekly_core_rows, end.isoformat(), weekly_core_error)
     report += format_core_landing_page_split(focused_pages, focused_error)
     report += format_index_inspection(inspections, inspection_error)
+    report += format_search_visibility_inspection_conflicts(
+        pages, inspections, end.isoformat(), inspection_error)
     sitemap_rows, sitemap_error = [], ''
     try:
         sitemap_rows = list_submitted_sitemaps(token, args.property)
