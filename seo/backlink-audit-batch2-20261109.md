@@ -45,3 +45,27 @@ Public target: https://linkwiki.info/ (distinct from the LinkWiki main service).
 - Source language matches target audience. No additional submission made because listing already exists; duplicate should be reviewed by listing owner rather than created again.
 - Add first URL to weekly backlink monitor as the preferred fuller entry; retain second URL only in evidence ledger.
 - **Important**: Existing links are useful for referral discovery, but a duplicate listing, a direct href, or an `index, follow` directive alone does not prove that Google indexed the external source or counted the link for ranking.
+
+## Additional Korean-language referring sources (2026-11-09)
+
+- **SaaSKR** service profile: `https://saaskr.com/saas/linkwiki-info` — real public profile for LinkWiki with a canonical `/saas/linkwiki-info` and multiple direct outgoing links to `https://linkwiki.info/`. Confirmed by separate TinyFish page fetch and read-only GitHub Actions; no new submission was made.
+- **VibeLabs Lab** `https://vibelabs.kr/lab` — search results mention LinkWiki, but independent page extraction did not confirm a direct `https://linkwiki.info/` anchor. Not counted.
+- **OpenWebSide** `https://openwebside.com/products/757213b7-1ce9-41ed-b0d7-a807df42adf7` and `https://openwebside.com/products/24500655-57ec-4d21-bd3c-ef87f2b0c187`: earlier evidence confirmed **two listings on one referring domain**, not counted twice.
+
+### Verified referring domains, not just raw page count
+
+Latest independent GitHub Actions check: https://github.com/a01088293068-ui/link/actions/runs/42564967313
+
+| Domain | Public page | Machine fetch | HTML anchor to target | rel / restriction |
+|---|---|---|---|---|
+| develif.com | https://develif.com/s/website-search-and-address-guides-by-linkwiki | 200 | 2 | `noopener noreferrer` (no `nofollow` in checked anchors); meta noindex false |
+| launch.ignlab.net | https://launch.ignlab.net/t/linkwiki-2 | 200 | 1 | `noopener nofollow ugc`; meta noindex false |
+| openwebside.com | https://openwebside.com/products/757213b7-1ce9-41ed-b0d7-a807df42adf7 | 200 | 1 | `noopener noreferrer`; meta noindex false |
+| saaskr.com | https://saaskr.com/saas/linkwiki-info | 200 | 3 | `noopener noreferrer`; meta noindex false |
+| meweblink.com | https://meweblink.com/website/linkwiki | HTTP 404 | unverified | Do not count |
+
+**Current independently confirmed public referring domains: 4.** Of those, DevElif was newly submitted and published during current work; the other three were pre-existing discoveries. `nofollow/ugc` discloses link type; no claim of rank value, Google indexing, or Google crawl detection.
+
+**Outstanding submitted pending review:** GainWeb, Site Promotion Directory, Launching Next (ID 177330). These are not publicly approved backlinks.
+
+The confirmed `linkwiki.info` backlink is a user-facing external reference, distinct from Search Console's own Links report and from Google ranking/visibility. Verify GSC core query impressions over comparable periods to measure possible results.
