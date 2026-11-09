@@ -795,7 +795,6 @@ def directory_category_overview(records, categories, per_category=3):
             continue
         listing = ''.join(
             '<li><strong>' + escape(entry["name"].strip()) + '</strong>'
-            ' — ' + escape(entry["description"].strip())
             + ' (등록 도메인: ' + escape(urlparse(entry["url"]).hostname or "") + ')</li>'
             for entry in examples
         )
@@ -813,7 +812,8 @@ def directory_category_overview(records, categories, per_category=3):
         '<section id="site-category-comparison" class="lw-safety-note seo-directory-overview" '
         'aria-label="분야별 사이트 목록 비교">'
         '<h2>분야별 사이트모음 비교 및 선택</h2>'
-        '<p>아래는 실제 등록된 사이트의 이름과 목록 설명을 비교한 것입니다. '
+        '<p>아래는 분야별 용도, 등록 사이트 이름과 도메인을 한눈에 비교하도록 정리한 예시입니다. '
+        '각 사이트의 자세한 설명과 검색 기능은 위의 전체 목록 및 개별 분야 페이지에서 확인하세요. '
         '서비스의 공식 인증·현재 접속 상태·요금·안전성을 보증하지 않습니다.</p>'
         + ''.join(sections)
         + '</section>'
