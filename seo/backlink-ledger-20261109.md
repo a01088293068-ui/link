@@ -15,8 +15,8 @@ Registration identity on forms requiring email: historical LinkWiki outreach Gma
 ## Active verification jobs
 
 - DevElif: https://agent.tinyfish.ai/runs/5e82a713-090d-4190-93d4-874520fd7604
-- SoMuch: https://agent.tinyfish.ai/runs/c23932e7-f5e9-4e19-acad-ae7fe088b775
-- Secret Search Engine Labs: https://agent.tinyfish.ai/runs/7595ea2e-3e9e-478f-9ffa-c3f2d5f2d579
+- SoMuch: https://agent.tinyfish.ai/runs/c23932e7-f5e9-4e19-acad-ae7fe088b775 — form prepared but **not submitted**; automation step/time limit reached. Email verification is required if eventually submitted.
+- Secret Search Engine Labs: https://agent.tinyfish.ai/runs/7595ea2e-3e9e-478f-9ffa-c3f2d5f2d579 — blocked by proxy/firewall check, no submission.
 
 Never count a pending job as submitted or published. Update after finished.
 
@@ -32,6 +32,16 @@ Never count a pending job as submitted or published. Update after finished.
 
 | Site | Browser run | Initial status |
 |---|---|---|
-| GainWeb | https://agent.tinyfish.ai/runs/49609486-11d6-4ff3-b133-e15899ca4e3b | Pending final receipt |
-| Cipinet | https://agent.tinyfish.ai/runs/44411474-a8d3-40df-ad2a-b83d914bdf04 | Pending final receipt |
-| Site Promotion Directory | https://agent.tinyfish.ai/runs/cc17d966-9409-4b60-b193-7de4e5776d4d | Pending final receipt |
+| GainWeb | https://agent.tinyfish.ai/runs/49609486-11d6-4ff3-b133-e15899ca4e3b | **Submitted successfully, awaiting moderator approval**. Confirmation: `Link submitted and awaiting approval`. No public listing URL yet |
+| Cipinet | https://agent.tinyfish.ai/runs/44411474-a8d3-40df-ad2a-b83d914bdf04 | Not submitted: reCAPTCHA must be completed manually. No duplicate found |
+| Site Promotion Directory | https://agent.tinyfish.ai/runs/cc17d966-9409-4b60-b193-7de4e5776d4d | **Submitted successfully, awaiting moderator approval**. Confirmation: `Link submitted and awaiting approval`. Free, no reciprocal link. No public listing URL yet |
+
+- Launching Next (startup/side-project submission): https://agent.tinyfish.ai/runs/e775e63c-d116-4c97-a72b-013f5a83fb7e — result pending at last check.
+
+## Latest totals (after seven completed site-agent checks)
+
+- Confirmed public backlinks to `https://linkwiki.info/`: **2** (one existing MeWebLink, one newly published DevElif).
+- Confirmed newly submitted but not publicly approved: **2** (GainWeb, Site Promotion Directory).
+- Checked but not submitted: SoMuch (step limit), Secret Search Engine Labs (firewall), Cipinet (human reCAPTCHA), LinkCentre (registration gate).
+- Previous submission duplicate and publication unverified: Zearches.
+- Never count a submission receipt as a public backlink.
