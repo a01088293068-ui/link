@@ -240,6 +240,16 @@ def add_nav(source):
 
 def polish_home_intent(home):
     """Small, restrained changes to the generated home page; source HTML stays intact."""
+    records = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
+    if not isinstance(records, list) or not records:
+        raise RuntimeError("Homepage needs nonempty published directory records")
+    total_sites = len(records)
+    # Sync both metadata and visible content before applying exact layout edits.
+    # This avoids publishing a stale H1/OG description after adding real listings.
+    home = re.sub(r"\b\d+개(?=\s+(?:등록\s+)?(?:사이트|항목))",
+                  f"{total_sites}개", home)
+    home = re.sub(r"(등록 사이트\s+)\d+개",
+                  lambda match: match.group(1) + f"{total_sites}개", home)
     # Submitting the homepage search must use the indexable canonical,
     # not a legacy .html address which may redirect before filtering.
     legacy_form = '<form action="directory.html" class="lw-search" method="get" role="search">'
@@ -256,8 +266,8 @@ def polish_home_intent(home):
         ('<label for="lw-home-query">사이트 이름으로 찾기</label>',
          '<label for="lw-home-query">사이트 이름·주소 검색</label>'),
         (
-            '이 사이트의 185개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>',
-            '이 사이트의 185개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>'
+            f'이 사이트의 {total_sites}개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>',
+            f'이 사이트의 {total_sites}개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>'
             '<p class="lw-search-quicklinks"><a href="/directory.html">전체 주소 목록 보기</a>'
             ' · <a href="/categories/">분야별 사이트 찾기</a></p>',
         ),
@@ -275,8 +285,8 @@ def polish_home_intent(home):
             continue
         elif old.startswith("분야별 사이트를 비교하고,"):
             # The homepage now uses a more specific, fact-checked directory summary.
-            if ("185개 등록 사이트를 분야별로 검색하고 비교하세요." not in home
-                    and "185개 등록 사이트 설명과 이동 주소를 한곳에서 비교할 수 있습니다." not in home):
+            if (f"{total_sites}개 등록 사이트를 분야별로 검색하고 비교하세요." not in home
+                    and f"{total_sites}개 등록 사이트 설명과 이동 주소를 한곳에서 비교할 수 있습니다." not in home):
                 raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
         else:
             raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
