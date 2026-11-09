@@ -35,3 +35,13 @@ Public target: https://linkwiki.info/ (distinct from the LinkWiki main service).
 - Keep the brand name natural (LinkWiki/링크위키); no exact-match spam anchor text.
 - Future progress: approve vs pending links from receipt / actual public URLs, and GSC query group `주소모음`, `링크모음`, `사이트모음` at comparable date ranges.
 - Google search link spam policy: https://developers.google.com/search/docs/essentials/spam-policies .
+
+## Korean-language independent listing discovery (2026-11-09)
+
+- **OpenWebSide** Korean web service directory `https://openwebside.com/` lists LinkWiki twice:
+  - `https://openwebside.com/products/757213b7-1ce9-41ed-9eb2-6bae9af82688` — longer description, links to `https://linkwiki.info/`.
+  - `https://openwebside.com/products/24500655-57ec-4d21-bd3c-ef87f2b0c187` — shorter description, same outbound target.
+- Pages were independently fetched with TinyFish and both contained clickable outbound `https://linkwiki.info/`; OpenWebSide is ONE referring domain (not two).
+- Source language matches target audience. No additional submission made because listing already exists; duplicate should be reviewed by listing owner rather than created again.
+- Add first URL to weekly backlink monitor as the preferred fuller entry; retain second URL only in evidence ledger.
+- **Important**: Existing links are useful for referral discovery, but a duplicate listing, a direct href, or an `index, follow` directive alone does not prove that Google indexed the external source or counted the link for ranking.
