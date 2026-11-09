@@ -18,6 +18,7 @@ SITES = {
     "DevElif": "https://develif.com/s/website-search-and-address-guides-by-linkwiki",
     "MeWebLink": "https://meweblink.com/website/linkwiki",
     "Ignlab Launch": "https://launch.ignlab.net/t/linkwiki-2",
+    "OpenWebSide": "https://openwebside.com/products/757213b7-1ce9-41ed-9eb2-6bae9af82688",
 }
 REPORT = ROOT / "seo/backlink-public-check-report.md"
 
