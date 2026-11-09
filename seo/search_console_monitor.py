@@ -643,10 +643,12 @@ def core_keyword_weekly_comparison(rows, end_date):
     ]
 
 
-def format_core_keyword_weekly_comparison(rows, end_date, error=''):
+def format_core_keyword_weekly_comparison(rows, end_date, error='', scope='global'):
     """Render genuine week-over-week impressions, clicks and weighted ranks."""
     lines = [
-        '', '## 주소모음·링크모음·사이트모음 최근 7일 노출 변화', '',
+        '', ('## 대한민국 이용자 기준 최근 7일 핵심 키워드 노출 변화'
+             if scope == 'korea' else
+             '## 주소모음·링크모음·사이트모음 최근 7일 노출 변화'), '',
         '- Google Search Console 검색어×날짜 필터 결과만 사용합니다. '
         '브랜드 검색, 검색량 추정치, 외부 검색 API 순위는 포함하지 않습니다.',
         f'- 비교 기간: 최근 7일 {end_date} 종료 / 직전 7일은 그 이전 7일.',
@@ -1001,7 +1003,7 @@ def main():
                '한국어 검색 전체 또는 구글 한국 도메인 순위와 동일하지 않습니다.\n'
                '- 아래 평균 순위는 실제 한국 이용자 대상 검색 노출의 가중 평균입니다.\n')
     report += format_core_keyword_weekly_comparison(
-        korea_core_rows, end.isoformat(), korea_core_error)
+        korea_core_rows, end.isoformat(), korea_core_error, scope='korea')
     report += format_core_landing_page_split(focused_pages, focused_error)
     report += format_index_inspection(inspections, inspection_error)
     report += format_search_visibility_inspection_conflicts(
