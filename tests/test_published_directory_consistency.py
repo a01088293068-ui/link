@@ -92,6 +92,27 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
             self.assertIsNone(url.username)
             self.assertIsNone(url.password)
 
+    def test_verified_korean_public_service_expansion_is_published_everywhere(self):
+        expected = {
+            "국민건강보험공단": "www.nhis.or.kr",
+            "국민연금공단": "www.nps.or.kr",
+            "국가건강정보포털": "health.kdca.go.kr",
+            "건강보험심사평가원": "www.hira.or.kr",
+        }
+        by_name = {record["name"]: record for record in self.records}
+        category_cards = cards(ROOT / "categories/search.html")
+        directory_cards = cards(ROOT / "directory.html")
+        for name, hostname in expected.items():
+            with self.subTest(name=name):
+                self.assertIn(name, by_name)
+                self.assertEqual(urlsplit(by_name[name]["url"]).hostname, hostname)
+                self.assertIn(by_name[name], category_cards)
+                self.assertIn(by_name[name], directory_cards)
+        self.assertEqual(len(self.records), len(directory_cards))
+        self.assertEqual(
+            len([record for record in self.records
+                 if record["category"] == "검색·포털"]), len(category_cards))
+
     def test_directory_javascript_matches_source_exactly(self):
         js = (ROOT / "assets/directory.js").read_text(encoding="utf-8")
         match = re.search(r"const sites=(\[.*?\]);\s*\(\(\)=>", js, flags=re.S)
