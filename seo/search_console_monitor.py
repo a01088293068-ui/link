@@ -410,7 +410,7 @@ def format_search_visibility_inspection_conflicts(page_rows, inspection_rows,
         "|---|---:|---:|---|---|",
     ]
     if inspection_error:
-        return "\\n".join(lines + [
+        return "\n".join(lines + [
             "| URL 검사 조회 실패 | - | - | " + str(inspection_error) + " | - |",
             "",
         ])
@@ -419,12 +419,12 @@ def format_search_visibility_inspection_conflicts(page_rows, inspection_rows,
     if not conflicts:
         lines.append("| 불일치 관측 없음 | - | - | - | - |")
     for entry in conflicts:
-        safe = lambda value: str(value).replace("|", "%7C").replace("\\n", " ")
+        safe = lambda value: str(value).replace("|", "%7C").replace("\n", " ")
         lines.append("| " + " | ".join(safe(x) for x in (
             entry["url"], entry["impressions"], entry["clicks"],
             entry["inspection"], entry["last_crawl"] or "-")) + " |")
     lines += ["", "- 이 불일치는 Google의 수동 조치나 품질 평가 확정 근거가 아닙니다.", ""]
-    return "\\n".join(lines)
+    return "\n".join(lines)
 
 
 def format_index_inspection(rows, error=''):
