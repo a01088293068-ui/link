@@ -104,8 +104,8 @@ def visible_site_counts(html):
     parser.feed(html)
     body = " ".join(parser.parts)
     patterns = (
-        r"(?<!\\d)(\\d{2,5})\\s*개\\s*(?:등록\\s*)?(?:사이트|항목)",
-        r"등록(?:된)?\\s*(?:사이트|항목)\\s*(\\d{2,5})\\s*개",
+        r"(?<!\d)(\d{2,5})\s*개\s*(?:등록\s*)?(?:사이트|항목)",
+        r"등록(?:된)?\s*(?:사이트|항목)\s*(\d{2,5})\s*개",
     )
     return sorted(int(value) for pattern in patterns
                   for value in re.findall(pattern, body))
