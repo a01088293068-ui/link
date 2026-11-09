@@ -11,6 +11,7 @@ on:
       - 'assets/verified-directory.json'
       - 'assets/directory.js'
       - 'assets/directory-search.js'
+      - 'assets/address-inspector.js'
       - 'about.html'
       - 'privacy.html'
       - 'build.py'
@@ -40,6 +41,7 @@ on:
       - 'assets/verified-directory.json'
       - 'assets/directory.js'
       - 'assets/directory-search.js'
+      - 'assets/address-inspector.js'
       - 'about.html'
       - 'privacy.html'
       - 'build.py'
@@ -81,6 +83,8 @@ jobs:
           node-version: '22'
       - name: Test browser directory multi-term search
         run: node --test tests/test_directory_search.cjs
+      - name: Test local address hostname inspector
+        run: node --test tests/test_address_inspector.cjs
       - name: Verify generated sitemap and canonical URLs
         run: python3 seo/site_audit.py dist
       - name: Report crawlable inbound links to priority landing pages
