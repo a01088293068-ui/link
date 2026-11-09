@@ -283,6 +283,24 @@ def audit_site(dist):
             elif any(value != len(records) for value in values):
                 errors.append(f"homepage directory count mismatch: {label}")
 
+    # Catch stale counts that have the reverse word order ("등록 사이트 185개")
+    # or appear in ordinary body copy ("185개 사이트"). The older label check
+    # above covers tiny fixtures too; this broader check applies to real
+    # published catalogs where a two-digit count is unambiguous.
+    if isinstance(records, list) and len(records) >= 10:
+        from seo.live_release_check import visible_site_counts
+        for name in ("index.html", "directory.html"):
+            page = dist / name
+            if not page.is_file():
+                continue
+            numbers = visible_site_counts(page.read_text(encoding="utf-8"))
+            if not numbers:
+                errors.append(f"{name}: visible directory size missing")
+            elif any(number != len(records) for number in numbers):
+                errors.append(
+                    f"{name}: visible directory size mismatch: "
+                    f"{sorted(set(numbers))} != {len(records)}")
+
     # The visible directory cards are statically crawlable. Keep them in sync
     # with the editable JSON source so Google and on-page search see the same list.
     directory_page = dist / "directory.html"
