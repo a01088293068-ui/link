@@ -22,6 +22,24 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertIn("path: seo/live-release-diagnosis.log", workflow)
         self.assertIn("if: always()", workflow)
 
+    def test_live_release_detects_stale_search_snippet_with_unchanged_title(self):
+        path = "/categories/search"
+        expected = page(path, "검색·포털·공공정보 사이트모음", "검색·포털 링크모음")
+        expected = expected.replace(
+            "</head>",
+            '<meta name="description" content="정부24와 RISS 등 한국어 검색 안내"></head>')
+        stale = expected.replace("정부24와 RISS", "이전 포털 목록")
+        self.assertEqual(parse_page(expected).descriptions,
+                         ["정부24와 RISS 등 한국어 검색 안내"])
+        self.assertTrue(any("deployed meta description differs" in issue
+                            for issue in check_page(expected, stale, path)))
+        self.assertFalse(any("deployed meta description differs" in issue
+                             for issue in check_page(expected, expected, path)))
+        missing = expected.replace(
+            '<meta name="description" content="정부24와 RISS 등 한국어 검색 안내">', "")
+        self.assertTrue(any("deployed meta description differs" in issue
+                            for issue in check_page(expected, missing, path)))
+
     def test_each_category_deployment_checks_distinct_editorial_copy(self):
         from seo.live_release_check import release_content_sections
         for path in CATEGORY_PATHS:
