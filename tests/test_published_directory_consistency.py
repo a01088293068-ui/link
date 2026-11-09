@@ -98,6 +98,12 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
             "국민연금공단": "www.nps.or.kr",
             "국가건강정보포털": "health.kdca.go.kr",
             "건강보험심사평가원": "www.hira.or.kr",
+            "국민신문고": "www.epeople.go.kr",
+            "한국소비자원": "www.kca.go.kr",
+            "국가전자도서관": "dlibrary.go.kr",
+            "위택스": "www.wetax.go.kr",
+            "식품안전나라": "www.foodsafetykorea.go.kr",
+            "안전운전 통합민원": "www.safedriving.or.kr",
         }
         by_name = {record["name"]: record for record in self.records}
         category_cards = cards(ROOT / "categories/search.html")
