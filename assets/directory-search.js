@@ -6,6 +6,7 @@
     .toLocaleLowerCase('ko').replace(/\s+/g, ' ').trim();
   const tokens = value => norm(value)
     .replace(/(주소|링크|사이트)\s+모음/g, '$1모음')
+    .replace(/[·,|]+/g, ' ')
     .split(' ').filter(Boolean);
   function queryTerms(value) {
     const words = tokens(value);
