@@ -52,6 +52,41 @@ class LiveReleaseCheckTests(unittest.TestCase):
                   '<p>등록 <strong>사이트</strong> 188개</p></body></html>')
         self.assertEqual(visible_site_counts(markup), [188, 188])
 
+    def test_live_release_rejects_google_noindex_http_response_headers(self):
+        from email.message import Message
+        from unittest.mock import patch
+        from seo.live_release_check import fetch_public, google_index_blocked_by_header
+
+        self.assertTrue(google_index_blocked_by_header(["noindex, nofollow"]))
+        self.assertTrue(google_index_blocked_by_header(["googlebot: noindex"]))
+        self.assertTrue(google_index_blocked_by_header(["none"]))
+        self.assertFalse(google_index_blocked_by_header(["otherbot: noindex"]))
+        self.assertFalse(google_index_blocked_by_header(["googlebot-image: noindex"]))
+        self.assertFalse(google_index_blocked_by_header(["index, follow"]))
+
+        class FakeResponse:
+            status = 200
+            def __init__(self, header):
+                self.headers = Message()
+                if header:
+                    self.headers.add_header("X-Robots-Tag", header)
+            def geturl(self):
+                return "https://linkwiki.info/directory"
+            def read(self):
+                return b"<html>test</html>"
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+
+        with patch("seo.live_release_check.urlopen",
+                   return_value=FakeResponse("googlebot: noindex")):
+            with self.assertRaisesRegex(RuntimeError, "X-Robots-Tag"):
+                fetch_public("/directory")
+        with patch("seo.live_release_check.urlopen",
+                   return_value=FakeResponse("otherbot: noindex")):
+            self.assertEqual(fetch_public("/directory"), "<html>test</html>")
+
     def test_live_release_detects_stale_search_snippet_with_unchanged_title(self):
         path = "/categories/search"
         expected = page(path, "검색·포털·공공정보 사이트모음", "검색·포털 링크모음")
