@@ -80,6 +80,30 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('사이트맵 처리 오류', bad)
         self.assertIn('조회 실패', monitor.format_sitemap_health([], 'HTTPError HTTP 403'))
 
+    def test_report_does_not_confuse_failed_current_sitemap_with_working_v2(self):
+        report = monitor.format_sitemap_health([
+            {'path': 'https://linkwiki.info/sitemap.xml',
+             'lastSubmitted': '2026-11-07T00:00:00Z',
+             'lastDownloaded': '', 'errors': 1},
+            {'path': 'https://linkwiki.info/sitemap-v2.xml',
+             'lastSubmitted': '2026-10-24T00:00:00Z',
+             'lastDownloaded': '2026-10-24T13:00:00Z',
+             'errors': 0, 'warnings': 0},
+        ])
+        self.assertIn('사이트맵 처리 오류', report)
+        self.assertIn('대체 사이트맵(sitemap-v2.xml)', report)
+        self.assertIn('2026-10-24T13:00:00Z', report)
+        self.assertIn('대체 사이트맵은 Google에 다운로드 기록이 있습니다', report)
+        self.assertNotIn('모든 사이트맵 실패', report)
+
+    def test_v2_not_submitted_does_not_invent_success(self):
+        report = monitor.format_sitemap_health([{
+            'path': 'https://linkwiki.info/sitemap.xml',
+            'lastSubmitted': '2026-11-07T00:00:00Z',
+        }])
+        self.assertIn('대체 사이트맵 제출 기록이 없습니다', report)
+        self.assertNotIn('대체 사이트맵은 Google에 다운로드 기록이 있습니다', report)
+
     def test_sitemap_health_api_is_read_only(self):
         from io import BytesIO
         from unittest.mock import patch
