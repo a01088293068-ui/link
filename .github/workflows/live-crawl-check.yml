@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: '40 1,13 * * *'
   workflow_run:
-    workflows: ['LinkWiki SEO build QA']
+    workflows: ['LinkWiki SEO build and consistency gate']
     types: [completed]
     branches: [main]
 
