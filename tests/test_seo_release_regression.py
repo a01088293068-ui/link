@@ -163,12 +163,21 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         section = re.search(r'<div class="lw-search-examples">.*?</div>', html, re.S)
         self.assertIsNotNone(section)
         hrefs = re.findall(r'<a href="([^"]+)"', section.group())
-        self.assertEqual(len(hrefs), 3)
+        self.assertEqual(len(hrefs), 5)
         actual_names = {item["name"] for item in entries}
+        actual_hosts = {urlsplit(item["url"]).hostname for item in entries}
+        observed_names, observed_hosts = set(), set()
         for href in hrefs:
             parts = urlsplit(href)
             self.assertEqual(parts.path, "/directory")
-            self.assertIn(parse_qs(parts.query)["q"][0], actual_names)
+            query = parse_qs(parts.query)["q"][0]
+            self.assertTrue(query in actual_names or query in actual_hosts)
+            if query in actual_names:
+                observed_names.add(query)
+            if query in actual_hosts:
+                observed_hosts.add(query)
+        self.assertEqual(len(observed_names), 3)
+        self.assertEqual(len(observed_hosts), 2)
         generated = (root / "dist/directory.html").read_text(encoding="utf-8")
         self.assertIn("실제 등록 사이트 검색 예시", generated)
         self.assertIn('class="lw-search-examples"', generated)
