@@ -78,6 +78,18 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "missing"):
             category_decision_guide("nonexistent", records)
 
+    def test_search_category_metadata_covers_real_korean_public_services(self):
+        root = Path(__file__).resolve().parents[1]
+        source = (root / "categories/search.html").read_text(encoding="utf-8")
+        built = (root / "dist/categories/search.html").read_text(encoding="utf-8")
+        for html in (source, built):
+            self.assertIn("검색·포털·공공정보 사이트모음", html)
+            self.assertIn("정부24·복지로·RISS·KOSIS", html)
+            self.assertIn("공공서비스·학술정보 검색 사이트", html)
+            self.assertEqual(html.count('<article class="item"'), 32)
+            self.assertNotIn('name="robots" content="noindex"', html)
+        self.assertIn('href="https://linkwiki.info/categories/search"', built)
+
     def test_korean_search_guide_reflects_actual_official_directory_entries(self):
         from build import category_decision_guide
         root = Path(__file__).resolve().parents[1]
