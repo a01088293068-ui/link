@@ -10,6 +10,8 @@
 | 2 | Zearches | https://zearches.com/submit-website-free.php | 운영사에 따르면 무료·무계정, 웹사이트 URL 및 설명 입력, 자동 심사 | 중복 제출 제한, 수락/공개/구글 색인은 미확인 |
 | 3 | SoMuch | https://www.somuch.com/submit-links/ | 운영사에 따르면 무료 제출 후 검수 대기, 이메일 검증 가능 | 본 URL만 등록. 심사까지 수주~수개월, 광고 전용/리다이렉트 등 불허 |
 | 4 | Curlie | https://curlie.org/docs/en/add.html | 운영사에 따르면 1개 적합한 카테고리만 제안하고 편집자가 심사 | 과거 기술적 제출 실패 이력 있음. 제출 중복 금지, 적합한 카테고리 선별 후 재검토 |
+| 5 | Viesearch | https://viesearch.com/ | 운영사에 따르면 무료 기본 제출·편집자 검수, 저우선순위 등록 | 제출 URL과 공개 링크 확인 필요. 유료 우선노출 기능과 구글 순위는 별개 |
+| 6 | ITJEOM Web Directory | https://web-directory.itjeom.com/ | 한국어 웹 디렉터리, 도메인 소유 확인 후 소개 페이지 발행 | DNS TXT 소유 인증 필요. 계정·도메인 설정 없이 자동 등록 불가 |
  
 ## 제출 시 고정할 정보
 
@@ -27,6 +29,8 @@
 - https://zearches.com/submit-website-free.php
 - https://www.somuch.com/submit-links/
 - https://curlie.org/docs/en/add.html
+- https://viesearch.com/
+- https://web-directory.itjeom.com/
 
 ## SEO 측정 기준
 
