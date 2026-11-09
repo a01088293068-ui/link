@@ -814,5 +814,113 @@
     "category": "만화·웹툰",
     "url": "https://www.tappytoon.com/",
     "description": "영어권을 중심으로 웹툰과 웹소설 작품을 제공하는 플랫폼입니다."
+  },
+  {
+    "name": "Ideogram",
+    "category": "AI 도구",
+    "url": "https://ideogram.ai/",
+    "description": "텍스트 프롬프트를 이용해 이미지와 디자인을 제작할 수 있는 AI 서비스입니다."
+  },
+  {
+    "name": "Suno",
+    "category": "AI 도구",
+    "url": "https://suno.com/",
+    "description": "텍스트를 바탕으로 음악을 생성하는 AI 도구입니다."
+  },
+  {
+    "name": "Leonardo AI",
+    "category": "AI 도구",
+    "url": "https://leonardo.ai/",
+    "description": "AI 기반 이미지와 영상 콘텐츠 제작을 지원합니다."
+  },
+  {
+    "name": "Mojeek",
+    "category": "검색·포털",
+    "url": "https://www.mojeek.com/",
+    "description": "자체 검색 색인을 사용하는 웹 검색 엔진입니다."
+  },
+  {
+    "name": "Swisscows",
+    "category": "검색·포털",
+    "url": "https://swisscows.com/",
+    "description": "개인정보 보호를 강조하는 웹 검색 서비스입니다."
+  },
+  {
+    "name": "Yandex",
+    "category": "검색·포털",
+    "url": "https://yandex.com/",
+    "description": "웹 검색과 정보 서비스를 제공하는 포털입니다."
+  },
+  {
+    "name": "WolframAlpha",
+    "category": "검색·포털",
+    "url": "https://www.wolframalpha.com/",
+    "description": "수학과 과학, 통계 등 질문에 계산 기반 답변을 제공하는 서비스입니다."
+  },
+  {
+    "name": "NFL",
+    "category": "스포츠",
+    "url": "https://www.nfl.com/",
+    "description": "미국 프로미식축구 리그의 경기 일정·결과·팀 정보를 확인할 수 있습니다."
+  },
+  {
+    "name": "NHL",
+    "category": "스포츠",
+    "url": "https://www.nhl.com/",
+    "description": "북미 프로아이스하키 리그의 경기 일정·결과를 확인할 수 있습니다."
+  },
+  {
+    "name": "ATP Tour",
+    "category": "스포츠",
+    "url": "https://www.atptour.com/",
+    "description": "남자 프로테니스 경기 일정과 선수 순위 등 공식 정보를 제공합니다."
+  },
+  {
+    "name": "WTA Tennis",
+    "category": "스포츠",
+    "url": "https://www.wtatennis.com/",
+    "description": "여자 프로테니스 경기와 선수 관련 공식 정보를 제공합니다."
+  },
+  {
+    "name": "BBC Sport",
+    "category": "스포츠",
+    "url": "https://www.bbc.com/sport",
+    "description": "축구 등 여러 스포츠 종목의 뉴스와 경기 결과를 제공합니다."
+  },
+  {
+    "name": "Plex",
+    "category": "영상·OTT",
+    "url": "https://www.plex.tv/",
+    "description": "영화·TV 콘텐츠 탐색과 개인 미디어 관리 기능을 제공합니다."
+  },
+  {
+    "name": "Rakuten Viki",
+    "category": "영상·OTT",
+    "url": "https://www.viki.com/",
+    "description": "한국 드라마 등 아시아 영상 콘텐츠를 제공하는 스트리밍 플랫폼입니다."
+  },
+  {
+    "name": "MUBI",
+    "category": "영상·OTT",
+    "url": "https://mubi.com/",
+    "description": "영화 감상과 작품 탐색에 초점을 맞춘 구독형 스트리밍 서비스입니다."
+  },
+  {
+    "name": "Pluto TV",
+    "category": "영상·OTT",
+    "url": "https://pluto.tv/",
+    "description": "광고 기반의 무료 TV 채널과 주문형 영상을 제공하는 서비스입니다."
+  },
+  {
+    "name": "INKR Comics",
+    "category": "만화·웹툰",
+    "url": "https://comics.inkr.com/",
+    "description": "만화와 웹툰, 만화형 디지털 콘텐츠를 제공하는 플랫폼입니다."
+  },
+  {
+    "name": "Hacker News",
+    "category": "커뮤니티",
+    "url": "https://news.ycombinator.com/",
+    "description": "기술·스타트업 소식과 관련 토론을 볼 수 있는 커뮤니티입니다."
   }
 ]
