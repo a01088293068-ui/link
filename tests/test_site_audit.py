@@ -99,6 +99,37 @@ class SiteAuditTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             sync_directory_count("<html>97개 사이트</html>", 112)
 
+    def test_audit_detects_stale_visible_counts_in_both_primary_pages(self):
+        from seo.live_release_check import visible_site_counts
+        from seo.site_audit import audit_site
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "assets").mkdir()
+            records = [
+                {"name": f"Site {i}", "category": "검색·포털",
+                 "description": "실제 테스트 항목", "url": f"https://example.org/{i}"}
+                for i in range(12)
+            ]
+            (root / "assets/verified-directory.json").write_text(
+                json.dumps(records), encoding="utf-8")
+            (root / "index.html").write_text(
+                "<html><body>12개 등록 사이트, 12개 등록 항목"
+                "<p>등록 사이트 11개</p></body></html>", encoding="utf-8")
+            (root / "directory.html").write_text(
+                "<html><body>12개 사이트 검색"
+                "<p>등록 사이트 10개</p></body></html>", encoding="utf-8")
+            errors = audit_site(root)
+            self.assertTrue(any(
+                "index.html: visible directory size mismatch" in issue
+                for issue in errors))
+            self.assertTrue(any(
+                "directory.html: visible directory size mismatch" in issue
+                for issue in errors))
+            self.assertEqual(
+                visible_site_counts("<html><body>12개 사이트 검색"
+                                    "<p>등록 사이트 12개</p></body></html>"),
+                [12, 12])
+
     def test_homepage_directory_count_is_checked_against_json(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
