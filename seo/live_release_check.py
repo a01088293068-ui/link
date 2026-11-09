@@ -320,7 +320,7 @@ def fetch_public(path):
 
 def extract_directory_sites(script):
     """Read the public search dataset without evaluating JavaScript."""
-    match = re.search(r"const sites=(\\[.*?\\]);\\s*\\(\\(\\)=>", script, re.S)
+    match = re.search(r"const sites=(\[.*?\]);\s*\(\(\)=>", script, re.S)
     if match is None:
         raise ValueError("directory JavaScript site dataset missing")
     records = json.loads(match.group(1))
