@@ -113,6 +113,39 @@ class LiveReleaseCheckTests(unittest.TestCase):
                    return_value=FakeResponse("otherbot: noindex")):
             self.assertEqual(fetch_public("/directory"), "<html>test</html>")
 
+    def test_canonical_pages_must_not_silently_redirect_to_html_variants(self):
+        from unittest.mock import patch
+        from email.message import Message
+        from seo.live_release_check import fetch_public
+
+        class Response:
+            status = 200
+            headers = Message()
+            def __init__(self, final_url):
+                self.final_url = final_url
+            def geturl(self):
+                return self.final_url
+            def read(self):
+                return b"<html>test</html>"
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+
+        for destination in (
+            "https://linkwiki.info/directory.html",
+            "https://linkwiki.info/directory/",
+            "https://linkwiki.info/directory?ref=tracking",
+        ):
+            with self.subTest(destination=destination):
+                with patch("seo.live_release_check.urlopen",
+                           return_value=Response(destination)):
+                    with self.assertRaisesRegex(RuntimeError, "Canonical URL redirected"):
+                        fetch_public("/directory")
+        with patch("seo.live_release_check.urlopen",
+                   return_value=Response("https://linkwiki.info/directory")):
+            self.assertEqual(fetch_public("/directory"), "<html>test</html>")
+
     def test_live_release_detects_stale_search_snippet_with_unchanged_title(self):
         path = "/categories/search"
         expected = page(path, "검색·포털·공공정보 사이트모음", "검색·포털 링크모음")
