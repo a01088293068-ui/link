@@ -23,6 +23,8 @@ class HomeIntentTests(unittest.TestCase):
         self.assertIn('href="https://linkwiki.info/" rel="canonical"', source)
         self.assertIn('name="description"', source)
         self.assertIn("사이트 이름이나 도메인을 입력해 주소를 찾거나", source)
+        self.assertIn("주소 위키에서 찾는 사이트 주소는 어떻게 확인하나요?", source)
+        self.assertIn('href="/guides/address-check">사이트 주소 확인 방법</a>', source)
 
     def test_home_structure_mismatch_is_explicit(self):
         with self.assertRaisesRegex(RuntimeError, "Homepage structure changed"):
