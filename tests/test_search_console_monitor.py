@@ -57,6 +57,14 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertNotIn("발견 경로 없음", output)
         combined = monitor.format_index_inspection(rows)
         self.assertIn("Google이 보고한 핵심 URL 발견 경로", combined)
+        failed = monitor.format_google_discovery_evidence(
+            rows, error="https://linkwiki.info/categories/: HTTPError (HTTP 429)")
+        self.assertIn("조회 실패·일부 미완료", failed)
+        self.assertNotIn("URL 검사 미수행", failed)
+        failed_report = monitor.format_index_inspection(
+            rows, error="HTTPError (HTTP 429)")
+        self.assertIn("조회 실패·일부 미완료", failed_report)
+        self.assertIn("색인 조회 일부 또는 전체 실패", failed_report)
 
     def test_core_keyword_weekly_comparison_is_date_scoped_and_weighted(self):
         rows = [
