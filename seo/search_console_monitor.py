@@ -427,7 +427,7 @@ def format_search_visibility_inspection_conflicts(page_rows, inspection_rows,
     return "\n".join(lines)
 
 
-def format_google_discovery_evidence(rows):
+def format_google_discovery_evidence(rows, error=''):
     """Show Google's reported discovery hints without inferring non-discovery.
 
     The URL Inspection API may omit sitemaps and referring pages even for an
@@ -457,7 +457,8 @@ def format_google_discovery_evidence(rows):
     for url in priority:
         row = observed.get(url)
         if row is None:
-            status, source = "URL 검사 미수행", "URL 검사 미수행"
+            reason = "조회 실패·일부 미완료" if error else "URL 검사 미수행"
+            status, source = reason, reason
         else:
             status = display(row.get("sitemaps"))
             source = display(row.get("referring_urls"))
@@ -500,7 +501,7 @@ def format_index_inspection(rows, error=''):
             lines.append('- ' + str(row.get('url', '')) + ' — ' +
                          str(row.get('coverage', '정보 없음')).replace('\\n', ' '))
     lines.append(priority_index_checks(rows))
-    lines.append(format_google_discovery_evidence(rows))
+    lines.append(format_google_discovery_evidence(rows, error))
     lines.append(technical_index_diagnostic(rows))
     change_log = ROOT / 'seo/significant-page-updates.json'
     if change_log.is_file():
