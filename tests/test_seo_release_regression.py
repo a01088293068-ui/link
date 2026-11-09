@@ -171,6 +171,26 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('href="https://linkwiki.info/directory"', generated)
         self.assertNotIn('name="robots" content="noindex"', generated)
 
+    def test_korean_first_shortcuts_exist_on_both_canonical_landings(self):
+        from build import korean_first_shortcuts, KOREAN_FIRST_SEARCH_NAMES
+        from urllib.parse import parse_qs, urlsplit
+        import json
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        generated = korean_first_shortcuts(records)
+        self.assertEqual(generated.count('class="lw-safety-note korean-first-shortcuts"'), 1)
+        self.assertEqual(generated.count('href="/directory?q='), len(KOREAN_FIRST_SEARCH_NAMES))
+        for page in ("index.html", "directory.html"):
+            content = (root / "dist" / page).read_text(encoding="utf-8")
+            self.assertEqual(content.count('class="lw-safety-note korean-first-shortcuts"'), 1)
+            self.assertIn('국내 사이트 먼저 찾기', content)
+            for name in KOREAN_FIRST_SEARCH_NAMES:
+                self.assertIn('>' + name + '</a>', content)
+        directory = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertLess(directory.index('class="lw-safety-note korean-first-shortcuts"'),
+                        directory.index('id="v6-form"'))
+        self.assertEqual(directory.count('class="v6-card"'), len(records))
+
     def test_directory_search_examples_link_to_real_registered_names(self):
         from build import directory_search_help, CATEGORY_LANDING
         from urllib.parse import parse_qs, urlsplit
