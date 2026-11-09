@@ -39,8 +39,11 @@ jobs:
           # Cloudflare Pages can deploy after GitHub build QA finishes.
           # Poll the same immutable expected commit up to five times, without
           # treating temporary stale releases as successful deployments.
+          mkdir -p seo
+          : > seo/live-release-diagnosis.log
           for attempt in 1 2 3 4 5; do
-            if python3 seo/live_release_check.py --dist dist; then
+            echo "Release verification attempt ${attempt}/5" | tee -a seo/live-release-diagnosis.log
+            if python3 seo/live_release_check.py --dist dist 2>&1 | tee -a seo/live-release-diagnosis.log; then
               echo "PASS: public release matches expected commit ${GITHUB_SHA}"
               exit 0
             fi
@@ -51,6 +54,14 @@ jobs:
             echo "::warning::Public release may still be deploying (attempt ${attempt}/5). Retrying."
             sleep 50
           done
+      - name: Preserve public release verification diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linkwiki-live-release-diagnosis
+          path: seo/live-release-diagnosis.log
+          if-no-files-found: warn
+          retention-days: 30
       - name: Check public SEO pages and crawl files
         shell: bash
         run: |
