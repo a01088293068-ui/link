@@ -58,6 +58,40 @@ class RankTrackerTests(unittest.TestCase):
         self.assertTrue(all("first.example/" not in r["link"] or
                             int(r["link"].split("/")[-1]) < 10 for r in rows))
 
+    def test_missing_middle_serp_page_does_not_hide_later_linkwiki_result(self):
+        from unittest.mock import patch
+        pages = {
+            1: [{"link": f"https://page1.example/{i}", "position": i}
+                for i in range(1, 11)],
+            2: [],
+            3: [{"link": "https://linkwiki.info/directory", "position": 1}],
+        }
+        with patch.object(rank_tracker, "search",
+                          side_effect=lambda q, key, page: pages[page]) as fetch:
+            rows = rank_tracker.search_top_results("주소모음", "test")
+        self.assertEqual(fetch.call_count, 3)
+        self.assertEqual(rank_tracker.find_result(rows)["position"], 21)
+        observed = [item["_sample_position"] for item in rows]
+        self.assertEqual(rank_tracker.coverage_for(
+            {"주소모음": {}}, {"주소모음": len(rows)},
+            {"주소모음": observed})["주소모음"], "partial")
+
+    def test_duplicate_middle_serp_page_does_not_stop_page_three(self):
+        from unittest.mock import patch
+        first = [{"link": f"https://page1.example/{i}", "position": i}
+                 for i in range(1, 11)]
+        pages = {
+            1: first,
+            2: first,
+            3: [{"link": "https://linkwiki.info/", "position": 3}],
+        }
+        with patch.object(rank_tracker, "search",
+                          side_effect=lambda q, key, page: pages[page]) as fetch:
+            rows = rank_tracker.search_top_results("링크모음", "test")
+        self.assertEqual(fetch.call_count, 3)
+        self.assertEqual(rank_tracker.find_result(rows)["position"], 23)
+        self.assertEqual(len(rows), 11)
+
     def test_provider_error_without_organic_must_not_overwrite_rank_history(self):
         from unittest.mock import patch
         from io import BytesIO
