@@ -20,6 +20,33 @@ class RankTrackerTests(unittest.TestCase):
             {"주소모음": {}}, {"주소모음": 30},
             {"주소모음": [x["_sample_position"] for x in rows]})["주소모음"], "complete")
 
+    def test_overfull_provider_pages_cannot_inflate_observed_depth(self):
+        from unittest.mock import patch
+        # Each API call should represent one 10-result SERP window. A provider
+        # returning 30 rows on page one cannot prove positions 11..30.
+        pages = {
+            1: [{"link": f"https://first.example/{i}", "position": (i % 10) + 1}
+                for i in range(30)],
+            2: [{"link": f"https://second.example/{i}", "position": i}
+                for i in range(1, 11)],
+            3: [{"link": f"https://third.example/{i}", "position": i}
+                for i in range(1, 11)],
+        }
+        with patch.object(rank_tracker, "search",
+                          side_effect=lambda q, key, page: pages[page]) as fetch:
+            rows = rank_tracker.search_top_results("주소모음", "test")
+        self.assertEqual(fetch.call_count, 3)
+        self.assertEqual(len(rows), 30)
+        self.assertEqual([r["_sample_position"] for r in rows], list(range(1, 31)))
+        self.assertTrue(all("first.example/" not in r["link"] or
+                            int(r["link"].split("/")[-1]) < 10 for r in rows))
+
+    def test_nonlist_provider_organic_is_rejected(self):
+        from unittest.mock import patch
+        with patch.object(rank_tracker, "search", return_value={"unexpected": "response"}):
+            with self.assertRaises(ValueError):
+                rank_tracker.search_top_results("주소모음", "test")
+
     def test_global_provider_ordinals_preserve_page_two_positions(self):
         from unittest.mock import patch
         pages = {
