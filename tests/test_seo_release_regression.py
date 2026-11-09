@@ -202,10 +202,10 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
-        title = "사이트모음 97개 전체 목록·도메인 검색 | 링크위키"
+        title = "사이트모음 전체 목록: 97개 사이트 검색 | 링크위키"
         heading = "주소모음·링크모음·사이트모음 통합 검색"
         self.assertIn("<title>" + title + "</title>", html)
-        self.assertIn("전체 사이트모음 97개", html)
+        self.assertIn("전체 사이트모음에서 97개 사이트", html)
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
