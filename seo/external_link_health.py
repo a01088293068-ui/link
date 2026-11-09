@@ -64,25 +64,39 @@ def check_entry(entry, opener=OPENER):
     if not safe_url(url):
         return {"name": name, "category": category, "url": url,
                 "http": "-", "status": "invalid_url", "redirect": "-"}
-    request = Request(url, headers={"User-Agent": "LinkWiki-Listing-Health/1.0",
-                                    "Accept": "text/html,*/*;q=0.1"}, method="HEAD")
+    def probe(method):
+        request = Request(url, headers={
+            "User-Agent": "LinkWiki-Listing-Health/1.0",
+            "Accept": "text/html,*/*;q=0.1"}, method=method)
+        try:
+            # A GET fallback only consumes response headers; never download HTML.
+            with opener.open(request, timeout=TIMEOUT) as response:
+                return response.status, response.headers.get("Location", "")
+        except HTTPError as e:
+            code = e.code
+            location = e.headers.get("Location", "") if e.headers else ""
+            e.close()
+            return code, location
+
+    method = "HEAD"
     try:
-        with opener.open(request, timeout=TIMEOUT) as response:
-            code = response.status
-            location = response.headers.get("Location", "")
-    except HTTPError as e:
-        code = e.code
-        location = e.headers.get("Location", "") if e.headers else ""
-        e.close()
+        code, location = probe(method)
+        # A substantial fraction of real sites return false 404/405 for HEAD.
+        # Repeat with a no-body GET before reporting a broken candidate.
+        if code in (404, 405, 410, 501):
+            method = "GET"
+            code, location = probe(method)
     except (URLError, TimeoutError, ConnectionError, OSError, socket.timeout):
         return {"name": name, "category": category, "url": url,
-                "http": "-", "status": "network_unconfirmed", "redirect": "-"}
+                "http": "-", "status": "network_unconfirmed", "redirect": "-",
+                "method": method}
     redirect = "-"
     if 300 <= code < 400 and location:
         redirect_url = urljoin(url, location)
         redirect = redirect_url if safe_url(redirect_url) else "unsafe_or_non_https_target"
     return {"name": name, "category": category, "url": url,
-            "http": str(code), "status": classify(code), "redirect": redirect}
+            "http": str(code), "status": classify(code), "redirect": redirect,
+            "method": method}
 
 def markdown_report(rows, checked_at):
     counts = {}
@@ -91,7 +105,7 @@ def markdown_report(rows, checked_at):
     out = [
         "# LinkWiki external listing health — read-only HEAD audit", "",
         "Checked: " + checked_at, "",
-        "This is a one-request-per-listing HEAD snapshot; many working websites "
+        "This is a HEAD-first snapshot with a header-only GET retry on 404/405/410/501; many working websites "
         "block bots or HEAD requests. Neither a 403 nor a timeout proves a link "
         "is broken. **No entries are automatically modified or deleted.**",
         "",
