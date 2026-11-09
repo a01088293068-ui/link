@@ -413,7 +413,10 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("예시 검색", result)
         self.assertIn("예시 커뮤니티", result)
         self.assertIn("등록 사이트 2개", result)
-        self.assertIn("예시 검색</strong> —", result)
+        self.assertIn("예시 검색</strong> (등록 도메인: example.com)", result)
+        self.assertNotIn("웹 검색에 이용하는 예시입니다.", result)
+        self.assertNotIn("커뮤니티 게시판 예시입니다.", result)
+        self.assertIn("분야별 용도, 등록 사이트 이름과 도메인", result)
         self.assertIn("이 분야 전체 등록 사이트 보기", result)
         self.assertIn("&lt;script&gt;위험&lt;/script&gt;", result)
         self.assertNotIn("<script>위험</script>", result)
@@ -431,7 +434,11 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn(expected, overview)
             self.assertIn(f'/categories/{slug}', overview)
         self.assertIn('id="v6-results"', html)
-        self.assertIn("사이트의 이름과 목록 설명을 비교", html)
+        self.assertIn("분야별 용도, 등록 사이트 이름과 도메인", html)
+        # The long descriptions remain once in their original static cards.
+        # Do not duplicate them again inside the category overview.
+        overview_only = html.split('class="lw-safety-note seo-directory-overview"', 1)[1].split('class="lw-safety-note seo-purpose-comparison"', 1)[0]
+        self.assertNotIn("국내 만화 콘텐츠를 찾아볼 수 있는 마녀코믹스", overview_only)
         first = next(record for record in records if record["category"] == "검색·포털")
         self.assertIn(first["description"], html)
 
