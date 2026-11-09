@@ -17,6 +17,10 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn("'linkwiki-gsc-after-deploy' || 'linkwiki-gsc-independent'", workflow)
         self.assertIn("cancel-in-progress: ${{ github.event_name == 'workflow_run' }}", workflow)
         self.assertIn("cron: '25 3 * * *'", workflow)
+        self.assertIn("push:", workflow)
+        self.assertIn("branches: [main]", workflow)
+        self.assertIn("'seo/search_console_monitor.py'", workflow)
+        self.assertIn("'tests/test_search_console_monitor.py'", workflow)
         self.assertIn("name: search-console-performance", workflow)
 
     def test_gsc_failure_keeps_diagnostic_artifact_without_secrets(self):
