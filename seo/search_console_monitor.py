@@ -160,6 +160,30 @@ def format_sitemap_health(sitemaps, error=''):
             lines.append('- 사이트맵이 제출·다운로드됐더라도 개별 URL 색인은 보장되지 않습니다.')
     lines.extend(['', '- 이 결과는 Google API에 기록된 사이트맵 정보이며, '
                   '실제 재크롤링·색인 완료를 의미하지 않습니다.', ''])
+    # The site also publishes an identical v2 sitemap that may have a distinct
+    # history in Search Console. Read BOTH submitted sources so a failed recent
+    # sitemap.xml fetch is not mistaken for total Google sitemap blindness.
+    legacy_source = 'https://linkwiki.info/sitemap-v2.xml'
+    legacy = next((row for row in sitemaps if row.get('path') == legacy_source), None)
+    lines.extend(['', '### 대체 사이트맵(sitemap-v2.xml) 기록', ''])
+    if error:
+        lines.append('- API 조회 실패 · 대체 사이트맵 처리 여부도 확인 불가')
+    elif legacy is None:
+        lines.append('- GSC에 대체 사이트맵 제출 기록이 없습니다.')
+    else:
+        last_read = str(legacy.get('lastDownloaded') or '아직 없음')
+        state = str(legacy.get('lastSubmitted') or '제출 기록 시간 없음')
+        errors_v2 = int(legacy.get('errors') or 0)
+        warnings_v2 = int(legacy.get('warnings') or 0)
+        lines.append('- 제출: ' + state + ' · 마지막 다운로드: ' + last_read)
+        lines.append('- 처리 오류: ' + str(errors_v2) + ' · 경고: ' + str(warnings_v2))
+        if matched is not None and not matched.get('lastDownloaded') and last_read != '아직 없음':
+            lines.append('- **진단: 기본 사이트맵은 아직 다운로드되지 않았지만, 대체 사이트맵은 Google에 다운로드 기록이 있습니다.**')
+            lines.append('- 두 XML은 배포 빌드에서 동일한 내용입니다. '
+                         '이전 사이트맵 성공을 전체 사이트맵 인식 실패와 혼동하지 마세요.')
+        if errors_v2 == 0 and last_read != '아직 없음':
+            lines.append('- 대체 사이트맵의 처리 기록은 확인됐으나, 새 콘텐츠의 재크롤링·색인 성공을 의미하지 않습니다.')
+    lines.append('')
     return '\n'.join(lines)
 
 
