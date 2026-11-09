@@ -71,7 +71,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
     def test_private_gsc_reporting_follows_successful_live_release(self):
         workflow = (Path(__file__).resolve().parents[1] /
                     '.github/workflows/search-console-monitor.yml').read_text(encoding='utf-8')
-        self.assertIn("workflows: ['LinkWiki deployed crawlability smoke']", workflow)
+        self.assertIn("workflows: ['LinkWiki public crawlability smoke check']", workflow)
         self.assertIn("github.event.workflow_run.conclusion == 'success'", workflow)
         self.assertIn("vars.GSC_MONITOR_ENABLED == 'true'", workflow)
         self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
