@@ -11,6 +11,14 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_scheduled_gsc_reports_are_not_cancelled_by_deployment_bursts(self):
+        workflow = (SOURCE.parents[1] /
+                    ".github/workflows/search-console-monitor.yml").read_text(encoding="utf-8")
+        self.assertIn("'linkwiki-gsc-after-deploy' || 'linkwiki-gsc-independent'", workflow)
+        self.assertIn("cancel-in-progress: ${{ github.event_name == 'workflow_run' }}", workflow)
+        self.assertIn("cron: '25 3 * * *'", workflow)
+        self.assertIn("name: search-console-performance", workflow)
+
     def test_core_keyword_weekly_comparison_is_date_scoped_and_weighted(self):
         rows = [
             {'keys': ['주소모음', '2026-10-26'], 'impressions': 2, 'clicks': 1, 'position': 100},
