@@ -66,7 +66,6 @@ def search_top_results(query, key, limit=REQUESTED_RESULTS):
         # Never attribute surplus page-one rows to positions 11..30.
         # Query the next page explicitly and retain only its own ten rows.
         window = batch[:PAGE_SIZE]
-        fresh = 0
         for index, result in enumerate(window, 1):
             if not isinstance(result, dict):
                 continue
@@ -88,7 +87,6 @@ def search_top_results(query, key, limit=REQUESTED_RESULTS):
                 continue
             seen.add(url)
             unique.append({**result, "_sample_position": position})
-            fresh += 1
         # Keep sampling the remaining requested pages even when a provider
         # page is empty or contains only previously seen URLs. Later windows
         # may still contain distinct results, while skipped ordinal slots
