@@ -7,6 +7,15 @@ from seo.site_audit import SITE, audit_site, page_file, has_noindex_meta, intern
 
 
 class SiteAuditTests(unittest.TestCase):
+    def test_robots_advertises_both_consistent_sitemaps(self):
+        root = Path(__file__).resolve().parents[1] / "dist"
+        robots = (root / "robots.txt").read_text(encoding="utf-8")
+        for filename in ("sitemap.xml", "sitemap-v2.xml"):
+            self.assertEqual(robots.count("Sitemap: https://linkwiki.info/" + filename), 1)
+            self.assertTrue((root / filename).is_file())
+        self.assertEqual((root / "sitemap.xml").read_bytes(),
+                         (root / "sitemap-v2.xml").read_bytes())
+
     def test_indexable_directory_has_search_help_with_real_links(self):
         root = Path(__file__).resolve().parents[1]
         page = (root / "dist/directory.html").read_text(encoding="utf-8")
