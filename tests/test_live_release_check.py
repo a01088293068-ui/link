@@ -240,6 +240,28 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(any("directory examples differ" in p
                             for p in check_page(expected, stale, "/directory")))
 
+    def test_live_category_listing_catches_stale_cards_with_unchanged_metadata(self):
+        from seo.live_release_check import release_content_sections
+        path = "/categories/search"
+        entries = (
+            '<article class="item" data-search="국민신문고"><strong>국민신문고</strong>'
+            '<small>검색·포털</small><p>민원·제안</p>'
+            '<a href="https://www.epeople.go.kr/">사이트 방문</a></article>'
+            '<article data-search="위택스" class="item"><strong>위택스</strong>'
+            '<small>검색·포털</small><p>지방세 납부</p>'
+            '<a href="https://www.wetax.go.kr/">사이트 방문</a></article>'
+        )
+        expected = page(path, "검색·포털", "검색·포털 링크모음", entries)
+        stale = expected.replace(
+            '<article data-search="위택스" class="item"><strong>위택스</strong>'
+            '<small>검색·포털</small><p>지방세 납부</p>'
+            '<a href="https://www.wetax.go.kr/">사이트 방문</a></article>', "")
+        self.assertEqual(len(release_content_sections(expected, path)), 2)
+        self.assertEqual(len(release_content_sections(stale, path)), 1)
+        self.assertEqual(check_page(expected, expected, path), [])
+        self.assertTrue(any("directory examples differ" in issue
+                            for issue in check_page(expected, stale, path)))
+
     def test_category_hub_detects_stale_registered_examples(self):
         from seo.live_release_check import release_content_sections
         links = ''.join(f'<a href="{link}">분야</a>' for link in CATEGORY_PATHS)
