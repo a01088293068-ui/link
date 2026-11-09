@@ -580,5 +580,131 @@
     "url": "https://ridibooks.com/",
     "category": "만화·웹툰",
     "description": "전자책과 웹툰, 웹소설을 이용할 수 있습니다."
+  },
+  {
+    "name": "Microsoft Copilot",
+    "category": "AI 도구",
+    "url": "https://copilot.microsoft.com/",
+    "description": "마이크로소프트의 AI 대화 및 작성 보조 서비스를 이용할 수 있습니다."
+  },
+  {
+    "name": "NotebookLM",
+    "category": "AI 도구",
+    "url": "https://notebooklm.google.com/",
+    "description": "사용자가 추가한 자료를 바탕으로 내용을 정리하고 질문할 수 있는 도구입니다."
+  },
+  {
+    "name": "DeepL",
+    "category": "AI 도구",
+    "url": "https://www.deepl.com/translator",
+    "description": "여러 언어 사이의 텍스트 번역 기능을 제공하는 서비스입니다."
+  },
+  {
+    "name": "Canva",
+    "category": "AI 도구",
+    "url": "https://www.canva.com/",
+    "description": "문서·이미지·발표 자료 등을 디자인하는 편집 도구를 제공합니다."
+  },
+  {
+    "name": "Hugging Face",
+    "category": "AI 도구",
+    "url": "https://huggingface.co/",
+    "description": "인공지능 모델과 데이터셋, 관련 개발 자료를 탐색할 수 있습니다."
+  },
+  {
+    "name": "DuckDuckGo",
+    "category": "검색·포털",
+    "url": "https://duckduckgo.com/",
+    "description": "개인정보 보호 기능을 강조하는 웹 검색 서비스를 제공합니다."
+  },
+  {
+    "name": "Brave Search",
+    "category": "검색·포털",
+    "url": "https://search.brave.com/",
+    "description": "웹 페이지를 검색할 수 있는 브레이브의 검색 서비스입니다."
+  },
+  {
+    "name": "Ecosia",
+    "category": "검색·포털",
+    "url": "https://www.ecosia.org/",
+    "description": "환경 프로젝트를 지원하는 검색 서비스를 제공합니다."
+  },
+  {
+    "name": "Yahoo",
+    "category": "검색·포털",
+    "url": "https://www.yahoo.com/",
+    "description": "뉴스와 이메일, 검색 등 다양한 포털 서비스를 제공합니다."
+  },
+  {
+    "name": "K리그",
+    "category": "스포츠",
+    "url": "https://www.kleague.com/",
+    "description": "K리그의 구단·경기 일정·기록 등 축구 정보를 확인할 수 있습니다."
+  },
+  {
+    "name": "디즈니+",
+    "category": "영상·OTT",
+    "url": "https://www.disneyplus.com/",
+    "description": "영화와 시리즈 등 스트리밍 콘텐츠를 제공하는 구독형 서비스입니다."
+  },
+  {
+    "name": "Vimeo",
+    "category": "영상·OTT",
+    "url": "https://vimeo.com/",
+    "description": "영상을 게시하고 감상하거나 관리할 수 있는 비디오 플랫폼입니다."
+  },
+  {
+    "name": "레진코믹스",
+    "category": "만화·웹툰",
+    "url": "https://www.lezhin.com/ko",
+    "description": "다양한 장르의 웹툰과 만화 작품을 살펴볼 수 있는 플랫폼입니다."
+  },
+  {
+    "name": "투믹스",
+    "category": "만화·웹툰",
+    "url": "https://www.toomics.com/",
+    "description": "웹툰과 만화 작품을 장르별로 탐색할 수 있는 서비스입니다."
+  },
+  {
+    "name": "네이버 시리즈",
+    "category": "만화·웹툰",
+    "url": "https://series.naver.com/",
+    "description": "웹소설·만화 등 디지털 콘텐츠를 제공하는 네이버 서비스입니다."
+  },
+  {
+    "name": "봄툰",
+    "category": "만화·웹툰",
+    "url": "https://www.bomtoon.com/",
+    "description": "로맨스 등 여러 장르의 웹툰 작품을 살펴볼 수 있는 플랫폼입니다."
+  },
+  {
+    "name": "뽐뿌",
+    "category": "커뮤니티",
+    "url": "https://www.ppomppu.co.kr/",
+    "description": "상품 구매 정보와 생활 정보, 주제별 게시판을 공유하는 커뮤니티입니다."
+  },
+  {
+    "name": "아카라이브",
+    "category": "커뮤니티",
+    "url": "https://arca.live/",
+    "description": "관심사별 채널에서 게시글과 의견을 나누는 온라인 커뮤니티입니다."
+  },
+  {
+    "name": "레딧",
+    "category": "커뮤니티",
+    "url": "https://www.reddit.com/",
+    "description": "관심사별 커뮤니티에서 게시글과 토론을 살펴볼 수 있습니다."
+  },
+  {
+    "name": "브런치스토리",
+    "category": "커뮤니티",
+    "url": "https://brunch.co.kr/",
+    "description": "작가들의 글과 에세이, 연재 콘텐츠를 읽을 수 있는 플랫폼입니다."
+  },
+  {
+    "name": "네이버 지식iN",
+    "category": "커뮤니티",
+    "url": "https://kin.naver.com/",
+    "description": "이용자가 다양한 주제의 질문과 답변을 나누는 서비스입니다."
   }
 ]
