@@ -73,6 +73,44 @@ def parse_page(text):
     return parser
 
 
+class VisibleSiteCountParser(HTMLParser):
+    """Extract text visible to search crawlers, excluding script and styles."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.body_depth = 0
+        self.skip_depth = 0
+        self.parts = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "body":
+            self.body_depth += 1
+        elif tag in ("script", "style", "template", "noscript"):
+            self.skip_depth += 1
+
+    def handle_endtag(self, tag):
+        if tag == "body":
+            self.body_depth = max(0, self.body_depth - 1)
+        elif tag in ("script", "style", "template", "noscript"):
+            self.skip_depth = max(0, self.skip_depth - 1)
+
+    def handle_data(self, data):
+        if self.body_depth and not self.skip_depth:
+            self.parts.append(data)
+
+
+def visible_site_counts(html):
+    """Return observed directory sizes in page text, not JS or SEO tags."""
+    parser = VisibleSiteCountParser()
+    parser.feed(html)
+    body = " ".join(parser.parts)
+    patterns = (
+        r"(?<!\\d)(\\d{2,5})\\s*개\\s*(?:등록\\s*)?(?:사이트|항목)",
+        r"등록(?:된)?\\s*(?:사이트|항목)\\s*(\\d{2,5})\\s*개",
+    )
+    return sorted(int(value) for pattern in patterns
+                  for value in re.findall(pattern, body))
+
+
 def release_content_sections(html, path):
     """Extract deterministic substantive SEO sections from generated HTML."""
     patterns = {
@@ -182,6 +220,13 @@ def check_page(expected_html, live_html, path):
         errors.append(f"{path}: deployed title differs from generated build")
     if expected.descriptions != live.descriptions:
         errors.append(f"{path}: deployed meta description differs from generated build")
+    if path in ("/", "/directory"):
+        expected_counts = visible_site_counts(expected_html)
+        live_counts = visible_site_counts(live_html)
+        if expected_counts and expected_counts != live_counts:
+            errors.append(
+                f"{path}: deployed visible site counts differ from generated build "
+                f"({live_counts} != {expected_counts})")
     if ["".join(expected.headings).strip()] != ["".join(live.headings).strip()]:
         errors.append(f"{path}: deployed H1 differs from generated build")
     if live.canonicals != [SITE + path]:
