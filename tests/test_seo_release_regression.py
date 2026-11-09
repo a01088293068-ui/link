@@ -154,6 +154,26 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(generated.count('class="lw-safety-note seo-search-help"'), 1)
         self.assertEqual(generated.count("주소모음·링크모음 검색 사용 방법"), 1)
 
+    def test_directory_search_examples_link_to_real_registered_names(self):
+        from build import directory_search_help, CATEGORY_LANDING
+        from urllib.parse import parse_qs, urlsplit
+        root = Path(__file__).resolve().parents[1]
+        entries = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        html = directory_search_help(entries, CATEGORY_LANDING)
+        section = re.search(r'<div class="lw-search-examples">.*?</div>', html, re.S)
+        self.assertIsNotNone(section)
+        hrefs = re.findall(r'<a href="([^"]+)"', section.group())
+        self.assertEqual(len(hrefs), 3)
+        actual_names = {item["name"] for item in entries}
+        for href in hrefs:
+            parts = urlsplit(href)
+            self.assertEqual(parts.path, "/directory")
+            self.assertIn(parse_qs(parts.query)["q"][0], actual_names)
+        generated = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertIn("실제 등록 사이트 검색 예시", generated)
+        self.assertIn('class="lw-search-examples"', generated)
+        self.assertEqual(generated.count('class="lw-search-examples"'), 1)
+
     def test_directory_guide_and_comparison_are_reachable_from_top_navigation(self):
         root = Path(__file__).resolve().parents[1]
         page = (root / "dist/directory.html").read_text(encoding="utf-8")
