@@ -370,6 +370,14 @@ def audit_site(dist):
     inbound = internal_inbound_links(dist)
     if directory_page.is_file() and not inbound.get("/directory"):
         errors.append("orphan core directory page: /directory")
+    # A sitemap entry alone does not ensure Google can discover a page by
+    # following links. Check every indexable category landing URL in the
+    # canonical sitemap, not only the main directory and blog articles.
+    for slug in category_pages:
+        target_path = "/categories/" + slug
+        target = dist / "categories" / (slug + ".html")
+        if SITE + target_path in locs and target.is_file() and not inbound.get(target_path):
+            errors.append("orphan category page: " + target_path)
     posts = sorted((dist / "blog").glob("*/index.html"))
     for post in posts:
         relative = post.relative_to(dist).as_posix().removesuffix("index.html")
