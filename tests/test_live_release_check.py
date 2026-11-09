@@ -344,6 +344,58 @@ class LiveReleaseCheckTests(unittest.TestCase):
                             check_sitemap(good.replace(f"<url><loc>{SITE}/categories/video</loc></url>", ""))))
         self.assertTrue(any("invalid" in x for x in check_sitemap("<invalid")))
 
+    def test_live_directory_search_data_matches_real_published_records(self):
+        import json
+        from seo.live_release_check import extract_directory_sites
+        root = Path(__file__).resolve().parents[1]
+        expected = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        source = (root / "assets/directory.js").read_text(encoding="utf-8")
+        self.assertEqual(extract_directory_sites(source), expected)
+        self.assertEqual(len(expected), 192)
+
+        old = expected[:-4]
+        old_script = "const sites=" + json.dumps(old, ensure_ascii=False) + ";(()=>"
+        self.assertEqual(len(extract_directory_sites(old_script)), 188)
+        with self.assertRaisesRegex(ValueError, "dataset missing"):
+            extract_directory_sites("window.LinkWikiSearch.sortResults")
+
+    def test_live_release_rejects_old_js_search_dataset_even_when_html_matches(self):
+        import json
+        from unittest.mock import patch
+        from seo.live_release_check import extract_directory_sites
+        root = Path(__file__).resolve().parents[1]
+        with TemporaryDirectory() as directory:
+            dist = Path(directory)
+            (dist / "assets").mkdir()
+            source_js = (root / "assets/directory.js").read_text(encoding="utf-8")
+            (dist / "assets/directory.js").write_text(source_js, encoding="utf-8")
+            expected = extract_directory_sites(source_js)
+            old_script = ("const sites=" + json.dumps(expected[:-4], ensure_ascii=False)
+                          + ";(()=>window.LinkWikiSearch.sortResults)")
+            # Only the JS is stale. HTML, sitemap and every other fetched
+            # resource are supplied by the checked-in generated release.
+            release = root / "dist"
+            if not release.is_dir():
+                self.skipTest("dist build unavailable")
+            def fetch(path):
+                if path == "/assets/directory.js":
+                    return old_script
+                if path == "/assets/directory-search.js":
+                    return ("terms.every(term => haystack.includes(term)) "
+                            "function sortResults(")
+                if path == "/sitemap.xml":
+                    return (release / "sitemap.xml").read_text(encoding="utf-8")
+                name = ("index.html" if path == "/" else
+                        "categories/index.html" if path == "/categories/" else
+                        "directory.html" if path == "/directory" else
+                        path.removeprefix("/") + ".html")
+                return (release / name).read_text(encoding="utf-8")
+            # Use the actual built HTML to avoid synthetic page mismatches.
+            from seo.live_release_check import run
+            issues = run(release, fetch=fetch)
+            self.assertTrue(any(
+                "deployed search dataset differs" in issue for issue in issues), issues)
+
     def test_run_uses_injected_public_fetch_and_flags_missing_live_script(self):
         with TemporaryDirectory() as temp:
             dist = Path(temp)
