@@ -41,6 +41,14 @@ class RankTrackerTests(unittest.TestCase):
         self.assertTrue(all("first.example/" not in r["link"] or
                             int(r["link"].split("/")[-1]) < 10 for r in rows))
 
+    def test_provider_error_without_organic_must_not_overwrite_rank_history(self):
+        from unittest.mock import patch
+        from io import BytesIO
+        with patch.object(rank_tracker, "urlopen", return_value=BytesIO(
+                b'{"message": "rate limit exceeded"}')):
+            with self.assertRaisesRegex(ValueError, "missing organic"):
+                rank_tracker.search("주소모음", "dummy", page=1)
+
     def test_nonlist_provider_organic_is_rejected(self):
         from unittest.mock import patch
         with patch.object(rank_tracker, "search", return_value={"unexpected": "response"}):
