@@ -21,6 +21,7 @@ SITES = {
     "OpenWebSide": "https://openwebside.com/products/757213b7-1ce9-41ed-9eb2-6bae9af82688",
     "SaaSKR": "https://saaskr.com/saas/linkwiki-info",
     "Sidedock": "https://sidedock.io/products/%EB%A7%81%ED%81%AC%EC%9C%84%ED%82%A4linkwiki",
+    "Tistory address guide": "https://blacktetherscan.tistory.com/2",
 }
 REPORT = ROOT / "seo/backlink-public-check-report.md"
 
