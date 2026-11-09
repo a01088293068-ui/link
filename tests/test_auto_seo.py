@@ -1,5 +1,6 @@
 import importlib.util
 from pathlib import Path
+import json
 import unittest
 from unittest.mock import patch
 from tempfile import TemporaryDirectory
@@ -35,7 +36,7 @@ class SEOTests(unittest.TestCase):
     def test_concise_writer_examples_remain_capped_at_three_per_category(self):
         context = seo.directory_context()
         self.assertLessEqual(len(context["listed_examples_by_category"]["AI 도구"]), 3)
-        self.assertEqual(context["categories"]["AI 도구"], 4)
+        self.assertEqual(context["categories"]["AI 도구"], sum(1 for e in json.loads((Path(__file__).resolve().parents[1] / "assets/verified-directory.json").read_text(encoding="utf-8")) if e["category"] == "AI 도구"))
 
     def test_category_comparison_requires_real_example_in_written_prose(self):
         article = self.sample_article()
@@ -55,7 +56,7 @@ class SEOTests(unittest.TestCase):
     def test_directory_context_uses_real_category_counts(self):
         context = seo.directory_context()
         self.assertEqual(context["total_sites"], sum(context["categories"].values()))
-        self.assertEqual(context["total_sites"], 97)
+        self.assertEqual(context["total_sites"], len(json.loads((Path(__file__).resolve().parents[1] / "assets/verified-directory.json").read_text(encoding="utf-8"))))
         self.assertIn("검색·포털", context["categories"])
         self.assertNotIn("금융·공공기관", context["categories"])
         self.assertIn("커뮤니티", context["listed_examples_by_category"])
