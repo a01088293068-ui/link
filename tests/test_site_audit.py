@@ -388,6 +388,15 @@ class SiteAuditTests(unittest.TestCase):
                 entries[loc] = lastmod
         self.assertEqual(entries["https://linkwiki.info/"], declared["/"])
 
+    def test_directory_links_to_comparison_guide_from_search_help(self):
+        root = Path(__file__).resolve().parents[1] / "dist"
+        if not (root / "directory.html").exists():
+            self.skipTest("build output not present")
+        html = (root / "directory.html").read_text(encoding="utf-8")
+        self.assertIn('href="/guides/directory-comparison"', html)
+        inbound = internal_inbound_links(root)
+        self.assertIn("/directory", inbound.get("/guides/directory-comparison", set()))
+
     def test_sitemap_listed_category_without_internal_link_is_reported(self):
         # Sitemap discovery is not a substitute for a crawlable internal link.
         with TemporaryDirectory() as temporary:
