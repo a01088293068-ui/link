@@ -731,6 +731,30 @@ def directory_search_help(records, categories):
     )
 
 
+def directory_address_inspector():
+    """One useful, no-network URL anatomy checker on the canonical listing page."""
+    return (
+        '<section id="address-inspector" class="lw-safety-note seo-address-inspector" '
+        'aria-label="웹사이트 주소 실제 도메인 확인">'
+        '<h2>주소모음에서 찾은 주소의 실제 도메인 확인</h2>'
+        '<p>링크를 클릭하기 전에 주소를 붙여넣고 접속 대상 호스트를 확인하세요. '
+        '입력한 주소는 서버로 전송하지 않으며 외부 사이트에도 접속하지 않습니다. '
+        '공식 운영 여부·안전성·현재 접속 가능 상태는 판정하지 않습니다.</p>'
+        '<form id="lw-address-form" class="v6-search" role="search">'
+        '<label for="lw-address-input">확인할 전체 주소</label>'
+        '<input id="lw-address-input" type="url" required maxlength="2048" '
+        'placeholder="https://example.com.login-check.test/account" '
+        'autocomplete="off" spellcheck="false">'
+        '<button type="submit">실제 도메인 확인</button></form>'
+        '<div id="lw-address-result" role="status" aria-live="polite"></div>'
+        '<p>주소에 익숙한 사이트명이 포함되어 있어도 그것이 실제 접속 도메인과 '
+        '같다는 뜻은 아닙니다. 로그인이나 결제 전에는 운영자의 공식 공지에서 '
+        '실제 도메인을 별도로 대조하세요. '
+        '<a href="/guides/address-check">공식 주소 확인 순서</a></p>'
+        '</section>'
+    )
+
+
 def directory_collection_schema(records, categories):
     """Truthful CollectionPage and eight category navigation entries.
 
@@ -988,7 +1012,8 @@ def build():
     help_section = directory_search_help(records, CATEGORY_LANDING)
     directory_html = directory_html.replace(
         overview_marker,
-        help_section + overview + directory_purpose_comparison(records, CATEGORY_LANDING) +
+        help_section + directory_address_inspector() + overview
+        + directory_purpose_comparison(records, CATEGORY_LANDING) +
         directory_relevant_guides(posts) + overview_marker, 1)
     # Provide a structured category map for the core search landing page.
     # One declaration only; never generate unverified ratings or fake offers.
@@ -999,6 +1024,9 @@ def build():
     if directory_html.count("</head>") != 1:
         raise RuntimeError("Directory head structure changed; schema review required")
     directory_html = directory_html.replace("</head>", schema + "</head>", 1)
+    # Keep current list/search code unchanged; the new verifier is isolated.
+    directory_html = directory_html.replace(
+        '</body>', '<script defer src="/assets/address-inspector.js"></script></body>', 1)
     directory_path.write_text(directory_html, encoding="utf-8")
     category_cards = []
     for category, slug, heading, purpose in CATEGORY_LANDING:
