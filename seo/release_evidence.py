@@ -30,18 +30,18 @@ def release_evidence(dist):
     if not isinstance(records, list) or not records:
         raise ValueError("Published directory JSON is missing or empty")
     card_html = (dist / "directory.html").read_text(encoding="utf-8")
-    cards = len(re.findall(r'<article\\b[^>]*class="v6-card"', card_html))
+    cards = len(re.findall(r'<article\b[^>]*class="v6-card"', card_html))
     if cards != len(records):
         raise ValueError(f"Directory HTML has {cards} cards for {len(records)} records")
     js = (dist / "assets" / "directory.js").read_text(encoding="utf-8")
-    match = re.search(r"const sites=(\\[.*?\\]);\\s*\\(\\(\\)=>", js, re.S)
+    match = re.search(r"const sites=(\[.*?\]);\s*\(\(\)=>", js, re.S)
     if match is None or json.loads(match.group(1)) != records:
         raise ValueError("Directory search JavaScript and published JSON differ")
     by_category = Counter(entry["category"] for entry in records)
     pages = {}
     for category, slug in CATEGORY_PATHS.items():
         html = (dist / "categories" / (slug + ".html")).read_text(encoding="utf-8")
-        count = len(re.findall(r'<article\\b[^>]*class="item"', html))
+        count = len(re.findall(r'<article\b[^>]*class="item"', html))
         if count != by_category[category]:
             raise ValueError(
                 f"{slug}: {count} HTML entries != {by_category[category]} source records")
