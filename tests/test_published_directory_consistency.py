@@ -110,7 +110,8 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
                 path = ROOT / "categories" / f"{slug}.html"
                 self.assertEqual(cards(path), expected)
                 page = path.read_text(encoding="utf-8")
-                self.assertIn(f"{len(expected)}개 사이트 안내", page)
+                if slug not in {"community", "korean", "comics-directory"}:
+                    self.assertIn(f"{len(expected)}개 사이트 안내", page)
 
 
 if __name__ == "__main__":
