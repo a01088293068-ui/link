@@ -104,6 +104,8 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
             "위택스": "www.wetax.go.kr",
             "식품안전나라": "www.foodsafetykorea.go.kr",
             "안전운전 통합민원": "www.safedriving.or.kr",
+            "표준국어대사전": "stdict.korean.go.kr",
+            "서울시 교통정보 TOPIS": "topis.seoul.go.kr",
         }
         by_name = {record["name"]: record for record in self.records}
         category_cards = cards(ROOT / "categories/search.html")
@@ -139,6 +141,8 @@ const queries = [
   ['지방세 위택스', '위택스'],
   ['식품안전나라', '식품안전나라'],
   ['안전운전 통합민원', '안전운전 통합민원'],
+  ['표준국어대사전', '표준국어대사전'],
+  ['서울시 교통정보 TOPIS', '서울시 교통정보 TOPIS'],
 ];
 for (const [query, expected] of queries) {
   const found = search.sortResults(rows, query);
