@@ -1126,5 +1126,29 @@
     "url": "https://www.kosaf.go.kr/ko/main.do",
     "category": "검색·포털",
     "description": "국가장학금과 학자금대출 등 교육 지원사업의 신청 정보와 공지사항을 제공합니다."
+  },
+  {
+    "name": "국민건강보험공단",
+    "url": "https://www.nhis.or.kr/nhis/index.do",
+    "category": "검색·포털",
+    "description": "건강보험 자격·보험료, 건강검진, 환급금 관련 민원과 제도 안내를 확인할 수 있는 공공기관 사이트입니다."
+  },
+  {
+    "name": "국민연금공단",
+    "url": "https://www.nps.or.kr/main.do",
+    "category": "검색·포털",
+    "description": "국민연금 가입·수급 관련 안내와 전자민원 서비스, 연금 제도 정보를 제공하는 공공기관 사이트입니다."
+  },
+  {
+    "name": "국가건강정보포털",
+    "url": "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do",
+    "category": "검색·포털",
+    "description": "질병관리청이 제공하는 건강·질병 정보와 예방·건강관리 자료를 확인할 수 있는 공공정보 포털입니다."
+  },
+  {
+    "name": "건강보험심사평가원",
+    "url": "https://www.hira.or.kr/",
+    "category": "검색·포털",
+    "description": "건강보험심사평가원의 의료기관·의약품 정보 및 요양급여 관련 제도 안내를 확인할 수 있습니다."
   }
 ]
