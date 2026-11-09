@@ -113,6 +113,42 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
             len([record for record in self.records
                  if record["category"] == "검색·포털"]), len(category_cards))
 
+    def test_actual_browser_search_engine_finds_new_korean_services(self):
+        import shutil
+        import subprocess
+        if not shutil.which("node"):
+            self.skipTest("Node.js is unavailable in this test environment")
+        program = """
+const fs = require('fs');
+const search = require(process.argv[1]);
+const rows = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const queries = [
+  ['국민건강보험공단', '국민건강보험공단'],
+  ['사이트모음 국민연금공단', '국민연금공단'],
+  ['health.kdca.go.kr', '국가건강정보포털'],
+  ['건강보험심사평가원', '건강보험심사평가원'],
+];
+for (const [query, expected] of queries) {
+  const found = search.sortResults(rows, query);
+  if (!found.length || found[0].name !== expected) {
+    throw new Error(query + ' did not rank expected service first');
+  }
+}
+if (search.sortResults(rows, '주소모음').length !== rows.length) {
+  throw new Error('generic address directory intent excluded registered sites');
+}
+if (search.sortResults(rows, '존재하지않는xyz123').length !== 0) {
+  throw new Error('unmatched query returned unrelated records');
+}
+console.log('PASS: Korean directory queries and all-site intent');
+"""
+        result = subprocess.run(
+            ["node", "-e", program, str(ROOT / "assets/directory-search.js"),
+             str(ROOT / "assets/verified-directory.json")],
+            capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("PASS: Korean directory queries", result.stdout)
+
     def test_directory_javascript_matches_source_exactly(self):
         js = (ROOT / "assets/directory.js").read_text(encoding="utf-8")
         match = re.search(r"const sites=(\[.*?\]);\s*\(\(\)=>", js, flags=re.S)
