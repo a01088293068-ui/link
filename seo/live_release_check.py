@@ -279,6 +279,21 @@ def check_sitemap(text):
     return [f"sitemap missing {url}" for url in sorted(required - urls)]
 
 
+def google_index_blocked_by_header(header_values):
+    """Detect generic/Googlebot noindex headers; ignore other crawler rules."""
+    for header in header_values:
+        for directive in str(header).split(","):
+            part = directive.strip().lower()
+            if ":" in part:
+                agent, rule = part.split(":", 1)
+                if agent.strip() not in ("googlebot", "googlebot-news"):
+                    continue
+                part = rule.strip()
+            if re.search(r"(?:^|[\\s;,])(?:noindex|none)(?:$|[\\s;,])", part):
+                return True
+    return False
+
+
 def fetch_public(path):
     url = SITE + path
     request = Request(url, headers={"User-Agent": "LinkWiki-ReleaseQA/1.0"})
@@ -288,6 +303,10 @@ def fetch_public(path):
             raise RuntimeError("Unexpected cross-origin or insecure redirect: " + url)
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}: {url}")
+        if path in ("/", "/directory", "/categories/") + CATEGORY_PATHS:
+            tags = response.headers.get_all("X-Robots-Tag", [])
+            if google_index_blocked_by_header(tags):
+                raise RuntimeError("HTTP X-Robots-Tag prohibits Google indexing: " + url)
         return response.read().decode("utf-8", errors="replace")
 
 
