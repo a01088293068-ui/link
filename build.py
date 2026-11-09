@@ -364,7 +364,7 @@ def sync_directory_count(html, total_sites):
         raise RuntimeError("Directory count requires nonempty verified records")
     # Do not modify category counts such as '8개 분야'.
     html, inline_count = re.subn(
-        r"\b\d+개(?=\s+(?:등록\s+)?사이트(?:의|\b))",
+        r"\b\d+개(?=\s+(?:등록\s+)?사이트(?:의|를|\b))",
         lambda _: f"{total_sites}개", html,
     )
     html, status_count = re.subn(
