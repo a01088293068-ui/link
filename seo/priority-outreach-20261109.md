@@ -35,3 +35,36 @@
 ## SEO 측정 기준
 
 각 등록 후: (1) 실제 공개 링크 확인, (2) 링크 대상 및 rel 확인, (3) 검증일 기록, (4) GSC에서 핵심 키워드 3종의 노출·클릭·평균 순위 비교. 신규 등록만으로 Google 색인이나 상위노출을 보장하지 않음.
+
+
+## 2026-11-09 추가 검증 — 실제 제출 실행 기준
+
+- **확보된 새 백링크: 0개 (이번 세션에서 외부 폼 제출 불가)**. 후보 조사·문서 작성은 백링크 확보로 계산하지 않는다.
+- **최우선 Zearches**: https://zearches.com/submit-website-free.php — 로그인·결제 불필요. 입력 필드 URL(필수), 사이트명(선택, 30자), 분류(필수), 설명(50~250자), 자동 중복·스팸 확인. 제출 후 승인·공개 URL 및 linkwiki.info로 연결되는 href 검사 전에는 확보로 인정하지 않는다.
+- **차순위 SoMuch**: https://www.somuch.com/submit-links/submit-link — 실제 이메일 주소와 메일 인증이 필수. 인증 전 등록 미완료이며 3일 내 미인증은 삭제될 수 있음. 현재 외부 폼을 자동으로 작성·전송할 도구가 연결되지 않아 미제출.
+- **Curlie**: 이전 접속 오류 이력이 있으므로 중복 등록하지 않는다. 한 카테고리에 단 1회 제안. 해당 편집 분야가 한국어 사이트 디렉터리를 허용하는지 먼저 검토.
+- **LinkCentre/Viesearch/ITJEOM**: 등록·유료 기능·도메인 인증 등 추가 과정이 있어 후순위. 링크의 검색엔진 평가 가치를 검증하기 전 결제하지 않는다.
+
+### Zearches 실제 등록용 원문 — 키워드 나열 금지
+
+| 입력 | 준비된 값 |
+|---|---|
+| Website URL | https://linkwiki.info/ |
+| Website name | 링크위키 |
+| Short description | 링크위키는 커뮤니티, 웹툰, 스포츠, AI 도구 등 분야별 사이트를 소개하는 한국어 링크 디렉터리입니다. 사이트 이름과 도메인으로 검색하고, 각 사이트의 설명을 비교할 수 있습니다. |
+| Category | Web Directories / Internet Resources 등 해당 사이트의 실제 제공 선택지 중 가장 가까운 단일 분류 |
+
+### 승인 후 증거 수집
+
+1. 사이트별 제출일, 제출 완료 화면·접수 확인, 승인/거절 상태 기록.
+2. 외부 공개 URL을 비로그인 환경에서 열고 linkwiki.info로 향하는 실제 anchor href 확인.
+3. rel=nofollow/sponsored/ugc 여부, noindex 여부 및 공개 URL 상태를 별도 기록. nofollow라도 실제 유입 경로로서 의미는 있을 수 있으나 랭킹 가중치 보장 없음.
+4. GSC의 주소모음·링크모음·사이트모음 주간 비교: 동일한 날짜 범위 기준으로 노출·클릭·평균 순위 추적.
+5. **금지**: 출처가 불분명한 자동 대량 등록, 결제형 순위 보장 링크, 서로 다른 키워드로 같은 URL 반복 등록, 계정·CAPTCHA 우회.
+
+### 참고
+- https://zearches.com/submit-website-free.php
+- https://www.somuch.com/submit-links/
+- https://www.somuch.com/submit-links/submit-link
+- https://curlie.org/docs/en/add.html
+- https://developers.google.com/search/docs/essentials/spam-policies
