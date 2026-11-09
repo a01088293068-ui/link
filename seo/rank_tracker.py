@@ -57,8 +57,14 @@ def search_top_results(query, key, limit=REQUESTED_RESULTS):
     seen = set()
     for page in range(1, (limit + PAGE_SIZE - 1) // PAGE_SIZE + 1):
         batch = search(query, key, page=page)
+        if not isinstance(batch, list):
+            raise ValueError("Search provider organic results must be a list")
+        # A provider can disregard num=10 and return more than one page.
+        # Never attribute surplus page-one rows to positions 11..30.
+        # Query the next page explicitly and retain only its own ten rows.
+        window = batch[:PAGE_SIZE]
         fresh = 0
-        for index, result in enumerate(batch, 1):
+        for index, result in enumerate(window, 1):
             if not isinstance(result, dict):
                 continue
             url = str(result.get("link", "")).strip()
