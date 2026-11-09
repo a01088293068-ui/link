@@ -32,6 +32,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Sync latest main before checking daily measurement freshness
+        shell: bash
+        run: |
+          # Scheduled jobs and workflow_dispatch may be queued behind new
+          # commits. Use the current published history before spending API
+          # quota or deciding that today's measurement is missing.
+          git fetch origin main
+          git checkout -B rank-measure-current origin/main
       - name: Test ranking monitor
         run: python3 -B -m unittest discover -s tests -p 'test_rank_tracker.py' -v
       - name: Avoid duplicate daily SERP API usage
