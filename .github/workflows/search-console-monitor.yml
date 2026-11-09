@@ -2,6 +2,14 @@ name: LinkWiki Search Console monitoring
 
 on:
   workflow_dispatch:
+  # Re-run URL Inspection when the GSC diagnostics or their workflow change.
+  # Keep this path-scoped to avoid repeated private API calls on all SEO commits.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/search-console-monitor.yml'
+      - 'seo/search_console_monitor.py'
+      - 'tests/test_search_console_monitor.py'
   schedule:
     - cron: '25 3 * * *'
   # Reinspect Google's indexed copy after the *live* deployment is verified.
