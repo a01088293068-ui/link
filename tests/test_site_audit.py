@@ -388,6 +388,29 @@ class SiteAuditTests(unittest.TestCase):
                 entries[loc] = lastmod
         self.assertEqual(entries["https://linkwiki.info/"], declared["/"])
 
+    def test_sitemap_listed_category_without_internal_link_is_reported(self):
+        # Sitemap discovery is not a substitute for a crawlable internal link.
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "blog").mkdir()
+            (root / "categories").mkdir()
+            (root / "blog/index.html").write_text("<html><body>Blog</body></html>", encoding="utf-8")
+            (root / "index.html").write_text("<html><body>Home</body></html>", encoding="utf-8")
+            (root / "categories/ai.html").write_text(
+                '<html><head><title>AI directory</title><link rel="canonical" '
+                'href="https://linkwiki.info/categories/ai"></head><body>AI</body></html>',
+                encoding="utf-8")
+            xml = ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                   '<url><loc>https://linkwiki.info/categories/ai</loc></url>'
+                   '<url><loc>https://linkwiki.info/blog/</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(xml, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(xml, encoding="utf-8")
+            self.assertIn("orphan category page: /categories/ai", audit_site(root))
+            (root / "index.html").write_text(
+                '<html><body><a href="/categories/ai">AI category</a></body></html>',
+                encoding="utf-8")
+            self.assertNotIn("orphan category page: /categories/ai", audit_site(root))
+
     def test_existing_generated_site_is_consistent(self):
         root = Path(__file__).resolve().parents[1] / "dist"
         if root.is_dir():
