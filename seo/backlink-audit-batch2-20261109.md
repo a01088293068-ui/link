@@ -10,7 +10,7 @@ Public target: https://linkwiki.info/ (distinct from the LinkWiki main service).
 | Viesearch | **No confirmed receipt**: free listing permitted, but the category selector did not register a valid category, and no confirmation appeared | https://agent.tinyfish.ai/runs/826808e5-bd49-4c91-ba54-69d2b844a3bd | Do not repeat submission until platform confirms whether it was received; site support or manual category selection needed |
 | Free PR Web Directory | **Not submitted**: free relevant category exists but form CAPTCHA did not validate | https://agent.tinyfish.ai/runs/e6035224-c874-4c3d-836b-ce04f3369d0c | Human completion only; no CAPTCHA bypass |
 | 247WebDirectory | **Not submitted**: site explicitly requires English-only submissions, excludes Korean-language site | https://agent.tinyfish.ai/runs/fb109437-e5a9-433c-ab72-924e2b309ad0 | Exclude from outreach |
-| Internet Intro | **Submission attempt not yet confirmed** at initial report checkpoint | https://agent.tinyfish.ai/runs/60697609-9dc2-4457-bb3e-d8d7b782af79 | Await final agent result; never count queued job as submitted |
+| Internet Intro | **Not submitted**: rules explicitly exclude aggregators and directories; LinkWiki is a directory | https://agent.tinyfish.ai/runs/60697609-9dc2-4457-bb3e-d8d7b782af79 | Exclude from outreach |
 | Website Unpacked | **Not submitted**: legitimate editorial site but Cloudflare Turnstile blocked the form | https://agent.tinyfish.ai/runs/58525103-f79f-4aa6-8f60-cb36abc21dea | Human verification only |
 | Ignlab Launch | **Pre-existing published listing discovered**, agent-reported public href and independently rechecked by GitHub CI | https://agent.tinyfish.ai/runs/15bade6a-66a8-42ac-bd99-67644cd9398c | https://launch.ignlab.net/t/linkwiki-2 ; this is **not a new submission**, rel includes nofollow and ugc |
 
@@ -25,7 +25,7 @@ Public target: https://linkwiki.info/ (distinct from the LinkWiki main service).
 - MeWebLink: `unverified`, HTTP 404. Not counted. Temporary site blocking or deletion not distinguishable from this one check.
 - **Independently verified public listing pages**: 2 (one new in batch 1, one pre-existing discovered during batch 2).
 - **Earlier successfully submitted but not yet published**: 3 (GainWeb, Site Promotion Directory, Launching Next receipt 177330).
-- **New confirmed submissions in batch 2 so far**: 0. An attempted registration is not a submission.
+- **New confirmed submissions in batch 2**: 0. An attempted registration is not a submission.
 - Domain authority/ranking boost not measured or guaranteed; links that look like directory farms may be ignored or considered manipulative.
 
 ## Follow-up policy
