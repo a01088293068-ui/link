@@ -135,7 +135,7 @@ def release_content_sections(html, path):
             # Category listing pages use the "item" card variant.
             # Compare real rendered entries so an old 36-site category
             # cannot pass after the published directory grows to 44.
-            r'<article\\b(?=[^>]*\\bclass="[^"]*\\bitem\\b)[^>]*>.*?</article>',
+            r'<article\b(?=[^>]*\bclass="[^"]*\bitem\b)[^>]*>.*?</article>',
         )
     blocks = []
     for expression in patterns.get(path, ()):
