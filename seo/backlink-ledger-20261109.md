@@ -36,12 +36,14 @@ Never count a pending job as submitted or published. Update after finished.
 | Cipinet | https://agent.tinyfish.ai/runs/44411474-a8d3-40df-ad2a-b83d914bdf04 | Not submitted: reCAPTCHA must be completed manually. No duplicate found |
 | Site Promotion Directory | https://agent.tinyfish.ai/runs/cc17d966-9409-4b60-b193-7de4e5776d4d | **Submitted successfully, awaiting moderator approval**. Confirmation: `Link submitted and awaiting approval`. Free, no reciprocal link. No public listing URL yet |
 
-- Launching Next (startup/side-project submission): https://agent.tinyfish.ai/runs/e775e63c-d116-4c97-a72b-013f5a83fb7e — result pending at last check.
+- Launching Next (startup/side-project): **submitted successfully, pending review**. Receipt https://www.launchingnext.com/thanks/?i=177330 ; browser evidence https://agent.tinyfish.ai/runs/e775e63c-d116-4c97-a72b-013f5a83fb7e . No approved public URL yet. Paid upgrade declined.
 
 ## Latest totals (after seven completed site-agent checks)
 
 - Confirmed public backlinks to `https://linkwiki.info/`: **2** (one existing MeWebLink, one newly published DevElif).
-- Confirmed newly submitted but not publicly approved: **2** (GainWeb, Site Promotion Directory).
+- Confirmed newly submitted but not publicly approved: **3** (GainWeb, Site Promotion Directory, Launching Next).
 - Checked but not submitted: SoMuch (step limit), Secret Search Engine Labs (firewall), Cipinet (human reCAPTCHA), LinkCentre (registration gate).
 - Previous submission duplicate and publication unverified: Zearches.
 - Never count a submission receipt as a public backlink.
+
+- PitchWall free project launch attempted: https://agent.tinyfish.ai/runs/2300ade3-47a0-42e0-8f57-72192d0e6cfb ; status pending verification. No paid upgrade authorized.
