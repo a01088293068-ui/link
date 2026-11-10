@@ -75,6 +75,21 @@ def directory_cards(html):
     return cards
 
 
+def directory_script_versions(html):
+    """Capture URL fingerprints for the four browser files used by the directory."""
+    names = ("directory-search.js", "directory.js", "mobile-menu.js",
+             "address-inspector.js")
+    versions = {}
+    for name in names:
+        match = re.findall(
+            r'<script\\b[^>]*\\bsrc="(?:/)?assets/' + re.escape(name) +
+            r'\\?v=([a-f0-9]{12})"[^>]*>', html, re.I,
+        )
+        if len(match) == 1:
+            versions[name] = match[0]
+    return versions
+
+
 def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None):
     errors, observations = [], []
     source = Page()
@@ -103,6 +118,14 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
                     errors.append("/directory: generated static card coverage unexpectedly low")
                 if source_cards != live_cards:
                     errors.append("/directory: live static listings differ from built directory")
+                built_versions = directory_script_versions(directory_source)
+                live_versions = directory_script_versions(body)
+                observations.append(
+                    f"/directory: {len(live_versions)}/4 fingerprinted browser scripts")
+                if len(built_versions) != 4:
+                    errors.append("/directory: generated asset fingerprints incomplete")
+                if live_versions != built_versions:
+                    errors.append("/directory: live browser asset versions differ from built output")
                 expected_head = Page()
                 expected_head.feed(directory_source)
                 for tag in ("title", "h1"):
