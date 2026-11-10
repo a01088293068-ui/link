@@ -61,6 +61,35 @@ class BacklinkDiscoveryTests(unittest.TestCase):
         self.assertFalse(candidate["submission_sent"])
         self.assertFalse(candidate["quality_verified"])
 
+    def test_korean_editorial_submission_is_discovered_without_spam(self):
+        candidate = discovery.assess({
+            "link": "https://korean-directory.example.org/submit",
+            "title": "한국 웹 디렉터리 사이트 등록",
+            "snippet": "한국어 사이트를 소개하는 웹 디렉터리입니다. "
+                       "운영자가 사이트 등록을 검수하고 게시합니다.",
+        }, set())
+        self.assertIsNotNone(candidate)
+        self.assertEqual(candidate["status"], "manual_policy_review")
+        self.assertFalse(candidate["submission_sent"])
+        self.assertFalse(candidate["quality_verified"])
+
+    def test_korean_paid_link_schemes_or_employee_directory_are_rejected(self):
+        for title, snippet in (
+            ("백링크 판매 사이트 등록", "웹 디렉터리 유료 백링크 패키지"),
+            ("기관 직원 사이트 등록", "부서 안내와 직원 연락처, 인사 디렉터리"),
+            ("웹 디렉터리 사이트 등록", "대량 등록 맞링크와 링크 교환"),
+        ):
+            with self.subTest(title=title):
+                result = discovery.assess({
+                    "link": "https://example.org/submit",
+                    "title": title, "snippet": snippet,
+                }, set())
+                self.assertIsNone(result)
+
+    def test_korean_queries_added_without_replacing_english_discovery(self):
+        self.assertTrue(any("웹서비스 등록" in q for q in discovery.QUERIES))
+        self.assertTrue(any("submit website" in q for q in discovery.QUERIES))
+
     def test_requires_review_before_any_outreach(self):
         lead = discovery.assess({
             "link": "https://editorial.example.com/resources",
