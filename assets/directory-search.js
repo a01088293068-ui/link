@@ -14,7 +14,30 @@
     // Remove generic directory labels when combined with an actual site clue.
     return words.filter(word => !CORE.has(word.replace(/\s+/g, '')));
   }
+  function pastedUrl(value) {
+    const raw = String(value ?? '').trim();
+    if (!/^(?:https?:\\/\\/|www\\.)/i.test(raw)) return null;
+    try {
+      const parsed = new URL(/^www\\./i.test(raw) ? 'https://' + raw : raw);
+      if (!/^https?:$/.test(parsed.protocol)) return null;
+      return {
+        host: parsed.hostname.toLocaleLowerCase('ko').replace(/^www\\./, ''),
+        path: decodeURI(parsed.pathname).replace(/\\/$/, '') || '/'
+      };
+    } catch (_) { return null; }
+  }
+  function matchesPastedUrl(site, parsed) {
+    try {
+      const url = new URL(site.url);
+      const host = url.hostname.toLocaleLowerCase('ko').replace(/^www\\./, '');
+      const path = decodeURI(url.pathname).replace(/\\/$/, '') || '/';
+      return host === parsed.host && (parsed.path === '/' ||
+        path === parsed.path || path.startsWith(parsed.path + '/'));
+    } catch (_) { return false; }
+  }
   function matches(site, searchText) {
+    const pasted = pastedUrl(searchText);
+    if (pasted) return matchesPastedUrl(site, pasted);
     const terms = queryTerms(searchText);
     if (!terms.length) return true;
     const haystack = norm([site.name, site.category, site.description,
@@ -22,6 +45,15 @@
     return terms.every(term => haystack.includes(term));
   }
   function score(site, searchText) {
+    const pasted = pastedUrl(searchText);
+    if (pasted) {
+      if (!matchesPastedUrl(site, pasted)) return -1;
+      try {
+        const url = new URL(site.url);
+        const path = decodeURI(url.pathname).replace(/\\/$/, '') || '/';
+        return path === pasted.path ? 120 : 100;
+      } catch (_) { return -1; }
+    }
     const terms = queryTerms(searchText);
     if (!terms.length) return 0;
     if (!matches(site, searchText)) return -1;
@@ -45,7 +77,7 @@
       .sort((a, b) => b.relevance - a.relevance || a.index - b.index)
       .map(row => row.site);
   }
-  const api = { norm, queryTerms, matches, score, sortResults };
+  const api = { norm, queryTerms, pastedUrl, matches, score, sortResults };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.LinkWikiSearch = api;
 })(typeof window !== 'undefined' ? window : globalThis);
