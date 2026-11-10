@@ -300,6 +300,30 @@
     "description": "대한상공회의소의 경제·경영 정보, 조사 자료와 기업 활동 관련 안내를 확인할 수 있는 웹사이트입니다."
   },
   {
+    "name": "EBSi 고교강의",
+    "url": "https://www.ebsi.co.kr/",
+    "category": "검색·포털",
+    "description": "EBS의 고교 내신·수능 대비 강좌, 교재와 학습 자료를 찾는 교육 서비스입니다."
+  },
+  {
+    "name": "학교알리미",
+    "url": "https://www.schoolinfo.go.kr/Main.do",
+    "category": "검색·포털",
+    "description": "초·중·고등학교의 학교별 공시 정보와 교육 관련 자료를 조회하는 서비스입니다."
+  },
+  {
+    "name": "커리어넷",
+    "url": "https://www.career.go.kr/",
+    "category": "검색·포털",
+    "description": "진로·직업·학과 정보와 진로 상담, 직업 탐색 자료를 제공하는 교육 정보망입니다."
+  },
+  {
+    "name": "네이버 지도",
+    "url": "https://map.naver.com/",
+    "category": "검색·포털",
+    "description": "장소·길찾기·대중교통 정보를 찾는 네이버의 지도 서비스입니다."
+  },
+  {
     "name": "인벤",
     "url": "https://www.inven.co.kr/",
     "category": "커뮤니티",
@@ -490,6 +514,12 @@
     "category": "커뮤니티",
     "url": "https://news.ycombinator.com/",
     "description": "기술·스타트업 소식과 관련 토론을 볼 수 있는 커뮤니티입니다."
+  },
+  {
+    "name": "당근",
+    "url": "https://www.daangn.com/kr/buy-sell",
+    "category": "커뮤니티",
+    "description": "지역을 기반으로 중고물품 거래와 동네 생활 정보를 살펴볼 수 있는 서비스입니다."
   },
   {
     "name": "ChatGPT",
@@ -1234,35 +1264,5 @@
     "url": "https://mykorean.org/",
     "category": "한인교민",
     "description": "말레이시아 한인회 관련 안내와 현지 교민 정보를 찾아볼 수 있는 사이트입니다."
-  },
-  {
-    "name": "EBSi 고교강의",
-    "url": "https://www.ebsi.co.kr/",
-    "category": "검색·포털",
-    "description": "EBS의 고교 내신·수능 대비 강좌, 교재와 학습 자료를 찾는 교육 서비스입니다."
-  },
-  {
-    "name": "학교알리미",
-    "url": "https://www.schoolinfo.go.kr/Main.do",
-    "category": "검색·포털",
-    "description": "초·중·고등학교의 학교별 공시 정보와 교육 관련 자료를 조회하는 서비스입니다."
-  },
-  {
-    "name": "커리어넷",
-    "url": "https://www.career.go.kr/",
-    "category": "검색·포털",
-    "description": "진로·직업·학과 정보와 진로 상담, 직업 탐색 자료를 제공하는 교육 정보망입니다."
-  },
-  {
-    "name": "네이버 지도",
-    "url": "https://map.naver.com/",
-    "category": "검색·포털",
-    "description": "장소·길찾기·대중교통 정보를 찾는 네이버의 지도 서비스입니다."
-  },
-  {
-    "name": "당근",
-    "url": "https://www.daangn.com/kr/buy-sell",
-    "category": "커뮤니티",
-    "description": "지역을 기반으로 중고물품 거래와 동네 생활 정보를 살펴볼 수 있는 서비스입니다."
   }
 ]
