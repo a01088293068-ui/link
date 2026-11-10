@@ -20,6 +20,11 @@ class ReleaseEvidenceTests(unittest.TestCase):
         self.assertFalse(manifest["public_deployment_verified"])
         self.assertFalse(manifest["google_indexing_verified"])
         self.assertFalse(manifest["rank_improvement_verified"])
+        self.assertEqual(len(manifest["directory_json_sha256"]), 64)
+        self.assertEqual(len(manifest["directory_html_sha256"]), 64)
+        self.assertEqual(len(manifest["directory_js_sha256"]), 64)
+        self.assertEqual(len(manifest["sitemap_sha256"]), 64)
+        self.assertGreaterEqual(manifest["sitemap_url_count"], 11)
 
     def test_rejects_stale_client_js_and_missing_category_card(self):
         with TemporaryDirectory() as temporary:
@@ -46,6 +51,25 @@ class ReleaseEvidenceTests(unittest.TestCase):
                 (dist / "categories" / (slug + ".html")).write_text(
                     '<article class="item"></article>' * count,
                     encoding="utf-8")
+            urls = (
+                "https://linkwiki.info/",
+                "https://linkwiki.info/directory",
+                "https://linkwiki.info/categories/",
+            ) + tuple(
+                "https://linkwiki.info/categories/" + slug
+                for slug in CATEGORY_PATHS.values()
+            )
+            sitemap = ('<?xml version="1.0" encoding="utf-8"?>'
+                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                       + ''.join('<url><loc>' + url + '</loc></url>' for url in urls)
+                       + '</urlset>')
+            for name in ("sitemap.xml", "sitemap-v2.xml"):
+                (dist / name).write_text(sitemap, encoding="utf-8")
+            (dist / "robots.txt").write_text(
+                "User-agent: *\\nAllow: /\\n"
+                "Sitemap: https://linkwiki.info/sitemap.xml\\n"
+                "Sitemap: https://linkwiki.info/sitemap-v2.xml\\n",
+                encoding="utf-8")
             self.assertEqual(release_evidence(dist)["sites"], 2)
             js.write_text("const sites=" + json.dumps(records[:-1], ensure_ascii=False)
                           + ";(()=>", encoding="utf-8")
@@ -54,6 +78,16 @@ class ReleaseEvidenceTests(unittest.TestCase):
             js.write_text(original, encoding="utf-8")
             (dist / "categories/search.html").write_text("", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "search"):
+                release_evidence(dist)
+            (dist / "categories/search.html").write_text(
+                '<article class="item"></article>', encoding="utf-8")
+            (dist / "sitemap-v2.xml").write_text("<urlset/>", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "sitemap"):
+                release_evidence(dist)
+            (dist / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (dist / "sitemap.xml").write_text("<urlset/>", encoding="utf-8")
+            (dist / "sitemap-v2.xml").write_text("<urlset/>", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "canonical URLs"):
                 release_evidence(dist)
 
 
