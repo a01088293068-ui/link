@@ -11,6 +11,20 @@ SPEC.loader.exec_module(monitor)
 
 class BacklinkPublicCheckTests(unittest.TestCase):
     URL = "https://example-directory.test/linkwiki"
+    def test_verified_korean_listing_is_monitored_as_existing_reference(self):
+        self.assertEqual(
+            monitor.SITES["VibeLabs Lab (self-authored listing)"],
+            "https://vibelabs.kr/lab/projects/238")
+        self.assertEqual(len(set(monitor.SITES.values())), len(monitor.SITES))
+        html = (b'<html><meta name="robots" content="index, follow">'
+                b'<a href="https://linkwiki.info/" rel="noopener noreferrer">'
+                b'LinkWiki</a></html>')
+        row = monitor.check_one(
+            "VibeLabs", monitor.SITES["VibeLabs Lab (self-authored listing)"],
+            lambda url: (200, url, html))
+        self.assertEqual(row["state"], "public_link_found")
+        self.assertIn("meta_noindex=False", row["detail"])
+
     def test_direct_anchor_counts(self):
         html = b'<html><meta name="robots" content="index, follow"><a href="https://linkwiki.info/" rel="ugc nofollow">Visit</a></html>'
         row = monitor.check_one("test", self.URL, lambda _: (200, self.URL, html))
