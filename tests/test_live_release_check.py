@@ -389,9 +389,9 @@ class LiveReleaseCheckTests(unittest.TestCase):
         sitemap = ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
                    '<url><loc>https://linkwiki.info/</loc>'
                    '<lastmod>2026-11-10</lastmod></url></urlset>')
-        robots = ('User-agent: *\\nAllow: /\\n'
-                  'Sitemap: https://linkwiki.info/sitemap.xml\\n'
-                  'Sitemap: https://linkwiki.info/sitemap-v2.xml\\n')
+        robots = ('User-agent: *\nAllow: /\n'
+                  'Sitemap: https://linkwiki.info/sitemap.xml\n'
+                  'Sitemap: https://linkwiki.info/sitemap-v2.xml\n')
         self.assertEqual(check_crawl_files(robots, sitemap, sitemap), [])
         self.assertTrue(any(
             "missing sitemap declaration" in issue
@@ -490,9 +490,9 @@ class LiveReleaseCheckTests(unittest.TestCase):
                          [SITE + x for x in CATEGORY_PATHS]) + "</urlset>"
             pages = {"/": home, "/directory": directory, "/categories/": hub,
                      "/sitemap.xml": sitemap, "/sitemap-v2.xml": sitemap,
-                     "/robots.txt": ("User-agent: *\\nAllow: /\\n"
-                                    "Sitemap: https://linkwiki.info/sitemap.xml\\n"
-                                    "Sitemap: https://linkwiki.info/sitemap-v2.xml\\n"),
+                     "/robots.txt": ("User-agent: *\nAllow: /\n"
+                                    "Sitemap: https://linkwiki.info/sitemap.xml\n"
+                                    "Sitemap: https://linkwiki.info/sitemap-v2.xml\n"),
                      "/assets/directory.js": "old",
                      "/assets/directory-search.js": "old"}
             for category_path in CATEGORY_PATHS:
