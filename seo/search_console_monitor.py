@@ -1144,6 +1144,12 @@ def main():
         "core_keywords": core_keyword_rows(
             focused_keywords if focused_keywords is not None else keywords,
             focused_pages if focused_pages is not None else query_pages),
+        "global_core_weekly": core_keyword_weekly_comparison(
+            weekly_core_rows, end.isoformat()) if not weekly_core_error else [],
+        "global_core_weekly_error": weekly_core_error,
+        "korea_core_weekly": core_keyword_weekly_comparison(
+            korea_core_rows, end.isoformat()) if not korea_core_error else [],
+        "korea_core_weekly_error": korea_core_error,
         "core_query_error": focused_error,
         "inspections": inspections,
         "inspection_error": inspection_error,
