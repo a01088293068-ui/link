@@ -296,7 +296,7 @@ def check_crawl_files(robots, primary_sitemap, alias_sitemap):
     """Ensure both advertised sitemap URLs expose one identical canonical URL set."""
     problems = []
     advertised = set(re.findall(
-        r"^\\s*Sitemap:\\s*(https://[^\\s#]+)", robots, flags=re.I | re.M))
+        r"^\s*Sitemap:\s*(https://[^\s#]+)", robots, flags=re.I | re.M))
     for suffix in ("/sitemap.xml", "/sitemap-v2.xml"):
         url = SITE + suffix
         if url not in advertised:
