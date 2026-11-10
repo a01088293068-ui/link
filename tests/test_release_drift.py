@@ -108,7 +108,7 @@ class ReleaseDriftTests(unittest.TestCase):
                   '<p>검색</p><a href="https://www.naver.com/">방문</a>'
                   '</article></div>')
         self.assertEqual(directory_cards(sample), [
-            ("검색·포털", "네이버", "https://www.naver.com/")])
+            ("검색·포털", "네이버", "https://www.naver.com/", "검색")])
 
     def test_live_directory_cards_and_bundle_match_build(self):
         from seo.check_release_drift import directory_cards
@@ -158,6 +158,20 @@ class ReleaseDriftTests(unittest.TestCase):
             if path == "/directory":
                 return 200, BASE + path, DIRECTORY + source.replace(
                     '<h3>서비스99</h3>', '<h3>누락</h3>'), Message()
+            return fixture(path)
+        problems, _ = check(SOURCE, deployed, directory_source=source)
+        self.assertTrue(any("live static listings differ" in p for p in problems))
+
+    def test_stale_directory_description_is_reported(self):
+        source = ('<div id="v6-results">' + "".join(
+            '<article class="v6-card"><small>커뮤니티</small>'
+            f'<h3>서비스{i}</h3><p>상세한 이용 목적 {i}</p>'
+            f'<a href="https://example.com/{i}">방문</a></article>'
+            for i in range(211)) + '</div>')
+        def deployed(path):
+            if path == "/directory":
+                return (200, BASE + path, DIRECTORY + source.replace(
+                    "상세한 이용 목적 10", "과거의 짧은 설명"), Message())
             return fixture(path)
         problems, _ = check(SOURCE, deployed, directory_source=source)
         self.assertTrue(any("live static listings differ" in p for p in problems))
