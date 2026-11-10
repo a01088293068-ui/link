@@ -41,7 +41,9 @@ def release_evidence(dist):
     pages = {}
     for category, slug in CATEGORY_PATHS.items():
         html = (dist / "categories" / (slug + ".html")).read_text(encoding="utf-8")
-        count = len(re.findall(r'<article\b[^>]*class="item"', html))
+        # Categories use either an "item" or a "v6-card" listing template.
+        # Count both, never layout-only cards or unrelated site sections.
+        count = len(re.findall(r'<article\b[^>]*\bclass="[^"]*\b(?:item|v6-card)\b[^"]*"', html))
         if count != by_category[category]:
             raise ValueError(
                 f"{slug}: {count} HTML entries != {by_category[category]} source records")
