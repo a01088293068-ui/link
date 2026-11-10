@@ -836,6 +836,44 @@ def replace_directory_catalog_cards(html, records):
         html, count=1)
 
 
+def sync_category_card_copy(html, records, category):
+    """Preserve each category layout while deriving descriptions from one source."""
+    selected = [item for item in records if item.get("category") == category]
+    pattern = re.compile(
+        r'<article class="(?:item|v6-card)"[^>]*>.*?</article>', re.S)
+    index = 0
+
+    def update(match):
+        nonlocal index
+        if index >= len(selected):
+            raise RuntimeError("Category has extra rendered cards: " + category)
+        card = match.group(0)
+        item = selected[index]
+        index += 1
+        links = re.findall(r'<a\b[^>]*href="(https://[^"]+)"', card)
+        if len(links) != 1 or unescape(links[0]) != item["url"]:
+            raise RuntimeError("Category card URL or order differs from catalog: " + category)
+        paragraph = re.compile(r'<p>.*?</p>', re.S)
+        card, count = paragraph.subn('<p>' + escape(item["description"]) + '</p>',
+                                    card, count=1)
+        if count != 1:
+            raise RuntimeError("Category card has no description: " + item["name"])
+        if card.startswith('<article class="item"'):
+            data_search = escape(
+                item["name"] + " " + category + " " + item["description"], quote=True)
+            card, matches = re.subn(
+                r'data-search="[^"]*"', lambda _: 'data-search="' + data_search + '"',
+                card, count=1)
+            if matches != 1:
+                raise RuntimeError("Category search attribute missing: " + item["name"])
+        return card
+
+    html = pattern.sub(update, html)
+    if index != len(selected):
+        raise RuntimeError("Category has missing rendered cards: " + category)
+    return html
+
+
 def fingerprint_directory_scripts(html, assets_dir):
     """Version public directory scripts by their actual bytes, not hand-edited dates.
 
@@ -1406,6 +1444,7 @@ def build():
     for category, slug, _, _ in CATEGORY_LANDING:
         path = OUT / "categories" / f"{slug}.html"
         source = path.read_text(encoding="utf-8")
+        source = sync_category_card_copy(source, records, category)
         marker = '</main>'
         if source.count(marker) != 1:
             raise RuntimeError(f"Category page layout changed: {slug}")
