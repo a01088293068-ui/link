@@ -46,6 +46,37 @@ def release_evidence(dist):
             raise ValueError(
                 f"{slug}: {count} HTML entries != {by_category[category]} source records")
         pages[slug] = count
+    # Both published sitemap aliases must match byte for byte. A successful
+    # build must never advertise contradictory pages to Googlebot.
+    sitemap = (dist / "sitemap.xml").read_bytes()
+    sitemap_v2 = (dist / "sitemap-v2.xml").read_bytes()
+    if sitemap != sitemap_v2:
+        raise ValueError("sitemap.xml and sitemap-v2.xml differ")
+    from xml.etree import ElementTree as ET
+    try:
+        sitemap_root = ET.fromstring(sitemap)
+    except ET.ParseError as error:
+        raise ValueError(f"sitemap.xml is invalid XML: {error}") from error
+    ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    sitemap_urls = {
+        node.text for node in sitemap_root.findall("sm:url/sm:loc", ns) if node.text
+    }
+    required_urls = {
+        "https://linkwiki.info/",
+        "https://linkwiki.info/directory",
+        "https://linkwiki.info/categories/",
+    }
+    required_urls.update(
+        "https://linkwiki.info/categories/" + slug
+        for slug in CATEGORY_PATHS.values()
+    )
+    if not required_urls.issubset(sitemap_urls):
+        raise ValueError("sitemap.xml missing core canonical URLs: "
+                         + ", ".join(sorted(required_urls - sitemap_urls)))
+    robots = (dist / "robots.txt").read_text(encoding="utf-8")
+    for name in ("sitemap.xml", "sitemap-v2.xml"):
+        if "Sitemap: https://linkwiki.info/" + name not in robots:
+            raise ValueError(f"robots.txt does not advertise {name}")
     home = (dist / "index.html").read_text(encoding="utf-8")
     if f"{len(records)}개 사이트" not in home:
         raise ValueError("Homepage does not display the current total")
@@ -57,6 +88,10 @@ def release_evidence(dist):
         "directory_cards": cards,
         "js_records": len(records),
         "directory_json_sha256": sha256(source).hexdigest(),
+        "directory_html_sha256": sha256(card_html.encode("utf-8")).hexdigest(),
+        "directory_js_sha256": sha256(js.encode("utf-8")).hexdigest(),
+        "sitemap_sha256": sha256(sitemap).hexdigest(),
+        "sitemap_url_count": len(sitemap_urls),
         "google_indexing_verified": False,
         "public_deployment_verified": False,
         "rank_improvement_verified": False,
@@ -66,9 +101,14 @@ def release_evidence(dist):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dist", type=Path, default=Path("dist"))
+    parser.add_argument("--commit", default="", help="Exact checked-out source SHA")
     parser.add_argument("--output", type=Path, default=Path("seo/release-build-evidence.json"))
     args = parser.parse_args()
     result = release_evidence(args.dist)
+    if args.commit:
+        if not re.fullmatch(r"[0-9a-fA-F]{40}", args.commit):
+            parser.error("--commit must be a full 40-digit Git commit SHA")
+        result["source_commit"] = args.commit.lower()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n",
                            encoding="utf-8")
