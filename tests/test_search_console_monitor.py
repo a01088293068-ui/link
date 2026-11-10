@@ -607,6 +607,44 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('/urlInspection/index:inspect', request.full_url)
         self.assertEqual(request.get_header('Authorization'), 'Bearer token')
 
+    def test_exact_core_keyword_landing_is_prioritized_over_unrelated_impressions(self):
+        from tempfile import TemporaryDirectory
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "content").mkdir()
+            for day in ("20261108", "20261109", "20261110"):
+                (root / "content" / f"seo-{day}-topic.md").write_text("# test", encoding="utf-8")
+            ordinary = [
+                {"keys": [f"https://linkwiki.info/guides/ordinary-{i}"],
+                 "impressions": 100 - i} for i in range(8)
+            ]
+            exact = [
+                {"keys": ["주소모음", "https://linkwiki.info/guides/address-check"],
+                 "impressions": 5},
+                {"keys": ["링크모음", "https://linkwiki.info/guides/choose-directory"],
+                 "impressions": 3},
+                {"keys": ["사이트모음", "https://linkwiki.info/guides/security"],
+                 "impressions": 2},
+            ]
+            with patch.object(monitor, "ROOT", root):
+                targets = monitor.inspection_targets(ordinary, core_query_pages=exact)
+        self.assertIn("https://linkwiki.info/guides/choose-directory", targets)
+        self.assertIn("https://linkwiki.info/guides/security", targets)
+        self.assertNotIn("https://linkwiki.info/guides/ordinary-0", targets)
+        self.assertLessEqual(len(targets), 20)
+
+    def test_exact_keyword_inspection_rejects_unrelated_and_offsite_rows(self):
+        rows = [
+            {"keys": ["주소모음", "https://outside.example/landing"], "impressions": 40},
+            {"keys": ["링크모음 사이트", "https://linkwiki.info/guides/irrelevant"], "impressions": 30},
+            {"keys": ["사이트 모음", "https://linkwiki.info/guides/link-faq.html"], "impressions": 7},
+        ]
+        targets = monitor.inspection_targets([], core_query_pages=rows)
+        self.assertIn("https://linkwiki.info/guides/link-faq", targets)
+        self.assertIn("https://linkwiki.info/guides/link-faq.html", targets)
+        self.assertNotIn("https://linkwiki.info/guides/irrelevant", targets)
+        self.assertNotIn("https://outside.example/landing", targets)
+
     def test_inspection_targets_include_real_google_url_and_html_canonical(self):
         rows = [
             {'keys': ['https://linkwiki.info/guides/choose-directory'], 'impressions': 8},
