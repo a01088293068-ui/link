@@ -12,6 +12,9 @@ SOURCES = (
     "seo-20261110-korean-business-portals-guide.md",
     "seo-20261110-korean-education-sites-guide.md",
     "seo-20261110-korean-ai-tools-by-task-guide.md",
+    "seo-20261110-korean-sports-live-scores-guide.md",
+    "seo-20261110-korean-ott-video-site-selection-guide.md",
+    "seo-20261110-overseas-korean-community-guide.md",
 )
 CATEGORIES = (
     "community", "korean", "comics-directory", "webtoon",
