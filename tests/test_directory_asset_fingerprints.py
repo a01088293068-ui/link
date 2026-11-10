@@ -36,7 +36,7 @@ class DirectoryAssetFingerprintTests(unittest.TestCase):
         updated = fingerprint_directory_scripts(original, self.root)
         self.assertNotEqual(original, updated)
         for name in ("directory-search.js", "mobile-menu.js", "address-inspector.js"):
-            pattern = r"assets/" + re.escape(name) + r"\\?v=([a-f0-9]{12})"
+            pattern = r"assets/" + re.escape(name) + r"\?v=([a-f0-9]{12})"
             self.assertEqual(re.search(pattern, original).group(1),
                              re.search(pattern, updated).group(1))
 
