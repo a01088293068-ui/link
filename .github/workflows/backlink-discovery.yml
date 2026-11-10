@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           if [ -n "$SERPER_API_KEY" ]; then
-            python3 -B seo/backlink_pending_watch.py
+            python3 -B -m seo.backlink_pending_watch
           else
             echo "No SERPER_API_KEY: skip read-only publication lookup."
           fi
