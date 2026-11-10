@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'build.py'
+      - 'assets/directory-search.js'
+      - 'tests/test_directory_search.cjs'
       - 'seo/check_release_drift.py'
       - 'tests/test_release_drift.py'
       - 'tests/test_related_guides.py'
@@ -27,6 +29,8 @@ jobs:
           python-version: '3.12'
       - name: Verify audit rules with offline fixtures
         run: python3 -m unittest -v tests/test_release_drift.py tests/test_related_guides.py
+      - name: Verify actual directory search behaviors
+        run: node --test tests/test_directory_search.cjs
       - name: Build canonical deployment output
         run: python3 build.py
       - name: Compare live release with generated deployment output
