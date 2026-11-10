@@ -19,6 +19,7 @@ SITES = {
     "MeWebLink": "https://meweblink.com/website/linkwiki",
     "Ignlab Launch": "https://launch.ignlab.net/t/linkwiki-2",
     "OpenWebSide": "https://openwebside.com/products/757213b7-1ce9-41ed-9eb2-6bae9af82688",
+    "OpenWebSide (older public listing)": "https://openwebside.com/products/757213b7-1ce9-41ed-b0d7-a807df42adf7",
     "SaaSKR": "https://saaskr.com/saas/linkwiki-info",
     "Sidedock": "https://sidedock.io/products/%EB%A7%81%ED%81%AC%EC%9C%84%ED%82%A4linkwiki",
     "Tistory address guide": "https://blacktetherscan.tistory.com/2",
@@ -76,11 +77,24 @@ def check_one(name, url, fetch=None):
                 "detail": type(exc).__name__}
 
 
+def distinct_referring_domains(rows):
+    """Count domain diversity, never multiple pages on the same host as new domains."""
+    return sorted({
+        urlparse(row["url"]).hostname.removeprefix("www.")
+        for row in rows
+        if row["state"] == "public_link_found"
+        and urlparse(row["url"]).hostname
+    })
+
+
 def markdown(rows):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     lines = [f"# LinkWiki external public citation check — {now}", "",
              "Read-only HTTP checks. 200 + direct HTML anchor proves only current link visibility, not Google indexing or SEO value.",
              "403/404/errors are NOT treated as permanent deletion without separate human verification.",
+             "Confirmed distinct referring domains in this HTTP sample: " +
+             str(len(distinct_referring_domains(rows))) +
+             " (pages on the same domain count once; self-authored listings are not independent endorsements).",
              "", "| Source | Result | Evidence |", "|---|---|---|"]
     for r in rows:
         detail = r["detail"].replace("|", "/").replace("\n", " ")
