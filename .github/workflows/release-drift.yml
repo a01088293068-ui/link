@@ -6,7 +6,10 @@ on:
     paths:
       - 'build.py'
       - 'assets/directory-search.js'
+      - 'assets/directory.js'
       - 'tests/test_directory_search.cjs'
+      - 'tests/test_directory_dom.cjs'
+      - 'tests/test_directory_static_integrity.py'
       - 'seo/check_release_drift.py'
       - 'tests/test_release_drift.py'
       - 'tests/test_related_guides.py'
@@ -30,9 +33,11 @@ jobs:
       - name: Verify audit rules with offline fixtures
         run: python3 -m unittest -v tests/test_release_drift.py tests/test_related_guides.py
       - name: Verify actual directory search behaviors
-        run: node --test tests/test_directory_search.cjs
+        run: node --test tests/test_directory_search.cjs tests/test_directory_dom.cjs
       - name: Build canonical deployment output
         run: python3 build.py
+      - name: Validate server-rendered directory cards and slim browser bundle
+        run: python3 -m unittest -v tests/test_directory_static_integrity.py
       - name: Compare live release with generated deployment output
         shell: bash
         run: |
