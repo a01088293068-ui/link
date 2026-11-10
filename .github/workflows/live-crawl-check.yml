@@ -72,7 +72,7 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://linkwiki.info'
-          for path in / /directory /categories/ /blog/ /guides/directory-comparison /robots.txt /sitemap.xml; do
+          for path in / /directory /categories/ /blog/ /guides/directory-comparison /guides/directory-maintenance /robots.txt /sitemap.xml; do
             url="${BASE}${path}"
             echo "Checking ${url}"
             status=$(curl --location --silent --show-error --output /tmp/linkwiki-response --write-out '%{http_code}' --max-time 20 --retry 2 --retry-delay 2 "${url}")
@@ -85,6 +85,7 @@ jobs:
             fi
             if [[ "${path}" == '/sitemap.xml' ]]; then
               grep -Fq 'https://linkwiki.info/' /tmp/linkwiki-response || { echo '::error::Sitemap has no site URLs'; exit 1; }
+              grep -Fq '<loc>https://linkwiki.info/guides/directory-maintenance</loc>' /tmp/linkwiki-response || { echo '::error::Maintenance transparency page missing from sitemap'; exit 1; }
             fi
             if [[ "${path}" == '/' || "${path}" == '/directory' || "${path}" == '/categories/' || "${path}" == '/blog/' || "${path}" == '/guides/directory-comparison' ]]; then
               grep -Eq '<html|<HTML' /tmp/linkwiki-response || { echo "::error::No HTML page at ${url}"; exit 1; }
