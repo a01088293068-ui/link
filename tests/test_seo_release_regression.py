@@ -12,6 +12,36 @@ PUBLISHED_COUNT = len(json.loads((Path(__file__).resolve().parents[1] / 'assets/
 
 
 class SEOReleaseRegressionTests(unittest.TestCase):
+    def test_homepage_and_directory_task_navigation_is_real_and_crawlable(self):
+        from urllib.parse import quote
+        root = Path(__file__).resolve().parents[1]
+        source = (root / "assets/verified-directory.json").read_text(encoding="utf-8")
+        import json
+        names = {row["name"] for row in json.loads(source)}
+        for name in (
+            "국민신문고", "정부24", "KIPRIS 지식재산정보검색",
+            "특허로", "K-Startup 창업지원포털", "기업마당",
+        ):
+            self.assertIn(name, names)
+        home = (root / "dist/index.html").read_text(encoding="utf-8")
+        directory = (root / "dist/directory.html").read_text(encoding="utf-8")
+        self.assertEqual(home.count('class="wrap blog-home seo-home-task-paths"'), 1)
+        self.assertIn('href="/categories/search"', home)
+        self.assertIn('href="/guides/address-check"', home)
+        self.assertIn('href="/directory?q=' + quote("국민신문고", safe="") + '"', home)
+        self.assertEqual(directory.count('id="directory-task-paths"'), 1)
+        self.assertLess(directory.index('id="v6-form"'),
+                        directory.index('id="directory-task-paths"'))
+        self.assertLess(directory.index('id="directory-task-paths"'),
+                        directory.index('id="v6-results"'))
+        for name in (
+            "국민신문고", "정부24", "KIPRIS 지식재산정보검색",
+            "특허로", "K-Startup 창업지원포털", "기업마당",
+        ):
+            self.assertIn('href="/directory?q=' + quote(name, safe="") + '"',
+                          directory)
+        self.assertNotIn("최신주소 보장", home + directory)
+
     def test_directory_guide_links_are_published_and_task_relevant(self):
         from build import directory_relevant_guides
         from seo.site_audit import internal_inbound_links
