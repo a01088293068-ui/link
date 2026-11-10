@@ -804,7 +804,7 @@ def fingerprint_directory_scripts(html, assets_dir):
         digest = hashlib.sha256(script.read_bytes()).hexdigest()[:12]
         pattern = re.compile(
             r'(?P<start>src=")(?P<path>/?assets/' + re.escape(filename) +
-            r')(?:\\?[^"]*)?(?P<end>")'
+            r')(?:\?[^"]*)?(?P<end>")'
         )
         html, count = pattern.subn(
             lambda match: match.group("start") + match.group("path") +
