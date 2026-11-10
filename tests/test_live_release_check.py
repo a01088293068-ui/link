@@ -384,6 +384,31 @@ class LiveReleaseCheckTests(unittest.TestCase):
                             check_sitemap(good.replace(f"<url><loc>{SITE}/categories/video</loc></url>", ""))))
         self.assertTrue(any("invalid" in x for x in check_sitemap("<invalid")))
 
+    def test_robots_and_sitemap_alias_must_match_public_release(self):
+        from seo.live_release_check import check_crawl_files
+        sitemap = ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                   '<url><loc>https://linkwiki.info/</loc>'
+                   '<lastmod>2026-11-10</lastmod></url></urlset>')
+        robots = ('User-agent: *\\nAllow: /\\n'
+                  'Sitemap: https://linkwiki.info/sitemap.xml\\n'
+                  'Sitemap: https://linkwiki.info/sitemap-v2.xml\\n')
+        self.assertEqual(check_crawl_files(robots, sitemap, sitemap), [])
+        self.assertTrue(any(
+            "missing sitemap declaration" in issue
+            for issue in check_crawl_files(robots.replace(
+                'Sitemap: https://linkwiki.info/sitemap-v2.xml', ''), sitemap, sitemap)))
+        changed = sitemap.replace("2026-11-10", "2026-10-29")
+        self.assertTrue(any(
+            "URL/lastmod entries differ" in issue
+            for issue in check_crawl_files(robots, sitemap, changed)))
+        self.assertTrue(any(
+            "invalid XML" in issue
+            for issue in check_crawl_files(robots, sitemap, "<urlset>")))
+        duplicate = sitemap.replace("</urlset>", '<url><loc>https://linkwiki.info/</loc></url></urlset>')
+        self.assertTrue(any(
+            "duplicate URL" in issue
+            for issue in check_crawl_files(robots, duplicate, duplicate)))
+
     def test_live_directory_search_data_matches_real_published_records(self):
         import json
         from seo.live_release_check import extract_directory_sites
@@ -423,8 +448,8 @@ class LiveReleaseCheckTests(unittest.TestCase):
                 if path == "/assets/directory-search.js":
                     return ("terms.every(term => haystack.includes(term)) "
                             "function sortResults(")
-                if path == "/sitemap.xml":
-                    return (release / "sitemap.xml").read_text(encoding="utf-8")
+                if path in ("/sitemap.xml", "/sitemap-v2.xml", "/robots.txt"):
+                    return (release / path.removeprefix("/")).read_text(encoding="utf-8")
                 name = ("index.html" if path == "/" else
                         "categories/index.html" if path == "/categories/" else
                         "directory.html" if path == "/directory" else
@@ -464,7 +489,11 @@ class LiveReleaseCheckTests(unittest.TestCase):
                 for x in [SITE + "/", SITE + "/directory", SITE + "/categories/"] +
                          [SITE + x for x in CATEGORY_PATHS]) + "</urlset>"
             pages = {"/": home, "/directory": directory, "/categories/": hub,
-                     "/sitemap.xml": sitemap, "/assets/directory.js": "old",
+                     "/sitemap.xml": sitemap, "/sitemap-v2.xml": sitemap,
+                     "/robots.txt": ("User-agent: *\\nAllow: /\\n"
+                                    "Sitemap: https://linkwiki.info/sitemap.xml\\n"
+                                    "Sitemap: https://linkwiki.info/sitemap-v2.xml\\n"),
+                     "/assets/directory.js": "old",
                      "/assets/directory-search.js": "old"}
             for category_path in CATEGORY_PATHS:
                 slug = category_path.rsplit("/", 1)[-1]
