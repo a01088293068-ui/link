@@ -49,6 +49,7 @@ class CatalogRenderTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "unexpectedly empty"):
             render_directory_catalog_cards([])
         items = [dict(self.records[i % len(self.records)]) for i in range(200)]
+        items[-1] = dict(items[0])
         with self.assertRaisesRegex(RuntimeError, "Duplicate directory URL"):
             render_directory_catalog_cards(items)
 
