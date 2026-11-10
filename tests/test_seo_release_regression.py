@@ -144,7 +144,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertIn("K-Startup 창업지원포털은 창업 단계별 지원사업", html)
             self.assertIn("국민신문고는 기관에 민원", html)
             self.assertIn("식품안전나라는 식품 회수", html)
-            self.assertEqual(html.count('<article class="item"'), 50)
+            expected = sum(1 for record in json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8")) if record["category"] == "검색·포털")
+            self.assertEqual(html.count('<article class="item"'), expected)
             self.assertNotIn('name="robots" content="noindex"', html)
         self.assertIn('href="https://linkwiki.info/categories/search"', built)
 
