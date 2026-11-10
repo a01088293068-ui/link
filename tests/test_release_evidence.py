@@ -66,9 +66,9 @@ class ReleaseEvidenceTests(unittest.TestCase):
             for name in ("sitemap.xml", "sitemap-v2.xml"):
                 (dist / name).write_text(sitemap, encoding="utf-8")
             (dist / "robots.txt").write_text(
-                "User-agent: *\\nAllow: /\\n"
-                "Sitemap: https://linkwiki.info/sitemap.xml\\n"
-                "Sitemap: https://linkwiki.info/sitemap-v2.xml\\n",
+                "User-agent: *\nAllow: /\n"
+                "Sitemap: https://linkwiki.info/sitemap.xml\n"
+                "Sitemap: https://linkwiki.info/sitemap-v2.xml\n",
                 encoding="utf-8")
             self.assertEqual(release_evidence(dist)["sites"], 2)
             js.write_text("const sites=" + json.dumps(records[:-1], ensure_ascii=False)
