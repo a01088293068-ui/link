@@ -106,6 +106,12 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
             "안전운전 통합민원": "www.safedriving.or.kr",
             "표준국어대사전": "stdict.korean.go.kr",
             "서울시 교통정보 TOPIS": "topis.seoul.go.kr",
+            "K-Startup 창업지원포털": "www.k-startup.go.kr",
+            "특허로": "www.patent.go.kr",
+            "기업마당": "bizinfo.go.kr",
+            "KIPRIS 지식재산정보검색": "www.kipris.or.kr",
+            "관세청 유니패스": "unipass.customs.go.kr",
+            "대한상공회의소 코참넷": "www.korcham.net",
         }
         by_name = {record["name"]: record for record in self.records}
         category_cards = cards(ROOT / "categories/search.html")
@@ -146,6 +152,12 @@ const queries = [
   ['주소모음·링크모음 국민신문고', '국민신문고'],
   ['링크모음, 위택스', '위택스'],
   ['주소모음|표준국어대사전', '표준국어대사전'],
+  ['사이트모음 K-Startup 창업지원포털', 'K-Startup 창업지원포털'],
+  ['특허로', '특허로'],
+  ['기업마당', '기업마당'],
+  ['KIPRIS 지식재산정보검색', 'KIPRIS 지식재산정보검색'],
+  ['관세청 유니패스', '관세청 유니패스'],
+  ['대한상공회의소 코참넷', '대한상공회의소 코참넷'],
 ];
 for (const [query, expected] of queries) {
   const found = search.sortResults(rows, query);
