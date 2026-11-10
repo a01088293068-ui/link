@@ -19,7 +19,9 @@ jobs:
           python-version: '3.12'
       - name: Verify audit rules with offline fixtures
         run: python3 -m unittest -v tests/test_release_drift.py
-      - name: Compare live release with checked-out source
+      - name: Build canonical deployment output
+        run: python3 build.py
+      - name: Compare live release with generated deployment output
         shell: bash
         run: |
           set -o pipefail
