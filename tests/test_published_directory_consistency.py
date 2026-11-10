@@ -78,6 +78,18 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
         cls.records = json.loads(
             (ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
 
+    def test_korean_first_primary_directory_order(self):
+        preferred = (
+            "검색·포털", "커뮤니티", "AI 도구", "스포츠",
+            "영상·OTT", "만화·웹툰", "만화", "한인교민",
+        )
+        priority = {name: index for index, name in enumerate(preferred)}
+        indexes = [priority[record["category"]] for record in self.records]
+        self.assertEqual(indexes, sorted(indexes),
+                         "Home directory must present Korean search resources first")
+        self.assertEqual(self.records[0]["name"], "네이버")
+        self.assertEqual(self.records[0]["category"], "검색·포털")
+
     def test_valid_unique_https_records(self):
         self.assertGreater(len(self.records), 0)
         self.assertEqual(len(self.records), len({x["name"] for x in self.records}))
