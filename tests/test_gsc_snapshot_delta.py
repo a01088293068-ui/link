@@ -51,7 +51,7 @@ class GscDeltaTests(unittest.TestCase):
         now = report(date="2026-11-07", impressions=4)
         text = render(now, past)
         self.assertIn("동일 집계 종료일 · 성과 추세 판정 불가", text)
-        self.assertIn("크롤링 후", text)
+        self.assertIn("크롤링됨 - 현재 색인이 생성되지 않음", text)
         self.assertNotIn("순위 상승 확정", text)
 
     def test_real_new_crawl_and_verdict_are_separate(self):
@@ -72,7 +72,7 @@ class GscDeltaTests(unittest.TestCase):
         text = render(report(date="2026-11-08"), report(date="2026-11-07"))
         self.assertIn("크롤링됨 - 현재 색인이 생성되지 않음", text)
         self.assertIn("새로운 크롤링 증거 없음", text)
-        self.assertNotIn("색인 성공", text)
+        self.assertNotIn("PASS / 색인됨", text)
 
     def test_invalid_snapshot_schema_rejected(self):
         with self.assertRaises(ValueError):
