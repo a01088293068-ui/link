@@ -10,6 +10,8 @@ SOURCES = (
     "seo-20261110-korean-webtoon-platform-guide.md",
     "seo-20261110-korean-public-services-guide.md",
     "seo-20261110-korean-business-portals-guide.md",
+    "seo-20261110-korean-education-sites-guide.md",
+    "seo-20261110-korean-ai-tools-by-task-guide.md",
 )
 CATEGORIES = (
     "community", "korean", "comics-directory", "webtoon",
