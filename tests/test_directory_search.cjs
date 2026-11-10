@@ -71,3 +71,30 @@ test('Empty and generic searches retain the existing editorial listing order', (
   assert.deepEqual(sortResults(listings, '사이트 모음').map(x => x.name), listings.map(x => x.name));
   assert.deepEqual(sortResults(listings, '없는 사이트'), []);
 });
+
+test('Pasted HTTPS/HTTP URLs and www-prefix resolve exact registered services', () => {
+  const entries = [
+    {name: '네이버', url: 'https://www.naver.com/', category: '검색·포털'},
+    {name: '중고나라', url: 'https://cafe.naver.com/joonggonara', category: '커뮤니티'},
+    {name: '다른 네이버 카페', url: 'https://cafe.naver.com/another', category: '커뮤니티'},
+  ];
+  for (const query of [
+    'https://cafe.naver.com/joonggonara',
+    'http://cafe.naver.com/joonggonara?utm_source=test#foo',
+    'www.cafe.naver.com/joonggonara/',
+  ]) {
+    assert.deepEqual(sortResults(entries, query).map(x => x.name), ['중고나라'], query);
+  }
+  assert.deepEqual(sortResults(entries, 'https://www.naver.com/').map(x => x.name),
+    ['네이버']);
+  assert.deepEqual(sortResults(entries, 'https://unknown.example/').map(x => x.name), []);
+});
+
+test('Ordinary domain search still finds relevant subdomains', () => {
+  assert.deepEqual(sortResults(listings, 'naver.com').map(x => x.name),
+    ['네이버', '중고나라']);
+});
+
+test('Invalid URLs do not crash browser-side search', () => {
+  assert.doesNotThrow(() => sortResults(listings, 'https://%bad'));
+});
