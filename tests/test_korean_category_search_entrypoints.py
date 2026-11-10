@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from urllib.parse import quote
 
-from build import CATEGORY_LANDING, category_decision_guide
+from build import CATEGORY_LANDING, CATEGORY_SEARCH_EXAMPLES, category_decision_guide
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -19,7 +19,8 @@ class CategorySearchEntryPointTests(unittest.TestCase):
                 html=category_decision_guide(slug,self.records)
                 names=[record["name"] for record in self.records if record["category"]==category]
                 self.assertGreaterEqual(len(names),2)
-                for name in names[:2]:
+                self.assertTrue(all(name in names for name in CATEGORY_SEARCH_EXAMPLES[slug]))
+                for name in CATEGORY_SEARCH_EXAMPLES[slug]:
                     self.assertIn('href="/directory?q='+quote(name,safe="")+'"',html)
                 self.assertIn('href="/directory"',html)
                 self.assertEqual(html.count('href="/directory?q='),2)
