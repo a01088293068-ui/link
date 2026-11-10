@@ -240,6 +240,24 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(any("directory examples differ" in p
                             for p in check_page(expected, stale, "/directory")))
 
+    def test_live_korean_portal_guidance_must_match_release(self):
+        from seo.live_release_check import release_content_sections
+        path = "/categories/search"
+        guide = (
+            '<section class="wrap" aria-label="국내 생활 민원과 공공자료 찾기">'
+            '<h2>국내 공공서비스를 목적별로 찾는 방법</h2></section>'
+            '<section class="wrap" aria-label="창업·특허·기업지원 공식 사이트 비교">'
+            '<h2>창업·특허·기업지원 사이트는 이렇게 구분하세요</h2>'
+            '<p>KIPRIS와 특허로의 업무 차이</p></section>'
+        )
+        expected = page(path, "검색·포털", "검색·포털 링크모음", guide)
+        stale = expected.replace("KIPRIS와 특허로의 업무 차이",
+                                 "업데이트 전 안내")
+        self.assertEqual(len(release_content_sections(expected, path)), 2)
+        self.assertEqual(check_page(expected, expected, path), [])
+        self.assertTrue(any("directory examples differ" in issue
+                            for issue in check_page(expected, stale, path)))
+
     def test_live_category_listing_catches_stale_cards_with_unchanged_metadata(self):
         from seo.live_release_check import release_content_sections
         path = "/categories/search"
