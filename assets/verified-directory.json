@@ -549,79 +549,79 @@
     "name": "Microsoft Copilot",
     "category": "AI 도구",
     "url": "https://copilot.com/",
-    "description": "마이크로소프트의 AI 대화 및 작성 보조 서비스를 이용할 수 있습니다."
+    "description": "Microsoft의 대화형 AI로 질문 응답과 글쓰기·자료 정리 등을 보조하는 서비스입니다. 이용 계정과 요금제별 기능 범위를 확인하고 생성 답변을 검증하세요."
   },
   {
     "name": "NotebookLM",
     "category": "AI 도구",
     "url": "https://notebook.google.com/",
-    "description": "사용자가 추가한 자료를 바탕으로 내용을 정리하고 질문할 수 있는 도구입니다."
+    "description": "사용자가 추가한 문서·자료를 중심으로 요약과 질문 응답을 제공하는 도구입니다. 답변과 연결된 원본 출처를 확인하고 자료 공유 권한을 점검하세요."
   },
   {
     "name": "DeepL",
     "category": "AI 도구",
     "url": "https://www.deepl.com/translator",
-    "description": "여러 언어 사이의 텍스트 번역 기능을 제공하는 서비스입니다."
+    "description": "여러 언어 사이의 문장과 문서를 번역하는 서비스입니다. 전문 용어나 고유명사는 번역 원문과 대조하고 문서 업로드 시 개인정보를 확인하세요."
   },
   {
     "name": "Canva",
     "category": "AI 도구",
     "url": "https://www.canva.com/",
-    "description": "문서·이미지·발표 자료 등을 디자인하는 편집 도구를 제공합니다."
+    "description": "템플릿을 활용해 카드뉴스·문서·발표자료와 이미지를 제작하는 디자인 서비스입니다. 내보내기 형식과 유료 요소·사용 라이선스를 확인하세요."
   },
   {
     "name": "Hugging Face",
     "category": "AI 도구",
     "url": "https://huggingface.co/",
-    "description": "인공지능 모델과 데이터셋, 관련 개발 자료를 탐색할 수 있습니다."
+    "description": "AI 모델·데이터셋·데모와 개발 자료를 탐색하는 플랫폼입니다. 모델마다 공개 범위·라이선스·실행 환경이 다르니 이용 조건을 확인하세요."
   },
   {
     "name": "Google AI Studio",
     "category": "AI 도구",
     "url": "https://aistudio.google.com/",
-    "description": "Google의 AI 모델을 시험하고 프롬프트를 개발하는 웹 도구입니다."
+    "description": "Google AI 모델과 프롬프트를 시험하고 애플리케이션 연동을 준비할 수 있는 개발 도구입니다. API 사용량·비용·데이터 처리 정책을 확인하세요."
   },
   {
     "name": "Gamma",
     "category": "AI 도구",
     "url": "https://gamma.app/",
-    "description": "AI를 활용해 프레젠테이션과 문서, 웹 페이지를 제작하는 도구입니다."
+    "description": "AI와 템플릿을 이용해 프레젠테이션·문서·간단한 웹페이지 구성을 돕는 서비스입니다. 공유 범위와 내보내기 형식·요금제 조건을 확인하세요."
   },
   {
     "name": "ElevenLabs",
     "category": "AI 도구",
     "url": "https://elevenlabs.io/",
-    "description": "음성 합성과 AI 오디오 제작 기능을 제공하는 서비스입니다."
+    "description": "문장을 음성으로 변환하고 오디오 콘텐츠를 만드는 AI 도구입니다. 목소리 사용 권한·출력 언어·상업적 이용 조건을 확인하세요."
   },
   {
     "name": "QuillBot",
     "category": "AI 도구",
     "url": "https://quillbot.com/",
-    "description": "영문 등 다양한 글쓰기·문장 수정 및 작성 보조 기능을 제공합니다."
+    "description": "문장 재작성·교정·글쓰기 보조 등 텍스트 편집에 활용할 수 있습니다. 원문의 의미가 달라지지 않았는지 비교하고 인용 출처를 확인하세요."
   },
   {
     "name": "Runway",
     "category": "AI 도구",
     "url": "https://runway.com/",
-    "description": "AI 기반 영상·이미지 제작 및 편집 도구를 제공합니다."
+    "description": "AI 기반 영상 생성과 이미지·영상 편집 기능을 제공하는 제작 도구입니다. 생성물의 해상도·길이·사용 권한과 요금제별 제한을 확인하세요."
   },
   {
     "name": "Ideogram",
     "category": "AI 도구",
     "url": "https://ideogram.ai/",
-    "description": "텍스트 프롬프트를 이용해 이미지와 디자인을 제작할 수 있는 AI 서비스입니다."
+    "description": "텍스트 프롬프트로 이미지와 디자인 시안을 생성하는 AI 서비스입니다. 글자가 포함된 결과물은 오탈자와 사용 범위를 검토한 후 활용하세요."
   },
   {
     "name": "Suno",
     "category": "AI 도구",
     "url": "https://suno.com/",
-    "description": "텍스트를 바탕으로 음악을 생성하는 AI 도구입니다."
+    "description": "텍스트로 음악을 생성하고 곡의 스타일을 실험하는 AI 서비스입니다. 생성물의 공유·상업적 이용 권한은 선택한 이용 조건을 확인하세요."
   },
   {
     "name": "Leonardo AI",
     "category": "AI 도구",
     "url": "https://leonardo.ai/",
-    "description": "AI 기반 이미지와 영상 콘텐츠 제작을 지원합니다."
+    "description": "이미지 시안과 시각 콘텐츠를 생성·편집할 수 있는 AI 도구입니다. 작업 목적에 따라 생성 옵션과 파일 사용 권한을 확인하세요."
   },
   {
     "name": "뤼튼",
@@ -633,19 +633,19 @@
     "name": "클로바노트",
     "category": "AI 도구",
     "url": "https://clovanote.naver.com/",
-    "description": "음성 기록을 텍스트로 정리하고 메모를 관리하는 네이버 서비스입니다."
+    "description": "회의·인터뷰 등 음성 기록을 텍스트로 정리하고 메모를 관리하는 서비스입니다. 녹음 동의와 문장 인식 오류, 공유 범위를 확인하세요."
   },
   {
     "name": "타입캐스트",
     "category": "AI 도구",
     "url": "https://typecast.ai/",
-    "description": "AI 음성 합성과 오디오 콘텐츠 제작을 지원하는 서비스입니다."
+    "description": "텍스트를 AI 음성으로 바꿔 영상 내레이션이나 오디오 콘텐츠에 활용할 수 있습니다. 음성 선택과 이용 라이선스·내보내기 조건을 확인하세요."
   },
   {
     "name": "브루(Vrew)",
     "category": "AI 도구",
     "url": "https://vrew.ai/",
-    "description": "자동 자막과 영상 편집을 지원하는 도구입니다."
+    "description": "영상의 자동 자막 생성과 문장 기반 편집 등 제작 작업을 지원하는 도구입니다. 인식된 자막과 컷 편집 결과를 직접 검수하세요."
   },
   {
     "name": "미리캔버스",
@@ -681,79 +681,79 @@
     "name": "K리그",
     "category": "스포츠",
     "url": "https://www.kleague.com/",
-    "description": "K리그의 구단·경기 일정·기록 등 축구 정보를 확인할 수 있습니다."
+    "description": "국내 프로축구 구단별 일정·결과·순위와 관련 소식을 확인하는 리그 정보 서비스입니다. 시즌과 대회 구분 및 일정 변경 공지를 확인하세요."
   },
   {
     "name": "UEFA",
     "category": "스포츠",
     "url": "https://www.uefa.com/",
-    "description": "유럽 축구 대회의 일정, 결과 및 공식 소식을 확인할 수 있습니다."
+    "description": "유럽 축구 대회의 공식 경기 일정과 결과·대회 정보를 살펴볼 수 있습니다. 국가대표 대회와 클럽 대회, 경기 시간대를 구분하세요."
   },
   {
     "name": "MLB",
     "category": "스포츠",
     "url": "https://www.mlb.com/",
-    "description": "미국 프로야구 경기 일정과 결과, 팀 관련 정보를 제공합니다."
+    "description": "미국 프로야구의 경기 일정·결과·팀과 선수 기록을 살펴볼 수 있습니다. 정규시즌·포스트시즌 구분과 현지 시간대를 확인하세요."
   },
   {
     "name": "Formula 1",
     "category": "스포츠",
     "url": "https://www.formula1.com/",
-    "description": "포뮬러 원 경기 일정, 결과와 모터스포츠 소식을 확인할 수 있습니다."
+    "description": "포뮬러 원 그랑프리 일정과 예선·결승 결과, 드라이버·팀 정보를 확인합니다. 서킷 현지 시간과 순위 집계 시점을 구분하세요."
   },
   {
     "name": "FotMob",
     "category": "스포츠",
     "url": "https://www.fotmob.com/",
-    "description": "축구 경기 점수·일정·팀 통계를 조회할 수 있는 서비스입니다."
+    "description": "축구 리그별 경기 점수·일정·팀 통계와 선수 관련 정보를 살펴볼 수 있습니다. 연장전·승부차기 여부와 업데이트 시간을 확인하세요."
   },
   {
     "name": "NFL",
     "category": "스포츠",
     "url": "https://www.nfl.com/",
-    "description": "미국 프로미식축구 리그의 경기 일정·결과·팀 정보를 확인할 수 있습니다."
+    "description": "미국 프로미식축구 리그의 경기 결과·일정·팀 정보를 확인하는 공식 경로입니다. 정규시즌과 플레이오프 및 현지 경기 시간을 구분하세요."
   },
   {
     "name": "NHL",
     "category": "스포츠",
     "url": "https://www.nhl.com/",
-    "description": "북미 프로아이스하키 리그의 경기 일정·결과를 확인할 수 있습니다."
+    "description": "북미 아이스하키 리그의 경기 일정·결과·팀과 선수 기록을 조회할 수 있습니다. 정규시간·연장전·승부치기 결과를 구분하세요."
   },
   {
     "name": "ATP Tour",
     "category": "스포츠",
     "url": "https://www.atptour.com/",
-    "description": "남자 프로테니스 경기 일정과 선수 순위 등 공식 정보를 제공합니다."
+    "description": "남자 프로테니스 대회 일정과 선수 순위·경기 결과를 살펴볼 수 있습니다. 대회별 코트·등급과 랭킹 발표일을 확인하세요."
   },
   {
     "name": "WTA Tennis",
     "category": "스포츠",
     "url": "https://www.wtatennis.com/",
-    "description": "여자 프로테니스 경기와 선수 관련 공식 정보를 제공합니다."
+    "description": "여자 프로테니스의 대회 일정과 선수 순위·경기 결과를 제공하는 공식 정보 경로입니다. 대회 등급과 랭킹 기준일을 확인하세요."
   },
   {
     "name": "BBC Sport",
     "category": "스포츠",
     "url": "https://www.bbc.com/sport",
-    "description": "축구 등 여러 스포츠 종목의 뉴스와 경기 결과를 제공합니다."
+    "description": "축구 등 여러 스포츠 종목의 뉴스와 경기 결과를 다루는 스포츠 미디어입니다. 뉴스 작성일과 실제 경기 시간을 구분해 확인하세요."
   },
   {
     "name": "대한축구협회",
     "category": "스포츠",
     "url": "https://www.kfa.or.kr/",
-    "description": "대한축구협회의 국가대표·국내 축구 공식 소식을 확인할 수 있습니다."
+    "description": "국가대표팀과 국내 축구 관련 공식 발표·경기 정보를 살펴볼 수 있습니다. 대표팀 소집·일정·경기장 관련 변경 공지는 공식 안내를 확인하세요."
   },
   {
     "name": "KLPGA",
     "category": "스포츠",
     "url": "https://www.klpga.co.kr/",
-    "description": "한국여자프로골프 경기 일정과 선수·대회 정보를 제공합니다."
+    "description": "국내 여자프로골프 대회 일정·결과와 선수 관련 정보를 확인하는 공식 경로입니다. 라운드별 성적과 대회별 경기 조건을 구분하세요."
   },
   {
     "name": "KBO 공식 홈페이지",
     "category": "스포츠",
     "url": "https://www.koreabaseball.com/",
-    "description": "한국 프로야구 리그의 경기 일정과 기록 등 KBO 정보를 제공합니다."
+    "description": "한국 프로야구의 일정·경기 결과·순위와 기록을 확인할 수 있는 공식 정보 서비스입니다. 취소·우천 연기와 기록 정정 공지를 확인하세요."
   },
   {
     "name": "유튜브",
@@ -783,91 +783,91 @@
     "name": "디즈니+",
     "category": "영상·OTT",
     "url": "https://www.disneyplus.com/",
-    "description": "영화와 시리즈 등 스트리밍 콘텐츠를 제공하는 구독형 서비스입니다."
+    "description": "영화·드라마·시리즈 등 스트리밍 작품을 탐색하는 구독 서비스입니다. 원하는 작품의 제공 국가·시기와 요금제별 이용 조건을 확인하세요."
   },
   {
     "name": "Vimeo",
     "category": "영상·OTT",
     "url": "https://vimeo.com/",
-    "description": "영상을 게시하고 감상하거나 관리할 수 있는 비디오 플랫폼입니다."
+    "description": "영상 업로드·공유·호스팅과 재생 기능을 제공하는 플랫폼입니다. 업로더의 공개 범위와 동영상 다운로드·공유 권한을 확인하세요."
   },
   {
     "name": "Apple TV",
     "category": "영상·OTT",
     "url": "https://tv.apple.com/",
-    "description": "Apple의 영화 및 TV 프로그램 관련 스트리밍 서비스를 이용할 수 있습니다."
+    "description": "Apple의 영상 콘텐츠를 탐색하고 이용할 수 있는 서비스입니다. 구독 콘텐츠와 별도 대여·구매 작품을 구분하고 기기 지원 여부를 확인하세요."
   },
   {
     "name": "Prime Video",
     "category": "영상·OTT",
     "url": "https://www.primevideo.com/",
-    "description": "영화와 시리즈 등 스트리밍 콘텐츠를 제공하는 영상 서비스입니다."
+    "description": "영화·드라마·시리즈 등 영상 콘텐츠를 제공하는 스트리밍 서비스입니다. 국가별 작품 제공 범위와 구독·대여 조건을 확인하세요."
   },
   {
     "name": "Plex",
     "category": "영상·OTT",
     "url": "https://watch.plex.tv/",
-    "description": "영화·TV 콘텐츠 탐색과 개인 미디어 관리 기능을 제공합니다."
+    "description": "개인 미디어 라이브러리 관리와 영상 콘텐츠 탐색 기능을 제공하는 플랫폼입니다. 소유한 미디어와 서비스 제공 콘텐츠의 이용 조건을 구분하세요."
   },
   {
     "name": "Rakuten Viki",
     "category": "영상·OTT",
     "url": "https://www.viki.com/",
-    "description": "한국 드라마 등 아시아 영상 콘텐츠를 제공하는 스트리밍 플랫폼입니다."
+    "description": "아시아 드라마와 영상 작품을 찾아볼 수 있는 스트리밍 서비스입니다. 자막 언어·시청 지역·무료 및 구독 이용 범위를 확인하세요."
   },
   {
     "name": "MUBI",
     "category": "영상·OTT",
     "url": "https://mubi.com/",
-    "description": "영화 감상과 작품 탐색에 초점을 맞춘 구독형 스트리밍 서비스입니다."
+    "description": "영화 큐레이션과 작품 감상에 초점을 맞춘 스트리밍 서비스입니다. 거주 국가별 제공 작품과 감상 가능 기간·구독 조건을 확인하세요."
   },
   {
     "name": "Pluto TV",
     "category": "영상·OTT",
     "url": "https://pluto.tv/",
-    "description": "광고 기반의 무료 TV 채널과 주문형 영상을 제공하는 서비스입니다."
+    "description": "광고 기반 무료 TV 채널과 주문형 영상 콘텐츠를 제공하는 서비스입니다. 접속 지역과 기기에 따른 채널 제공 여부를 확인하세요."
   },
   {
     "name": "치지직",
     "category": "영상·OTT",
     "url": "https://chzzk.naver.com/",
-    "description": "국내 게임·스포츠·엔터테인먼트 실시간 방송과 다시보기를 제공하는 플랫폼입니다."
+    "description": "국내 게임·취미·엔터테인먼트 주제의 실시간 방송과 다시보기를 제공하는 플랫폼입니다. 방송 채널과 다시보기 공개 여부를 확인하세요."
   },
   {
     "name": "멜론",
     "category": "영상·OTT",
     "url": "https://www.melon.com/",
-    "description": "국내 음원과 음악 콘텐츠를 감상할 수 있는 음악 스트리밍 서비스입니다."
+    "description": "국내외 음원을 검색하고 플레이리스트를 구성할 수 있는 음악 스트리밍 서비스입니다. 재생·다운로드 조건과 요금제 차이를 확인하세요."
   },
   {
     "name": "FLO",
     "category": "영상·OTT",
     "url": "https://www.music-flo.com/",
-    "description": "국내 음악 스트리밍과 추천 재생 기능을 제공하는 서비스입니다."
+    "description": "음원을 검색하고 취향에 맞는 재생목록을 이용할 수 있는 음악 스트리밍 서비스입니다. 이용권별 재생·오프라인 기능 조건을 확인하세요."
   },
   {
     "name": "EBS",
     "category": "영상·OTT",
     "url": "https://www.ebs.co.kr/",
-    "description": "교육 방송의 방송 프로그램과 학습·영상 콘텐츠를 제공합니다."
+    "description": "교육 방송 프로그램과 학습용 영상·자료를 찾아볼 수 있는 서비스입니다. 학년·교과과정과 프로그램별 제공 시점을 구분하세요."
   },
   {
     "name": "SBS",
     "category": "영상·OTT",
     "url": "https://www.sbs.co.kr/",
-    "description": "SBS 방송 프로그램과 뉴스, 영상 콘텐츠 관련 정보를 제공합니다."
+    "description": "SBS의 방송 편성·뉴스·프로그램 정보와 영상 콘텐츠를 확인할 수 있습니다. 실시간 방송·다시보기 제공 여부와 시청 조건을 확인하세요."
   },
   {
     "name": "MBC",
     "category": "영상·OTT",
     "url": "https://www.mbc.co.kr/",
-    "description": "MBC 방송 편성과 프로그램 및 관련 영상 정보를 확인할 수 있습니다."
+    "description": "MBC 방송 프로그램·편성 정보와 뉴스·영상 관련 자료를 볼 수 있습니다. 방송 지역·편성 변경과 다시보기 이용 조건을 확인하세요."
   },
   {
     "name": "KBS",
     "url": "https://www.kbs.co.kr/",
     "category": "영상·OTT",
-    "description": "KBS 방송 프로그램과 편성, 관련 영상 및 뉴스 정보를 확인할 수 있습니다."
+    "description": "KBS 방송 프로그램과 편성표·뉴스 등 관련 정보를 찾아볼 수 있습니다. 지역 방송과 실시간 시청·다시보기 이용 조건을 구분하세요."
   },
   {
     "name": "네이버 웹툰",
