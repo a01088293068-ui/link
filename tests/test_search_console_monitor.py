@@ -627,7 +627,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
                  "impressions": 2},
             ]
             with patch.object(monitor, "ROOT", root):
-                targets = monitor.inspection_targets(ordinary, core_query_pages=exact)
+                targets = monitor.inspection_targets(ordinary, limit=18, core_query_pages=exact)
         self.assertIn("https://linkwiki.info/guides/choose-directory", targets)
         self.assertIn("https://linkwiki.info/guides/security", targets)
         self.assertNotIn("https://linkwiki.info/guides/ordinary-0", targets)
