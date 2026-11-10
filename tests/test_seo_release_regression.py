@@ -87,7 +87,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertNotIn("추천 1위", html)
 
     def test_category_editorial_guides_are_unique_and_grounded(self):
-        from build import category_decision_guide, CATEGORY_DECISION_GUIDES, CATEGORY_LANDING
+        from build import category_decision_guide, CATEGORY_DECISION_GUIDES, CATEGORY_LANDING, CATEGORY_SEARCH_EXAMPLES
         root = Path(__file__).resolve().parents[1]
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
         self.assertEqual(len(CATEGORY_DECISION_GUIDES), 8)
@@ -100,8 +100,10 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertEqual(page.count('aria-label="이 분야의 목적별 선택 방법"'), 1, slug)
             self.assertIn('href="/guides/address-check"', html)
             names = [x["name"] for x in records if x["category"] == category]
-            self.assertIn(names[0], html)
-            self.assertIn(names[1], html)
+            self.assertGreaterEqual(len(names), 2)
+            for selected in CATEGORY_SEARCH_EXAMPLES[slug]:
+                self.assertIn(selected, names)
+                self.assertIn(selected, html)
             headings = re.findall(r"<li><h3>(.*?)</h3>", html)
             self.assertTrue(seen_headings.isdisjoint(headings), slug)
             seen_headings.update(headings)
