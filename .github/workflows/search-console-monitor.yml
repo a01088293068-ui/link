@@ -9,6 +9,8 @@ on:
     paths:
       - '.github/workflows/search-console-monitor.yml'
       - 'seo/search_console_monitor.py'
+      - 'seo/index_priority_plan.py'
+      - 'tests/test_index_priority_plan.py'
       - 'tests/test_search_console_monitor.py'
   schedule:
     - cron: '25 3 * * *'
