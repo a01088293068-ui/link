@@ -103,6 +103,12 @@ class SiteAuditTests(unittest.TestCase):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root / "assets").mkdir()
+            # audit_site intentionally stops when no sitemap can be parsed.
+            # Supply a minimal valid sitemap to exercise the count audit.
+            (root / "sitemap.xml").write_text(
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                '<url><loc>https://linkwiki.info/</loc></url></urlset>',
+                encoding="utf-8")
             records = [
                 {"name": f"Example {i}", "category": "검색·포털",
                  "description": "테스트용 자료", "url": f"https://example.org/{i}"}
@@ -139,6 +145,12 @@ class SiteAuditTests(unittest.TestCase):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root / "assets").mkdir()
+            # audit_site intentionally stops when no sitemap can be parsed.
+            # Supply a minimal valid sitemap to exercise the count audit.
+            (root / "sitemap.xml").write_text(
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                '<url><loc>https://linkwiki.info/</loc></url></urlset>',
+                encoding="utf-8")
             records = [
                 {"name": f"Site {i}", "category": "검색·포털",
                  "description": "실제 테스트 항목", "url": f"https://example.org/{i}"}
