@@ -1057,6 +1057,45 @@ def category_article_links(posts, slug, limit=5):
     return selected
 
 
+def add_editorial_related_articles(posts, max_links=3):
+    """Cross-link only guide articles sharing a real category intent.
+
+    Select the newest matching guides in stable order. Do not invent links or
+    add generic keyword blocks to articles without an actual match.
+    """
+    from seo.auto_seo import related_categories
+    if not 1 <= max_links <= 5:
+        raise ValueError("Invalid related article limit")
+    result = {}
+    for current in posts:
+        current_categories = {url for _, url in related_categories(current["title"])}
+        if not current_categories:
+            continue
+        candidates = []
+        for other in posts:
+            if other["url"] == current["url"]:
+                continue
+            overlap = current_categories.intersection(
+                {url for _, url in related_categories(other["title"])}
+            )
+            if overlap:
+                candidates.append((len(overlap), other))
+        candidates.sort(key=lambda item: (-item[0], item[1]["url"]))
+        if not candidates:
+            continue
+        links = candidates[:max_links]
+        result[current["url"]] = (
+            '<section class="blog-related" aria-label="관련 사이트 이용 가이드">'
+            '<h2>관련 사이트 이용 가이드</h2><ul>'
+            + ''.join(
+                f'<li><a href="{escape(post["url"], quote=True)}">'
+                f'{escape(post["title"])}</a></li>'
+                for _, post in links)
+            + '</ul></section>'
+        )
+    return result
+
+
 def build():
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -1113,6 +1152,21 @@ def build():
         target.write_text(document(title, desc, canonical, article, header, footer), encoding="utf-8")
         posts.append({"title": title, "description": desc, "url": url, "date": display_date,
                       "modified": stable_post_lastmod(source)})
+
+    # Related articles add genuine crawlable paths between matching guides.
+    # Construct after all posts are collected, without modifying Markdown.
+    related_sections = add_editorial_related_articles(posts)
+    for post in posts:
+        section = related_sections.get(post["url"])
+        if not section:
+            continue
+        slug = post["url"].strip("/").split("/")[-1]
+        article_path = OUT / "blog" / slug / "index.html"
+        html = article_path.read_text(encoding="utf-8")
+        anchor = '<div class="blog-bottom">'
+        if html.count(anchor) != 1:
+            raise RuntimeError(f"Blog related links placement changed: {slug}")
+        article_path.write_text(html.replace(anchor, section + anchor, 1), encoding="utf-8")
 
     def cards(entries):
         if not entries:
