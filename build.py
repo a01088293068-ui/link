@@ -5,6 +5,7 @@ Cloudflare Pages: build command `python3 build.py`; output directory `dist`.
 No third-party dependencies, no external network calls, no overwrites of source.
 """
 from datetime import datetime, timezone
+import hashlib
 from html import escape, unescape
 from pathlib import Path
 from urllib.parse import quote, urlparse
@@ -788,6 +789,33 @@ def homepage_task_paths(records):
     )
 
 
+def fingerprint_directory_scripts(html, assets_dir):
+    """Version public directory scripts by their actual bytes, not hand-edited dates.
+
+    This changes URLs only when a script changes, preserving CDN caching and
+    avoiding stale browser search code after deployment.
+    """
+    filenames = ("directory-search.js", "directory.js", "mobile-menu.js",
+                 "address-inspector.js")
+    for filename in filenames:
+        script = assets_dir / filename
+        if not script.is_file():
+            raise RuntimeError("Missing directory browser asset: " + filename)
+        digest = hashlib.sha256(script.read_bytes()).hexdigest()[:12]
+        pattern = re.compile(
+            r'(?P<start>src=")(?P<path>/?assets/' + re.escape(filename) +
+            r')(?:\\?[^"]*)?(?P<end>")'
+        )
+        html, count = pattern.subn(
+            lambda match: match.group("start") + match.group("path") +
+            "?v=" + digest + match.group("end"), html,
+        )
+        if count != 1:
+            raise RuntimeError(
+                f"Expected one directory script reference for {filename}; found {count}")
+    return html
+
+
 def directory_task_paths(records):
     """Helpful canonical search links derived from existing catalog records."""
     existing = {entry.get("name") for entry in records if isinstance(entry, dict)}
@@ -1290,6 +1318,7 @@ def build():
     # Keep current list/search code unchanged; the new verifier is isolated.
     directory_html = directory_html.replace(
         '</body>', '<script defer src="/assets/address-inspector.js"></script></body>', 1)
+    directory_html = fingerprint_directory_scripts(directory_html, OUT / "assets")
     directory_path.write_text(directory_html, encoding="utf-8")
     category_cards = []
     for category, slug, heading, purpose in CATEGORY_LANDING:
