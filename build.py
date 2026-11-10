@@ -745,6 +745,18 @@ def directory_task_paths(records):
         ("창업지원과 중소기업 지원",
          "K-Startup 창업지원포털", "기업마당",
          "창업 단계별 공고와 일반 중소기업 정책지원 공고를 비교하세요."),
+        ("국세 신고와 지방세 납부",
+         "국세청 홈택스", "위택스",
+         "국세와 지방세의 담당 기관을 구분해 실제 납부 경로를 찾으세요."),
+        ("건강보험과 국민연금 업무",
+         "국민건강보험공단", "국민연금공단",
+         "보험 자격·보험료 확인과 연금 가입·수급 안내를 구분하세요."),
+        ("취업 지원과 학자금 지원",
+         "고용24", "한국장학재단",
+         "구직 관련 제도와 대학 학자금 지원의 신청 조건을 따로 확인하세요."),
+        ("날씨와 도시 교통정보",
+         "기상청 날씨누리", "서울시 교통정보 TOPIS",
+         "전국 날씨 예보와 서울 도로 소통·통제 안내를 목적에 맞게 확인하세요."),
     )
     output = []
     for label, first, second, description in tasks:
@@ -977,7 +989,7 @@ def article_category_links(title, categories):
     )
 
 
-def category_article_links(posts, slug, limit=3):
+def category_article_links(posts, slug, limit=5):
     """Select published, relevant guides only; never invent article URLs."""
     from seo.auto_seo import related_categories
     selected = []
