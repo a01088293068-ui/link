@@ -116,6 +116,6 @@ test('browser back navigation restores query and category', () => {
 });
 
 test('JavaScript bundle has no second hardcoded list of directory sites', () => {
-  assert.doesNotMatch(source, /const\\s+sites\\s*=\\s*\\[/);
-  assert.match(source, /querySelectorAll\\('article\\.v6-card'\\)/);
+  assert.doesNotMatch(source, /const\s+sites\s*=\s*\[/);
+  assert.match(source, /querySelectorAll\('article\.v6-card'\)/);
 });
