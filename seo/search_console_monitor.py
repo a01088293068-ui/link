@@ -516,7 +516,7 @@ def format_index_inspection(rows, error=''):
                       '- 조회 결과만으로 자동 색인 신청이나 검색 순위 상승을 보장하지 않습니다.', ''])
         for row in (unknown + crawled)[:12]:
             lines.append('- ' + str(row.get('url', '')) + ' — ' +
-                         str(row.get('coverage', '정보 없음')).replace('\\n', ' '))
+                         str(row.get('coverage', '정보 없음')).replace('\n', ' '))
     lines.append(priority_index_checks(rows))
     lines.append(format_google_discovery_evidence(rows, error))
     lines.append(technical_index_diagnostic(rows))
@@ -893,7 +893,7 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                   '| 검색어 | 노출 | 클릭 | 평균 순위 |',
                   '|---|---:|---:|---:|'])
     for row in opportunities:
-        key = str((row.get('keys') or [''])[0]).replace('|', '\\|').replace('\\n', ' ')
+        key = str((row.get('keys') or [''])[0]).replace('|', '\\|').replace('\n', ' ')
         lines.append(f"| {key} | {int(row.get('impressions', 0))} | "
                      f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
     if not opportunities:
@@ -913,7 +913,7 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                   '|---|---|---:|---:|---:|'])
     for row in candidates:
         keys = row['keys']
-        query = str(keys[0]).replace('|', '\\|').replace('\\n', ' ')
+        query = str(keys[0]).replace('|', '\\|').replace('\n', ' ')
         page = str(keys[1]).replace('|', '%7C')
         lines.append(f"| {query} | {page} | {int(row.get('impressions', 0))} | "
                      f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
@@ -1152,7 +1152,7 @@ def main():
         "sitemap_error": sitemap_error,
     }
     args.output.with_name('search-console-snapshot.json').write_text(
-        json.dumps(snapshot, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8')
+        json.dumps(snapshot, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     args.output.write_text(report, encoding='utf-8')
     print(f'Wrote {args.output}: {len(keywords)} queries, {len(pages)} pages')
 
