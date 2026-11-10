@@ -40,12 +40,12 @@ def fetch(path):
 def related_targets(html):
     """Extract the hrefs in the generated, visitor-visible related guides block."""
     match = re.search(
-        r'<section\\b[^>]*class="blog-related"[^>]*>.*?</section>',
+        r'<section\b[^>]*class="blog-related"[^>]*>.*?</section>',
         html, re.S | re.I,
     )
     if not match:
         return set()
-    return set(re.findall(r'<a\\b[^>]*href="([^"]+)"', match.group(), re.I))
+    return set(re.findall(r'<a\b[^>]*href="([^"]+)"', match.group(), re.I))
 
 
 def check(source_html, load=fetch, article_sources=None):
@@ -97,9 +97,9 @@ def check(source_html, load=fetch, article_sources=None):
                 errors.append(f"{path}: article canonical mismatch")
             if expected.value("h1") != actual.value("h1"):
                 errors.append(f"{path}: article heading differs from built output")
-            if any(re.search(r"\\bnoindex\\b", x, re.I) for x in actual.robots):
+            if any(re.search(r"\bnoindex\b", x, re.I) for x in actual.robots):
                 errors.append(f"{path}: article HTML noindex")
-            if re.search(r"\\bnoindex\\b", str(headers.get("X-Robots-Tag", "")), re.I):
+            if re.search(r"\bnoindex\b", str(headers.get("X-Robots-Tag", "")), re.I):
                 errors.append(f"{path}: article HTTP noindex")
             missing = targets - related_targets(body)
             if missing:
