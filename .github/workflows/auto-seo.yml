@@ -67,7 +67,7 @@ jobs:
           git add content/ seo/history.json
           if ! git diff --cached --quiet; then
             git commit -m 'Add quality-reviewed LinkWiki information article'
-            git push origin HEAD:main
+            bash seo/push_with_rebase.sh
           else
             echo 'No article passed review; nothing committed.'
           fi
