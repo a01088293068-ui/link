@@ -292,6 +292,40 @@ def check_sitemap(text):
     return [f"sitemap missing {url}" for url in sorted(required - urls)]
 
 
+def check_crawl_files(robots, primary_sitemap, alias_sitemap):
+    """Ensure both advertised sitemap URLs expose one identical canonical URL set."""
+    problems = []
+    advertised = set(re.findall(
+        r"^\\s*Sitemap:\\s*(https://[^\\s#]+)", robots, flags=re.I | re.M))
+    for suffix in ("/sitemap.xml", "/sitemap-v2.xml"):
+        url = SITE + suffix
+        if url not in advertised:
+            problems.append("robots.txt: missing sitemap declaration " + url)
+    def entries(raw, label):
+        try:
+            root = ET.fromstring(raw)
+        except ET.ParseError as error:
+            problems.append(f"{label}: invalid XML: {error}")
+            return None
+        found = {}
+        for entry in root:
+            loc = next((node.text for node in entry
+                        if node.tag.rsplit("}", 1)[-1] == "loc"), None)
+            if not loc:
+                continue
+            lastmod = next((node.text for node in entry
+                            if node.tag.rsplit("}", 1)[-1] == "lastmod"), None)
+            if loc in found:
+                problems.append(f"{label}: duplicate URL " + loc)
+            found[loc] = lastmod
+        return found
+    primary = entries(primary_sitemap, "sitemap.xml")
+    alias = entries(alias_sitemap, "sitemap-v2.xml")
+    if primary is not None and alias is not None and primary != alias:
+        problems.append("sitemap-v2.xml: URL/lastmod entries differ from sitemap.xml")
+    return problems
+
+
 def google_index_blocked_by_header(header_values):
     """Detect generic/Googlebot noindex headers; ignore other crawler rules."""
     for header in header_values:
@@ -366,6 +400,15 @@ def run(dist, fetch=fetch_public):
                 expected_sitemap.read_text(encoding="utf-8"), sitemap))
     except (OSError, RuntimeError, ValueError) as error:
         problems.append(f"/sitemap.xml: fetch failed: {error}")
+    # Catch inconsistent sitemap aliases or missing robots declarations after
+    # deployment, even when the primary sitemap alone looks healthy.
+    try:
+        live_robots = fetch("/robots.txt")
+        primary = fetch("/sitemap.xml")
+        alias = fetch("/sitemap-v2.xml")
+        problems.extend(check_crawl_files(live_robots, primary, alias))
+    except (OSError, RuntimeError, ValueError) as error:
+        problems.append(f"crawl files: fetch failed: {error}")
     try:
         live_search = fetch("/assets/directory-search.js")
         if "terms.every(term => haystack.includes(term))" not in live_search or "function sortResults(" not in live_search:
