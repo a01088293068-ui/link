@@ -5,16 +5,17 @@ from seo.check_release_drift import BASE, check
 SOURCE = "<title>주소모음 링크모음 사이트모음</title><h1>주소모음 링크모음 사이트모음</h1>"
 HOME = f'<title>주소모음 링크모음 사이트모음</title><link rel="canonical" href="{BASE}/"><h1>주소모음 링크모음 사이트모음</h1>'
 DIRECTORY = f'<link rel="canonical" href="{BASE}/directory">'
+ROBOTS = f"User-agent: *\\nAllow: /\\nSitemap: {BASE}/sitemap.xml\\n"
 SITEMAP = f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{BASE}/</loc></url><url><loc>{BASE}/directory</loc></url></urlset>'
 
 def fixture(path):
-    return 200, BASE + path, {"/": HOME, "/directory": DIRECTORY, "/sitemap.xml": SITEMAP}[path], Message()
+    return 200, BASE + path, {"/": HOME, "/directory": DIRECTORY, "/sitemap.xml": SITEMAP, "/robots.txt": ROBOTS}[path], Message()
 
 class ReleaseDriftTests(unittest.TestCase):
     def test_healthy_release(self):
         problems, details = check(SOURCE, fixture)
         self.assertEqual(problems, [])
-        self.assertEqual(len(details), 3)
+        self.assertEqual(len(details), 4)
 
     def test_stale_title_and_h1(self):
         def stale(path):
@@ -34,6 +35,25 @@ class ReleaseDriftTests(unittest.TestCase):
         problems, _ = check(SOURCE, broken)
         self.assertTrue(any("HTTP noindex" in p for p in problems))
         self.assertTrue(any("sitemap missing /directory" in p for p in problems))
+
+    def test_robots_missing_sitemap_is_detected(self):
+        def broken(path):
+            status, url, body, headers = fixture(path)
+            if path == "/robots.txt":
+                body = "User-agent: *\\nAllow: /\\n"
+            return status, url, body, headers
+        problems, _ = check(SOURCE, broken)
+        self.assertIn("/robots.txt: canonical sitemap reference missing", problems)
+
+    def test_robots_googlebot_disallow_is_detected(self):
+        def broken(path):
+            status, url, body, headers = fixture(path)
+            if path == "/robots.txt":
+                body = (f"User-agent: Googlebot\\nDisallow: /\\n\\n"
+                        f"User-agent: *\\nAllow: /\\nSitemap: {BASE}/sitemap.xml\\n")
+            return status, url, body, headers
+        problems, _ = check(SOURCE, broken)
+        self.assertTrue(any("potential Googlebot block" in p for p in problems))
 
     def test_failed_fetch_is_not_claimed_as_unindexed(self):
         def error(path):
