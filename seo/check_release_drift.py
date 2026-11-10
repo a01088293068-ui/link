@@ -68,6 +68,7 @@ def directory_cards(html):
             re.search(r'<small>(.*?)</small>', fragment, re.I | re.S),
             re.search(r'<h3>(.*?)</h3>', fragment, re.I | re.S),
             re.search(r'<a\b[^>]*\bhref="([^"]+)"', fragment, re.I | re.S),
+            re.search(r'<p>(.*?)</p>', fragment, re.I | re.S),
         ]
         if any(piece is None for piece in parts):
             return []
