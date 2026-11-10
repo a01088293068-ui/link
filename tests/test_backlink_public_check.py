@@ -22,6 +22,9 @@ class BacklinkPublicCheckTests(unittest.TestCase):
         ]
         self.assertEqual(monitor.distinct_referring_domains(rows),
                          ["openwebside.com", "saaskr.com"])
+        for row in rows:
+            row["name"] = "Existing public listing"
+            row["detail"] = "read-only fixture"
         report = monitor.markdown(rows)
         self.assertIn("distinct referring domains in this HTTP sample: 2", report)
         self.assertIn("count once", report)
