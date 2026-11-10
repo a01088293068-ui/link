@@ -48,7 +48,7 @@ def decide(row, updated):
                 "최신 버전 재크롤링 이후 색인 판정 확인; 반복적인 경미 수정 보류")
     if crawl_day and changed and crawl_day == changed:
         return (index_state, "변경일과 같은 날 · 시각 미확정",
-                "변경 시각과 크롤링 시각 비교")
+                "수정 시각과 크롤링 시각 비교")
     if index_state == "색인됨":
         return (index_state, "변경 후 크롤링" if crawl_day and changed else
                 "시각 미확정", "핵심 검색어 노출·클릭·랜딩 URL 비교")
