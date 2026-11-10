@@ -14,38 +14,52 @@ PRIORITY_PATHS = ("/", "/directory", "/categories/", "/categories/search")
 
 
 def decide(row, updated):
-    """Return factual crawl/index state and a single next action."""
+    """Separate stored Google index verdict from the recrawl freshness.
+
+    The two signals answer different questions. A stale crawl must never
+    conceal a 'Crawled - currently not indexed' Google state.
+    """
     if not row:
-        return ("검사 기록 없음", "URL Inspection API의 저장 상태 확인")
+        return ("검사 기록 없음", "재크롤링 정보 없음",
+                "URL Inspection API 저장 상태 조회")
     coverage = str(row.get("coverage") or "")
     state = str(row.get("verdict") or "UNKNOWN")
     last_crawl = str(row.get("last_crawl") or "")
-    crawl_day = None
+    lower = coverage.casefold()
+    if state == "PASS":
+        index_state = "색인됨"
+    elif ("crawled" in lower or "크롤링됨" in coverage) and (
+            "not indexed" in lower or "색인이 생성되지" in coverage):
+        index_state = "크롤링 후 미색인"
+    elif "unknown to google" in lower or "알려지지" in coverage:
+        index_state = "Google 발견 기록 없음"
+    else:
+        index_state = (coverage or state or "알 수 없음")
     try:
-        if last_crawl:
-            crawl_day = date.fromisoformat(last_crawl[:10])
+        crawl_day = date.fromisoformat(last_crawl[:10]) if last_crawl else None
     except ValueError:
-        return ("크롤링 날짜 오류", "GSC 원본 날짜 형식 확인")
+        return (index_state, "크롤링 날짜 형식 오류", "GSC 원본 날짜 검토")
     try:
         changed = date.fromisoformat(str(updated)) if updated else None
     except ValueError:
-        return ("콘텐츠 변경일 오류", "변경 이력 원본 확인")
+        return (index_state, "콘텐츠 변경 날짜 형식 오류", "수정 이력 검토")
     if crawl_day and changed and crawl_day < changed:
-        return ("최신 변경 전 크롤링", "Google 재크롤링 이후 색인 결과 확인; 동일 페이지 반복 수정 보류")
+        return (index_state, "최근 변경 전 크롤링",
+                "최신 버전 재크롤링 이후 색인 판정 확인; 반복적인 경미 수정 보류")
     if crawl_day and changed and crawl_day == changed:
-        return ("같은 날짜 크롤링 · 시점 미확정", "실제 수정 시각과 크롤링 시각 비교; 순위 변화 단정 금지")
-    if state == "PASS":
-        return ("색인됨" if crawl_day else "색인됨 · 크롤링 시각 미제공",
-                "정확 검색어 노출·클릭·검색 의도 비교")
-    lower = coverage.casefold()
-    if ("crawled" in lower or "크롤링됨" in coverage) and (
-        "not indexed" in lower or "색인이 생성되지" in coverage):
-        return ("크롤링 후 미색인", "콘텐츠 고유 가치·검색 의도 적합성 검토; 자동 재제출 금지")
-    if "unknown to google" in lower or "알려지지" in coverage:
-        return ("Google 발견 기록 없음", "내부 링크·사이트맵·URL 접근성의 실제 증거 확인")
-    if not crawl_day:
-        return ("크롤링 시점 불명", "색인 데이터와 현재 HTTP 응답을 분리해 점검")
-    return ("추가 확인 필요", "GSC 저장 상태의 색인 허용·robots·canonical 검사")
+        return (index_state, "변경일과 같은 날 · 시각 미확정",
+                "변경 시각과 크롤링 시각 비교")
+    if index_state == "색인됨":
+        return (index_state, "변경 후 크롤링" if crawl_day and changed else
+                "시각 미확정", "핵심 검색어 노출·클릭·랜딩 URL 비교")
+    if index_state == "크롤링 후 미색인":
+        return (index_state, "변경 후 크롤링" if crawl_day and changed else
+                "시각 미확정", "콘텐츠 고유 가치·중복·사용 목적 점검; 자동 반복 제출 금지")
+    if index_state == "Google 발견 기록 없음":
+        return (index_state, "미발견/시각 없음",
+                "내부 링크·사이트맵·HTTP 접근성 점검")
+    return (index_state, "시각 미확정" if not crawl_day else "변경 이후 크롤링",
+            "GSC robots·canonical·Google 선택 URL 비교")
 
 
 def render(snapshot):
@@ -57,16 +71,16 @@ def render(snapshot):
         "- 이 표는 Google에 저장된 URL 검사 결과이며 현재 공개 HTML이나 실시간 순위가 아닙니다.",
         "- Google의 재크롤링 이전에는 최신 편집 효과를 판단할 수 없습니다.", "",
         "## 중요 URL", "",
-        "| URL | 마지막 중요한 수정 | Google 마지막 크롤링 | 상태 | 우선 조치 |",
-        "|---|---|---|---|---|",
+        "| URL | 마지막 중요한 수정 | Google 마지막 크롤링 | 색인 저장 상태 | 수정 후 재크롤링 | 우선 조치 |",
+        "|---|---|---|---|---|---|",
     ]
     for path in PRIORITY_PATHS:
         url = SITE + path
         row = inspected.get(url)
         changed = changes.get(path, "")
-        status, action = decide(row, changed)
+        status, freshness, action = decide(row, changed)
         crawled = str((row or {}).get("last_crawl") or "-")
-        values = (url, changed or "-", crawled, status, action)
+        values = (url, changed or "-", crawled, status, freshness, action)
         lines.append("| " + " | ".join(str(v).replace("|", "%7C").replace("\n", " ") for v in values) + " |")
     lines.extend(["", "## 정확 검색어 (브랜드·연관 검색어 제외)", "",
                   "| 검색어 | GSC 공개 노출 | 클릭 | 평균 순위 | 실제 노출 URL |",
@@ -82,6 +96,31 @@ def render(snapshot):
         else:
             cells = (key, "미관측", "-", "-", "검색어 비공개 가능")
         lines.append("| " + " | ".join(str(v).replace("|", "%7C") for v in cells) + " |")
+    lines.extend([
+        "", "## 한국 이용자 기준 정확 검색어 7일 성과", "",
+        "- Google Search Console 국가 필터 대한민국(kor) 적용. "
+        "위 전 세계 합산 순위와 혼동하지 않습니다.",
+        "- GSC 검색어 익명화로 '관측 없음'은 노출이 정확히 0회라는 뜻이 아닙니다.",
+        "| 키워드 | 직전 7일 노출 / 클릭 / 순위 | 최근 7일 노출 / 클릭 / 순위 |",
+        "|---|---|---|",
+    ])
+    korea_error = snapshot.get("korea_core_weekly_error")
+    if korea_error:
+        lines.append("| 한국 GSC 조회 오류 | " + str(korea_error) + " | - |")
+    else:
+        weekly = {r.get("keyword"): r for r in snapshot.get("korea_core_weekly") or []}
+        for key in ("주소모음", "링크모음", "사이트모음"):
+            item = weekly.get(key) or {}
+            def fmt(v):
+                if not v or not v.get("observed"):
+                    return "관측 없음"
+                position = v.get("position")
+                return (str(v.get("impressions", 0)) + " / " +
+                        str(v.get("clicks", 0)) + " / " +
+                        (str(position) if position is not None else "-"))
+            lines.append("| " + key + " | " + fmt(item.get("previous")) +
+                         " | " + fmt(item.get("recent")) + " |")
+    lines.append("")
     for error_key, label in (("core_query_error", "핵심 검색어"), ("inspection_error", "URL 검사"),
                              ("sitemap_error", "사이트맵")):
         if snapshot.get(error_key):
