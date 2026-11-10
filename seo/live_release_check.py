@@ -137,6 +137,14 @@ def release_content_sections(html, path):
             # cannot pass after the published directory grows to 44.
             r'<article\b(?=[^>]*\bclass="[^"]*\bitem\b)[^>]*>.*?</article>',
         )
+    # The Korean search category contains an original official-service
+    # comparison in addition to its generic category cards. Verify the
+    # substantive guidance deploys with the exact checked-out build.
+    if path == "/categories/search":
+        patterns[path] += (
+            r'<section class="wrap" aria-label="국내 생활 민원과 공공자료 찾기">.*?</section>',
+            r'<section class="wrap" aria-label="창업·특허·기업지원 공식 사이트 비교">.*?</section>',
+        )
     blocks = []
     for expression in patterns.get(path, ()):
         blocks.extend(re.findall(expression, html, flags=re.S))
