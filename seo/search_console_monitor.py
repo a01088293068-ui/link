@@ -965,6 +965,63 @@ def collect_index_inspections(token, property_url, urls, inspector=None):
     return results, "; ".join(errors)
 
 
+
+def format_core_keyword_index_alignment(focused_pages, inspections, error=''):
+    """Tie exact target-query landing pages to Google stored index status.
+
+    This is a prioritization aid, not an automatic diagnosis of SEO quality.
+    A query-page impression and a non-PASS inspection may coexist because
+    Search Analytics and URL Inspection cover different times.
+    """
+    by_url = {str(item.get('url', '')): item for item in inspections}
+    lines = [
+        '', '## 핵심 키워드 실제 노출 페이지와 색인 상태 연결', '',
+        '- 정확 검색어별 Search Console 노출 URL을 URL 검사 저장 상태와 나란히 봅니다.',
+        '- 노출된 적이 있는 URL을 색인 상태만으로 검색 미노출이라고 단정하지 않습니다.',
+        '| 검색어 | 실제 노출 페이지 | 노출 | Google URL 검사 | 우선 확인할 작업 |',
+        '|---|---|---:|---|---|',
+    ]
+    if error:
+        return '\n'.join(lines + ['| 조회 실패 | - | - | - | API 조회 상태 확인 |', ''])
+    matched = []
+    for row in focused_pages or []:
+        keys = row.get('keys') or []
+        if len(keys) < 2:
+            continue
+        query = ''.join(str(keys[0]).split())
+        url = str(keys[1])
+        if query not in CORE_KEYWORDS or not url.startswith('https://linkwiki.info/'):
+            continue
+        matched.append((query, url, int(row.get('impressions') or 0)))
+    for query, url, impressions in sorted(matched, key=lambda x: (-x[2], x[0], x[1]))[:30]:
+        inspection = by_url.get(url)
+        if inspection is None:
+            status = '미조회'
+            next_step = '해당 노출 URL을 URL 검사 대상으로 추가'
+        else:
+            status = str(inspection.get('coverage') or inspection.get('verdict') or '정보 없음')
+            obstacles = technical_index_obstacles(inspection)
+            if obstacles:
+                next_step = '; '.join(obstacles)
+            elif inspection.get('verdict') == 'PASS':
+                next_step = '해당 URL의 검색 의도·제목·콘텐츠 유용성 점검'
+            elif '색인이 생성되지' in status or 'not indexed' in status.casefold():
+                next_step = '변경 후 재크롤링 날짜·고유 콘텐츠·중복 여부 검토'
+            else:
+                next_step = '마지막 크롤링·발견 경로를 확인하고 결과 갱신 대기'
+        safe = lambda value: str(value).replace('|', '%7C').replace('\n', ' ')
+        lines.append('| ' + ' | '.join(map(safe, (
+            query, url, impressions, status, next_step))) + ' |')
+    if not matched:
+        lines.append('| 정확 검색어·페이지 조합 관측 없음 | - | - | - | 검색어 데이터 공개 여부 확인 |')
+    lines.extend([
+        '', '- 핵심 키워드가 발견되지 않아도 사이트 전체가 색인되지 않았다는 뜻은 아닙니다.',
+        '- Google에 마지막으로 저장된 검사 결과는 현재 공개 HTML과 다를 수 있습니다.',
+        '- 이 표만으로 순위 상승이나 색인 성공을 주장할 수 없습니다.', '',
+    ])
+    return '\n'.join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--property', default=os.environ.get('GSC_PROPERTY', 'sc-domain:linkwiki.info'))
@@ -1045,6 +1102,7 @@ def main():
     report += format_core_keyword_weekly_comparison(
         korea_core_rows, end.isoformat(), korea_core_error, scope='korea')
     report += format_core_landing_page_split(focused_pages, focused_error)
+    report += format_core_keyword_index_alignment(focused_pages, inspections, focused_error or inspection_error)
     report += format_index_inspection(inspections, inspection_error)
     report += format_search_visibility_inspection_conflicts(
         pages, inspections, end.isoformat(), inspection_error)
