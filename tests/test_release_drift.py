@@ -55,6 +55,47 @@ class ReleaseDriftTests(unittest.TestCase):
         problems, _ = check(SOURCE, broken)
         self.assertTrue(any("potential Googlebot block" in p for p in problems))
 
+    def test_published_related_link_matches_build(self):
+        from seo.check_release_drift import related_targets
+        path = "/blog/sample-guide/"
+        guide = (f'<link rel="canonical" href="{BASE}{path}">'
+                 '<h1>커뮤니티 가이드</h1>'
+                 '<section class="blog-related" aria-label="관련 사이트 이용 가이드">'
+                 '<a href="/blog/other-guide/">다른 가이드</a></section>')
+        self.assertEqual(related_targets(guide), {"/blog/other-guide/"})
+        def load(url):
+            if url == path:
+                return 200, BASE + path, guide, Message()
+            return fixture(url)
+        problems, observations = check(SOURCE, load, article_sources={path: guide})
+        self.assertEqual(problems, [])
+        self.assertTrue(any("1 related links" in line for line in observations))
+
+    def test_missing_live_related_link_is_detected(self):
+        path = "/blog/sample-guide/"
+        guide = (f'<link rel="canonical" href="{BASE}{path}">'
+                 '<h1>커뮤니티 가이드</h1>'
+                 '<section class="blog-related"><a href="/blog/other-guide/">다른 가이드</a></section>')
+        def load(url):
+            if url == path:
+                return 200, BASE + path, guide.replace(
+                    '<a href="/blog/other-guide/">다른 가이드</a>', ''), Message()
+            return fixture(url)
+        problems, _ = check(SOURCE, load, article_sources={path: guide})
+        self.assertTrue(any("missing deployed related links" in p for p in problems))
+
+    def test_article_noindex_is_detected(self):
+        path = "/blog/sample-guide/"
+        guide = (f'<link rel="canonical" href="{BASE}{path}">'
+                 '<h1>커뮤니티 가이드</h1>'
+                 '<section class="blog-related"><a href="/blog/other-guide/">다른 가이드</a></section>')
+        def load(url):
+            if url == path:
+                return 200, BASE + path, '<meta name="robots" content="noindex">' + guide, Message()
+            return fixture(url)
+        problems, _ = check(SOURCE, load, article_sources={path: guide})
+        self.assertTrue(any("article HTML noindex" in p for p in problems))
+
     def test_failed_fetch_is_not_claimed_as_unindexed(self):
         def error(path):
             if path == "/": raise TimeoutError("network")
