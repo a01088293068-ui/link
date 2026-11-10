@@ -24,7 +24,7 @@ jobs:
           python-version: '3.12'
       - name: Test public link check without network
         run: python3 -B -m unittest discover -s tests -p 'test_backlink_public_check.py' -v
-      - name: Probe three public listing URLs (read-only)
+      - name: Check all documented public backlink URLs (read-only)
         run: python3 seo/backlink-public-check.py
       - name: Upload dated evidence report
         if: always()
