@@ -5,7 +5,7 @@ from seo.check_release_drift import BASE, check
 SOURCE = "<title>주소모음 링크모음 사이트모음</title><h1>주소모음 링크모음 사이트모음</h1>"
 HOME = f'<title>주소모음 링크모음 사이트모음</title><link rel="canonical" href="{BASE}/"><h1>주소모음 링크모음 사이트모음</h1>'
 DIRECTORY = f'<link rel="canonical" href="{BASE}/directory">'
-ROBOTS = f"User-agent: *\\nAllow: /\\nSitemap: {BASE}/sitemap.xml\\n"
+ROBOTS = f"User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n"
 SITEMAP = f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{BASE}/</loc></url><url><loc>{BASE}/directory</loc></url></urlset>'
 
 def fixture(path):
@@ -40,7 +40,7 @@ class ReleaseDriftTests(unittest.TestCase):
         def broken(path):
             status, url, body, headers = fixture(path)
             if path == "/robots.txt":
-                body = "User-agent: *\\nAllow: /\\n"
+                body = "User-agent: *\nAllow: /\n"
             return status, url, body, headers
         problems, _ = check(SOURCE, broken)
         self.assertIn("/robots.txt: canonical sitemap reference missing", problems)
@@ -49,8 +49,8 @@ class ReleaseDriftTests(unittest.TestCase):
         def broken(path):
             status, url, body, headers = fixture(path)
             if path == "/robots.txt":
-                body = (f"User-agent: Googlebot\\nDisallow: /\\n\\n"
-                        f"User-agent: *\\nAllow: /\\nSitemap: {BASE}/sitemap.xml\\n")
+                body = (f"User-agent: Googlebot\nDisallow: /\n\n"
+                        f"User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n")
             return status, url, body, headers
         problems, _ = check(SOURCE, broken)
         self.assertTrue(any("potential Googlebot block" in p for p in problems))
