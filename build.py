@@ -789,6 +789,53 @@ def homepage_task_paths(records):
     )
 
 
+def render_directory_catalog_cards(records):
+    """Render crawlable cards directly from the verified catalog."""
+    if not isinstance(records, list) or len(records) < 200:
+        raise RuntimeError("Verified directory catalog unexpectedly empty")
+    cards = []
+    seen = set()
+    for item in records:
+        if not isinstance(item, dict):
+            raise RuntimeError("Directory entry is not an object")
+        name, category, description, url = (
+            item.get("name"), item.get("category"),
+            item.get("description"), item.get("url"))
+        if any(not isinstance(value, str) or not value.strip()
+               for value in (name, category, description, url)):
+            raise RuntimeError("Directory entry missing required text")
+        parsed = urlparse(url)
+        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+            raise RuntimeError("Directory entry must use an HTTPS host: " + name)
+        if url in seen:
+            raise RuntimeError("Duplicate directory URL: " + url)
+        seen.add(url)
+        cards.append(
+            '<article class="v6-card"><small>' + escape(category) +
+            '</small><h3>' + escape(name) + '</h3><p>' + escape(description) +
+            '</p><span class="site-domain">' + escape(parsed.hostname) + '</span>' +
+            '<a aria-label="' + escape(name, quote=True) +
+            ' 사이트 새 창에서 열기" href="' + escape(url, quote=True) +
+            '" rel="noopener noreferrer external" target="_blank">사이트 방문 ↗</a>'
+            '</article>'
+        )
+    return "".join(cards)
+
+
+def replace_directory_catalog_cards(html, records):
+    """Keep published static cards synchronized with the verified catalog."""
+    pattern = re.compile(
+        r'(?P<open><div class="v6-grid" id="v6-results">)'
+        r'(?P<cards>.*?)'
+        r'(?P<close></div>)', re.S)
+    if len(pattern.findall(html)) != 1:
+        raise RuntimeError("Directory static list container changed")
+    rendered = render_directory_catalog_cards(records)
+    return pattern.sub(
+        lambda match: match.group("open") + rendered + match.group("close"),
+        html, count=1)
+
+
 def fingerprint_directory_scripts(html, assets_dir):
     """Version public directory scripts by their actual bytes, not hand-edited dates.
 
@@ -1259,6 +1306,7 @@ def build():
     directory_path = OUT / "directory.html"
     directory_html = directory_path.read_text(encoding="utf-8")
     directory_html = sync_directory_count(directory_html, len(records))
+    directory_html = replace_directory_catalog_cards(directory_html, records)
     # Put Korean site navigation above the 171-card grid, where visitors see it.
     shortcut_anchor = '<form class="v6-search" id="v6-form"'
     if directory_html.count(shortcut_anchor) != 1:
