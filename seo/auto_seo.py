@@ -220,7 +220,7 @@ CATEGORY_RELATED = (
     (("웹툰",), "웹툰 링크모음", "/categories/webtoon"),
     (("만화", "웹소설"), "만화·웹소설 사이트모음", "/categories/comics-directory"),
     (("AI 도구", "인공지능"), "AI 도구 사이트모음", "/categories/ai"),
-    (("포털", "검색엔진"), "검색·포털 링크모음", "/categories/search"),
+    (("포털", "검색엔진", "민원", "공공서비스", "공공기관", "창업", "특허", "통관"), "검색·포털 링크모음", "/categories/search"),
     (("스포츠", "경기 일정", "경기 결과"), "스포츠 사이트모음", "/categories/sports"),
     (("OTT", "영상", "스트리밍"), "영상·OTT 링크모음", "/categories/video"),
 )
