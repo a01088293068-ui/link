@@ -39,7 +39,7 @@ class KoreanTopicRouteTests(unittest.TestCase):
                 article = dist / "blog" / slug / "index.html"
                 self.assertTrue(article.exists(), slug)
                 html = article.read_text(encoding="utf-8")
-                self.assertIn('href="' + url + '" rel="canonical"', html)
+                self.assertIn('<link rel="canonical" href="' + url + '">', html)
                 self.assertIn('<div class="blog-table-scroll"><table>', html)
                 self.assertIn('<loc>' + url + '</loc>', sitemap)
                 category_html = (dist / "categories" / (category.split("/")[-1] + ".html")).read_text(encoding="utf-8")
