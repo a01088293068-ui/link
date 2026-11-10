@@ -11,6 +11,21 @@ SPEC.loader.exec_module(monitor)
 
 class BacklinkPublicCheckTests(unittest.TestCase):
     URL = "https://example-directory.test/linkwiki"
+    def test_multiple_openwebside_listings_count_as_one_referring_domain(self):
+        self.assertIn("OpenWebSide (older public listing)", monitor.SITES)
+        rows = [
+            {"url": monitor.SITES["OpenWebSide"], "state": "public_link_found"},
+            {"url": monitor.SITES["OpenWebSide (older public listing)"],
+             "state": "public_link_found"},
+            {"url": monitor.SITES["SaaSKR"], "state": "public_link_found"},
+            {"url": monitor.SITES["MeWebLink"], "state": "unverified"},
+        ]
+        self.assertEqual(monitor.distinct_referring_domains(rows),
+                         ["openwebside.com", "saaskr.com"])
+        report = monitor.markdown(rows)
+        self.assertIn("distinct referring domains in this HTTP sample: 2", report)
+        self.assertIn("count once", report)
+
     def test_verified_korean_listing_is_monitored_as_existing_reference(self):
         self.assertEqual(
             monitor.SITES["VibeLabs Lab (self-authored listing)"],
