@@ -548,13 +548,13 @@
   {
     "name": "Microsoft Copilot",
     "category": "AI 도구",
-    "url": "https://copilot.microsoft.com/",
+    "url": "https://copilot.com/",
     "description": "마이크로소프트의 AI 대화 및 작성 보조 서비스를 이용할 수 있습니다."
   },
   {
     "name": "NotebookLM",
     "category": "AI 도구",
-    "url": "https://notebooklm.google.com/",
+    "url": "https://notebook.google.com/",
     "description": "사용자가 추가한 자료를 바탕으로 내용을 정리하고 질문할 수 있는 도구입니다."
   },
   {
@@ -602,7 +602,7 @@
   {
     "name": "Runway",
     "category": "AI 도구",
-    "url": "https://runwayml.com/",
+    "url": "https://runway.com/",
     "description": "AI 기반 영상·이미지 제작 및 편집 도구를 제공합니다."
   },
   {
@@ -806,7 +806,7 @@
   {
     "name": "Plex",
     "category": "영상·OTT",
-    "url": "https://www.plex.tv/",
+    "url": "https://watch.plex.tv/",
     "description": "영화·TV 콘텐츠 탐색과 개인 미디어 관리 기능을 제공합니다."
   },
   {
