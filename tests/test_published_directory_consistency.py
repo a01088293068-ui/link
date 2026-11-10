@@ -139,6 +139,28 @@ class PublishedDirectoryConsistencyTests(unittest.TestCase):
             len([record for record in self.records
                  if record["category"] == "검색·포털"]), len(category_cards))
 
+    def test_new_korean_service_batch_is_consistent_across_static_pages(self):
+        published = {
+            "EBSi 고교강의": ("검색·포털", "www.ebsi.co.kr"),
+            "학교알리미": ("검색·포털", "www.schoolinfo.go.kr"),
+            "커리어넷": ("검색·포털", "www.career.go.kr"),
+            "네이버 지도": ("검색·포털", "map.naver.com"),
+            "당근": ("커뮤니티", "www.daangn.com"),
+        }
+        by_name = {r["name"]: r for r in self.records}
+        all_cards = cards(ROOT / "directory.html")
+        for name, (category, host) in published.items():
+            with self.subTest(name=name):
+                self.assertIn(name, by_name)
+                item = by_name[name]
+                self.assertEqual(item["category"], category)
+                self.assertEqual(urlsplit(item["url"]).hostname, host)
+                self.assertIn(item, all_cards)
+                slug = CATEGORY_FILES[category]
+                self.assertIn(item, cards(ROOT / "categories" / (slug + ".html")))
+        self.assertEqual(len(self.records), 211)
+        self.assertIn("211개 사이트 검색", (ROOT / "index.html").read_text(encoding="utf-8"))
+
     def test_actual_browser_search_engine_finds_new_korean_services(self):
         import shutil
         import subprocess
