@@ -1,0 +1,47 @@
+import unittest
+from email.message import Message
+from seo.check_release_drift import BASE, check
+
+SOURCE = "<title>주소모음 링크모음 사이트모음</title><h1>주소모음 링크모음 사이트모음</h1>"
+HOME = f'<title>주소모음 링크모음 사이트모음</title><link rel="canonical" href="{BASE}/"><h1>주소모음 링크모음 사이트모음</h1>'
+DIRECTORY = f'<link rel="canonical" href="{BASE}/directory">'
+SITEMAP = f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{BASE}/</loc></url><url><loc>{BASE}/directory</loc></url></urlset>'
+
+def fixture(path):
+    return 200, BASE + path, {"/": HOME, "/directory": DIRECTORY, "/sitemap.xml": SITEMAP}[path], Message()
+
+class ReleaseDriftTests(unittest.TestCase):
+    def test_healthy_release(self):
+        problems, details = check(SOURCE, fixture)
+        self.assertEqual(problems, [])
+        self.assertEqual(len(details), 3)
+
+    def test_stale_title_and_h1(self):
+        def stale(path):
+            status, url, body, headers = fixture(path)
+            if path == "/": body = body.replace("주소모음 링크모음 사이트모음", "오래된 홈페이지")
+            return status, url, body, headers
+        problems, _ = check(SOURCE, stale)
+        self.assertTrue(any("differs" in p for p in problems))
+        self.assertTrue(any("missing 주소모음" in p for p in problems))
+
+    def test_noindex_and_missing_sitemap(self):
+        def broken(path):
+            status, url, body, headers = fixture(path)
+            if path == "/directory": headers["X-Robots-Tag"] = "noindex"
+            if path == "/sitemap.xml": body = body.replace(f"<url><loc>{BASE}/directory</loc></url>", "")
+            return status, url, body, headers
+        problems, _ = check(SOURCE, broken)
+        self.assertTrue(any("HTTP noindex" in p for p in problems))
+        self.assertTrue(any("sitemap missing /directory" in p for p in problems))
+
+    def test_failed_fetch_is_not_claimed_as_unindexed(self):
+        def error(path):
+            if path == "/": raise TimeoutError("network")
+            return fixture(path)
+        problems, _ = check(SOURCE, error)
+        self.assertTrue(any("fetch error" in p for p in problems))
+        self.assertFalse(any("not indexed" in p for p in problems))
+
+if __name__ == "__main__":
+    unittest.main()
