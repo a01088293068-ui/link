@@ -24,6 +24,7 @@ SITES = {
     "Tistory address guide": "https://blacktetherscan.tistory.com/2",
     "StartupAccelerator": "https://startupaccelerator.dev/project/linkwiki",
     "PHIndex": "https://phindex.si/en/products/linkwiki.info",
+    "VibeLabs Lab (self-authored listing)": "https://vibelabs.kr/lab/projects/238",
 }
 REPORT = ROOT / "seo/backlink-public-check-report.md"
 
