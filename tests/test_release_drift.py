@@ -96,6 +96,64 @@ class ReleaseDriftTests(unittest.TestCase):
         problems, _ = check(SOURCE, load, article_sources={path: guide})
         self.assertTrue(any("article HTML noindex" in p for p in problems))
 
+    def test_directory_card_parser_reads_static_metadata(self):
+        from seo.check_release_drift import directory_cards
+        sample = ('<div id="v6-results"><article class="v6-card">'
+                  '<small>검색·포털</small><h3>네이버</h3>'
+                  '<p>검색</p><a href="https://www.naver.com/">방문</a>'
+                  '</article></div>')
+        self.assertEqual(directory_cards(sample), [
+            ("검색·포털", "네이버", "https://www.naver.com/")])
+
+    def test_live_directory_cards_and_bundle_match_build(self):
+        from seo.check_release_drift import directory_cards
+        page = (
+            f'<title>사이트모음 전체 목록</title><h1>사이트 검색</h1>'
+            f'<link rel="canonical" href="{BASE}/directory">'
+            '<div id="v6-results">' + "".join(
+                f'<article class="v6-card"><small>커뮤니티</small>'
+                f'<h3>서비스{i}</h3><p>설명</p>'
+                f'<a href="https://example.com/{i}">방문</a></article>'
+                for i in range(211)) + '</div>'
+        )
+        js = "const cards = results.querySelectorAll('article.v6-card');"
+        self.assertEqual(len(directory_cards(page)), 211)
+        def deployed(path):
+            if path == "/directory":
+                return 200, BASE + path, page, Message()
+            if path == "/assets/directory.js":
+                return 200, BASE + path, js, Message()
+            return fixture(path)
+        errors, observations = check(
+            SOURCE, deployed, directory_source=page, script_source=js)
+        self.assertEqual(errors, [])
+        self.assertTrue(any("live 211 static cards" in x for x in observations))
+        self.assertTrue(any("built=" in x and "live=" in x for x in observations))
+
+    def test_missing_live_cards_is_reported(self):
+        source = ('<div id="v6-results">' + "".join(
+            '<article class="v6-card"><small>커뮤니티</small>'
+            f'<h3>서비스{i}</h3><p>설명</p>'
+            f'<a href="https://example.com/{i}">방문</a></article>'
+            for i in range(211)) + '</div>')
+        def deployed(path):
+            if path == "/directory":
+                return 200, BASE + path, DIRECTORY + source.replace(
+                    '<h3>서비스99</h3>', '<h3>누락</h3>'), Message()
+            return fixture(path)
+        problems, _ = check(SOURCE, deployed, directory_source=source)
+        self.assertTrue(any("live static listings differ" in p for p in problems))
+
+    def test_stale_browser_bundle_is_reported(self):
+        current = "results.querySelectorAll('article.v6-card')"
+        def deployed(path):
+            if path == "/assets/directory.js":
+                return 200, BASE + path, "const sites = []", Message()
+            return fixture(path)
+        problems, _ = check(SOURCE, deployed, script_source=current)
+        self.assertTrue(any("live search code differs" in p for p in problems))
+        self.assertTrue(any("duplicate site catalog reintroduced" in p for p in problems))
+
     def test_failed_fetch_is_not_claimed_as_unindexed(self):
         def error(path):
             if path == "/": raise TimeoutError("network")
