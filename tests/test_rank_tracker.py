@@ -125,7 +125,8 @@ class RankTrackerTests(unittest.TestCase):
         history = json.loads((root / "seo/rank-history.json").read_text(encoding="utf-8"))
         actual = (root / "seo/core-keyword-scorecard.md").read_text(encoding="utf-8")
         self.assertEqual(actual, rank_tracker.core_keyword_scorecard(history))
-        self.assertIn("순위별 수집 증거 없음", actual)
+        self.assertIn("확인 위치", actual)
+        self.assertIn("30위 내 여부 미확정", actual)
 
     def test_scorecard_discloses_verifiable_positions_not_just_url_count(self):
         history = {"samples": [{
@@ -263,7 +264,7 @@ class RankTrackerTests(unittest.TestCase):
         with patch.object(rank_tracker, "search", return_value=ten) as fetch:
             rows = rank_tracker.search_top_results("링크모음", "test")
         self.assertEqual(len(rows), 10)
-        self.assertEqual(fetch.call_count, 2)
+        self.assertEqual(fetch.call_count, 3)
 
     def test_longtail_queries_use_single_serp_page(self):
         from unittest.mock import patch
