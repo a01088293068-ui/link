@@ -5,7 +5,9 @@ on:
   push:
     paths:
       - 'seo/backlink_discovery.py'
+      - 'seo/backlink_pending_watch.py'
       - 'tests/test_backlink_discovery.py'
+      - 'tests/test_backlink_pending_watch.py'
       - '.github/workflows/backlink-discovery.yml'
   schedule:
     - cron: '18 4 * * 2,5'
@@ -28,6 +30,8 @@ jobs:
           python-version: '3.12'
       - name: Test ranking and deduplication logic
         run: python3 -B -m unittest discover -s tests -p 'test_backlink_discovery.py' -v
+      - name: Test pending approval discovery without external requests
+        run: python3 -B -m unittest discover -s tests -p 'test_backlink_pending_watch.py' -v
       - name: Discover relevant sites if research API is configured
         env:
           SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
@@ -38,6 +42,16 @@ jobs:
           else
             echo "SERPER_API_KEY not configured; tested candidate scoring only; no fresh API leads."
           fi
+      - name: Look for newly published listings among existing pending submissions
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+        shell: bash
+        run: |
+          if [ -n "$SERPER_API_KEY" ]; then
+            python3 -B seo/backlink_pending_watch.py
+          else
+            echo "No SERPER_API_KEY: skip read-only publication lookup."
+          fi
       - name: Store private prospect shortlist for 30 days
         uses: actions/upload-artifact@v4
         with:
@@ -45,5 +59,7 @@ jobs:
           path: |
             seo/backlink-prospects.json
             seo/backlink-prospects.md
+            seo/backlink-pending-watch.json
+            seo/backlink-pending-watch.md
           if-no-files-found: warn
           retention-days: 30
