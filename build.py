@@ -1157,7 +1157,8 @@ def build():
         + '<a href="#site-list-guide">검색 이용 안내</a>'
         + '<a href="#site-category-comparison">분야별 등록 예시</a>'
         + '<a href="#site-purpose-comparison">목적별 선택법</a>'
-        + '<a href="#site-related-guides">관련 이용 가이드</a></nav>'
+        + '<a href="#site-related-guides">관련 이용 가이드</a>'
+        + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
     )
     directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
                             directory_html, count=1, flags=re.S)
@@ -1220,6 +1221,16 @@ def build():
     hub_path = OUT / "categories" / "index.html"
     hub_path.write_text(document("분야별 사이트모음·링크모음", "커뮤니티, 웹툰, 스포츠, AI 도구, 검색·포털, 영상·OTT, 해외 교민 등 분야별 사이트 목록과 주소 확인 방법을 살펴보세요.",
                                  SITE + "/categories/", hub, header, footer), encoding="utf-8")
+    from seo.directory_maintenance import render as maintenance_render
+    maintenance_changes = json.loads(
+        (ROOT / "seo" / "significant-page-updates.json").read_text(encoding="utf-8"))
+    maintenance_body = maintenance_render(records, maintenance_changes, CATEGORY_LANDING)
+    maintenance_path = OUT / "guides" / "directory-maintenance.html"
+    maintenance_path.write_text(
+        document("사이트모음 관리 기록과 주소 점검 범위",
+                 "링크위키 등록 사이트 수와 분야별 페이지 변경 기록, 외부 주소 확인 범위를 안내합니다.",
+                 SITE + "/guides/directory-maintenance",
+                 maintenance_body, header, footer), encoding="utf-8")
     for category, slug, _, _ in CATEGORY_LANDING:
         path = OUT / "categories" / f"{slug}.html"
         source = path.read_text(encoding="utf-8")
@@ -1267,7 +1278,9 @@ def build():
     # inventing the build date. The blog index can use the latest dated post.
     dated_posts = [entry["modified"] for entry in posts if entry["modified"]]
     hub_entries = [{"url": "/categories/", "modified": None},
-                   {"url": "/blog/", "modified": max(dated_posts) if dated_posts else None}]
+                   {"url": "/blog/", "modified": max(dated_posts) if dated_posts else None},
+                   {"url": "/guides/directory-maintenance",
+                    "modified": maintenance_changes.get("/directory")}]
     for entry in hub_entries + posts:
         loc = SITE + entry["url"]
         if loc in existing:
