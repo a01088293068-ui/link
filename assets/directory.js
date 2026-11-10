@@ -62,7 +62,7 @@
 
   function render() {
     const query = input.value.trim();
-    const normalized = search.norm(query).replace(/\\s+/g, '');
+    const normalized = search.norm(query).replace(/\s+/g, '');
     const coreIntent = ['주소모음', '링크모음', '사이트모음'].includes(normalized);
     const selected = entries.filter(entry =>
       category === '전체' || entry.site.category === category);
