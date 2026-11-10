@@ -3,25 +3,25 @@
     "name": "네이버",
     "url": "https://www.naver.com/",
     "category": "검색·포털",
-    "description": "국내 검색, 뉴스, 메일 등 다양한 서비스를 제공하는 포털입니다."
+    "description": "국내 뉴스·검색·지도·메일 등 여러 생활 서비스를 한곳에서 찾는 포털입니다. 특정 장소를 찾는다면 지도 서비스와 일반 웹 검색을 구분해 이용하세요."
   },
   {
     "name": "구글",
     "url": "https://www.google.com/",
     "category": "검색·포털",
-    "description": "웹 검색과 지도, 번역 등 서비스를 제공합니다."
+    "description": "웹 문서 검색과 이미지 검색, 번역·지도 서비스로 이동할 수 있는 검색 포털입니다. 공식 기관 자료를 찾을 때는 출처와 게시 날짜도 확인하세요."
   },
   {
     "name": "다음",
     "url": "https://www.daum.net/",
     "category": "검색·포털",
-    "description": "뉴스, 검색, 메일 등 포털 서비스를 제공합니다."
+    "description": "뉴스 기사와 웹 검색, 메일 등 정보 탐색 기능을 제공하는 포털입니다. 기사·카페 정보와 공공기관 원문을 구분해 확인하세요."
   },
   {
     "name": "빙",
     "url": "https://www.bing.com/",
     "category": "검색·포털",
-    "description": "마이크로소프트의 웹 검색 서비스입니다."
+    "description": "마이크로소프트의 웹 검색 엔진으로 일반 웹페이지와 이미지 등을 검색할 수 있습니다. 검색 결과의 광고 표기와 원문 출처를 구분하세요."
   },
   {
     "name": "DuckDuckGo",
@@ -327,19 +327,19 @@
     "name": "인벤",
     "url": "https://www.inven.co.kr/",
     "category": "커뮤니티",
-    "description": "게임 미디어와 관련 정보를 제공하는 플랫폼입니다."
+    "description": "게임 뉴스·공략·직업 정보와 이용자 게시판을 함께 살펴볼 수 있는 게임 커뮤니티입니다. 관심 게임과 게시판 종류를 먼저 확인하세요."
   },
   {
     "name": "디시인사이드",
     "url": "https://gall.dcinside.com/",
     "category": "커뮤니티",
-    "description": "다양한 주제의 갤러리에서 글과 댓글을 나누는 온라인 커뮤니티입니다."
+    "description": "다양한 주제의 갤러리에서 게시글과 댓글을 확인하는 커뮤니티입니다. 갤러리별 성격이 달라 정보의 작성 시점과 출처를 확인할 필요가 있습니다."
   },
   {
     "name": "중고나라",
     "url": "https://cafe.naver.com/joonggonara",
     "category": "커뮤니티",
-    "description": "네이버 카페의 중고나라 페이지입니다. 거래 조건과 상대방 정보를 별도로 확인하세요."
+    "description": "중고 물품 거래 게시글과 판매 정보를 찾아볼 수 있는 커뮤니티 경로입니다. 거래 전에 판매자 정보·물품 상태·결제 방식을 직접 확인하세요."
   },
   {
     "name": "보배드림",
@@ -351,13 +351,13 @@
     "name": "웃긴대학",
     "url": "https://web.humoruniv.com/main.html",
     "category": "커뮤니티",
-    "description": "유머 콘텐츠를 다루는 커뮤니티입니다."
+    "description": "유머 게시글과 이용자 반응을 살펴볼 수 있는 커뮤니티입니다. 화제가 된 이야기라도 작성자 주장과 확인된 사실을 구분해 읽으세요."
   },
   {
     "name": "에펨코리아",
     "url": "https://www.fmkorea.com/",
     "category": "커뮤니티",
-    "description": "축구와 게임, 유머 등 관심사별 게시판을 운영하는 커뮤니티입니다."
+    "description": "축구·게임·유머 등 주제별 게시판과 이용자 토론을 살펴보는 커뮤니티입니다. 정보성 글과 개인 의견, 게시 시점을 구분하세요."
   },
   {
     "name": "만개의레시피",
@@ -471,7 +471,7 @@
     "name": "다이닝코드",
     "url": "https://www.diningcode.com/",
     "category": "커뮤니티",
-    "description": "맛집을 검색할 수 있는 서비스입니다."
+    "description": "지역과 음식 종류를 기준으로 음식점을 찾아볼 수 있는 맛집 탐색 서비스입니다. 후기 작성일과 영업 정보는 방문 전에 다시 확인하세요."
   },
   {
     "name": "블라인드",
@@ -525,25 +525,25 @@
     "name": "ChatGPT",
     "url": "https://chatgpt.com/",
     "category": "AI 도구",
-    "description": "대화형 AI로 글쓰기, 요약, 아이디어 구성을 도와줍니다."
+    "description": "대화형 AI로 질문 응답, 문서 요약, 초안 작성, 아이디어 정리 등을 도울 수 있습니다. 중요한 사실은 제공된 원문과 비교해 검증하세요."
   },
   {
     "name": "Claude",
     "url": "https://claude.ai/",
     "category": "AI 도구",
-    "description": "문서 분석과 글쓰기 등에 활용할 수 있는 AI 서비스입니다."
+    "description": "문서 내용 정리와 글쓰기, 긴 텍스트 분석 등의 작업에 활용할 수 있는 대화형 AI입니다. 답변을 인용할 때는 원문 사실관계를 확인하세요."
   },
   {
     "name": "Gemini",
     "url": "https://gemini.google.com/",
     "category": "AI 도구",
-    "description": "구글의 대화형 AI 서비스입니다."
+    "description": "질문 응답과 글쓰기, 정보 정리 등 여러 작업에 활용하는 Google의 대화형 AI 서비스입니다. 생성된 답변은 공식 자료와 대조하세요."
   },
   {
     "name": "Perplexity",
     "url": "https://www.perplexity.ai/",
     "category": "AI 도구",
-    "description": "출처 기반 검색과 질의응답을 지원합니다."
+    "description": "온라인 자료를 찾아 질문에 답하고 참고 출처를 제시하는 검색형 AI 서비스입니다. 인용한 링크의 실제 내용과 발행일을 함께 확인하세요."
   },
   {
     "name": "Microsoft Copilot",
@@ -627,7 +627,7 @@
     "name": "뤼튼",
     "category": "AI 도구",
     "url": "https://wrtn.ai/",
-    "description": "한국어로 질문하고 글쓰기·아이디어 정리를 돕는 AI 서비스입니다."
+    "description": "한국어로 질문하거나 문장 작성·아이디어 구성을 지원받을 수 있는 AI 서비스입니다. 생성된 결과는 목적에 맞게 수정하고 사실을 검증하세요."
   },
   {
     "name": "클로바노트",
@@ -651,31 +651,31 @@
     "name": "미리캔버스",
     "category": "AI 도구",
     "url": "https://www.miricanvas.com/",
-    "description": "한국어 템플릿으로 디자인과 발표 자료 등을 제작하는 서비스입니다."
+    "description": "한국어 디자인 템플릿을 활용해 안내문·발표 자료·SNS 이미지 등을 구성할 수 있는 편집 서비스입니다. 내보내기와 사용 범위 조건을 확인하세요."
   },
   {
     "name": "네이버 스포츠",
     "url": "https://sports.naver.com/",
     "category": "스포츠",
-    "description": "경기 일정과 결과, 스포츠 뉴스를 확인할 수 있습니다."
+    "description": "국내외 종목별 경기 일정·결과·뉴스를 살펴볼 수 있는 스포츠 정보 서비스입니다. 중계 제공 여부와 실제 경기 일정은 별도로 확인하세요."
   },
   {
     "name": "ESPN",
     "url": "https://www.espn.com/",
     "category": "스포츠",
-    "description": "국제 스포츠 뉴스와 경기 정보를 제공합니다."
+    "description": "여러 스포츠 리그의 경기 결과·일정·뉴스를 살펴보는 스포츠 미디어입니다. 종목과 리그에 따라 다루는 정보와 지역별 콘텐츠가 다릅니다."
   },
   {
     "name": "Sofascore",
     "url": "https://www.sofascore.com/",
     "category": "스포츠",
-    "description": "종목별 경기 점수와 일정을 확인할 수 있습니다."
+    "description": "축구 등 여러 스포츠의 경기 결과와 점수, 팀·선수 기록을 살펴보는 서비스입니다. 표시된 기록의 업데이트 시점과 대회 종류를 확인하세요."
   },
   {
     "name": "Flashscore",
     "url": "https://www.flashscore.com/",
     "category": "스포츠",
-    "description": "실시간 점수와 경기 결과를 제공하는 서비스입니다."
+    "description": "종목별 라이브 스코어와 경기 일정·결과를 확인하는 서비스입니다. 경기 세부 통계와 중계 영상 제공 여부는 별도로 구분하세요."
   },
   {
     "name": "K리그",
@@ -759,25 +759,25 @@
     "name": "유튜브",
     "url": "https://www.youtube.com/",
     "category": "영상·OTT",
-    "description": "동영상 시청과 채널 구독이 가능한 플랫폼입니다."
+    "description": "영상 검색·시청과 채널 구독, 생방송 등을 이용하는 동영상 플랫폼입니다. 공식 채널 여부와 광고·유료 콘텐츠 조건을 확인하세요."
   },
   {
     "name": "넷플릭스",
     "url": "https://www.netflix.com/kr/",
     "category": "영상·OTT",
-    "description": "구독형 영화와 시리즈 스트리밍 서비스입니다."
+    "description": "영화·드라마·다큐멘터리 등 영상 콘텐츠를 구독 방식으로 시청하는 서비스입니다. 작품 제공 여부와 요금제는 국가·시점에 따라 달라집니다."
   },
   {
     "name": "티빙",
     "url": "https://www.tving.com/",
     "category": "영상·OTT",
-    "description": "국내 방송과 OTT 콘텐츠를 제공하는 플랫폼입니다."
+    "description": "국내 방송 프로그램과 영화·시리즈 등 영상 콘텐츠를 찾아보는 OTT 서비스입니다. 작품별 공개 여부와 구독 조건은 서비스 내에서 확인하세요."
   },
   {
     "name": "웨이브",
     "url": "https://www.wavve.com/",
     "category": "영상·OTT",
-    "description": "방송과 영화 콘텐츠를 제공하는 스트리밍 플랫폼입니다."
+    "description": "국내 방송 프로그램과 영화 등 영상 콘텐츠를 탐색하는 OTT 서비스입니다. 콘텐츠 제공 기간과 요금제별 이용 조건을 확인하세요."
   },
   {
     "name": "디즈니+",
@@ -873,25 +873,25 @@
     "name": "네이버 웹툰",
     "url": "https://comic.naver.com/",
     "category": "만화·웹툰",
-    "description": "요일별 연재 웹툰을 탐색할 수 있습니다."
+    "description": "한국어 웹툰을 작품명·장르·연재 요일 등으로 탐색할 수 있는 서비스입니다. 회차별 열람 조건과 유료 이용 여부는 작품 페이지에서 확인하세요."
   },
   {
     "name": "카카오웹툰",
     "url": "https://webtoon.kakao.com/",
     "category": "만화·웹툰",
-    "description": "웹툰 작품과 연재 정보를 확인할 수 있습니다."
+    "description": "웹툰 작품을 장르와 연재 정보를 기준으로 찾아볼 수 있는 서비스입니다. 작품별 무료 공개 범위와 다음 회차 이용 조건을 비교하세요."
   },
   {
     "name": "카카오페이지",
     "url": "https://page.kakao.com/",
     "category": "만화·웹툰",
-    "description": "웹툰과 웹소설을 제공하는 콘텐츠 플랫폼입니다."
+    "description": "웹툰·웹소설 등 연재 콘텐츠를 작품별로 탐색하는 서비스입니다. 기다리면 무료와 유료 회차 같은 이용 조건은 작품 화면에서 확인하세요."
   },
   {
     "name": "리디",
     "url": "https://ridibooks.com/",
     "category": "만화·웹툰",
-    "description": "전자책과 웹툰, 웹소설을 이용할 수 있습니다."
+    "description": "전자책과 웹툰·웹소설을 탐색하고 구매·열람 방식을 비교할 수 있는 콘텐츠 서비스입니다. 대여·소장 구분과 이용 기한을 확인하세요."
   },
   {
     "name": "레진코믹스",
@@ -981,13 +981,13 @@
     "name": "조아라",
     "category": "만화",
     "url": "https://www.joara.com/",
-    "description": "한국어 웹소설과 연재 작품을 찾아볼 수 있는 플랫폼입니다."
+    "description": "한국어 웹소설과 연재 작품을 장르·작품명 중심으로 찾아볼 수 있습니다. 작품마다 공개 회차와 유료 열람 조건이 다를 수 있습니다."
   },
   {
     "name": "노벨피아",
     "category": "만화",
     "url": "https://novelpia.com/",
-    "description": "한국어 웹소설과 연재 콘텐츠를 제공하는 플랫폼입니다."
+    "description": "한국어 웹소설의 연재 작품을 장르별로 살펴볼 수 있는 플랫폼입니다. 원하는 작품의 공개 범위와 구독·이용 조건을 확인하세요."
   },
   {
     "name": "(미국)뉴욕코리아",
