@@ -16,21 +16,21 @@
   }
   function pastedUrl(value) {
     const raw = String(value ?? '').trim();
-    if (!/^(?:https?:\\/\\/|www\\.)/i.test(raw)) return null;
+    if (!/^(?:https?:\/\/|www\.)/i.test(raw)) return null;
     try {
-      const parsed = new URL(/^www\\./i.test(raw) ? 'https://' + raw : raw);
+      const parsed = new URL(/^www\./i.test(raw) ? 'https://' + raw : raw);
       if (!/^https?:$/.test(parsed.protocol)) return null;
       return {
-        host: parsed.hostname.toLocaleLowerCase('ko').replace(/^www\\./, ''),
-        path: decodeURI(parsed.pathname).replace(/\\/$/, '') || '/'
+        host: parsed.hostname.toLocaleLowerCase('ko').replace(/^www\./, ''),
+        path: decodeURI(parsed.pathname).replace(/\/$/, '') || '/'
       };
     } catch (_) { return null; }
   }
   function matchesPastedUrl(site, parsed) {
     try {
       const url = new URL(site.url);
-      const host = url.hostname.toLocaleLowerCase('ko').replace(/^www\\./, '');
-      const path = decodeURI(url.pathname).replace(/\\/$/, '') || '/';
+      const host = url.hostname.toLocaleLowerCase('ko').replace(/^www\./, '');
+      const path = decodeURI(url.pathname).replace(/\/$/, '') || '/';
       return host === parsed.host && (parsed.path === '/' ||
         path === parsed.path || path.startsWith(parsed.path + '/'));
     } catch (_) { return false; }
@@ -50,7 +50,7 @@
       if (!matchesPastedUrl(site, pasted)) return -1;
       try {
         const url = new URL(site.url);
-        const path = decodeURI(url.pathname).replace(/\\/$/, '') || '/';
+        const path = decodeURI(url.pathname).replace(/\/$/, '') || '/';
         return path === pasted.path ? 120 : 100;
       } catch (_) { return -1; }
     }
