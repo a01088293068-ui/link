@@ -14,8 +14,9 @@ class SearchConsoleMonitorTests(unittest.TestCase):
     def test_scheduled_gsc_reports_are_not_cancelled_by_deployment_bursts(self):
         workflow = (SOURCE.parents[1] /
                     ".github/workflows/search-console-monitor.yml").read_text(encoding="utf-8")
-        self.assertIn("'linkwiki-gsc-after-deploy' || 'linkwiki-gsc-independent'", workflow)
-        self.assertIn("cancel-in-progress: ${{ github.event_name == 'workflow_run' }}", workflow)
+        self.assertIn("group: linkwiki-gsc-measurement", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+        self.assertNotIn("workflow_run:", workflow)
         self.assertIn("cron: '25 3 * * *'", workflow)
         self.assertIn("push:", workflow)
         self.assertIn("branches: [main]", workflow)
@@ -123,11 +124,12 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('조회 실패', report)
         self.assertNotIn('| 주소모음 | 관측 없음', report)
 
-    def test_private_gsc_reporting_follows_successful_live_release(self):
+    def test_private_gsc_reporting_uses_controlled_schedule_and_manual_runs(self):
         workflow = (Path(__file__).resolve().parents[1] /
                     '.github/workflows/search-console-monitor.yml').read_text(encoding='utf-8')
-        self.assertIn("workflows: ['LinkWiki public crawlability smoke check']", workflow)
-        self.assertIn("github.event.workflow_run.conclusion == 'success'", workflow)
+        self.assertNotIn("workflow_run:", workflow)
+        self.assertIn("cron: '25 3 * * *'", workflow)
+        self.assertIn("group: linkwiki-gsc-measurement", workflow)
         self.assertIn("vars.GSC_MONITOR_ENABLED == 'true'", workflow)
         self.assertIn("github.event_name == 'workflow_dispatch'", workflow)
         self.assertIn("name: search-console-performance", workflow)
