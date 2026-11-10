@@ -328,6 +328,20 @@
       "notes": "2026-10-29 공식 안내: 한국 내 실제 사업장·영어 사용자 대상 비즈니스 등록, 무료 기본 사업자 연락처·지역 정보 필요. 링크위키 색인용 정보 사이트와 지역 업체 카테고리 부적합 우려, 제출 보류."
     },
     {
+      "id": "historic_launching_next",
+      "platform": "Launching Next",
+      "submission_url": "https://www.launchingnext.com/submit/",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "notes": "2026-11-09 기존 제출 접수 확인: https://www.launchingnext.com/thanks/?i=177330 . 이메일 승인 대기, 별도 유료 업그레이드 안 함. Browser evidence https://agent.tinyfish.ai/runs/e775e63c-d116-4c97-a72b-013f5a83fb7e . 새 제출 금지.",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null
+    },
+    {
       "id": "f5fe9b590052a256",
       "platform": "LinkCentre",
       "submission_url": "https://secure.linkcentre.com/portal/listings/",
@@ -469,6 +483,20 @@
       "rel": [],
       "noindex": null,
       "notes": "2026-11-09 기존 Sidedock 공개 제품 페이지와 maker 프로필 링크 확인. 같은 도메인 출처 1개로 집계. 신규 제출 아님."
+    },
+    {
+      "id": "historic_site_promotion_directory",
+      "platform": "Site Promotion Directory",
+      "submission_url": "https://www.sitepromotiondirectory.com/submit.php",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "notes": "2026-11-09 기존 브라우저 제출 기록: 'Link submitted and awaiting approval'. 공개 URL 아직 없음. 무료 일반심사 4~6개월 안내, 사이트 정책·한국어 대상 적합성 재검토. 중복 제출 금지. Browser evidence: https://agent.tinyfish.ai/runs/cc17d966-9409-4b60-b193-7de4e5776d4d",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null
     },
     {
       "id": "69596258176b4b08",
