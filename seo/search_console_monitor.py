@@ -79,37 +79,54 @@ def recent_published_post_urls(limit=3):
         for path in sorted(posts.glob("seo-*.md"), reverse=True)[:limit]
     ]
 
-def inspection_targets(page_rows, limit=20):
-    """Prioritize deployed extensionless canonicals and inspect observed variants.
+def inspection_targets(page_rows, limit=20, core_query_pages=None):
+    """Inspect core canonical URLs first, then target-query landing pages.
 
-    Cloudflare serves .html files at extensionless canonical URLs. When Search
-    Console actually reports a .html URL, inspect both that observed address
-    and its canonical so a legacy redirect does not mask the indexed page.
+    Preserve a small quota for freshly published articles and for other
+    Search Console page-impression evidence. Search Analytics rows may
+    contain legacy .html URLs, which must be inspected alongside canonical
+    variants when capacity permits.
     """
     from urllib.parse import urlsplit
     urls = list(INSPECT_URLS[:limit])
     seen = set(urls)
-    for url in recent_published_post_urls():
-        if url not in seen and len(urls) < limit:
-            urls.append(url)
-            seen.add(url)
-    for row in sorted(page_rows, key=lambda r: -int(r.get('impressions', 0))):
-        observed = str((row.get('keys') or [''])[0]).strip()
-        parts = urlsplit(observed)
-        if parts.scheme != 'https' or parts.netloc != 'linkwiki.info':
-            continue
-        if parts.query or parts.fragment:
-            continue
+
+    def append_observed(observed):
+        parts = urlsplit(str(observed).strip())
+        if (parts.scheme != 'https' or parts.netloc != 'linkwiki.info'
+                or parts.query or parts.fragment):
+            return
         path = parts.path.rstrip('/')
-        candidates = [observed]
+        candidates = [str(observed).strip()]
         if path == '/index.html':
             candidates.insert(0, 'https://linkwiki.info/')
         elif path.endswith('.html'):
             candidates.insert(0, 'https://linkwiki.info' + path[:-5])
-        for url in candidates:
-            if url not in seen and len(urls) < limit:
-                urls.append(url)
-                seen.add(url)
+        for candidate in candidates:
+            if candidate not in seen and len(urls) < limit:
+                urls.append(candidate)
+                seen.add(candidate)
+
+    # True target-query landing URLs take precedence over unrelated
+    # page-impression rows; the three intended queries may point to
+    # unexpected internal pages even when the homepage ranks poorly.
+    for row in sorted(core_query_pages or [],
+                      key=lambda item: -int(item.get('impressions', 0))):
+        keys = row.get('keys') or []
+        if len(keys) < 2 or ''.join(str(keys[0]).split()) not in CORE_KEYWORDS:
+            continue
+        append_observed(keys[1])
+
+    # Keep newly published articles represented, independent of traffic.
+    for url in recent_published_post_urls():
+        if url not in seen and len(urls) < limit:
+            urls.append(url)
+            seen.add(url)
+
+    for row in sorted(page_rows, key=lambda item: -int(item.get('impressions', 0))):
+        keys = row.get('keys') or []
+        if keys:
+            append_observed(keys[0])
     return urls
 
 
@@ -1087,7 +1104,7 @@ def main():
             korea_core_error += f' HTTP {exc.code}'
     args.output.parent.mkdir(parents=True, exist_ok=True)
     inspections, inspection_error = collect_index_inspections(
-        token, args.property, inspection_targets(pages))
+        token, args.property, inspection_targets(pages, core_query_pages=focused_pages))
     report = format_report(
         keywords, pages, start, end, args.property, dates, query_pages,
         focused_keyword_rows=focused_keywords,
