@@ -137,7 +137,8 @@ def prior_snapshot(session, repo, current_run):
     eligible = [a for a in artifacts if
                 a.get("name") == "search-console-performance" and
                 not a.get("expired", False) and
-                a.get("workflow_run", {}).get("id") != current_run]
+                isinstance(a.get("workflow_run", {}).get("id"), int) and
+                a.get("workflow_run", {}).get("id") < current_run]
     eligible.sort(key=lambda a: a.get("created_at", ""), reverse=True)
     errors = []
     for artifact in eligible[:5]:
