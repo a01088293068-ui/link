@@ -723,27 +723,31 @@ def korean_first_shortcuts(records):
 
 
 def homepage_task_paths(records):
-    """Short, useful routes from the indexed homepage to distinct tasks."""
-    names = {item.get("name") for item in records if isinstance(item, dict)}
-    if "국민신문고" not in names:
-        raise RuntimeError("Homepage task path is not backed by a registered service")
-    url = "/directory?q=" + quote("국민신문고", safe="")
+    """Match broad directory-search intent with real multi-category tasks."""
+    by_name = {
+        item.get("name"): item for item in records
+        if isinstance(item, dict) and isinstance(item.get("name"), str)
+    }
+    sample = "네이버 웹툰"
+    if sample not in by_name or by_name[sample].get("category") != "만화·웹툰":
+        raise RuntimeError("Homepage task path is not backed by a registered webtoon service")
+    url = "/directory?q=" + quote(sample, safe="")
     return (
         '<section class="wrap blog-home seo-home-task-paths" '
         'aria-label="사이트 이름과 이용 목적별 찾기">'
         '<div class="v47-section-heading"><h2>찾는 사이트에 따라 선택하세요</h2></div>'
         '<div class="blog-grid">'
         '<a class="blog-card" href="' + escape(url, quote=True) + '">'
-        '<strong>기관·사이트 이름을 알고 있을 때</strong>'
-        '<span>예: 국민신문고. 이름이나 등록 도메인을 검색한 뒤 실제 이동 주소를 확인합니다.</span>'
-        '<span class="blog-card-more">사이트 이름 검색하기 →</span></a>'
-        '<a class="blog-card" href="/categories/search">'
-        '<strong>어느 사이트를 써야 할지 모를 때</strong>'
-        '<span>정부 민원, 연금·건강보험, 창업·특허 업무를 구분해 국내 공공 서비스 목록을 살펴봅니다.</span>'
-        '<span class="blog-card-more">국내 검색·공공 서비스 비교 →</span></a>'
+        '<strong>사이트 이름이나 도메인을 알고 있을 때</strong>'
+        '<span>예: 네이버 웹툰. 이름·도메인을 입력해 실제 등록된 주소와 설명을 확인합니다.</span>'
+        '<span class="blog-card-more">등록 사이트 이름으로 검색 →</span></a>'
+        '<a class="blog-card" href="/categories/">'
+        '<strong>어떤 사이트를 쓸지 비교하고 싶을 때</strong>'
+        '<span>커뮤니티·웹툰·AI 도구·스포츠·영상·검색·한인 생활 등 분야별 링크를 비교합니다.</span>'
+        '<span class="blog-card-more">분야별 링크모음 살펴보기 →</span></a>'
         '<a class="blog-card" href="/guides/address-check">'
-        '<strong>주소가 공식 운영 도메인인지 확인할 때</strong>'
-        '<span>주소 철자, 운영기관 안내, 로그인 전에 확인할 항목을 단계별로 살펴봅니다.</span>'
+        '<strong>이동할 주소를 확인하고 싶을 때</strong>'
+        '<span>등록 도메인과 실제 운영기관 안내를 대조하고 로그인 전에 주소를 확인합니다.</span>'
         '<span class="blog-card-more">사이트 주소 확인 방법 →</span></a>'
         '</div></section>'
     )
