@@ -48,8 +48,12 @@ class ReleaseEvidenceTests(unittest.TestCase):
                 "<h1>2개 사이트</h1>", encoding="utf-8")
             for category, slug in CATEGORY_PATHS.items():
                 count = 1 if category in ("검색·포털", "AI 도구") else 0
+                # Three original directory templates use v6-card; other
+                # categories use item. Both must be counted correctly.
+                cls = "v6-card" if slug in (
+                    "community", "korean", "comics-directory") else "item"
                 (dist / "categories" / (slug + ".html")).write_text(
-                    '<article class="item"></article>' * count,
+                    f'<article class="{cls}"></article>' * count,
                     encoding="utf-8")
             urls = (
                 "https://linkwiki.info/",
