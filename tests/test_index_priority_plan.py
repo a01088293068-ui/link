@@ -1,9 +1,20 @@
 """Offline tests for evidence-backed SEO work prioritization."""
 import unittest
-from seo.index_priority_plan import decide, render, historic_canonical_mismatches, sitemap_diagnostic
+from seo.index_priority_plan import decide, render, historic_canonical_mismatches, sitemap_diagnostic, PRIORITY_PATHS
 
 
 class IndexPriorityPlanTests(unittest.TestCase):
+    def test_gsc_priority_report_covers_all_directory_category_landings(self):
+        self.assertEqual(len(PRIORITY_PATHS), 11)
+        for slug in ("search", "community", "ai", "sports", "video",
+                     "webtoon", "comics-directory", "korean"):
+            self.assertIn("/categories/" + slug, PRIORITY_PATHS)
+        report = render({"schema": 1, "end_date": "2026-11-10"})
+        self.assertIn("https://linkwiki.info/directory", report)
+        self.assertIn("https://linkwiki.info/categories/korean", report)
+        self.assertIn("검사 기록 없음", report)
+        self.assertNotIn("색인 성공 확정", report)
+
     def test_historic_html_canonical_mismatch_is_not_live_failure(self):
         records = [{"url": "https://linkwiki.info/categories/ai",
                     "user_canonical": "https://linkwiki.info/categories/ai.html",
