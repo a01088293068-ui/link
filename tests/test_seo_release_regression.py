@@ -78,6 +78,27 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "missing"):
             category_decision_guide("nonexistent", records)
 
+    def test_korean_business_official_address_guide_is_published_and_discoverable(self):
+        root = Path(__file__).resolve().parents[1]
+        slug = "seo-20261110-korean-business-portals-guide"
+        source = root / "content" / (slug + ".md")
+        original = source.read_text(encoding="utf-8")
+        for name in (
+            "K-Startup 창업지원포털", "기업마당", "KIPRIS 지식재산정보검색",
+            "특허로", "관세청 유니패스", "대한상공회의소 코참넷",
+        ):
+            self.assertIn(name, original)
+        self.assertGreater(len(original), 1800)
+        rendered = (root / "dist/blog" / slug / "index.html").read_text(encoding="utf-8")
+        url = "https://linkwiki.info/blog/" + slug + "/"
+        self.assertIn('href="' + url + '" rel="canonical"', rendered)
+        self.assertIn("창업지원사업", rendered)
+        self.assertIn("/categories/search", rendered)
+        index = (root / "dist/blog/index.html").read_text(encoding="utf-8")
+        self.assertIn('/blog/' + slug + '/', index)
+        sitemap = (root / "dist/sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn('<loc>' + url + '</loc>', sitemap)
+
     def test_search_category_metadata_covers_real_korean_public_services(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / "categories/search.html").read_text(encoding="utf-8")
