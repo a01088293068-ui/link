@@ -21,6 +21,11 @@ QUERIES = (
     '"add website" "Korean" "directory"',
     '"submit resource" "internet safety" "directory"',
     '"add url" "curated web directory"',
+    '"웹사이트 등록" "웹 디렉터리"',
+    '"웹서비스 등록" "소개" "한국"',
+    '"사이트 제보" "사이트모음"',
+    '"내 사이트 등록" "서비스" "무료"',
+    '"웹 디렉토리" "사이트 등록" "심사"',
 )
 
 BLOCKED_DOMAINS = {
@@ -35,10 +40,15 @@ NEGATIVE = (
     "link building services", "link-building services", "backlink packages",
     "submit website feedback", "submit inquiry", "staff directory",
     "department directory", "employee directory",
+    "백링크 판매", "유료 백링크", "링크 교환", "맞링크", "대량 등록",
+    "링크팜", "도박", "카지노", "포르노", "스팸 링크",
 )
 RELEVANT = ("directory", "resource", "website", "site", "submit", "editorial",
-            "suggest", "korean", "curated", "listing", "link")
-INTENT = ("submit", "suggest", "add site", "add url", "get listed", "listing", "contribute")
+            "suggest", "korean", "curated", "listing", "link",
+            "웹서비스", "웹사이트", "사이트", "디렉터리", "디렉토리",
+            "링크", "등록", "제보", "검수", "큐레이션")
+INTENT = ("submit", "suggest", "add site", "add url", "get listed", "listing", "contribute",
+          "등록", "제보", "신청", "제출")
 # Avoid mistaking footer text ("submit website feedback") for an
 # editorial website listing opportunity. Require topical title evidence.
 SUBMISSION_TITLE = (
@@ -48,6 +58,9 @@ SUBMISSION_TITLE = (
     "get listed", "submit link", "submit a link", "website submission",
     "directory submission", "web directory", "website directory",
     "resource directory",
+    "사이트 등록", "내 사이트 등록", "웹사이트 등록", "웹서비스 등록",
+    "사이트 제보", "서비스 제보", "링크 등록", "사이트 추천",
+    "웹사이트 디렉터리", "웹서비스 디렉터리", "웹 디렉터리", "웹 디렉토리",
 )
 UNRELATED_PATHS = (
     "/staff/", "/department/", "/employees/", "/terms-of-use",
@@ -97,7 +110,10 @@ def assess(result, known):
     # submission eligibility; snippets alone can be misleading.
     has_editorial_context = any(term in content for term in
                                  ("web directory", "website directory",
-                                  "curated", "editorial", "resource directory"))
+                                  "curated", "editorial", "resource directory",
+                                  "웹 디렉터리", "웹 디렉토리", "웹서비스 디렉터리",
+                                  "사이트모음", "사이트 모음", "큐레이션",
+                                  "수동 심사", "웹서비스 발견", "사이트를 소개"))
     if not has_editorial_context:
         return None
     relevance = sorted({word for word in RELEVANT if word in content})
@@ -115,7 +131,11 @@ def assess(result, known):
 
 
 def search(query, key):
-    payload = json.dumps({"q": query, "num": 10, "gl": "us", "hl": "en"}).encode()
+    korean = bool(re.search(r"[가-힣]", query))
+    payload = json.dumps({
+        "q": query, "num": 10, "gl": "kr" if korean else "us",
+        "hl": "ko" if korean else "en",
+    }).encode()
     request = Request(SEARCH_API, payload, {
         "X-API-KEY": key, "Content-Type": "application/json",
         "Accept": "application/json", "User-Agent": "LinkWiki-OutreachResearch/1.0"
