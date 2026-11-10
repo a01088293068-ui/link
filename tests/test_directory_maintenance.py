@@ -22,7 +22,7 @@ class DirectoryMaintenanceTests(unittest.TestCase):
                 self.assertIn('href="/categories/' + slug + '"', output)
                 count = sum(r["category"] == category for r in self.records)
                 self.assertIn(str(count) + "개", output)
-        self.assertEqual(output.count("<tr><th>"), len(CATEGORY_LANDING))
+        self.assertEqual(output.count("<tr><th><a href=\"/categories/"), len(CATEGORY_LANDING))
         self.assertIn("접속 확인일이 아닙니다", output)
         self.assertIn("실시간 정상 운영", output)
         self.assertIn('href="/guides/address-check"', output)
