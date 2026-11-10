@@ -10,7 +10,12 @@ import json
 from pathlib import Path
 
 SITE = "https://linkwiki.info"
-PRIORITY_PATHS = ("/", "/directory", "/categories/", "/categories/search")
+PRIORITY_PATHS = (
+    "/", "/directory", "/categories/",
+    "/categories/search", "/categories/community", "/categories/ai",
+    "/categories/sports", "/categories/video", "/categories/webtoon",
+    "/categories/comics-directory", "/categories/korean",
+)
 
 
 def decide(row, updated):
