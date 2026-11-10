@@ -65,6 +65,8 @@ SUBMISSION_TITLE = (
 UNRELATED_PATHS = (
     "/staff/", "/department/", "/employees/", "/terms-of-use",
     "/privacy-policy", "/sitemap", "/news/", "/article/",
+    "/blog/", "/etoday/", "/term.php", "/terms", "/privacy",
+    "/prepa-", "/category/", "/avdelning/", "/about/", "/resources/",
 )
 
 
@@ -104,6 +106,25 @@ def assess(result, known):
     if any(part in path for part in UNRELATED_PATHS):
         return None
     title_text = title.lower()
+    # A resource roundup, essay, forum thread or terms page can contain all
+    # submission keywords without offering an actual submission route.
+    # Require a submission action in the path or an unambiguous title.
+    submission_path = any(
+        marker in path for marker in
+        ("/submit", "/add-site", "/addurl", "/add-url", "/add-website",
+         "/suggest", "/get-listed", "/list-your", "/register-site",
+         "/website-submission", "/site-submission", "/submit.php"))
+    explicit_title = any(
+        marker in title_text for marker in
+        ("submit website", "submit your website", "submit a site",
+         "submit site", "add your website", "add website",
+         "suggest a resource", "submit resource", "get listed",
+         "사이트 등록", "웹사이트 등록", "웹서비스 등록",
+         "사이트 제보", "내 사이트 등록", "서비스 등록"))
+    if not submission_path and not explicit_title:
+        return None
+    if not submission_path and path not in ("", "/"):
+        return None
     if not any(term in title_text for term in SUBMISSION_TITLE):
         return None
     # A generic "directory" or "website" is not evidence of third-party
