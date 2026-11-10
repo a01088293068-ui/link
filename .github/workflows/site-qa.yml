@@ -98,7 +98,7 @@ jobs:
       - name: Test local address hostname inspector
         run: node --test tests/test_address_inspector.cjs
       - name: Verify generated sitemap and canonical URLs
-        run: python3 seo/site_audit.py dist
+        run: python3 -B -m seo.site_audit dist
       - name: Report crawlable inbound links to priority landing pages
         run: python3 seo/internal-link-report.py
       - name: Upload internal SEO link-graph audit
