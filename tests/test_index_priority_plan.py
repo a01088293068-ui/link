@@ -1,9 +1,38 @@
 """Offline tests for evidence-backed SEO work prioritization."""
 import unittest
-from seo.index_priority_plan import decide, render
+from seo.index_priority_plan import decide, render, historic_canonical_mismatches, sitemap_diagnostic
 
 
 class IndexPriorityPlanTests(unittest.TestCase):
+    def test_historic_html_canonical_mismatch_is_not_live_failure(self):
+        records = [{"url": "https://linkwiki.info/categories/ai",
+                    "user_canonical": "https://linkwiki.info/categories/ai.html",
+                    "google_canonical": "https://linkwiki.info/categories/ai",
+                    "last_crawl": "2026-10-16T06:08:11Z"}]
+        mismatches = historic_canonical_mismatches(records)
+        self.assertEqual(len(mismatches), 1)
+        report = render({"schema": 1, "inspections": records})
+        self.assertIn("과거 Google 크롤링", report)
+        self.assertIn("categories/ai.html", report)
+        self.assertIn("최신 배포본의 문제라고 단정할 수 없습니다", report)
+
+    def test_pending_google_sitemap_is_not_confused_with_public_http(self):
+        rows = [
+            {"path": "https://linkwiki.info/sitemap.xml",
+             "isPending": True, "errors": "0"},
+            {"path": "https://linkwiki.info/sitemap-v2.xml",
+             "isPending": False, "lastDownloaded": "2026-10-24T04:49:41Z",
+             "errors": "0"}]
+        result = "\\n".join(sitemap_diagnostic(rows))
+        self.assertIn("기본 사이트맵은 Google 처리 완료가 아직 확인되지 않습니다", result)
+        self.assertIn("2026-10-24", result)
+        self.assertNotIn("처리 오류 1", result)
+
+    def test_failed_sitemap_api_does_not_claim_missing_submission(self):
+        result = "\\n".join(sitemap_diagnostic([], "HTTP 403"))
+        self.assertIn("API 오류", result)
+        self.assertNotIn("제출 기록 미관측", result)
+
     def test_stale_crawl_cannot_prove_latest_release_was_indexed(self):
         state, freshness, step = decide({
             "verdict": "PASS",
