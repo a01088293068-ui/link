@@ -43,6 +43,19 @@ class HomeIntentTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "not backed"):
             build.homepage_task_paths(without_sample)
 
+    def test_generated_homepage_exposes_broad_directory_intent_without_redirects(self):
+        path = Path(__file__).resolve().parents[1] / "dist" / "index.html"
+        if not path.exists():
+            self.skipTest("Generated release not built")
+        html = path.read_text(encoding="utf-8")
+        self.assertIn('class="seo-home-task-paths"', html.split("</main>", 1)[0])
+        self.assertIn("커뮤니티·웹툰·AI 도구·스포츠", html)
+        self.assertIn('href="/categories/"', html)
+        self.assertIn('href="/directory?q=', html)
+        self.assertIn('action="/directory"', html)
+        self.assertNotIn('href="/directory.html"', html)
+        self.assertIn('href="https://linkwiki.info/" rel="canonical"', html)
+
     def test_old_homepage_counts_are_synced_to_directory_data(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / "index.html").read_text(encoding="utf-8")
