@@ -31,7 +31,7 @@ jobs:
       - name: Build all published pages and run internal site audit
         run: python3 -B build.py
       - name: Generate verifiable release build manifest
-        run: python3 -B seo/release_evidence.py --dist dist --output seo/release-build-evidence.json
+        run: python3 -B seo/release_evidence.py --dist dist --commit "$(git rev-parse HEAD)" --output seo/release-build-evidence.json
       - name: Run all standard-library unit and regression tests
         run: python3 -B -m unittest discover -s tests -p 'test_*.py' -v
       - name: Preserve release build evidence
