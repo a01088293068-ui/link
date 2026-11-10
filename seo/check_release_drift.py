@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Detect homepage release drift; this does not measure Google indexing or rank."""
+"""Compare live release against built output; not a Google rank/index check."""
 import re
 import sys
 from html.parser import HTMLParser
@@ -78,7 +78,7 @@ def check(source_html, load=fetch):
     return errors, observations
 
 def main():
-    source = Path("index.html").read_text(encoding="utf-8")
+    source = Path("dist/index.html").read_text(encoding="utf-8")
     errors, observations = check(source)
     print("# Public release consistency (NOT Google indexing or search rankings)")
     for line in observations: print("- " + line)
