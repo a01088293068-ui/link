@@ -53,21 +53,21 @@ def directory_cards(html):
     """Read actual server-rendered HTML cards, never JS-only listings."""
     from html import unescape
     container = re.search(
-        r'<div\\b[^>]*\\bid="v6-results"[^>]*>(.*?)</div>', html,
+        r'<div\b[^>]*\bid="v6-results"[^>]*>(.*?)</div>', html,
         re.I | re.S,
     )
     if not container:
         return []
     cards = []
     for match in re.finditer(
-        r'<article\\b[^>]*class="v6-card"[^>]*>(.*?)</article>',
+        r'<article\b[^>]*class="v6-card"[^>]*>(.*?)</article>',
         container.group(1), re.I | re.S,
     ):
         fragment = match.group(1)
         parts = [
             re.search(r'<small>(.*?)</small>', fragment, re.I | re.S),
             re.search(r'<h3>(.*?)</h3>', fragment, re.I | re.S),
-            re.search(r'<a\\b[^>]*\\bhref="([^"]+)"', fragment, re.I | re.S),
+            re.search(r'<a\b[^>]*\bhref="([^"]+)"', fragment, re.I | re.S),
         ]
         if any(piece is None for piece in parts):
             return []
@@ -131,7 +131,7 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
                 errors.append("/assets/directory.js: live search code differs from built output")
             if "querySelectorAll('article.v6-card')" not in body:
                 errors.append("/assets/directory.js: static-card search wiring absent")
-            if re.search(r"const\\s+sites\\s*=\\s*\\[", body):
+            if re.search(r"const\s+sites\s*=\s*\[", body):
                 errors.append("/assets/directory.js: duplicate site catalog reintroduced")
         except Exception as exc:
             errors.append(f"/assets/directory.js: fetch error ({type(exc).__name__}: {exc})")
