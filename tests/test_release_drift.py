@@ -7,6 +7,11 @@ HOME = f'<title>주소모음 링크모음 사이트모음</title><link rel="cano
 DIRECTORY = f'<link rel="canonical" href="{BASE}/directory">'
 ROBOTS = f"User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n"
 SITEMAP = f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{BASE}/</loc></url><url><loc>{BASE}/directory</loc></url></urlset>'
+VERSIONED_SCRIPTS = "".join(
+    f'<script defer src="assets/{name}.js?v=aaaaaaaaaaaa"></script>'
+    for name in ("directory-search", "directory", "mobile-menu", "address-inspector")
+)
+
 
 def fixture(path):
     return 200, BASE + path, {"/": HOME, "/directory": DIRECTORY, "/sitemap.xml": SITEMAP, "/robots.txt": ROBOTS}[path], Message()
@@ -114,7 +119,7 @@ class ReleaseDriftTests(unittest.TestCase):
                 f'<article class="v6-card"><small>커뮤니티</small>'
                 f'<h3>서비스{i}</h3><p>설명</p>'
                 f'<a href="https://example.com/{i}">방문</a></article>'
-                for i in range(211)) + '</div>'
+                for i in range(211)) + '</div>' + VERSIONED_SCRIPTS
         )
         js = "const cards = results.querySelectorAll('article.v6-card');"
         self.assertEqual(len(directory_cards(page)), 211)
@@ -129,6 +134,19 @@ class ReleaseDriftTests(unittest.TestCase):
         self.assertEqual(errors, [])
         self.assertTrue(any("live 211 static cards" in x for x in observations))
         self.assertTrue(any("built=" in x and "live=" in x for x in observations))
+
+    def test_stale_directory_script_version_is_reported(self):
+        from seo.check_release_drift import directory_script_versions
+        expected = VERSIONED_SCRIPTS
+        self.assertEqual(len(directory_script_versions(expected)), 4)
+        def deployed(path):
+            if path == "/directory":
+                return (200, BASE + path, DIRECTORY + expected.replace(
+                    "directory.js?v=aaaaaaaaaaaa", "directory.js?v=bbbbbbbbbbbb"),
+                    Message())
+            return fixture(path)
+        problems, _ = check(SOURCE, deployed, directory_source=expected)
+        self.assertTrue(any("live browser asset versions differ" in p for p in problems))
 
     def test_missing_live_cards_is_reported(self):
         source = ('<div id="v6-results">' + "".join(
