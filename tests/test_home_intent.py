@@ -48,7 +48,7 @@ class HomeIntentTests(unittest.TestCase):
         if not path.exists():
             self.skipTest("Generated release not built")
         html = path.read_text(encoding="utf-8")
-        self.assertIn('class="seo-home-task-paths"', html.split("</main>", 1)[0])
+        self.assertIn('class="wrap blog-home seo-home-task-paths"', html.split("</main>", 1)[0])
         self.assertIn("커뮤니티·웹툰·AI 도구·스포츠", html)
         self.assertIn('href="/categories/"', html)
         self.assertIn('href="/directory?q=', html)
