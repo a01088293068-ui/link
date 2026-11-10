@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'build.py'
+      - 'assets/verified-directory.json'
+      - 'tests/test_directory_catalog_render.py'
       - 'assets/directory-search.js'
       - 'assets/directory.js'
       - 'tests/test_directory_search.cjs'
@@ -38,7 +40,7 @@ jobs:
       - name: Build canonical deployment output
         run: python3 build.py
       - name: Validate server-rendered directory cards and slim browser bundle
-        run: python3 -m unittest -v tests/test_directory_static_integrity.py tests/test_directory_asset_fingerprints.py
+        run: python3 -m unittest -v tests/test_directory_static_integrity.py tests/test_directory_asset_fingerprints.py tests/test_directory_catalog_render.py
       - name: Compare live release with generated deployment output
         shell: bash
         run: |
