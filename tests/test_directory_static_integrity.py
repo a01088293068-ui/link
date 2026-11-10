@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CARD = re.compile(
     r'<article class="v6-card"><small>(.*?)</small><h3>(.*?)</h3>'
     r'<p>(.*?)</p><span class="site-domain">.*?</span>'
-    r'<a\\b[^>]*href="([^"]+)"',
+    r'<a\b[^>]*href="([^"]+)"',
     re.S,
 )
 
@@ -32,7 +32,7 @@ class DirectoryCardTests(unittest.TestCase):
 
     def test_js_does_not_embed_second_copy_of_catalog(self):
         js = (ROOT / "dist/assets/directory.js").read_text(encoding="utf-8")
-        self.assertNotRegex(js, r"const\\s+sites\\s*=\\s*\\[")
+        self.assertNotRegex(js, r"const\s+sites\s*=\s*\[")
         self.assertIn("querySelectorAll('article.v6-card')", js)
         self.assertLess(len(js.encode("utf-8")), 10000)
 
