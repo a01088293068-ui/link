@@ -82,8 +82,8 @@ def directory_script_versions(html):
     versions = {}
     for name in names:
         match = re.findall(
-            r'<script\\b[^>]*\\bsrc="(?:/)?assets/' + re.escape(name) +
-            r'\\?v=([a-f0-9]{12})"[^>]*>', html, re.I,
+            r'<script\b[^>]*\bsrc="(?:/)?assets/' + re.escape(name) +
+            r'\?v=([a-f0-9]{12})"[^>]*>', html, re.I,
         )
         if len(match) == 1:
             versions[name] = match[0]
