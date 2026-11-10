@@ -26,6 +26,8 @@ on:
       - 'seo/check_directory_links.py'
       - 'seo/rank_tracker.py'
       - 'seo/search_console_monitor.py'
+      - 'seo/index_priority_plan.py'
+      - 'seo/directory_maintenance.py'
       - 'seo/recover_stalled_sitemap.py'
       - 'seo/auto_seo.py'
       - 'seo/backlink_discovery.py'
@@ -120,5 +122,6 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_search_console_monitor.py' -v
           python3 -m unittest discover -s tests -p 'test_index_priority_plan.py' -v
           python3 -m unittest discover -s tests -p 'test_directory_maintenance.py' -v
+          python3 -m unittest discover -s tests -p 'test_verified_destination_redirects.py' -v
           python3 -m unittest discover -s tests -p 'test_recover_stalled_sitemap.py' -v
           python3 -m unittest discover -s tests -p 'test_backlink_discovery.py' -v
