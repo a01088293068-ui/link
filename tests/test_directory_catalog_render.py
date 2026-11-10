@@ -16,6 +16,16 @@ class CatalogRenderTests(unittest.TestCase):
         cls.records = json.loads(
             (ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
 
+    def test_catalog_descriptions_remain_distinct_and_useful(self):
+        descriptions = [item["description"].strip() for item in self.records]
+        self.assertEqual(len(self.records), 211)
+        self.assertEqual(len(set(descriptions)), len(descriptions))
+        self.assertTrue(all(len(description) >= 60 for description in descriptions))
+        self.assertTrue(all(len(description) <= 200 for description in descriptions))
+        self.assertEqual(len({
+            item["category"] for item in self.records
+        }), 8)
+
     def test_all_211_records_render_as_safe_crawlable_html(self):
         html = render_directory_catalog_cards(self.records)
         self.assertEqual(html.count('<article class="v6-card">'), len(self.records))
