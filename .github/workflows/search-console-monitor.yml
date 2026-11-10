@@ -30,6 +30,7 @@ concurrency:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   performance:
@@ -87,6 +88,13 @@ jobs:
         run: python3 -B seo/index_priority_plan.py
       - name: Test priority decisions (offline)
         run: python3 -B -m unittest discover -s tests -p 'test_index_priority_plan.py' -v
+      - name: Compare private GSC crawl and Korea keyword snapshots against prior run
+        if: steps.gsc_fetch.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 -B seo/gsc_snapshot_delta.py
+      - name: Test private snapshot comparison (offline)
+        run: python3 -B -m unittest discover -s tests -p 'test_gsc_snapshot_delta.py' -v
       - name: Retain Search Console report or failure status for 30 days
         if: always() && steps.gsc_fetch.outcome != 'skipped'
         uses: actions/upload-artifact@v4
@@ -96,6 +104,7 @@ jobs:
             seo/search-console-report.md
             seo/search-console-snapshot.json
             seo/index-priority-plan.md
+            seo/search-console-delta.md
             seo/search-console-run-status.txt
           if-no-files-found: warn
           retention-days: 30
