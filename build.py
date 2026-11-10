@@ -705,6 +705,73 @@ def korean_first_shortcuts(records):
     )
 
 
+def homepage_task_paths(records):
+    """Short, useful routes from the indexed homepage to distinct tasks."""
+    names = {item.get("name") for item in records if isinstance(item, dict)}
+    if "국민신문고" not in names:
+        raise RuntimeError("Homepage task path is not backed by a registered service")
+    url = "/directory?q=" + quote("국민신문고", safe="")
+    return (
+        '<section class="wrap blog-home seo-home-task-paths" '
+        'aria-label="사이트 이름과 이용 목적별 찾기">'
+        '<div class="v47-section-heading"><h2>찾는 사이트에 따라 선택하세요</h2></div>'
+        '<div class="blog-grid">'
+        '<a class="blog-card" href="' + escape(url, quote=True) + '">'
+        '<strong>기관·사이트 이름을 알고 있을 때</strong>'
+        '<span>예: 국민신문고. 이름이나 등록 도메인을 검색한 뒤 실제 이동 주소를 확인합니다.</span>'
+        '<span class="blog-card-more">사이트 이름 검색하기 →</span></a>'
+        '<a class="blog-card" href="/categories/search">'
+        '<strong>어느 사이트를 써야 할지 모를 때</strong>'
+        '<span>정부 민원, 연금·건강보험, 창업·특허 업무를 구분해 국내 공공 서비스 목록을 살펴봅니다.</span>'
+        '<span class="blog-card-more">국내 검색·공공 서비스 비교 →</span></a>'
+        '<a class="blog-card" href="/guides/address-check">'
+        '<strong>주소가 공식 운영 도메인인지 확인할 때</strong>'
+        '<span>주소 철자, 운영기관 안내, 로그인 전에 확인할 항목을 단계별로 살펴봅니다.</span>'
+        '<span class="blog-card-more">사이트 주소 확인 방법 →</span></a>'
+        '</div></section>'
+    )
+
+
+def directory_task_paths(records):
+    """Helpful canonical search links derived from existing catalog records."""
+    existing = {entry.get("name") for entry in records if isinstance(entry, dict)}
+    tasks = (
+        ("민원 접수와 증명서 발급",
+         "국민신문고", "정부24",
+         "민원·제안 접수와 정부 증명서 발급은 서로 다른 업무입니다."),
+        ("특허·상표 자료 검색과 출원",
+         "KIPRIS 지식재산정보검색", "특허로",
+         "공개 지식재산 정보 탐색과 실제 전자출원 절차를 구분하세요."),
+        ("창업지원과 중소기업 지원",
+         "K-Startup 창업지원포털", "기업마당",
+         "창업 단계별 공고와 일반 중소기업 정책지원 공고를 비교하세요."),
+    )
+    output = []
+    for label, first, second, description in tasks:
+        if first not in existing or second not in existing:
+            raise RuntimeError(f"Directory task guide missing registered service: {first}/{second}")
+        links = (
+            '<a href="/directory?q=' + quote(first, safe="") + '">' + escape(first) + '</a>',
+            '<a href="/directory?q=' + quote(second, safe="") + '">' + escape(second) + '</a>',
+        )
+        output.append(
+            '<li><strong>' + escape(label) + '</strong> — ' + escape(description)
+            + ' ' + links[0] + ' · ' + links[1] + '</li>'
+        )
+    return (
+        '<section id="directory-task-paths" class="lw-safety-note seo-task-paths" '
+        'aria-label="국내 공공 서비스 업무별 빠른 찾기">'
+        '<h2>국내 사이트모음, 실제 업무로 찾기</h2>'
+        '<p>사이트 이름이 헷갈린다면 해야 할 일을 먼저 구분하세요. '
+        '아래 링크는 현재 등록 목록의 검색 결과로 연결됩니다. '
+        '서비스의 접수 상태나 자격을 보증하지는 않습니다.</p>'
+        '<ul>' + ''.join(output) + '</ul>'
+        '<p><a href="/categories/search">국내 공공 서비스 전체 비교하기</a> · '
+        '<a href="/guides/address-check">공식 주소 확인 방법</a></p>'
+        '</section>'
+    )
+
+
 def directory_search_help(records, categories):
     """Helpful, static, data-backed search instructions for directory visitors."""
     if not records or not categories:
@@ -1020,7 +1087,7 @@ def build():
         raise RuntimeError("Homepage directory count labels changed; review required")
     homepage_intents = core_search_intent_section(actual_count)
     real_directory_examples = homepage_directory_examples(first_party_records, CATEGORY_LANDING)
-    home = home.replace(position, panel + homepage_intents + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
+    home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_intents + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
@@ -1061,6 +1128,15 @@ def build():
     )
     directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
                             directory_html, count=1, flags=re.S)
+    # Keep search input first; put concise task routing immediately after it,
+    # before the long static list, rather than burying guidance below 206 cards.
+    search_form = re.compile(r'(<form class="v6-search" id="v6-form".*?</form>)', re.S)
+    if len(search_form.findall(directory_html)) != 1:
+        raise RuntimeError("Directory search form missing or duplicated")
+    directory_html = search_form.sub(
+        lambda match: match.group(1) + directory_task_paths(records),
+        directory_html, count=1)
+
     # Site descriptions are static and crawlable, not dependent on JavaScript.
     # Keep existing search/filter controls and every directory card unchanged.
     overview = directory_category_overview(records, CATEGORY_LANDING)
