@@ -62,6 +62,46 @@ def decide(row, updated):
             "GSC robots·canonical·Google 선택 URL 비교")
 
 
+def historic_canonical_mismatches(inspections):
+    """Report stale .html canonicals without claiming the live site is broken."""
+    items = []
+    for row in inspections or []:
+        url = str(row.get("url") or "")
+        declared = str(row.get("user_canonical") or "")
+        chosen = str(row.get("google_canonical") or "")
+        if not url.startswith(SITE + "/") or not declared or not chosen:
+            continue
+        if declared != chosen:
+            items.append((url, declared, chosen, str(row.get("last_crawl") or "-")))
+    return items
+
+
+def sitemap_diagnostic(sitemaps, error=""):
+    """Use the GSC submitted sitemap state, not the public XML response."""
+    target = SITE + "/sitemap.xml"
+    legacy = SITE + "/sitemap-v2.xml"
+    items = {str(item.get("path") or ""): item for item in sitemaps or []}
+    lines = ["", "## Google에 제출된 사이트맵 상태", ""]
+    if error:
+        lines.append("- 사이트맵 API 오류: " + str(error))
+        return lines
+    for url in (target, legacy):
+        item = items.get(url)
+        if not item:
+            lines.append("- " + url + ": 제출 기록 미관측")
+            continue
+        downloaded = str(item.get("lastDownloaded") or "기록 없음")
+        pending = bool(item.get("isPending"))
+        errors = int(item.get("errors") or 0)
+        lines.append("- " + url + ": 마지막 Google 다운로드 " + downloaded
+                     + "; 처리 대기 " + ("예" if pending else "아니오")
+                     + "; 처리 오류 " + str(errors))
+        if url == target and (pending or downloaded == "기록 없음"):
+            lines.append("- 기본 사이트맵은 Google 처리 완료가 아직 확인되지 않습니다. "
+                         "공개 XML 정상 응답을 Google 다운로드 성공으로 간주하지 마세요.")
+    return lines
+
+
 def render(snapshot):
     changes = snapshot.get("significant_page_updates") or {}
     inspected = {str(r.get("url")): r for r in snapshot.get("inspections") or []}
@@ -82,6 +122,24 @@ def render(snapshot):
         crawled = str((row or {}).get("last_crawl") or "-")
         values = (url, changed or "-", crawled, status, freshness, action)
         lines.append("| " + " | ".join(str(v).replace("|", "%7C").replace("\n", " ") for v in values) + " |")
+    mismatches = historic_canonical_mismatches(snapshot.get("inspections"))
+    lines.extend(["", "## Google 저장본 Canonical 차이", ""])
+    if mismatches:
+        lines.append("- 아래는 과거 Google 크롤링에 저장된 대표 URL입니다. "
+                     "최신 배포본의 문제라고 단정할 수 없습니다.")
+        lines.extend(["", "| 검사 URL | 사이트 선언 URL | Google 선택 URL | 마지막 크롤링 |",
+                      "|---|---|---|---|"])
+        for values in mismatches:
+            lines.append("| " + " | ".join(
+                str(v).replace("|", "%7C") for v in values) + " |")
+        lines.append("- 우선조치: 최신 HTML의 canonical과 Google 재크롤링 이후 저장본을 비교하세요. "
+                     "확인 없이 기존 URL을 일괄 리디렉션하지 마세요.")
+    else:
+        lines.append("- 조회한 URL에서 명시적 canonical 불일치 기록 없음 "
+                     "(조회되지 않은 URL은 판단 불가).")
+    lines.extend(sitemap_diagnostic(snapshot.get("sitemaps"),
+                                    snapshot.get("sitemap_error") or ""))
+
     lines.extend(["", "## 정확 검색어 (브랜드·연관 검색어 제외)", "",
                   "| 검색어 | GSC 공개 노출 | 클릭 | 평균 순위 | 실제 노출 URL |",
                   "|---|---:|---:|---:|---|"])
