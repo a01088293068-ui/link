@@ -143,6 +143,11 @@ def inline(text):
 
 
 def markdown(body):
+    """Render the supported subset of Markdown, including accessible tables.
+
+    Escape all article text through inline(); malformed tables remain text
+    instead of emitting broken HTML or silently losing article content.
+    """
     chunks, paragraph, list_items, list_type = [], [], [], None
     def flush_paragraph():
         if paragraph:
@@ -155,8 +160,38 @@ def markdown(body):
             chunks.append('<' + tag + '>' + ''.join('<li>' + inline(i) + '</li>' for i in list_items) + '</' + tag + '>')
             list_items.clear()
         list_type = None
-    for raw in body.splitlines():
+    def cells(row):
+        return [value.strip() for value in row.strip().strip('|').split('|')]
+    lines = body.splitlines()
+    index = 0
+    while index < len(lines):
+        raw = lines[index]
         line = raw.strip()
+        # A Markdown table requires a header and separator row with the same
+        # number of columns. Single-line pipes in ordinary prose are ignored.
+        if line.startswith('|') and index + 1 < len(lines):
+            headers = cells(line)
+            separators = cells(lines[index + 1]) if lines[index + 1].strip().startswith('|') else []
+            if (len(headers) >= 2 and len(separators) == len(headers)
+                    and all(re.fullmatch(r':?-{3,}:?', item) for item in separators)):
+                flush_paragraph()
+                flush_list()
+                index += 2
+                data_rows = []
+                while index < len(lines) and lines[index].strip().startswith('|'):
+                    values = cells(lines[index])
+                    if len(values) != len(headers):
+                        break
+                    data_rows.append('<tr>' + ''.join('<td>' + inline(value) + '</td>'
+                                                     for value in values) + '</tr>')
+                    index += 1
+                chunks.append(
+                    '<div class="blog-table-scroll"><table><thead><tr>' +
+                    ''.join('<th scope="col">' + inline(value) + '</th>' for value in headers) +
+                    '</tr></thead><tbody>' + ''.join(data_rows) +
+                    '</tbody></table></div>')
+                continue
+        index += 1
         if not line:
             flush_paragraph(); flush_list(); continue
         if re.fullmatch(r'-{3,}|\*{3,}', line):
