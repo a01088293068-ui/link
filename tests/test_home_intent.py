@@ -28,6 +28,21 @@ class HomeIntentTests(unittest.TestCase):
         self.assertIn("주소 위키에서 찾는 사이트 주소는 어떻게 확인하나요?", source)
         self.assertIn('href="/guides/address-check">사이트 주소 확인 방법</a>', source)
 
+    def test_homepage_task_links_match_generic_directory_search_intent(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        html = build.homepage_task_paths(records)
+        self.assertIn('href="/categories/"', html)
+        self.assertIn('href="/guides/address-check"', html)
+        self.assertIn('href="/directory?q=', html)
+        self.assertIn("커뮤니티·웹툰·AI 도구·스포츠", html)
+        self.assertIn("네이버 웹툰", html)
+        self.assertNotIn("정부 민원, 연금·건강보험", html)
+        self.assertEqual(html.count('class="blog-card"'), 3)
+        without_sample = [r for r in records if r["name"] != "네이버 웹툰"]
+        with self.assertRaisesRegex(RuntimeError, "not backed"):
+            build.homepage_task_paths(without_sample)
+
     def test_old_homepage_counts_are_synced_to_directory_data(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / "index.html").read_text(encoding="utf-8")
