@@ -1131,6 +1131,28 @@ def main():
         if isinstance(exc, HTTPError):
             sitemap_error += f' HTTP {exc.code}'
     report += format_sitemap_health(sitemap_rows, sitemap_error)
+    # Record machine-readable Google evidence alongside the human report.
+    # The public URL Inspection API describes Google's stored copy, NOT live
+    # indexability or evidence that a new deployment has been crawled.
+    changes_path = ROOT / 'seo/significant-page-updates.json'
+    changes = json.loads(changes_path.read_text(encoding='utf-8')) if changes_path.exists() else {}
+    snapshot = {
+        "schema": 1,
+        "property": args.property,
+        "start_date": start.isoformat(),
+        "end_date": end.isoformat(),
+        "core_keywords": core_keyword_rows(
+            focused_keywords if focused_keywords is not None else keywords,
+            focused_pages if focused_pages is not None else query_pages),
+        "core_query_error": focused_error,
+        "inspections": inspections,
+        "inspection_error": inspection_error,
+        "significant_page_updates": changes,
+        "sitemaps": sitemap_rows,
+        "sitemap_error": sitemap_error,
+    }
+    args.output.with_name('search-console-snapshot.json').write_text(
+        json.dumps(snapshot, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8')
     args.output.write_text(report, encoding='utf-8')
     print(f'Wrote {args.output}: {len(keywords)} queries, {len(pages)} pages')
 
