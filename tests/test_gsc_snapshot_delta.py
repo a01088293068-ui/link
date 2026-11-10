@@ -85,6 +85,11 @@ class GscDeltaTests(unittest.TestCase):
             z.writestr("search-console-snapshot.json", json.dumps(prior))
         listing = {"artifacts": [
             {"name": "search-console-performance", "expired": False,
+             "created_at": "2026-11-11T05:00:00Z",
+             "workflow_run": {"id": 1000},
+             "archive_download_url": "https://example.test/future.zip",
+             "size_in_bytes": 100},
+            {"name": "search-console-performance", "expired": False,
              "created_at": "2026-11-10T05:00:00Z",
              "workflow_run": {"id": 900},
              "archive_download_url": "https://example.test/current.zip",
@@ -101,6 +106,7 @@ class GscDeltaTests(unittest.TestCase):
         self.assertIn("/actions/runs/800", url)
         self.assertFalse(error)
         self.assertNotIn("https://example.test/current.zip", session.calls)
+        self.assertNotIn("https://example.test/future.zip", session.calls)
 
     def test_missing_private_artifact_is_not_fabricated(self):
         session = _FakeSession({"artifacts": []}, {})
