@@ -90,9 +90,27 @@ class BacklinkDiscoveryTests(unittest.TestCase):
         self.assertTrue(any("웹서비스 등록" in q for q in discovery.QUERIES))
         self.assertTrue(any("submit website" in q for q in discovery.QUERIES))
 
+    def test_rejects_news_articles_terms_pages_and_unrelated_search_leads(self):
+        fixtures = [
+            ("https://www.streetdirectory.com/etoday/submit-website-to-directories-pjuljf.html",
+             "Submit website to directories", "An editorial guide about web directory submissions"),
+            ("https://www.webverve.com/term.php",
+             "Submit website to curated directory", "Terms of use and listing rules"),
+            ("https://jackyan.com/blog/2023/09/bring-back-the-human-curated-web-directory/",
+             "Web directory resource directory", "Editorial article about human curation"),
+            ("https://rankify.in/web-resources",
+             "Web directory links and resources", "Curated directory listing guide"),
+            ("https://norden.se/avdelning/arvika/?ID=6012.html",
+             "Web Directory Submit Website", "An unrelated department directory"),
+        ]
+        for url, title, snippet in fixtures:
+            with self.subTest(url=url):
+                self.assertIsNone(discovery.assess(
+                    {"link": url, "title": title, "snippet": snippet}, set()))
+
     def test_requires_review_before_any_outreach(self):
         lead = discovery.assess({
-            "link": "https://editorial.example.com/resources",
+            "link": "https://editorial.example.com/suggest-resource",
             "title": "Suggest a resource",
             "snippet": "Curated website directory submission"
         }, set())
