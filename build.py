@@ -514,19 +514,34 @@ CATEGORY_DECISION_GUIDES = {
 }
 
 
+# Curated Korean-first examples for the eight existing categories, not a popularity ranking.
+# Every service must remain present in the registered catalogue.
+CATEGORY_SEARCH_EXAMPLES = {
+    "community": ("인벤", "디시인사이드"),
+    "korean": ("(전세계)코리안넷", "(미국)미주중앙일보"),
+    "comics-directory": ("조아라", "노벨피아"),
+    "webtoon": ("네이버 웹툰", "카카오웹툰"),
+    "ai": ("뤼튼", "미리캔버스"),
+    "search": ("네이버", "정부24"),
+    "sports": ("네이버 스포츠", "KBO 공식 홈페이지"),
+    "video": ("티빙", "웨이브"),
+}
+
+
 def category_decision_guide(slug, records, categories=CATEGORY_LANDING):
     """Add original, task-specific advice while grounding examples in the list."""
     catalog = {item_slug: category for category, item_slug, _, _ in categories}
     topics = CATEGORY_DECISION_GUIDES.get(slug)
     if slug not in catalog or not topics or len(topics) != 3:
         raise RuntimeError(f"Category editorial guidance missing: {slug}")
-    examples = [
+    present = {
         item["name"].strip()
         for item in records
         if isinstance(item, dict) and item.get("category") == catalog[slug]
         and isinstance(item.get("name"), str) and item["name"].strip()
-    ]
-    if len(examples) < 2:
+    }
+    examples = CATEGORY_SEARCH_EXAMPLES.get(slug, ())
+    if len(examples) != 2 or not all(name in present for name in examples):
         raise RuntimeError(f"Insufficient sourced category examples: {slug}")
     items = ''.join(
         '<li><h3>' + escape(heading) + '</h3><p>' + escape(advice) + '</p></li>'
