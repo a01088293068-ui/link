@@ -33,7 +33,7 @@ def safe_public_host(url, resolve=socket.getaddrinfo):
             or parts.username or parts.password or parts.fragment):
         return False
     host = parts.hostname.lower()
-    if host.endswith((".local", ".internal", ".test", ".invalid")):
+    if host in ("localhost",) or host.endswith((".localhost", ".local", ".internal", ".test", ".invalid")):
         return False
     try:
         ips = resolve(host, 443, type=socket.SOCK_STREAM)
