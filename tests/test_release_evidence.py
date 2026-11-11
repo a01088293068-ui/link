@@ -14,7 +14,8 @@ class ReleaseEvidenceTests(unittest.TestCase):
             self.skipTest("run python3 build.py first")
         manifest = release_evidence(dist)
         self.assertEqual(manifest["sites"], manifest["directory_cards"])
-        self.assertEqual(manifest["sites"], manifest["js_records"])
+        self.assertEqual(manifest["js_records"], 0)
+        self.assertEqual(manifest["browser_search_source"], "server_rendered_catalog_cards")
         self.assertEqual(manifest["sites"], sum(manifest["categories"].values()))
         self.assertEqual(len(manifest["categories"]), len(CATEGORY_PATHS))
         self.assertFalse(manifest["public_deployment_verified"])
@@ -40,7 +41,7 @@ class ReleaseEvidenceTests(unittest.TestCase):
             (dist / "assets/verified-directory.json").write_text(
                 json.dumps(records, ensure_ascii=False), encoding="utf-8")
             js = dist / "assets/directory.js"
-            original = "const sites=" + json.dumps(records, ensure_ascii=False) + ";(()=>"
+            original = "/* static search */ querySelectorAll(\'article.v6-card\')"
             js.write_text(original, encoding="utf-8")
             (dist / "directory.html").write_text(
                 '<article class="v6-card"></article>' * 2, encoding="utf-8")
@@ -75,8 +76,7 @@ class ReleaseEvidenceTests(unittest.TestCase):
                 "Sitemap: https://linkwiki.info/sitemap-v2.xml\n",
                 encoding="utf-8")
             self.assertEqual(release_evidence(dist)["sites"], 2)
-            js.write_text("const sites=" + json.dumps(records[:-1], ensure_ascii=False)
-                          + ";(()=>", encoding="utf-8")
+            js.write_text("const sites=[]; querySelectorAll(\'article.v6-card\')", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "JavaScript"):
                 release_evidence(dist)
             js.write_text(original, encoding="utf-8")
