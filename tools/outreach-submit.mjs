@@ -228,6 +228,21 @@ async function fillField(page,key,value){
   return true;
 }
 
+async function formShape(page){
+  // Aggregate only: do not persist or print account data or arbitrary page text.
+  return page.evaluate(()=>{
+    const fields=[...document.querySelectorAll('input,textarea')];
+    const visible=fields.filter(el=>{
+      const r=el.getBoundingClientRect();
+      return r.width>0&&r.height>0&&getComputedStyle(el).visibility!=='hidden';
+    });
+    return {visible_fields:visible.length,
+      native_forms:document.querySelectorAll('form').length,
+      iframes:document.querySelectorAll('iframe').length,
+      text_fields:visible.filter(el=>['text','email','url',''].includes(
+        (el.getAttribute('type')||'').toLowerCase())).length};
+  });
+}
 async function checkBlockers(page){
   return await page.evaluate(()=>{
     const captcha=!!document.querySelector(
@@ -307,7 +322,10 @@ async function operate(args) {
           }
           const blockers=await checkBlockers(page);
           const missing=missingKeys.length+blockers.missingCount;
-          if(missingKeys.length)console.log(provider.id,'찾지 못한 필드:',missingKeys.join(','));
+          if(missingKeys.length){
+            console.log(provider.id,'찾지 못한 필드:',missingKeys.join(','));
+            console.log(provider.id,'공개 폼 구조(개수만):',JSON.stringify(await formShape(page)));
+          }
           const gate=submissionGate({
             provider,hasCaptcha:blockers.captcha,
             uncheckedRequiredCheckboxes:blockers.unchecked,
