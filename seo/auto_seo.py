@@ -275,9 +275,14 @@ def generate(topic, search, prior_titles):
       "listed_examples_by_category는 실제 등록 목록의 설명일 뿐 현재 접속·공식 인증 자료가 아닙니다. "
       "주제와 직접 관련되는 경우에만 실제 등록 사례를 1~2개 구체적으로 설명하고, 관련 없으면 나열하지 마세요. "
       "없는 분야를 링크위키에 등록되어 있다고 소개하거나 링크 점검 주기·실시간 검증을 보장하지 마세요. "
+      "실제로 전달된 검증 근거가 없는 직접 사용·실패·테스트·성과 수치를 꾸미지 마세요. "
+      "관찰하지 않은 오류는 가능한 원인으로 설명하고 실제 관찰 결과와 구분하세요. "
       "JSON만 반환하세요: title, description, introduction, sections(최소 4개; 각 heading 및 paragraphs 배열, 문단 2개 이상), "
-      "faq(최소 3개; 각 question, answer), distinct_value. 전체 1600~2600자 목표. "
-      "본문에 HTML, Markdown 문법, 외부 URL을 넣지 마세요.")
+      "faq(최소 3개; 각 question, answer), distinct_value, "
+      "decision_table(객체: headers 문자열 3개, rows 각 3개 문자열로 된 3~5개 행), "
+      "checklist(구체적인 실행 점검 항목 3~6개 문자열). "
+      "비교표는 실제로 확인 가능한 기준과 사용자가 할 행동을 설명하고 임의 수치나 실사용 체험을 쓰지 마세요. "
+      "전체 1600~3000자 목표. 본문 필드에 HTML, Markdown 문법, 외부 URL을 넣지 마세요.")
     return model_json(system, {"topic": topic, "unverified_serp": search["organic"],
                                 "verified_directory": directory_context(),
                                 "existing_titles": prior_titles[:30]})
@@ -289,6 +294,27 @@ def render(article, related=(), category_links=()):
         lines += ["## " + str(section["heading"]).strip(), ""]
         for paragraph in section["paragraphs"]:
             lines += [str(paragraph).strip(), ""]
+    # Only structured data supplied by the reviewed article may become a
+    # table. Do not synthesize personal experiments or measured outcomes.
+    comparison = article.get("decision_table")
+    if isinstance(comparison, dict):
+        headers = comparison.get("headers", [])
+        rows = comparison.get("rows", [])
+        if len(headers) == 3 and 3 <= len(rows) <= 5 and all(
+                isinstance(row, list) and len(row) == 3 for row in rows):
+            safe = lambda value: str(value).strip().replace("|", " / ").replace("\\n", " ")
+            lines += ["## 상황별 비교표", "",
+                      "| " + " | ".join(map(safe, headers)) + " |",
+                      "|---|---|---|"]
+            for row in rows:
+                lines.append("| " + " | ".join(map(safe, row)) + " |")
+            lines.append("")
+    checklist = article.get("checklist")
+    if isinstance(checklist, list) and 3 <= len(checklist) <= 6:
+        lines += ["## 실천 체크리스트", ""]
+        for item in checklist:
+            lines.append("- " + str(item).strip().replace("\\n", " "))
+        lines.append("")
     lines += ["## 자주 묻는 질문", ""]
     for faq in article["faq"]:
         lines += ["### " + str(faq["question"]).strip(), "", str(faq["answer"]).strip(), ""]
@@ -429,6 +455,25 @@ def deterministic_review(topic, article, text, titles):
     )
     if any(re.search(pattern, text) for pattern in unsafe_patterns):
         reasons.append("potentially unsafe troubleshooting advice")
+    table = article.get("decision_table")
+    if table is not None and (
+        not isinstance(table, dict)
+        or not isinstance(table.get("headers"), list)
+        or len(table["headers"]) != 3
+        or not isinstance(table.get("rows"), list)
+        or not 3 <= len(table["rows"]) <= 5
+        or any(not isinstance(row, list) or len(row) != 3 for row in table["rows"])
+        or any(not isinstance(value, str) or not value.strip()
+               for value in table["headers"]
+               + [cell for row in table["rows"] for cell in row])
+    ):
+        reasons.append("decision table incomplete or unsupported")
+    checklist = article.get("checklist")
+    if checklist is not None and (
+        not isinstance(checklist, list) or not 3 <= len(checklist) <= 6
+        or any(not isinstance(item, str) or len(item.strip()) < 12 for item in checklist)
+    ):
+        reasons.append("action checklist incomplete")
     if not 70 <= len(article["description"]) <= 170:
         reasons.append("meta description length out of range")
     if category_example_missing(topic, article):
