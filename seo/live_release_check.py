@@ -469,14 +469,6 @@ def run(dist, fetch=fetch_public):
         live_search = fetch("/assets/directory-search.js")
         if "terms.every(term => haystack.includes(term))" not in live_search or "function sortResults(" not in live_search:
             problems.append("/assets/directory-search.js: multi-term search not deployed")
-        comparison_asset = dist / "assets" / "site-comparison.js"
-        if comparison_asset.is_file():
-            comparison_live = fetch("/assets/site-comparison.js")
-            expected_comparison = comparison_asset.read_text(encoding="utf-8")
-            if comparison_live != expected_comparison:
-                problems.append("/assets/site-comparison.js: deployed comparison logic differs from build")
-            if "querySelectorAll('article.v6-card')" not in comparison_live:
-                problems.append("/assets/site-comparison.js: catalog card source missing")
         live_script = fetch("/assets/directory.js")
         if "window.LinkWikiSearch.sortResults" not in live_script:
             problems.append("/assets/directory.js: relevance search integration not deployed")
@@ -491,6 +483,19 @@ def run(dist, fetch=fetch_public):
                 problems.append("/assets/directory.js: live static-card search binding missing")
     except (OSError, RuntimeError, ValueError) as error:
         problems.append(f"/assets/directory.js: fetch failed: {error}")
+    # Compare independently so a stale/new asset does not hide existing
+    # search-code drift findings or short-circuit the rest of release QA.
+    comparison_asset = dist / "assets" / "site-comparison.js"
+    if comparison_asset.is_file():
+        try:
+            comparison_live = fetch("/assets/site-comparison.js")
+            expected_comparison = comparison_asset.read_text(encoding="utf-8")
+            if comparison_live != expected_comparison:
+                problems.append("/assets/site-comparison.js: deployed comparison logic differs from build")
+            if "querySelectorAll('article.v6-card')" not in comparison_live:
+                problems.append("/assets/site-comparison.js: catalog card source missing")
+        except (OSError, RuntimeError, ValueError, KeyError) as error:
+            problems.append(f"/assets/site-comparison.js: fetch failed: {error}")
     return problems
 
 
