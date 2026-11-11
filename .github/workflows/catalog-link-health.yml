@@ -1,0 +1,42 @@
+name: LinkWiki catalog link observations
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 5 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'seo/link_health_batch.py'
+      - 'tests/test_link_health_batch.py'
+      - '.github/workflows/catalog-link-health.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linkwiki-catalog-link-observations
+  cancel-in-progress: false
+
+jobs:
+  link-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify safe bounded HTTP observations (offline)
+        run: python3 -B -m unittest discover -s tests -p 'test_link_health_batch.py' -v
+      - name: Inspect one bounded batch of public catalogue domains
+        if: github.event_name != 'push'
+        run: python3 -B seo/link_health_batch.py --limit 36
+      - name: Retain report for manual catalog review
+        if: github.event_name != 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-link-health
+          path: seo/link-health-report.md
+          if-no-files-found: warn
+          retention-days: 30
