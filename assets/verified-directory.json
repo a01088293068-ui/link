@@ -116,7 +116,7 @@
   {
     "name": "국가통계포털 KOSIS",
     "category": "검색·포털",
-    "url": "https://kosis.kr/",
+    "url": "https://kosis.kr/index/index.do",
     "description": "인구·경제·사회 등 국내 공식 통계표를 항목과 기간별로 찾아볼 수 있습니다. 비교할 때는 조사 기준·단위·집계 시점을 먼저 확인하세요."
   },
   {
