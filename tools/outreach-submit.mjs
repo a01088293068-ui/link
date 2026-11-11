@@ -5,7 +5,7 @@
  * privacy/marketing terms. Only self-submits a vetted public site listing.
  * Browser profile and history stay entirely local (git-ignored).
  */
-import { resolve, dirname, join, basename, extname } from 'node:path';
+import { resolve, dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readdir, stat, readFile, writeFile, mkdir, chmod } from 'node:fs/promises';
 import { homedir } from 'node:os';
@@ -15,7 +15,7 @@ const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const LOCAL=join(ROOT,'.local-backlink-state');
 const HISTORY=join(LOCAL,'submission-attempts.json');
 const ASSET_DIRS=[join(homedir(),'Downloads'),join(homedir(),'Desktop')];
-export const CONTACT_EMAIL='a01088293068@gmail.com';
+export const CONTACT_EMAIL=(process.env.LINKWIKI_OUTREACH_EMAIL||'').trim();
 export const WEBSITE='https://linkwiki.info';
 const DESCRIPTION='LinkWiki is a Korean web directory that helps people discover useful websites and links. Users can browse categorized listings for search, online communities, AI tools, sports, entertainment and other web resources. LinkWiki provides a searchable interface in Korean for exploring website names, descriptions and official addresses.';
 export const PROVIDERS=Object.freeze([
@@ -143,6 +143,7 @@ async function operate(args) {
   if(!hasPrivacyConsent(args))throw Error('privacy confirmation required');
   await requireVpn(args);
   const submit=args.includes('--submit');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(CONTACT_EMAIL))throw Error('LINKWIKI_OUTREACH_EMAIL env is required');
   const {chromium}=await import('playwright');
   const {logo,screenshot}=await findAssets();
   console.log('LinkWiki 등록 준비: 이메일 계정 사용(주소는 로그에 출력하지 않음).');
