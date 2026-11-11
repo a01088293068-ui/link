@@ -77,3 +77,21 @@ test('form scan clearly separates third-party forms and anti-bot from open forms
   assert.equal(classifyForm({httpStatus:401,formFields:0,externalForm:false,antibot:false,redirectsOut:false}), 'not_accessible');
   assert.equal(classifyForm({httpStatus:200,formFields:6,externalForm:false,antibot:false,redirectsOut:true}), 'external_redirect_manual_review');
 });
+
+test('scan classifications survive local persistence and remain distinct', () => {
+  const statuses = [
+    ['joinly', 'visible_form_manual_review'],
+    ['launchpedia', 'visible_form_manual_review'],
+    ['phyco', 'visible_form_manual_review'],
+    ['startupcollections', 'embedded_form_manual_review'],
+    ['startupstash', 'antibot_manual_review'],
+    ['somuch', 'visible_form_manual_review'],
+  ];
+  const result = normalizeState(statuses.map(([provider,status])=>({
+    provider,status,checked_on:'2026-11-11',account_email:'do-not-persist@example.org',
+  })));
+  assert.deepEqual(result.map(x=>x.status),statuses.map(x=>x[1]));
+  assert.doesNotMatch(JSON.stringify(result), /do-not-persist|@example\.org/);
+  const invalid = normalizeState([{provider:'joinly',status:'invented_verified_link',checked_on:'2026-11-11'}]);
+  assert.equal(invalid[0].status, 'manual_review_needed');
+});
