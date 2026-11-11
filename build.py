@@ -789,6 +789,14 @@ def homepage_task_paths(records):
     )
 
 
+def directory_card_anchor(record):
+    """Stable on-page anchor; no separate indexable thin page per listing."""
+    url = record.get("url") if isinstance(record, dict) else None
+    if not isinstance(url, str) or not url.startswith("https://"):
+        raise RuntimeError("Directory anchor requires real HTTPS listing")
+    return "site-" + hashlib.sha256(url.encode("utf-8")).hexdigest()[:14]
+
+
 def render_directory_catalog_cards(records):
     """Render crawlable cards directly from the verified catalog."""
     if not isinstance(records, list) or len(records) < 200:
@@ -811,7 +819,7 @@ def render_directory_catalog_cards(records):
             raise RuntimeError("Duplicate directory URL: " + url)
         seen.add(url)
         cards.append(
-            '<article class="v6-card"><small>' + escape(category) +
+            '<article class="v6-card" id="' + directory_card_anchor(item) + '"><small>' + escape(category) +
             '</small><h3>' + escape(name) + '</h3><p>' + escape(description) +
             '</p><span class="site-domain">' + escape(parsed.hostname) + '</span>' +
             '<a aria-label="' + escape(name, quote=True) +
@@ -917,10 +925,15 @@ def directory_quick_comparison(records, categories):
         names = [item["name"] for item in matches[:2]]
         if any(not isinstance(name, str) or not name.strip() for name in names):
             raise RuntimeError(f"Invalid published category examples: {slug}")
+        direct_links = ' · '.join(
+            '<a href="#' + directory_card_anchor(item) + '">'
+            + escape(item["name"]) + '</a>'
+            for item in matches[:2]
+        )
         sections.append(
             '<li><a href="/categories/' + escape(slug, quote=True) + '">'
             + escape(category) + ' ' + str(len(matches)) + '개</a>'
-            '<span> · ' + escape(', '.join(names)) + '</span>'
+            '<span> · ' + direct_links + '</span>'
             '<p>' + escape(purpose) + '</p></li>'
         )
     if len(sections) != len(categories):
