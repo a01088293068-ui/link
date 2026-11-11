@@ -43,16 +43,20 @@ export function chooseAsset(files,kind) {
 }
 export async function findAssets() {
   const files=[];
-  for (const dir of ASSET_DIRS) {
+  async function scan(dir,prefix='',depth=0){
     let names=[];
-    try{names=await readdir(dir,{withFileTypes:true});}catch{continue;}
+    try{names=await readdir(dir,{withFileTypes:true});}catch{return;}
     for(const entry of names){
-      if(!entry.isFile() || !/\.(png|jpe?g|webp)$/i.test(entry.name))continue;
-      const path=join(dir,entry.name);
-      const info=await stat(path).catch(()=>null);
-      if(info)files.push({path,name:entry.name,bytes:info.size,ext:extname(entry.name)});
+      if(entry.isDirectory() && depth===0 && /(linkwiki|링크위키|assets|이미지|로고)/i.test(entry.name)){
+        await scan(join(dir,entry.name),entry.name+' ',depth+1);
+      } else if(entry.isFile() && /\.(png|jpe?g|webp)$/i.test(entry.name)){
+        const path=join(dir,entry.name);
+        const info=await stat(path).catch(()=>null);
+        if(info)files.push({path,name:prefix+entry.name,bytes:info.size,ext:extname(entry.name)});
+      }
     }
   }
+  for(const dir of ASSET_DIRS)await scan(dir);
   return {logo:chooseAsset(files,'logo'),screenshot:chooseAsset(files,'screenshot')};
 }
 export function cleanHistory(rows) {
