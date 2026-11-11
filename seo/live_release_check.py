@@ -149,6 +149,7 @@ def release_content_sections(html, path):
         "/directory": (
             r'<section\b(?=[^>]*\bid="directory-quick-compare")[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-task-paths\b)[^>]*>.*?</section>',
+            r'<section\b(?=[^>]*\bid="directory-two-site-compare")[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-search-help\b)[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-purpose-comparison\b)[^>]*>.*?</section>',
@@ -468,6 +469,14 @@ def run(dist, fetch=fetch_public):
         live_search = fetch("/assets/directory-search.js")
         if "terms.every(term => haystack.includes(term))" not in live_search or "function sortResults(" not in live_search:
             problems.append("/assets/directory-search.js: multi-term search not deployed")
+        comparison_asset = dist / "assets" / "site-comparison.js"
+        if comparison_asset.is_file():
+            comparison_live = fetch("/assets/site-comparison.js")
+            expected_comparison = comparison_asset.read_text(encoding="utf-8")
+            if comparison_live != expected_comparison:
+                problems.append("/assets/site-comparison.js: deployed comparison logic differs from build")
+            if "querySelectorAll('article.v6-card')" not in comparison_live:
+                problems.append("/assets/site-comparison.js: catalog card source missing")
         live_script = fetch("/assets/directory.js")
         if "window.LinkWikiSearch.sortResults" not in live_script:
             problems.append("/assets/directory.js: relevance search integration not deployed")
