@@ -113,7 +113,10 @@ export function normalizeState(input) {
       provider: item.provider,
       status: ['form_detected','filled_for_review','manual_login_needed',
         'no_supported_form','already_registered','requires_domain_proof',
-        'network_blocked','manual_review_needed','human_verification_blocked'].includes(item.status)
+        'network_blocked','manual_review_needed','human_verification_blocked',
+        'visible_form_manual_review','embedded_form_manual_review',
+        'antibot_manual_review','not_accessible','no_visible_form',
+        'external_redirect_manual_review'].includes(item.status)
         ? item.status : 'manual_review_needed',
       // No raw URL or page text: might contain personal identifiers or tokens.
       checked_on: /^\d{4}-\d{2}-\d{2}$/.test(item.checked_on) ? item.checked_on : '',
@@ -356,7 +359,10 @@ async function main() {
     return;
   }
   if (command === 'status') {
-    for (const item of await readState()) console.log(item.provider, item.status, item.checked_on);
+    // Latest recorded state per provider, rather than a confusing history
+    // containing old entries for the same provider.
+    const latest = new Map((await readState()).map(item => [item.provider, item]));
+    for (const item of latest.values()) console.log(item.provider, item.status, item.checked_on);
     return;
   }
   if (!['run','scan'].includes(command)) throw new Error('Commands: plan, status, scan, run');
