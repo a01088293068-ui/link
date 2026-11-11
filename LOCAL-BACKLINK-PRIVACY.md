@@ -117,3 +117,26 @@ npm run outreach:batch -- status
 - **현재 제공 기능은 일괄 검토·일부 자동 입력이며, 로그인 우회나 모든 등록처에 대한 완전 자동 제출이 아닙니다.**
 - Google 자동화 브라우저 로그인 제한이 재현될 수 있어, 기존 Chrome 로그인 세션을 무단으로 가져오지 않습니다.
 
+
+## 2026-11-11: 새 등록처 6곳 일괄 *읽기 전용* 진단
+
+연결된 계정이 차단된 Disquiet는 재시도하지 않으며, 기존 Dreamboat·SYDE도 재등록하지 않습니다.
+신규 후보는 Joinly, LaunchPedia, Phyco, Startup Collections, Startup Stash, SoMuch입니다.
+사이트별 정책에 따라 실명·이메일·이미지 또는 사람 인증이 필요할 수 있습니다.
+이 등록처들이 LinkWiki를 최종 승인한다는 보장은 없습니다.
+
+```bash
+cd ~/Downloads/linkwiki-seo-deploy
+git pull --ff-only origin main
+npm install
+npm run outreach:test
+npm run outreach:batch -- plan
+npm run outreach:batch -- scan --privacy-confirmed --vpn-interface utun0
+npm run outreach:batch -- status
+```
+
+`scan`은 맥북에서 한 번에 6곳의 공개 등록 화면을 읽어 **폼 접근 가능성만 점검**합니다.
+로그인·이메일·전화번호·CAPTCHA 입력, 폼 제출은 하지 않습니다.
+페이지가 사람 인증을 요구할 경우 이를 우회하지 않고 별도 검토 상태로 남깁니다.
+로컬 결과 파일에는 등록처 ID, 제한된 상태명, 날짜만 기록합니다.
+공개 사이트에는 VPN 인터페이스를 통한 접속이 발생하므로, VPN의 킬 스위치와 누출 보호는 계속 필요합니다.
