@@ -875,7 +875,7 @@ def sync_category_card_copy(html, records, category):
             html, count=1, flags=re.S)
         if replaced != 1:
             raise RuntimeError("Category item container malformed: " + category)
-        html = re.sub(r'\\b\\d+개(?=\\s+사이트 안내)',
+        html = re.sub(r'\b\d+개(?=\s+사이트 안내)',
                       lambda _: str(len(selected)) + "개", html)
         return html
     pattern = re.compile(
