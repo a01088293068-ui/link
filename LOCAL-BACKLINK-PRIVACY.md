@@ -227,3 +227,19 @@ LINKWIKI_OUTREACH_EMAIL='a01088293068@gmail.com' LINKWIKI_CONTACT_NAME='리쑤�
 
 코드 테스트는 대체로 실제 폼 상호작용 테스트가 아니므로 `npm run outreach:test`
 통과만으로 제출 성공을 주장할 수 없습니다.
+
+### 불필요한 재시도 없이 LaunchPedia만 실행
+
+Joinly는 동의 요건, Phyco는 업로드할 로고 부족으로 차단되었습니다. 두 곳은
+반복 실행하지 않고, 기본 정보 필드 선택 기능을 보완한 LaunchPedia만
+다시 시도할 수 있게 `--only` 옵션을 추가했습니다.
+
+```bash
+cd ~/Downloads/linkwiki-seo-deploy
+git pull --ff-only origin main
+LINKWIKI_OUTREACH_EMAIL='a01088293068@gmail.com' LINKWIKI_CONTACT_NAME='리쑤화' npm run outreach:submit -- --privacy-confirmed --vpn-interface utun0 --submit --only launchpedia
+```
+
+실행 시 못 찾은 필드 키를 출력합니다(개인 이메일이나 로컬 파일명은 출력하지 않음).
+결과가 `missing_fields`면 **제출되지 않았으며**, 같은 명령을 반복하지 마세요.
+`submitted_unverified`도 게재된 백링크가 아니라 제출 직후 신호를 본 것뿐입니다.
