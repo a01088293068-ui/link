@@ -43,6 +43,26 @@ class HomeIntentTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "not backed"):
             build.homepage_task_paths(without_sample)
 
+    def test_two_original_keyword_guides_are_linked_from_directory_release(self):
+        root = Path(__file__).resolve().parents[1]
+        content = (
+            "seo-20261111-address-directory-search-examples.md",
+            "seo-20261111-links-sites-comparison-checklist.md",
+        )
+        for filename in content:
+            article = (root / "content" / filename).read_text(encoding="utf-8")
+            self.assertGreater(len(article), 2100)
+            self.assertIn("](/directory)", article)
+            self.assertIn("](/categories/", article)
+        release = root / "dist" / "directory.html"
+        if not release.exists():
+            self.skipTest("Release not built")
+        html = release.read_text(encoding="utf-8")
+        self.assertIn("주소모음 검색 실전 가이드", html)
+        self.assertIn("링크모음·사이트모음 비교 기준", html)
+        self.assertIn("seo-20261111-address-directory-search-examples", html)
+        self.assertIn("seo-20261111-links-sites-comparison-checklist", html)
+
     def test_directory_above_fold_category_comparison_uses_real_catalog(self):
         root = Path(__file__).resolve().parents[1]
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
