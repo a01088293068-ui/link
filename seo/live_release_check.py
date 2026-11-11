@@ -152,6 +152,7 @@ def release_content_sections(html, path):
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-search-help\b)[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-purpose-comparison\b)[^>]*>.*?</section>',
+            r'<section\b(?=[^>]*\bclass="[^"]*\bseo-everyday-tasks\b)[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-directory-guides\b)[^>]*>.*?</section>',
         ),
         "/categories/": (

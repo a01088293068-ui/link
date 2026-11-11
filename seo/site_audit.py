@@ -331,7 +331,7 @@ def audit_site(dist):
             errors.append("directory usage guide missing or duplicated")
         if "사이트모음 검색 및 확인 방법" not in listing:
             errors.append("directory search help missing accessible label")
-        for anchor in ("site-list-guide", "site-category-comparison", "site-purpose-comparison", "site-related-guides"):
+        for anchor in ("site-list-guide", "site-category-comparison", "site-purpose-comparison", "directory-everyday-tasks", "site-related-guides"):
             if listing.count(f'id="{anchor}"') != 1:
                 errors.append(f"directory section anchor missing/duplicate: {anchor}")
             if f'href="#{anchor}"' not in listing:

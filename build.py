@@ -1079,6 +1079,59 @@ def directory_task_paths(records):
     )
 
 
+def directory_everyday_task_paths(records):
+    """Let visitors compare real registered services by everyday user intent.
+
+    Each pair represents two genuine catalog entries, not a popularity claim
+    or a fabricated ranking. The deep links reuse the canonical search page.
+    """
+    if not isinstance(records, list) or not records:
+        raise RuntimeError("Everyday directory tasks require verified records")
+    names = {row.get("name") for row in records if isinstance(row, dict)}
+    tasks = (
+        ("장소 찾기와 길찾기", "네이버 지도", "카카오맵",
+         "대중교통·도보 경로를 비교할 때 출발지와 실제 운영 시간을 확인하세요."),
+        ("문서 작성과 번역", "ChatGPT", "DeepL",
+         "아이디어·초안 작성과 언어 번역은 다른 작업입니다. 중요한 내용은 원문을 대조하세요."),
+        ("이미지·발표 자료 디자인", "Canva", "미리캔버스",
+         "템플릿의 제공 범위, 내보내기 형식과 라이선스 조건을 확인하세요."),
+        ("지역 중고 거래와 게시판 거래", "당근", "중고나라",
+         "거래 지역·판매자 신원·물품 상태와 결제 조건을 따로 점검하세요."),
+        ("동영상 검색과 구독형 시청", "유튜브", "넷플릭스",
+         "개별 영상 검색과 구독형 콘텐츠 이용은 제공 방식과 비용이 다릅니다."),
+        ("웹툰 플랫폼 선택", "네이버 웹툰", "카카오웹툰",
+         "연재 작품, 무료 공개 범위와 유료 회차 조건을 비교하세요."),
+        ("뉴스 자료와 공식 통계", "빅카인즈", "국가통계포털 KOSIS",
+         "뉴스 기사 분석과 국가 통계 조회는 자료 성격과 기준 시점이 다릅니다."),
+    )
+    cards = []
+    seen = set()
+    for label, first, second, advice in tasks:
+        if first == second or first not in names or second not in names:
+            raise RuntimeError(f"Everyday task missing real catalog entries: {first}/{second}")
+        if label in seen:
+            raise RuntimeError(f"Duplicate everyday task: {label}")
+        seen.add(label)
+        cards.append(
+            '<li><strong>' + escape(label) + '</strong> — ' + escape(advice)
+            + ' <a href="/directory?q=' + quote(first, safe="") + '">'
+            + escape(first) + '</a> · <a href="/directory?q='
+            + quote(second, safe="") + '">' + escape(second) + '</a></li>'
+        )
+    return (
+        '<section id="directory-everyday-tasks" '
+        'class="lw-safety-note seo-everyday-tasks" '
+        'aria-label="생활 목적별 사이트 비교">'
+        '<h2>생활 목적별 링크모음·사이트모음 선택</h2>'
+        '<p>검색어가 떠오르지 않을 때 필요한 작업부터 고르세요. '
+        '아래 사이트들은 실제 등록 목록의 비교 예시이며 인기 순위, '
+        '공식 인증 또는 현재 연결 상태를 의미하지 않습니다.</p>'
+        '<ul>' + ''.join(cards) + '</ul>'
+        '<p><a href="/directory">주소모음 전체 검색</a> · '
+        '<a href="/categories/">분야별 사이트 목록</a></p></section>'
+    )
+
+
 def directory_search_help(records, categories):
     """Helpful, static, data-backed search instructions for directory visitors."""
     if not records or not categories:
@@ -1512,6 +1565,7 @@ def build():
         + '<a href="#site-list-guide">검색 이용 안내</a>'
         + '<a href="#site-category-comparison">분야별 등록 예시</a>'
         + '<a href="#site-purpose-comparison">목적별 선택법</a>'
+        + '<a href="#directory-everyday-tasks">생활 목적별 비교</a>'
         + '<a href="#site-related-guides">관련 이용 가이드</a>'
         + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
     )
@@ -1538,8 +1592,9 @@ def build():
     directory_html = directory_html.replace(
         overview_marker,
         help_section + directory_address_inspector() + overview
-        + directory_purpose_comparison(records, CATEGORY_LANDING) +
-        directory_relevant_guides(posts) + overview_marker, 1)
+        + directory_purpose_comparison(records, CATEGORY_LANDING)
+        + directory_everyday_task_paths(records)
+        + directory_relevant_guides(posts) + overview_marker, 1)
     # Provide a structured category map for the core search landing page.
     # One declaration only; never generate unverified ratings or fake offers.
     if 'id="directory-category-schema"' in directory_html:
