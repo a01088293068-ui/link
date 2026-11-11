@@ -62,18 +62,18 @@ class SiteAuditTests(unittest.TestCase):
                     "url": "https://example.org/tools?ref=directory"}]
         rendered = homepage_directory_examples(records, categories)
         self.assertIn("테스트 &lt;AI&gt;", rendered)
-        self.assertIn("글쓰기 &amp; 검색 도구", rendered)
-        self.assertIn("등록 도메인: example.org", rendered)
+        self.assertNotIn("글쓰기 &amp; 검색 도구", rendered)
+        self.assertNotIn("등록 도메인: example.org", rendered)
         self.assertNotIn("ref=directory", rendered)
         two = homepage_directory_examples(records + [{
             "category": "AI 도구", "name": "두 번째 도구",
             "description": "번역 및 문서 검색", "url": "https://second.example/"
         }], categories)
         self.assertIn("두 번째 도구", two)
-        self.assertIn("second.example", two)
+        self.assertNotIn("second.example", two)
         self.assertEqual(two.count('class="v6-card"'), 1)
         self.assertIn('href="/categories/ai"', rendered)
-        self.assertIn("인기 순위나 추천 등급이 아니며", rendered)
+        self.assertIn("인기 순위나 안전 등급이 아닙니다", rendered)
         self.assertNotIn("테스트 <AI>", rendered)
         with self.assertRaises(RuntimeError):
             homepage_directory_examples([], categories)
