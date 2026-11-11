@@ -404,7 +404,7 @@ def category_example_missing(topic, article):
     return not any(mentioned(name) for name in verified_names)
 
 
-def deterministic_review(topic, article, text, titles):
+def deterministic_review(topic, article, text, titles, require_structured=False):
     required = (("title", str), ("description", str), ("introduction", str),
                 ("sections", list), ("faq", list))
     if any(not isinstance(article.get(k), t) for k, t in required):
@@ -455,6 +455,27 @@ def deterministic_review(topic, article, text, titles):
     )
     if any(re.search(pattern, text) for pattern in unsafe_patterns):
         reasons.append("potentially unsafe troubleshooting advice")
+    # Keep old offline tests compatible while requiring structured sections
+    # before any NEW draft can be published through the automated workflow.
+    if require_structured and article.get("decision_table") is None:
+        reasons.append("new drafts require a comparison table")
+    if require_structured and article.get("checklist") is None:
+        reasons.append("new drafts require an actionable checklist")
+    # Unverified first-person field-test narratives must not be published as
+    # actual editorial experience. Hypothetical explanations are still fine.
+    first_person_claims = (
+        r"(?:제가|저희가|직접)\\s*(?:실제로\\s*)?(?:테스트(?:해|했)|실험(?:해|했)|방문(?:해|했)|써\\s*봤|사용해\\s*봤)",
+        r"(?:직접|실제로)\\s*(?:실패해\\s*봤|실패했|측정했|확인해\\s*봤)",
+    )
+    prose = " ".join([
+        str(article.get("introduction", "")),
+        *[str(part) for sec in article.get("sections", []) if isinstance(sec, dict)
+          for part in sec.get("paragraphs", []) if isinstance(part, str)],
+        *[str(faq.get("answer", "")) for faq in article.get("faq", [])
+          if isinstance(faq, dict)],
+    ])
+    if any(re.search(pattern, prose) for pattern in first_person_claims):
+        reasons.append("unsupported first-person test or experience claim")
     table = article.get("decision_table")
     if table is not None and (
         not isinstance(table, dict)
@@ -530,7 +551,8 @@ def main():
         markdown = render(article, related_posts(topic), related_categories(topic))
     except (KeyError, TypeError, ValueError) as error:
         raise RuntimeError(f"Invalid article structure: {error}") from error
-    issues = deterministic_review(topic, article, markdown, titles)
+    issues = deterministic_review(
+        topic, article, markdown, titles, require_structured=True)
     approved, review = (False, {"issues": issues}) if issues else independent_review(topic, article, markdown)
     print(json.dumps({"topic": topic, "approved": approved, "review": review}, ensure_ascii=False))
     if not approved:
