@@ -31,11 +31,15 @@ jobs:
         run: python3 -B -m unittest discover -s tests -p 'test_external_link_observations.py' -v
       - name: Observe 24 publicly registered destinations via HEAD
         run: python3 -B seo/observe_external_links.py --batch-size 24
+      - name: Generate review queue from the exact observed catalog URLs
+        run: python3 -B seo/external_link_triage.py
       - name: Store findings for editorial review, not public verified badges
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: linkwiki-external-observations
-          path: seo/external-link-observations.json
+          path: |
+            seo/external-link-observations.json
+            seo/external-link-review.md
           if-no-files-found: warn
           retention-days: 30
