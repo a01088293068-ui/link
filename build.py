@@ -1508,6 +1508,19 @@ def build():
             urlset, json.loads(changes.read_text(encoding="utf-8")), ns)
     tree.write(OUT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     (OUT / "sitemap-v2.xml").write_bytes((OUT / "sitemap.xml").read_bytes())
+    from seo.directory_release_gate import validate as validate_directory_release, CATEGORIES as RELEASE_CATEGORIES
+    release_problems = validate_directory_release(
+        (OUT / "directory.html").read_text(encoding="utf-8"),
+        (OUT / "index.html").read_text(encoding="utf-8"),
+        records,
+        {slug: (OUT / "categories" / f"{slug}.html").read_text(encoding="utf-8")
+         if (OUT / "categories" / f"{slug}.html").is_file() else ""
+         for slug in RELEASE_CATEGORIES},
+        (OUT / "sitemap.xml").read_text(encoding="utf-8"),
+    )
+    if release_problems:
+        raise RuntimeError("Directory crawlability release gate failed: " +
+                           "; ".join(release_problems))
     from seo.site_audit import audit_site
     problems = audit_site(OUT)
     if problems:
