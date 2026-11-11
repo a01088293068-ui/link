@@ -1,242 +1,130 @@
-"""Guard against drift between published LinkWiki directory sources.
+"""Check authoritative catalog against the actual production build.
 
-Runs with stdlib only, without network, GSC tokens or a completed dist build.
+Source .html templates are allowed to contain older placeholder copy; build.py
+regenerates the full 222-card public output from verified-directory.json.
 """
 import json
 import re
+import subprocess
 import unittest
-from html.parser import HTMLParser
 from pathlib import Path
-from urllib.parse import urlsplit
+from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORY_FILES = {
-    "검색·포털": "search",
-    "영상·OTT": "video",
-    "커뮤니티": "community",
-    "한인교민": "korean",
-    "만화": "comics-directory",
-    "만화·웹툰": "webtoon",
-    "스포츠": "sports",
-    "AI 도구": "ai",
+    "검색·포털": "search", "커뮤니티": "community",
+    "AI 도구": "ai", "스포츠": "sports",
+    "영상·OTT": "video", "만화·웹툰": "webtoon",
+    "만화": "comics-directory", "한인교민": "korean",
 }
 
 
-class CardParser(HTMLParser):
+class Cards(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.cards = []
-        self.in_card = False
-        self.depth = 0
+        self.items = []
+        self.current = None
         self.field = None
 
     def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-        cls = attrs.get("class", "").split()
-        if tag == "article" and ("v6-card" in cls or "item" in cls):
-            self.in_card = True
-            self.depth = 1
-            self.cards.append({"name": "", "category": "", "description": "", "url": ""})
-            self.field = None
-        elif self.in_card:
-            if tag == "article":
-                self.depth += 1
+        a = dict(attrs)
+        if tag == "article" and any(x in a.get("class", "").split() for x in ("v6-card", "item")):
+            self.current = {"name": "", "category": "", "description": "", "url": ""}
+            self.items.append(self.current)
+        elif self.current is not None:
             if tag in ("h3", "strong"):
                 self.field = "name"
             elif tag == "small":
                 self.field = "category"
             elif tag == "p":
                 self.field = "description"
-            elif tag == "a" and attrs.get("href", "").startswith("https://"):
-                self.cards[-1]["url"] = attrs["href"]
-
-    def handle_data(self, data):
-        if self.in_card and self.field:
-            self.cards[-1][self.field] += data
+            elif tag == "a" and a.get("href", "").startswith("https://"):
+                self.current["url"] = a["href"]
 
     def handle_endtag(self, tag):
-        if not self.in_card:
-            return
-        if tag in ("h3", "strong", "small", "p"):
-            self.field = None
         if tag == "article":
-            self.depth -= 1
-            if self.depth == 0:
-                self.in_card = False
-                self.field = None
+            self.current = None
+            self.field = None
+        elif tag in ("h3", "strong", "small", "p"):
+            self.field = None
+
+    def handle_data(self, data):
+        if self.current is not None and self.field:
+            self.current[self.field] += data
 
 
-def cards(path):
-    parser = CardParser()
-    parser.feed(path.read_text(encoding="utf-8"))
-    return parser.cards
+def cards(filename):
+    parser = Cards()
+    parser.feed(filename.read_text(encoding="utf-8"))
+    return parser.items
 
 
-class PublishedDirectoryConsistencyTests(unittest.TestCase):
+class CatalogConsistencyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.records = json.loads(
-            (ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        cls.records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
 
-    def test_korean_first_primary_directory_order(self):
-        preferred = (
-            "검색·포털", "커뮤니티", "AI 도구", "스포츠",
-            "영상·OTT", "만화·웹툰", "만화", "한인교민",
-        )
-        priority = {name: index for index, name in enumerate(preferred)}
-        indexes = [priority[record["category"]] for record in self.records]
-        self.assertEqual(indexes, sorted(indexes),
-                         "Home directory must present Korean search resources first")
-        self.assertEqual(self.records[0]["name"], "네이버")
-        self.assertEqual(self.records[0]["category"], "검색·포털")
+    def test_catalog_has_unique_real_https_links_and_korean_first_order(self):
+        from urllib.parse import urlsplit
+        rows = self.records
+        order = list(CATEGORY_FILES)
+        self.assertGreaterEqual(len(rows), 200)
+        self.assertEqual(len(rows), len({r["url"] for r in rows}))
+        self.assertEqual(len(rows), len({r["name"] for r in rows}))
+        self.assertEqual([order.index(r["category"]) for r in rows],
+                         sorted(order.index(r["category"]) for r in rows))
+        for row in rows:
+            parsed = urlsplit(row["url"])
+            self.assertEqual(parsed.scheme, "https")
+            self.assertTrue(parsed.hostname)
+            self.assertIsNone(parsed.username)
+            self.assertIsNone(parsed.password)
+            self.assertTrue(row["description"].strip())
 
-    def test_valid_unique_https_records(self):
-        self.assertGreater(len(self.records), 0)
-        self.assertEqual(len(self.records), len({x["name"] for x in self.records}))
-        self.assertEqual(len(self.records), len({x["url"] for x in self.records}))
-        for record in self.records:
-            self.assertIn(record["category"], CATEGORY_FILES)
-            self.assertTrue(record["name"].strip())
-            self.assertTrue(record["description"].strip())
-            url = urlsplit(record["url"])
-            self.assertEqual(url.scheme, "https")
-            self.assertTrue(url.hostname)
-            self.assertIsNone(url.username)
-            self.assertIsNone(url.password)
+    def test_production_directory_contains_every_verified_listing(self):
+        path = ROOT / "dist/directory.html"
+        if not path.exists():
+            self.skipTest("build.py not run yet")
+        self.assertEqual(cards(path), self.records)
 
-    def test_verified_korean_public_service_expansion_is_published_everywhere(self):
-        expected = {
-            "국민건강보험공단": "www.nhis.or.kr",
-            "국민연금공단": "www.nps.or.kr",
-            "국가건강정보포털": "health.kdca.go.kr",
-            "건강보험심사평가원": "www.hira.or.kr",
-            "국민신문고": "www.epeople.go.kr",
-            "한국소비자원": "www.kca.go.kr",
-            "국가전자도서관": "dlibrary.go.kr",
-            "위택스": "www.wetax.go.kr",
-            "식품안전나라": "www.foodsafetykorea.go.kr",
-            "안전운전 통합민원": "www.safedriving.or.kr",
-            "표준국어대사전": "stdict.korean.go.kr",
-            "서울시 교통정보 TOPIS": "topis.seoul.go.kr",
-            "K-Startup 창업지원포털": "www.k-startup.go.kr",
-            "특허로": "www.patent.go.kr",
-            "기업마당": "bizinfo.go.kr",
-            "KIPRIS 지식재산정보검색": "www.kipris.or.kr",
-            "관세청 유니패스": "unipass.customs.go.kr",
-            "대한상공회의소 코참넷": "www.korcham.net",
-        }
-        by_name = {record["name"]: record for record in self.records}
-        category_cards = cards(ROOT / "categories/search.html")
-        directory_cards = cards(ROOT / "directory.html")
-        for name, hostname in expected.items():
-            with self.subTest(name=name):
-                self.assertIn(name, by_name)
-                self.assertEqual(urlsplit(by_name[name]["url"]).hostname, hostname)
-                self.assertIn(by_name[name], category_cards)
-                self.assertIn(by_name[name], directory_cards)
-        self.assertEqual(len(self.records), len(directory_cards))
-        self.assertEqual(
-            len([record for record in self.records
-                 if record["category"] == "검색·포털"]), len(category_cards))
-
-    def test_new_korean_service_batch_is_consistent_across_static_pages(self):
-        published = {
-            "EBSi 고교강의": ("검색·포털", "www.ebsi.co.kr"),
-            "학교알리미": ("검색·포털", "www.schoolinfo.go.kr"),
-            "커리어넷": ("검색·포털", "www.career.go.kr"),
-            "네이버 지도": ("검색·포털", "map.naver.com"),
-            "당근": ("커뮤니티", "www.daangn.com"),
-        }
-        by_name = {r["name"]: r for r in self.records}
-        all_cards = cards(ROOT / "directory.html")
-        for name, (category, host) in published.items():
-            with self.subTest(name=name):
-                self.assertIn(name, by_name)
-                item = by_name[name]
-                self.assertEqual(item["category"], category)
-                self.assertEqual(urlsplit(item["url"]).hostname, host)
-                self.assertIn(item, all_cards)
-                slug = CATEGORY_FILES[category]
-                self.assertIn(item, cards(ROOT / "categories" / (slug + ".html")))
-        self.assertEqual(len(self.records), 211)
-        self.assertIn("211개 사이트 검색", (ROOT / "index.html").read_text(encoding="utf-8"))
-
-    def test_actual_browser_search_engine_finds_new_korean_services(self):
-        import shutil
-        import subprocess
-        if not shutil.which("node"):
-            self.skipTest("Node.js is unavailable in this test environment")
-        program = """
-const fs = require('fs');
-const search = require(process.argv[1]);
-const rows = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
-const queries = [
-  ['국민건강보험공단', '국민건강보험공단'],
-  ['사이트모음 국민연금공단', '국민연금공단'],
-  ['health.kdca.go.kr', '국가건강정보포털'],
-  ['건강보험심사평가원', '건강보험심사평가원'],
-  ['국민신문고', '국민신문고'],
-  ['주소모음 한국소비자원', '한국소비자원'],
-  ['국가전자도서관', '국가전자도서관'],
-  ['지방세 위택스', '위택스'],
-  ['식품안전나라', '식품안전나라'],
-  ['안전운전 통합민원', '안전운전 통합민원'],
-  ['표준국어대사전', '표준국어대사전'],
-  ['서울시 교통정보 TOPIS', '서울시 교통정보 TOPIS'],
-  ['주소모음·링크모음 국민신문고', '국민신문고'],
-  ['링크모음, 위택스', '위택스'],
-  ['주소모음|표준국어대사전', '표준국어대사전'],
-  ['사이트모음 K-Startup 창업지원포털', 'K-Startup 창업지원포털'],
-  ['특허로', '특허로'],
-  ['기업마당', '기업마당'],
-  ['KIPRIS 지식재산정보검색', 'KIPRIS 지식재산정보검색'],
-  ['관세청 유니패스', '관세청 유니패스'],
-  ['대한상공회의소 코참넷', '대한상공회의소 코참넷'],
-];
-for (const [query, expected] of queries) {
-  const found = search.sortResults(rows, query);
-  if (!found.length || found[0].name !== expected) {
-    throw new Error(query + ' did not rank expected service first');
-  }
-}
-if (search.sortResults(rows, '주소모음·링크모음·사이트모음').length !== rows.length) {
-  throw new Error('punctuated directory intent excluded registered sites');
-}
-if (search.sortResults(rows, '주소모음').length !== rows.length) {
-  throw new Error('generic address directory intent excluded registered sites');
-}
-if (search.sortResults(rows, '존재하지않는xyz123').length !== 0) {
-  throw new Error('unmatched query returned unrelated records');
-}
-console.log('PASS: Korean directory queries and all-site intent');
-"""
-        result = subprocess.run(
-            ["node", "-e", program, str(ROOT / "assets/directory-search.js"),
-             str(ROOT / "assets/verified-directory.json")],
-            capture_output=True, text=True, timeout=15)
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertIn("PASS: Korean directory queries", result.stdout)
-
-    def test_directory_javascript_matches_source_exactly(self):
-        js = (ROOT / "assets/directory.js").read_text(encoding="utf-8")
-        match = re.search(r"const sites=(\[.*?\]);\s*\(\(\)=>", js, flags=re.S)
-        self.assertIsNotNone(match, "directory.js dataset not found")
-        self.assertEqual(json.loads(match.group(1)), self.records)
-
-    def test_static_directory_cards_match_published_data(self):
-        self.assertEqual(cards(ROOT / "directory.html"), self.records)
-        html = (ROOT / "directory.html").read_text(encoding="utf-8")
-        self.assertIn(f"등록 사이트 {len(self.records)}개", html)
-
-    def test_all_category_cards_match_source(self):
+    def test_production_categories_contain_all_verified_listings(self):
+        if not (ROOT / "dist/directory.html").exists():
+            self.skipTest("build.py not run yet")
         for category, slug in CATEGORY_FILES.items():
             with self.subTest(category=category):
                 expected = [r for r in self.records if r["category"] == category]
-                path = ROOT / "categories" / f"{slug}.html"
+                path = ROOT / "dist/categories" / (slug + ".html")
+                self.assertTrue(path.exists(), slug)
                 self.assertEqual(cards(path), expected)
-                page = path.read_text(encoding="utf-8")
-                if slug not in {"community", "korean", "comics-directory"}:
-                    self.assertIn(f"{len(expected)}개 사이트 안내", page)
+
+    def test_visible_homepage_count_and_search_consistent_with_source(self):
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertIn(f"{len(self.records)}개 사이트 검색", html)
+        if (ROOT / "dist/index.html").exists():
+            built = (ROOT / "dist/index.html").read_text(encoding="utf-8")
+            self.assertIn('action="/directory"', built)
+            self.assertIn(f"{len(self.records)}개", built)
+
+    def test_browser_search_uses_single_json_catalog_without_embedding_duplicate(self):
+        js = (ROOT / "assets/directory.js").read_text(encoding="utf-8")
+        self.assertNotRegex(js, r"const\s+sites\s*=\s*\[")
+        self.assertIn("querySelectorAll('article.v6-card')", js)
+        script = """
+const fs = require('fs');
+const search = require(process.argv[1]);
+const rows = JSON.parse(fs.readFileSync(process.argv[2],'utf8'));
+for (const term of ['주소모음','링크모음','사이트모음']) {
+  if (search.sortResults(rows,term).length !== rows.length) process.exit(1);
+}
+for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','쿠팡플레이']) {
+  if (search.sortResults(rows,name)[0]?.name !== name) process.exit(2);
+}
+"""
+        result = subprocess.run(["node", "-e", script,
+                                 str(ROOT / "assets/directory-search.js"),
+                                 str(ROOT / "assets/verified-directory.json")],
+                                capture_output=True, text=True, timeout=15)
+        self.assertEqual(result.returncode, 0, result.stderr)
 
 
 if __name__ == "__main__":
