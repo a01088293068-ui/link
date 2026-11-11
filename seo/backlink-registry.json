@@ -569,6 +569,20 @@
       "notes": "Internet Directories 선택과 입력 양식 확인. 제출 완료 증거 없음"
     },
     {
+      "id": "syde_showcase_linkwiki_20261111",
+      "platform": "SYDE Showcase (self-authored project)",
+      "submission_url": "https://syde.kr/showcase/create",
+      "public_url": "",
+      "submission_status": "submitted",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "2026-11-11 사용자 SYDE 프로젝트 등록 완료 보고. 공개 상세 URL·실제 linkwiki.info href 아직 미확인. 자체 제출이며 개인정보 기록 안 함. 재제출 전에 공개 페이지 확인."
+    },
+    {
       "id": "fd1bf677bf3a39c4",
       "platform": "Tiny Web Directory",
       "submission_url": "https://tinywebdirectory.com/",
