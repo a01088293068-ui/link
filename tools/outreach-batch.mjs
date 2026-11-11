@@ -8,7 +8,6 @@
  * Sites already registered by the owner are excluded by default.
  * Statuses saved locally never include account identifiers or cookies.
  */
-import { chromium } from 'playwright';
 import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
 import { resolve, dirname, join } from 'node:path';
@@ -181,6 +180,7 @@ async function guardedBrowser(args) {
   await requireVpn(args);
   await mkdir(PROFILE, { recursive: true, mode: 0o700 });
   await chmod(PROFILE, 0o700);
+  const { chromium } = await import('playwright');
   const context = await chromium.launchPersistentContext(PROFILE, {
     channel: 'chrome', headless: false, permissions: [], acceptDownloads: false,
     serviceWorkers: 'block',
