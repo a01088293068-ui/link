@@ -3,20 +3,6 @@
   "target_domain": "linkwiki.info",
   "entries": [
     {
-      "id": "siteda_brand_20261028",
-      "platform": "사이트다",
-      "submission_url": "https://siteda.kr/",
-      "public_url": "",
-      "submission_status": "unknown",
-      "audit_status": "unverified",
-      "last_checked": "2026-10-28",
-      "http_status": 200,
-      "link_found": false,
-      "rel": [],
-      "noindex": null,
-      "notes": "브랜드명과 도메인 표시는 확인했으나 홈페이지 DOM에서 linkwiki.info a[href] 직접 링크 검증되지 않음. 백링크로 집계 금지."
-    },
-    {
       "id": "adultxsites_20261029",
       "platform": "adultXsites",
       "submission_url": "https://adultxsites.com/page/submit-your-link",
@@ -116,6 +102,20 @@
       "rel": [],
       "noindex": null,
       "notes": "2026-10-29 공식 FAQ: 무료 basic은 사업명·웹사이트·주소 필요, 유료 우선 등록 뒤 1~2개월 대기. 링크위키의 실사업장 주소 여부 미확인, 부정확한 주소를 만들지 않고 보류."
+    },
+    {
+      "id": "dreamboat_linkwiki_20261111",
+      "platform": "Dreamboat (self-authored project)",
+      "submission_url": "https://dreamboat.kr/new",
+      "public_url": "https://dreamboat.kr/u/linkwikiinfo/p/linkwiki",
+      "submission_status": "approved",
+      "audit_status": "unverified",
+      "last_checked": "",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "2026-11-11 사용자 공유 브라우저 화면에서 공개 프로젝트 v0.1 및 linkwiki.info 바로 써보기 버튼 확인. 자체 등록 페이지이며 정적 HTML href/Google SEO 반영은 검증 대기. 개인 계정·기기 정보 기록하지 않음."
     },
     {
       "id": "86bbbf38da1b7b64",
@@ -680,6 +680,20 @@
       "rel": [],
       "noindex": null,
       "notes": "2026-10-28 공식 Listing Policy 확인: 성인 성적 서비스·도박 관련 목적지/프로모션 금지. LinkWiki 주제와 정책 충돌 가능성으로 제출 보류. 2026-10-29 독립 브라우저에서 linkwiki.info 홈페이지 실제 확인: 97개 일반 카테고리 링크 및 가이드 표시, 홈페이지 자체에 노골적 성인 콘텐츠는 관측되지 않음. 다만 Zearches는 연결 목적지까지 정책 검토하므로 안전 승인 판단 전 제출 보류."
+    },
+    {
+      "id": "siteda_brand_20261028",
+      "platform": "사이트다",
+      "submission_url": "https://siteda.kr/",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-10-28",
+      "http_status": 200,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "브랜드명과 도메인 표시는 확인했으나 홈페이지 DOM에서 linkwiki.info a[href] 직접 링크 검증되지 않음. 백링크로 집계 금지."
     }
   ]
 }
