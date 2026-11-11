@@ -250,17 +250,25 @@ async function inspectProvider(context, provider) {
 }
 async function runBatch(args) {
   const plan = queuePlan();
-  const eligible = PROVIDERS.filter(x =>
-    !['already_submitted','requires_domain_dns_verification','blocked_human_verification'].includes(x.mode));
+  const records = await readState();
+  const latest = new Map(records.map(item => [item.provider, item.status]));
+  const eligible = PROVIDERS.filter(x => {
+    if (['already_submitted','requires_domain_dns_verification',
+      'blocked_human_verification','embedded_form_bot_check',
+      'embedded_typeform'].includes(x.mode)) return false;
+    // A scan is not a submission. But blocked/unknown inputs must not be
+    // automatically revisited; require a fresh successful form scan.
+    return latest.get(x.id) === 'visible_form_manual_review';
+  });
   console.log('대상:', plan.length, '기존제출 생략:', plan.filter(x=>x.status==='skip_previously_submitted').length,
-    '자동화 가능 후보:', eligible.length, '사람 인증 차단:', plan.filter(x=>x.status==='skip_automation_blocked').length);
+    '자동 입력 검토 후보:', eligible.length, '사람 인증 차단:', plan.filter(x=>x.status==='skip_automation_blocked').length);
   if (!eligible.length) {
-    console.log('자동 처리할 수 있는 검증된 등록처가 없습니다. CAPTCHA 재시도 없이 종료합니다.');
+    console.log('직전 공개 검사에서 안전한 일반 폼이 확인된 등록처가 없습니다. scan을 먼저 실행하세요.');
     return;
   }
   const rl = createInterface({ input: stdin, output: stdout });
   const context = await guardedBrowser(args);
-  const results = await readState();
+  const results = records;
   try {
     for (const provider of eligible) {
       await requireVpn(args);
