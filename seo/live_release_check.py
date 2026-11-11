@@ -120,7 +120,7 @@ def release_content_sections(html, path):
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-home-task-paths\b)[^>]*>.*?</section>',
         ),
         "/directory": (
-            r'<section\\b(?=[^>]*\\bid="directory-quick-compare")[^>]*>.*?</section>',
+            r'<section\b(?=[^>]*\bid="directory-quick-compare")[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-task-paths\b)[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-search-help\b)[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
