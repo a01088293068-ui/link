@@ -1,0 +1,14 @@
+# Local browser automation secrets and session state
+.playwright/
+playwright-report/
+test-results/
+node_modules/
+.local-backlink-profile/
+.local-backlink-state/
+.env
+.env.*
+!.env.example
+*.auth.json
+storage-state*.json
+seo/backlink-local-results.json
+.DS_Store
