@@ -50,6 +50,8 @@ class RealSiteComparisonTests(unittest.TestCase):
         self.assertIn("querySelectorAll('article.v6-card')", js)
         self.assertIn("const result = compareSites(one, two)", js)
         self.assertIn("replaceChildren", js)
+        self.assertIn("field.replaceChildren(placeholder)", js)
+        self.assertNotIn("field.append(placeholder)", js)
         self.assertIn("textContent", js)
         self.assertNotIn("fetch(", js)
         self.assertNotIn("XMLHttpRequest", js)

@@ -149,6 +149,7 @@ def release_content_sections(html, path):
         "/directory": (
             r'<section\b(?=[^>]*\bid="directory-quick-compare")[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-task-paths\b)[^>]*>.*?</section>',
+            r'<section\b(?=[^>]*\bid="directory-two-site-compare")[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-search-help\b)[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-purpose-comparison\b)[^>]*>.*?</section>',
@@ -482,6 +483,19 @@ def run(dist, fetch=fetch_public):
                 problems.append("/assets/directory.js: live static-card search binding missing")
     except (OSError, RuntimeError, ValueError) as error:
         problems.append(f"/assets/directory.js: fetch failed: {error}")
+    # Compare independently so a stale/new asset does not hide existing
+    # search-code drift findings or short-circuit the rest of release QA.
+    comparison_asset = dist / "assets" / "site-comparison.js"
+    if comparison_asset.is_file():
+        try:
+            comparison_live = fetch("/assets/site-comparison.js")
+            expected_comparison = comparison_asset.read_text(encoding="utf-8")
+            if comparison_live != expected_comparison:
+                problems.append("/assets/site-comparison.js: deployed comparison logic differs from build")
+            if "querySelectorAll('article.v6-card')" not in comparison_live:
+                problems.append("/assets/site-comparison.js: catalog card source missing")
+        except (OSError, RuntimeError, ValueError, KeyError) as error:
+            problems.append(f"/assets/site-comparison.js: fetch failed: {error}")
     return problems
 
 
