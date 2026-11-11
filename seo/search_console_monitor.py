@@ -98,7 +98,33 @@ def directory_intent_inspection_urls():
     ]
 
 
-def inspection_targets(page_rows, limit=20, core_query_pages=None):
+
+def rotating_inspection_urls(as_of, limit=3, root=None):
+    """Deterministically rotate actual published guide URLs across daily GSC runs.
+
+    The mandatory homepage/category checks keep their existing priority. This
+    optional rotation supplements them, so older guides with no impressions
+    eventually receive an independent Google URL Inspection result.
+    """
+    if limit < 1:
+        return []
+    source = root if root is not None else ROOT
+    posts = source / "content"
+    urls = sorted({
+        "https://linkwiki.info/blog/" + path.stem + "/"
+        for path in posts.glob("*.md")
+        if path.is_file() and len(path.read_text(encoding="utf-8-sig").strip()) >= 150
+        and re.fullmatch(r"[A-Za-z0-9_-]+", path.stem)
+    })
+    if not urls:
+        return []
+    day = as_of.toordinal() if hasattr(as_of, "toordinal") else date.fromisoformat(str(as_of)).toordinal()
+    offset = ((day - date(2026, 11, 11).toordinal()) * limit) % len(urls)
+    return [urls[(offset + index) % len(urls)]
+            for index in range(min(limit, len(urls)))]
+
+
+def inspection_targets(page_rows, limit=20, core_query_pages=None, as_of=None):
     """Inspect core canonical URLs first, then target-query landing pages.
 
     Preserve a small quota for freshly published articles and for other
@@ -152,6 +178,15 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None):
         if url not in seen and len(urls) < limit:
             urls.append(url)
             seen.add(url)
+
+    # On scheduled real runs, reserve three rotating slots before the newest
+    # generic posts can fill the 20-URL quota. Direct offline callers retain
+    # the historical selection unless they opt in with as_of.
+    if as_of is not None and limit >= 18:
+        for url in rotating_inspection_urls(as_of):
+            if url not in seen and len(urls) < limit:
+                urls.append(url)
+                seen.add(url)
 
     # Keep newly published articles represented, independent of traffic.
     for url in recent_published_post_urls():
@@ -1140,7 +1175,7 @@ def main():
             korea_core_error += f' HTTP {exc.code}'
     args.output.parent.mkdir(parents=True, exist_ok=True)
     inspections, inspection_error = collect_index_inspections(
-        token, args.property, inspection_targets(pages, core_query_pages=focused_pages))
+        token, args.property, inspection_targets(pages, core_query_pages=focused_pages, as_of=date.today()))
     report = format_report(
         keywords, pages, start, end, args.property, dates, query_pages,
         focused_keyword_rows=focused_keywords,
