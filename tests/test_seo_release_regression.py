@@ -522,7 +522,16 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertTrue(output.is_file(), "Generated search category page missing")
         html = output.read_text(encoding="utf-8")
         self.assertIn('이 분야의 이용 가이드', html)
-        self.assertIn('/blog/seo-20261030-26325b73af/', html)
+        # Category guide selection intentionally surfaces the newest useful
+        # real guides; an older article need not remain pinned forever.
+        self.assertIn('/blog/seo-20261111-public-data-vs-kosis-usage/', html)
+        self.assertIn('/blog/seo-20261111-gov24-epeople-complaint-certificate/', html)
+        import re
+        links = re.findall(r'href="(/blog/[A-Za-z0-9_-]+/)"', html)
+        self.assertGreaterEqual(len(links), 2)
+        self.assertEqual(len(links), len(set(links)))
+        for url in links:
+            self.assertTrue((root / "dist" / url.lstrip("/") / "index.html").is_file())
 
     def test_directory_landing_has_all_eight_crawlable_categories_with_counts(self):
         root = Path(__file__).resolve().parents[1]

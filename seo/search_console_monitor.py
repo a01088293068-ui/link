@@ -136,6 +136,15 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None):
             continue
         append_observed(keys[1])
 
+    # Inspect actually observed legacy .html URLs with their canonical
+    # counterparts before spending the remaining quota on newly published
+    # articles. Otherwise a content batch can evict real Google redirect
+    # evidence from the limited URL Inspection queue.
+    for row in sorted(page_rows, key=lambda item: -int(item.get('impressions', 0))):
+        keys = row.get('keys') or []
+        if keys and urlsplit(str(keys[0])).path.endswith('.html'):
+            append_observed(keys[0])
+
     # Prioritize three distinct directory-task guides even when same-day
     # filename ordering would omit them from a generic newest-three sample.
     # Exact-query landing pages above always take precedence.
