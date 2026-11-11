@@ -507,7 +507,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
                     '<section class="wrap seo-related-links seo-category-decision"><h2>목적별 선택</h2></section>')
             self.assertTrue(any("multi-term search" in x for x in
                                 run(dist, fetch=lambda path: pages[path])))
-            pages["/assets/directory.js"] = "window.LinkWikiSearch.sortResults"
+            pages["/assets/directory.js"] = "const search = window.LinkWikiSearch; search.sortResults("
             pages["/assets/directory-search.js"] = "terms.every(term => haystack.includes(term)) function sortResults("
             self.assertEqual(run(dist, fetch=lambda path: pages[path]), [])
 
