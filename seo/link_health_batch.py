@@ -33,6 +33,14 @@ def safe_public_host(url, resolve=socket.getaddrinfo):
             or parts.username or parts.password or parts.fragment):
         return False
     host = parts.hostname.lower()
+    # IP-literal destinations are not accepted even if a test DNS resolver
+    # happens to return a public address for them.
+    try:
+        ipaddress.ip_address(host)
+    except ValueError:
+        pass
+    else:
+        return False
     if host in ("localhost",) or host.endswith((".localhost", ".local", ".internal", ".test", ".invalid")):
         return False
     try:
