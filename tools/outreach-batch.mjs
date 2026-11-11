@@ -36,6 +36,12 @@ export const PROVIDERS = Object.freeze([
     mode: 'already_submitted', // user-reported, public URL not yet confirmed
   },
   {
+    id: 'openwebside', name: '오픈웹사이드', host: 'openwebside.com',
+    url: 'https://openwebside.com/products/757213b7-1ce9-41ed-9eb2-6bae9af82688',
+    alreadyPublished: 'https://openwebside.com/products/757213b7-1ce9-41ed-9eb2-6bae9af82688',
+    mode: 'already_submitted', // public outbound href verified 2026-11-11
+  },
+  {
     id: 'disquiet', name: 'Disquiet', host: 'disquiet.io',
     url: 'https://disquiet.io/products',
     mode: 'blocked_human_verification', // CAPTCHA failed in automation Chrome; don't retry
