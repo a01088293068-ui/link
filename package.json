@@ -1,0 +1,13 @@
+{
+  "name": "linkwiki-local-outreach",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local, user-controlled browser workflow for editorial backlink submissions",
+  "scripts": {
+    "outreach": "node tools/local-backlinks.mjs",
+    "outreach:test": "node --test tests/test_local_backlinks.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}
