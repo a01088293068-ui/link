@@ -90,3 +90,30 @@ rm -rf .local-backlink-profile .local-backlink-state
 ```
 
 이 명령은 맥북 로컬의 데이터를 삭제할 뿐 등록 사이트나 Google 서버의 기존 기록을 지우지 않습니다.
+
+## 여러 등록처 일괄 검토 (2026-11-11)
+
+한 번의 명령으로 **기존 제출/승인된 Dreamboat·SYDE를 건너뛰고** 남은 한국어 등록처를 차례로 확인합니다.
+등록 폼에 정확한 레이블이 붙어 있고 개인정보와 혼동되지 않을 때 프로젝트명·설명·공식 URL을 채웁니다.
+그 외 필드, 계정 연결, CAPTCHA, 도메인 DNS 검증, 실제 게시 버튼은 임의로 처리하지 않습니다.
+특히 Disquiet은 별도 인증·검토 절차이고 ITJEOM은 도메인 소유 검증이 필요합니다.
+
+```bash
+cd ~/Downloads/linkwiki-seo-deploy
+git pull --ff-only origin main
+npm install
+npm run outreach:test
+npm run outreach:batch -- plan
+npm run outreach:batch -- run --privacy-confirmed --vpn-interface utun0
+npm run outreach:batch -- status
+```
+
+- 현재 VPN 터널이 `utun0`인지 먼저 확인합니다. 바뀌었으면 실제 확인된 인터페이스로 바꾸세요.
+- 실행 전에 VPN 앱의 킬 스위치, DNS 및 IPv6 누출 방지 설정을 켜야 합니다.
+- `run`은 인터넷 접속을 수반하고 사이트별 `y` 입력을 받은 후 화면을 엽니다.
+- 폼에 적절한 레이블이 없거나 로그인이 막히면 **자동으로 임의 제출하지 않습니다.**
+- 검사/준비 상태만 `.local-backlink-state/outreach-queue.json`에 기록합니다.
+  이 파일은 GitHub에 포함되지 않습니다. 공개 게시 URL이나 승인 증거로 혼동하지 마세요.
+- **현재 제공 기능은 일괄 검토·일부 자동 입력이며, 로그인 우회나 모든 등록처에 대한 완전 자동 제출이 아닙니다.**
+- Google 자동화 브라우저 로그인 제한이 재현될 수 있어, 기존 Chrome 로그인 세션을 무단으로 가져오지 않습니다.
+
