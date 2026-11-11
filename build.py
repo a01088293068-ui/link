@@ -1296,18 +1296,38 @@ def add_editorial_related_articles(posts, max_links=3):
     return result
 
 
+# Only these source paths are meant to be served to the public. In
+# particular, Cloudflare runs npm install for Playwright in CI; copying all
+# root folders would publish node_modules and make its internal HTML pages
+# fail our sitemap/canonical SEO audit (and expose unnecessary code).
+PUBLIC_SOURCE_DIRS = ("assets", "categories", "guides")
+PUBLIC_SOURCE_FILES = (
+    "404.html", "_headers", "_redirects", "about.html", "directory.html",
+    "favicon.ico", "favicon.png", "index.html",
+    "naver8cd598bf6fee0ad116a386a3d915bb9f.html",
+    "privacy.html", "robots.txt", "sitemap.xml", "sitemap-v2.xml",
+)
+
+
+def copy_public_sources(source_root, output_root):
+    """Copy a positive allowlist so installed dependencies never become pages."""
+    for name in PUBLIC_SOURCE_DIRS:
+        source = source_root / name
+        if not source.is_dir() or source.is_symlink():
+            raise RuntimeError(f"Required public source directory missing or unsafe: {name}")
+        shutil.copytree(source, output_root / name, symlinks=False)
+    for name in PUBLIC_SOURCE_FILES:
+        source = source_root / name
+        if not source.is_file() or source.is_symlink():
+            raise RuntimeError(f"Required public source file missing or unsafe: {name}")
+        shutil.copy2(source, output_root / name)
+
+
 def build():
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
-    # Preserve all existing features and assets; only add a discreet nav item to HTML pages.
-    for child in ROOT.iterdir():
-        if child.name in {"dist", "content", "seo", ".github", ".git", "build.py", "README-AUTO-BLOG.md", "SEO-AUTOMATION-SETUP.md", "QA-REPORT.txt", "__pycache__", "tests"}:
-            continue
-        if child.is_dir():
-            shutil.copytree(child, OUT / child.name)
-        elif child.is_file():
-            shutil.copy2(child, OUT / child.name)
+    copy_public_sources(ROOT, OUT)
     for existing_page in OUT.rglob('*.html'):
         existing_html = existing_page.read_text(encoding='utf-8')
         improved_html = add_nav(existing_html)
