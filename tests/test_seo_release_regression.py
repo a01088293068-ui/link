@@ -55,7 +55,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("사이트모음은 어떤 기준으로 비교하나요?", section)
         self.assertIn("광고 링크는 어떻게 구분하나요?", section)
         urls = re.findall(r'href="(/blog/[^"]+/)"', section)
-        self.assertEqual(len(urls), 3)
+        self.assertEqual(len(urls), 5)
         self.assertEqual(len(set(urls)), 3)
         inbound = internal_inbound_links(root / "dist")
         for url in urls:
