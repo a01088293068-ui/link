@@ -901,6 +901,43 @@ def fingerprint_directory_scripts(html, assets_dir):
     return html
 
 
+def directory_quick_comparison(records, categories):
+    """Compact above-the-fold category summary backed by the published catalog.
+
+    This helps a visitor choose a category without reading 211 static cards.
+    No invented popularity, ratings, availability, or separate duplicate landing URLs.
+    """
+    if not isinstance(records, list) or not records:
+        raise RuntimeError("Directory quick comparison requires real records")
+    sections = []
+    for category, slug, _, purpose in categories:
+        matches = [item for item in records if item.get("category") == category]
+        if not matches:
+            raise RuntimeError(f"Missing active category in directory comparison: {slug}")
+        names = [item["name"] for item in matches[:2]]
+        if any(not isinstance(name, str) or not name.strip() for name in names):
+            raise RuntimeError(f"Invalid published category examples: {slug}")
+        sections.append(
+            '<li><a href="/categories/' + escape(slug, quote=True) + '">'
+            + escape(category) + ' ' + str(len(matches)) + '개</a>'
+            '<span> · ' + escape(', '.join(names)) + '</span>'
+            '<p>' + escape(purpose) + '</p></li>'
+        )
+    if len(sections) != len(categories):
+        raise RuntimeError("Directory comparison navigation incomplete")
+    return (
+        '<section id="directory-quick-compare" class="lw-safety-note seo-category-quick-compare" '
+        'aria-label="사이트모음 분야별 등록 개수와 예시">'
+        '<h2>사이트모음 분야별 한눈에 비교</h2>'
+        '<p>목적에 맞는 링크모음 분야를 먼저 선택하세요. 각 분야의 등록 개수와 '
+        '실제 목록에 있는 사이트 두 곳을 보여줍니다. 개수는 이용자 수나 추천 순위가 아닙니다.</p>'
+        '<ul>' + ''.join(sections) + '</ul>'
+        '<p><a href="/directory">주소모음 전체 목록 검색</a> · '
+        '<a href="/guides/choose-directory">분야별 링크 선택 기준</a></p>'
+        '</section>'
+    )
+
+
 def directory_task_paths(records):
     """Helpful canonical search links derived from existing catalog records."""
     existing = {entry.get("name") for entry in records if isinstance(entry, dict)}
@@ -1377,7 +1414,9 @@ def build():
     if len(search_form.findall(directory_html)) != 1:
         raise RuntimeError("Directory search form missing or duplicated")
     directory_html = search_form.sub(
-        lambda match: match.group(1) + directory_task_paths(records),
+        lambda match: match.group(1)
+        + directory_quick_comparison(records, CATEGORY_LANDING)
+        + directory_task_paths(records),
         directory_html, count=1)
 
     # Site descriptions are static and crawlable, not dependent on JavaScript.
