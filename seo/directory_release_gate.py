@@ -75,6 +75,17 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         issues.append("homepage canonical missing or noncanonical")
     if any("noindex" in directive for directive in parser.robots):
         issues.append("directory has noindex")
+    if directory_html.count('id="directory-quick-compare"') != 1:
+        issues.append("directory quick category comparison missing or duplicated")
+    else:
+        first = directory_html.index('id="directory-quick-compare"')
+        search = directory_html.find('id="v6-form"')
+        results = directory_html.find('id="v6-results"')
+        if search < 0 or results < 0 or not (search < first < results):
+            issues.append("directory category comparison not adjacent to search")
+        section = directory_html[first:directory_html.find("</section>", first)]
+        if any('href="/categories/' + slug + '"' not in section for slug in CATEGORIES):
+            issues.append("quick category comparison missing category links")
     if len(parser.cards) != count:
         issues.append(f"static directory cards {len(parser.cards)} != data {count}")
     if any(card["names"] != 1 or card["external_links"] != 1 for card in parser.cards):
