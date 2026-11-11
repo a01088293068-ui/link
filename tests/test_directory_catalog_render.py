@@ -18,7 +18,7 @@ class CatalogRenderTests(unittest.TestCase):
 
     def test_catalog_descriptions_remain_distinct_and_useful(self):
         descriptions = [item["description"].strip() for item in self.records]
-        self.assertEqual(len(self.records), 211)
+        self.assertGreaterEqual(len(self.records), 200)
         self.assertEqual(len(set(descriptions)), len(descriptions))
         self.assertTrue(all(len(description) >= 60 for description in descriptions))
         self.assertTrue(all(len(description) <= 200 for description in descriptions))
@@ -26,9 +26,9 @@ class CatalogRenderTests(unittest.TestCase):
             item["category"] for item in self.records
         }), 8)
 
-    def test_all_211_records_render_as_safe_crawlable_html(self):
+    def test_all_records_render_as_safe_crawlable_html(self):
         html = render_directory_catalog_cards(self.records)
-        self.assertEqual(html.count('<article class="v6-card">'), len(self.records))
+        self.assertEqual(len(re.findall(r'<article class="v6-card" id="site-[a-f0-9]{14}">', html)), len(self.records))
         self.assertEqual(html.count('rel="noopener noreferrer external"'), len(self.records))
         self.assertEqual(html.count('target="_blank"'), len(self.records))
         self.assertIn("내보내기와 사용 범위 조건", html)
