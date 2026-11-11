@@ -1,0 +1,41 @@
+name: LinkWiki published external link observations
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 2 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'seo/observe_external_links.py'
+      - 'tests/test_external_link_observations.py'
+      - '.github/workflows/external-link-observations.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linkwiki-external-link-observations
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test safe outbound check selection and handling
+        run: python3 -B -m unittest discover -s tests -p 'test_external_link_observations.py' -v
+      - name: Observe 24 publicly registered destinations via HEAD
+        run: python3 -B seo/observe_external_links.py --batch-size 24
+      - name: Store findings for editorial review, not public verified badges
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linkwiki-external-observations
+          path: seo/external-link-observations.json
+          if-no-files-found: warn
+          retention-days: 30
