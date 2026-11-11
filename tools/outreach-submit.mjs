@@ -16,6 +16,7 @@ const LOCAL=join(ROOT,'.local-backlink-state');
 const HISTORY=join(LOCAL,'submission-attempts.json');
 const ASSET_DIRS=[join(homedir(),'Downloads'),join(homedir(),'Desktop')];
 export const CONTACT_EMAIL=(process.env.LINKWIKI_OUTREACH_EMAIL||'').trim();
+export const CONTACT_NAME=(process.env.LINKWIKI_CONTACT_NAME||'').trim();
 export const WEBSITE='https://linkwiki.info';
 const DESCRIPTION='LinkWiki is a Korean web directory that helps people discover useful websites and links. Users can browse categorized listings for search, online communities, AI tools, sports, entertainment and other web resources. LinkWiki provides a searchable interface in Korean for exploring website names, descriptions and official addresses.';
 export const PROVIDERS=Object.freeze([
@@ -108,8 +109,18 @@ async function findInput(page,key){
       }
     }
   }
-  // Multiple matching labels are ambiguous, and we never overwrite values.
-  return items.length===1?items[0]:null;
+  if(items.length===1)return items[0];
+  if(items.length>1)return null;
+  // Some official forms only expose placeholders, not proper label elements.
+  // Only a unique *exact* placeholder match is acceptable.
+  const placeholders=[];
+  for(const name of mapping[key]||[]){
+    const candidate=page.getByPlaceholder(name,{exact:true});
+    if(await candidate.count()===1 && await candidate.isVisible() && await candidate.isEnabled()){
+      placeholders.push(candidate);
+    }
+  }
+  return placeholders.length===1?placeholders[0]:null;
 }
 async function fillField(page,key,value){
   const field=await findInput(page,key);
@@ -144,6 +155,7 @@ async function operate(args) {
   await requireVpn(args);
   const submit=args.includes('--submit');
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(CONTACT_EMAIL))throw Error('LINKWIKI_OUTREACH_EMAIL env is required');
+  if(CONTACT_NAME && CONTACT_NAME.length>100)throw Error('LINKWIKI_CONTACT_NAME too long');
   const {chromium}=await import('playwright');
   const {logo,screenshot}=await findAssets();
   console.log('LinkWiki 등록 준비: 이메일 계정 사용(주소는 로그에 출력하지 않음).');
@@ -173,17 +185,17 @@ async function operate(args) {
           state='navigation_failed';
         }else{
           const fields={
-            product:'LinkWiki',website:domainInput(provider.id),email:CONTACT_EMAIL,
+            name:CONTACT_NAME,product:'LinkWiki',website:domainInput(provider.id),email:CONTACT_EMAIL,
             headline:'Discover Korean websites and useful links in one place',
             description:DESCRIPTION
           };
           // Name field is an individual contact; no fabricated legal name.
-          const wanted=provider.id==='launchpedia'?['product','website','email']:
+          const wanted=provider.id==='launchpedia'?['name','product','website','email']:
             provider.id==='joinly'?['product','website','email','headline','description']:
               ['product','website','email','description'];
           let filled=0;
           for(const key of wanted){
-            if(await fillField(page,key,fields[key]))filled++;
+            if(fields[key] && await fillField(page,key,fields[key]))filled++;
           }
           // Do not upload a wide banner or any unrecognized personal photo.
           if(provider.requiresLogo && logo){
