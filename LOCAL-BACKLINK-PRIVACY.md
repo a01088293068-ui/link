@@ -243,3 +243,21 @@ LINKWIKI_OUTREACH_EMAIL='a01088293068@gmail.com' LINKWIKI_CONTACT_NAME='리쑤�
 실행 시 못 찾은 필드 키를 출력합니다(개인 이메일이나 로컬 파일명은 출력하지 않음).
 결과가 `missing_fields`면 **제출되지 않았으며**, 같은 명령을 반복하지 마세요.
 `submitted_unverified`도 게재된 백링크가 아니라 제출 직후 신호를 본 것뿐입니다.
+
+## LaunchPedia 접근 차단 확인 및 자동 재시도 중단 (2026-11-11)
+
+사용자 Mac VPN 경로에서 실제 브라우저 진단:
+- main frame: visible fields 0
+- child iframe: visible fields 0, host empty
+- 최초부터 연속으로 `missing_fields` 및 `no_rendered_fields`
+
+공식 공개 페이지의 폼 문구는 텍스트 검색으로 읽히지만 사용자 Playwright
+브라우저에서는 렌더링되지 않습니다. 사이트 자체가 영구적으로 폼을
+제공하지 않는다는 증거는 아닙니다. 사용자 환경의 브라우저, 스크립트,
+접속 제한 등의 차이를 지금은 구분할 수 없습니다.
+다른 개인정보·네트워크 설정을 임의로 바꾸거나 CAPTCHA를 우회하지 않습니다.
+
+`tools/outreach-submit.mjs`에서 LaunchPedia는 자동 제출 재시도 대상에서 제외했습니다.
+향후 사이트의 실제 자동화 허용·렌더링 조건이 확인되기 전에는
+`--only launchpedia`도 웹 접속 없이 `skipped_inaccessible_form`을 기록합니다.
+**새 백링크, 제출, 승인: 0건.**
