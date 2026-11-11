@@ -54,6 +54,21 @@ class GscDeltaTests(unittest.TestCase):
         self.assertIn("크롤링됨 - 현재 색인이 생성되지 않음", text)
         self.assertNotIn("순위 상승 확정", text)
 
+    def test_rolling_seven_day_snapshots_are_not_independent_growth(self):
+        past = report(date="2026-11-07", impressions=2)
+        now = report(date="2026-11-08", impressions=4)
+        rendered = render(now, past)
+        self.assertIn("최근 7일 구간 6일 중복 · 독립 기간 대비 아님", rendered)
+        self.assertIn("하루 간격으로 비교할 때 같은 날짜가 6일 겹칩니다", rendered)
+
+    def test_non_overlapping_and_invalid_window_dates_are_distinguished(self):
+        past = report(date="2026-11-01")
+        now = report(date="2026-11-08")
+        self.assertIn("종료일이 다른 7일 구간 · 표본 규모 유의", render(now, past))
+        old = report(date="2026-11-08")
+        reversed_dates = report(date="2026-11-06")
+        self.assertIn("집계 날짜 누락/역행 · 비교 불가", render(reversed_dates, old))
+
     def test_real_new_crawl_and_verdict_are_separate(self):
         prior = report(date="2026-11-07")
         current = report(date="2026-11-08", verdict="PASS",
