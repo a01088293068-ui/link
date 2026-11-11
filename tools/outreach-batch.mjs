@@ -199,7 +199,7 @@ async function guardedBrowser(args) {
 async function inspectProvider(context, provider) {
   if (provider.mode === 'already_submitted') return 'already_registered';
   if (provider.mode === 'requires_domain_dns_verification') return 'requires_domain_proof';
-  const page = await context.newPage();
+  const page = context.pages()[0] || await context.newPage();
   try {
     await page.goto(provider.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
     const address = page.url();
@@ -209,11 +209,12 @@ async function inspectProvider(context, provider) {
       '/ 검토 필요', outcome.skipped.join(', '));
     console.log('계정 본인이 로그인과 사이트 정책을 확인하세요.');
     console.log('이 도구는 게시 버튼을 대신 누르지 않습니다.');
+    console.log('새 프로젝트 폼이 열리면 개인정보 표시 범위를 직접 확인하세요.');
     return outcome.filled.length ? 'filled_for_review' : 'no_supported_form';
   } catch (err) {
     // Preserve no page URL, IP, cookies or account info in logs.
     return 'manual_review_needed';
-  } finally { await page.close(); }
+  } finally { /* Keep tab available for owner review; close at end of batch. */ }
 }
 async function runBatch(args) {
   const plan = queuePlan();
@@ -232,6 +233,9 @@ async function runBatch(args) {
         provider.name + ' 페이지를 열어 검토하겠습니까? [y/N] ')).trim().toLowerCase();
       if (answer !== 'y') continue;
       const status = await inspectProvider(context, provider);
+      // Keep the browser open for owner to inspect and sign in; the
+      // navigation may require account authentication or changed forms.
+      await rl.question('필요한 계정 확인·직접 등록을 마친 뒤 Enter를 누르면 다음 후보로 이동합니다: ');
       results.push({ provider: provider.id, status,
         checked_on: new Date().toISOString().slice(0, 10) });
       await writeState(results);
