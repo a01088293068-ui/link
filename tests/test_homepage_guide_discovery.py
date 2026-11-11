@@ -33,9 +33,12 @@ class HomepageGuideDiscoveryTests(unittest.TestCase):
             self.skipTest("Run python3 build.py first")
         html = (dist / "index.html").read_text(encoding="utf-8")
         self.assertEqual(html.count('class="wrap seo-related-links seo-home-search-guides"'), 1)
+        start = html.index('class="wrap seo-related-links seo-home-search-guides"')
+        section = html[start:html.index("</section>", start)]
         for slug, _, _ in HOME_SEARCH_GUIDES:
             with self.subTest(slug=slug):
-                self.assertEqual(html.count('href="/blog/' + slug + '/"'), 1)
+                # Existing homepage sections may link to these articles too.
+                self.assertEqual(section.count('href="/blog/' + slug + '/"'), 1)
                 self.assertTrue((dist / "blog" / slug / "index.html").is_file())
         self.assertLess(html.index('seo-home-search-guides'), html.index('</main>'))
 
