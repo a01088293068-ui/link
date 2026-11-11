@@ -95,6 +95,14 @@ async function writeHistory(rows){
   await writeFile(HISTORY,JSON.stringify(cleanHistory(rows),null,2)+'\n',{mode:0o600});
   await chmod(HISTORY,0o600);
 }
+export function parseProviderFilter(args){
+  const i=args.indexOf('--only');
+  if(i<0)return PROVIDERS;
+  const selected=(args[i+1]||'').split(',').filter(Boolean);
+  if(!selected.length||selected.some(id=>!PROVIDERS.some(p=>p.id===id)))
+    throw new Error('Unknown --only target. Allowed: joinly,launchpedia,phyco');
+  return PROVIDERS.filter(p=>selected.includes(p.id));
+}
 export function domainInput(site){return site==='joinly'?'linkwiki.info':WEBSITE}
 export function submissionGate({provider,hasCaptcha,uncheckedRequiredCheckboxes,missingFields,
   missingLogo,alreadyAttempted,explicitMarketingConsent=false}){
@@ -228,7 +236,7 @@ async function operate(args) {
       '--disable-background-networking']});
   const history=await readHistory();
   try{
-    for(const provider of PROVIDERS){
+    for(const provider of parseProviderFilter(args)){
       const attempted=history.some(r=>r.provider===provider.id &&
         ['submitted_unverified','submission_unconfirmed'].includes(r.status));
       let state='navigation_failed';
