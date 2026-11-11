@@ -11,6 +11,7 @@ test('known submissions never return to the candidate queue', () => {
   const syde = plan.find(p => p.id === 'syde');
   assert.equal(dreamboat.status, 'skip_previously_submitted');
   assert.equal(syde.status, 'skip_previously_submitted');
+  assert.equal(plan.find(p=>p.id==='openwebside').status,'skip_previously_submitted');
   assert.ok(plan.every(p => p.url.startsWith('https://')));
   assert.equal(plan.filter(p => p.status === 'needs_form_and_contact_review').length, 3);
   assert.equal(plan.find(p => p.id === 'disquiet').status, 'skip_automation_blocked');
