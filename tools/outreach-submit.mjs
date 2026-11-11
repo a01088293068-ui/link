@@ -78,7 +78,8 @@ export async function findAssets() {
 export function cleanHistory(rows) {
   const allowed=new Set(['submitted_unverified','submission_unconfirmed','blocked_consent',
     'blocked_captcha','missing_fields','missing_asset','form_changed','navigation_failed',
-    'blocked_required_checkbox','skipped_previous_attempt','prepared_only']);
+    'blocked_required_checkbox','skipped_previous_attempt','prepared_only',
+    'external_form_review','no_rendered_fields','ambiguous_multiple_frames']);
   return rows.filter(r=>PROVIDERS.some(p=>p.id===r.provider)).slice(-60).map(r=>({
     provider:r.provider,
     status:allowed.has(r.status)?r.status:'submission_unconfirmed',
@@ -243,6 +244,38 @@ async function formShape(page){
         (el.getAttribute('type')||'').toLowerCase())).length};
   });
 }
+export function frameDecision(mainHost, frames) {
+  // Frames are observational descriptors only; never store URLs, query
+  // strings, DOM text, contact details, or cookies.
+  const eligible=frames.filter(x=>x.visibleFields>0);
+  if(eligible.length===0)return {status:'no_rendered_fields',index:-1};
+  if(eligible.length!==1)return {status:'ambiguous_multiple_frames',index:-1};
+  const one=eligible[0];
+  if(one.host!==mainHost && one.host!=='www.'+mainHost &&
+     mainHost!=='www.'+one.host)return {status:'external_form_review',index:-1};
+  if(one.captcha)return {status:'blocked_captcha',index:-1};
+  return {status:'ready_for_field_matching',index:one.index};
+}
+async function frameInventory(page) {
+  const rows=[];
+  for(const [index,frame] of page.frames().entries()){
+    const host=(()=>{try{return new URL(frame.url()).hostname.toLowerCase()}catch{return ''}})();
+    // An unrelated advertising frame is not a registration form.
+    let data={visibleFields:0,requiredFields:0,captcha:false};
+    try {
+      data=await frame.evaluate(()=>{
+        const visible=el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(el).visibility!=='hidden'};
+        return {
+          visibleFields:[...document.querySelectorAll('input,textarea')].filter(visible).length,
+          requiredFields:[...document.querySelectorAll('input[required],textarea[required],select[required]')].filter(visible).length,
+          captcha:!!document.querySelector('iframe[src*="recaptcha"],iframe[src*="hcaptcha"],iframe[src*="challenges.cloudflare.com"],[id*="captcha"],[class*="captcha"]')
+        };
+      });
+    }catch { /* Cross-origin frames that Playwright cannot inspect remain unknown. */ }
+    rows.push({index,host, ...data});
+  }
+  return rows;
+}
 async function checkBlockers(page){
   return await page.evaluate(()=>{
     const captcha=!!document.querySelector(
@@ -306,10 +339,21 @@ async function operate(args) {
           const wanted=provider.id==='launchpedia'?['name','product','website','email']:
             provider.id==='joinly'?['product','website','email','headline','description']:
               ['product','website','email','description'];
+          // The top document can contain a shell while the actual form lives
+          // inside a same-origin iframe. Never fill an unapproved external frame.
+          await page.waitForTimeout(1200);
+          const inventory=await frameInventory(page);
+          const decision=frameDecision(provider.host,inventory);
+          console.log(provider.id,'프레임 검사:',JSON.stringify(inventory.map(x=>({
+            index:x.index, host:x.host, visible_fields:x.visibleFields,
+            required_fields:x.requiredFields, captcha:x.captcha
+          }))));
+          const activeFrame=decision.status==='ready_for_field_matching'
+            ? page.frames()[decision.index] : null;
           const missingKeys=[];
           let filled=0;
           for(const key of wanted){
-            if(fields[key] && await fillField(page,key,fields[key]))filled++;
+            if(activeFrame && fields[key] && await fillField(activeFrame,key,fields[key]))filled++;
             else missingKeys.push(key);
           }
           // Do not upload a wide banner or any unrecognized personal photo.
@@ -320,10 +364,12 @@ async function operate(args) {
               await inputs.first().setInputFiles(logo.path).catch(()=>{});
             }
           }
-          const blockers=await checkBlockers(page);
+          const blockers=activeFrame ? await checkBlockers(activeFrame) :
+            {captcha:inventory.some(f=>f.captcha),unchecked:false,missingCount:wanted.length};
           const missing=missingKeys.length+blockers.missingCount;
           if(missingKeys.length){
             console.log(provider.id,'찾지 못한 필드:',missingKeys.join(','));
+            console.log(provider.id,'프레임 판정:',decision.status);
             console.log(provider.id,'공개 폼 구조(개수만):',JSON.stringify(await formShape(page)));
           }
           const gate=submissionGate({
@@ -333,17 +379,20 @@ async function operate(args) {
             missingLogo:provider.requiresLogo&&!logo,
             alreadyAttempted:attempted,
           });
-          if(gate==='ready'&&!submit)state='prepared_only';
+          if(decision.status==='external_form_review')state='external_form_review';
+          else if(decision.status==='no_rendered_fields')state='no_rendered_fields';
+          else if(decision.status==='ambiguous_multiple_frames')state='ambiguous_multiple_frames';
+          else if(gate==='ready'&&!submit)state='prepared_only';
           else if(gate!=='ready')state=gate;
           else{
             // A known site's exact submit button only, never an arbitrary link.
-            const button=page.getByRole('button',{name:/^(submit|submit your website|submit product)$/i});
+            const button=activeFrame.getByRole('button',{name:/^(submit|submit your website|submit product)$/i});
             if(await button.count()===1&&await button.isEnabled()){
               const before=page.url();
               // Click *once*. Even if outcome is uncertain, never resend blindly.
               await button.click({timeout:8000,noWaitAfter:true});
               await page.waitForTimeout(1500);
-              state=finalResult(before,page.url(),await page.locator('body').innerText());
+              state=finalResult(before,page.url(),await activeFrame.locator('body').innerText());
             }else state='form_changed';
           }
         }
