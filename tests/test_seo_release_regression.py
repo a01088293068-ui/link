@@ -56,7 +56,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("광고 링크는 어떻게 구분하나요?", section)
         urls = re.findall(r'href="(/blog/[^"]+/)"', section)
         self.assertEqual(len(urls), 5)
-        self.assertEqual(len(set(urls)), 3)
+        self.assertEqual(len(set(urls)), 5)
         inbound = internal_inbound_links(root / "dist")
         for url in urls:
             self.assertTrue((root / "dist" / url.lstrip("/") / "index.html").is_file())
