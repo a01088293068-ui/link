@@ -5,9 +5,10 @@
   "description": "Local, user-controlled browser workflow for editorial backlink submissions",
   "scripts": {
     "outreach": "node tools/local-backlinks.mjs",
-    "outreach:test": "node --test tests/test_local_backlinks.mjs tests/test_outreach_batch.mjs tests/test_outreach_submit.mjs",
+    "outreach:test": "node --test tests/test_local_backlinks.mjs tests/test_outreach_batch.mjs tests/test_outreach_submit.mjs tests/test_backlink_evidence.mjs",
     "outreach:batch": "node tools/outreach-batch.mjs",
-    "outreach:submit": "node tools/outreach-submit.mjs"
+    "outreach:submit": "node tools/outreach-submit.mjs",
+    "outreach:verify": "node tools/backlink-evidence.mjs"
   },
   "devDependencies": {
     "playwright": "1.58.2"
