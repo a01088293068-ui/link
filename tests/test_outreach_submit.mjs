@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   chooseAsset, domainInput, submissionGate, cleanHistory, finalResult, PROVIDERS,
-  uniqueFieldIndex, normalizedFieldToken, parseProviderFilter, indexFromFieldGroups,
+  uniqueFieldIndex, normalizedFieldToken, parseProviderFilter, indexFromFieldGroups, frameDecision,
 } from '../tools/outreach-submit.mjs';
 
 const provider=id=>PROVIDERS.find(p=>p.id===id);
@@ -97,4 +97,14 @@ test('builder form fields work even without native label or form wrapper',()=>{
   assert.equal(indexFromFieldGroups(fields,['Website Link'],'website'),4);
   assert.equal(indexFromFieldGroups([...fields,{type:'text',visible:true,nearby:'Product Name'}],['Product Name'],'product'),-1);
   assert.equal(indexFromFieldGroups([{type:'text',visible:false,nearby:'Name'}],['Name'],'name'),-1);
+});
+
+test('iframe form is only eligible when same origin and uniquely visible',()=>{
+  const main={index:0,host:'launchpedia.co',visibleFields:0,captcha:false};
+  const child={index:1,host:'launchpedia.co',visibleFields:5,captcha:false};
+  assert.deepEqual(frameDecision('launchpedia.co',[main,child]),{status:'ready_for_field_matching',index:1});
+  assert.deepEqual(frameDecision('launchpedia.co',[main]),{status:'no_rendered_fields',index:-1});
+  assert.deepEqual(frameDecision('launchpedia.co',[main,{...child,host:'forms.other.example'}]),{status:'external_form_review',index:-1});
+  assert.deepEqual(frameDecision('launchpedia.co',[main,{...child,captcha:true}]),{status:'blocked_captcha',index:-1});
+  assert.deepEqual(frameDecision('launchpedia.co',[{...main,visibleFields:2},child]),{status:'ambiguous_multiple_frames',index:-1});
 });
