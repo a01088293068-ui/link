@@ -25,9 +25,12 @@ class LiveReleaseCheckTests(unittest.TestCase):
         live_name = next(line.removeprefix("name: ").strip()
                          for line in live.splitlines() if line.startswith("name: "))
         self.assertIn("workflows: ['" + quality_name + "']", live)
-        self.assertIn("workflows: ['" + live_name + "']", gsc)
+        # GSC is deliberately scheduled independently; only monitor public
+        # deployments after the actual release has passed.
+        self.assertIn("cron: '25 3 * * *'", gsc)
+        self.assertNotIn("workflows: ['" + live_name + "']", gsc)
         self.assertIn("github.event.workflow_run.conclusion == 'success'", live)
-        self.assertIn("github.event.workflow_run.conclusion == 'success'", gsc)
+        self.assertIn("GSC_MONITOR_ENABLED", gsc)
         self.assertNotIn("workflows: ['LinkWiki SEO build QA']", live)
 
     def test_live_release_log_identifies_checked_out_source_sha(self):
@@ -411,55 +414,42 @@ class LiveReleaseCheckTests(unittest.TestCase):
 
     def test_live_directory_search_data_matches_real_published_records(self):
         import json
-        from seo.live_release_check import extract_directory_sites
+        from seo.live_release_check import directory_cards
         root = Path(__file__).resolve().parents[1]
         expected = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
-        source = (root / "assets/directory.js").read_text(encoding="utf-8")
-        self.assertEqual(extract_directory_sites(source), expected)
-        self.assertGreaterEqual(len(expected), 192)
+        release = root / "dist/directory.html"
+        if not release.exists():
+            self.skipTest("build.py not run yet")
+        cards = directory_cards(release.read_text(encoding="utf-8"))
+        self.assertEqual(len(cards), len(expected))
+        self.assertEqual([card[0] for card in cards], [r["name"] for r in expected])
+        script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
+        self.assertIn("querySelectorAll('article.v6-card')", script)
+        self.assertNotIn("const sites=", script)
 
-        old = expected[:-4]
-        old_script = "const sites=" + json.dumps(old, ensure_ascii=False) + ";(()=>"
-        self.assertEqual(len(extract_directory_sites(old_script)), len(expected) - 4)
-        with self.assertRaisesRegex(ValueError, "dataset missing"):
-            extract_directory_sites("window.LinkWikiSearch.sortResults")
 
     def test_live_release_rejects_old_js_search_dataset_even_when_html_matches(self):
-        import json
-        from unittest.mock import patch
-        from seo.live_release_check import extract_directory_sites
+        from seo.live_release_check import run
         root = Path(__file__).resolve().parents[1]
-        with TemporaryDirectory() as directory:
-            dist = Path(directory)
-            (dist / "assets").mkdir()
-            source_js = (root / "assets/directory.js").read_text(encoding="utf-8")
-            (dist / "assets/directory.js").write_text(source_js, encoding="utf-8")
-            expected = extract_directory_sites(source_js)
-            old_script = ("const sites=" + json.dumps(expected[:-4], ensure_ascii=False)
-                          + ";(()=>window.LinkWikiSearch.sortResults)")
-            # Only the JS is stale. HTML, sitemap and every other fetched
-            # resource are supplied by the checked-in generated release.
-            release = root / "dist"
-            if not release.is_dir():
-                self.skipTest("dist build unavailable")
-            def fetch(path):
-                if path == "/assets/directory.js":
-                    return old_script
-                if path == "/assets/directory-search.js":
-                    return ("terms.every(term => haystack.includes(term)) "
-                            "function sortResults(")
-                if path in ("/sitemap.xml", "/sitemap-v2.xml", "/robots.txt"):
-                    return (release / path.removeprefix("/")).read_text(encoding="utf-8")
-                name = ("index.html" if path == "/" else
-                        "categories/index.html" if path == "/categories/" else
-                        "directory.html" if path == "/directory" else
-                        path.removeprefix("/") + ".html")
-                return (release / name).read_text(encoding="utf-8")
-            # Use the actual built HTML to avoid synthetic page mismatches.
-            from seo.live_release_check import run
-            issues = run(release, fetch=fetch)
-            self.assertTrue(any(
-                "deployed search dataset differs" in issue for issue in issues), issues)
+        release = root / "dist"
+        if not release.is_dir():
+            self.skipTest("dist build unavailable")
+        original = (release / "assets/directory.js").read_text(encoding="utf-8")
+        def fetch(path):
+            if path == "/assets/directory.js":
+                return original + "\\n/* stale search bundle */"
+            if path in ("/sitemap.xml", "/sitemap-v2.xml", "/robots.txt"):
+                return (release / path.lstrip("/")).read_text(encoding="utf-8")
+            if path == "/assets/directory-search.js":
+                return (release / "assets/directory-search.js").read_text(encoding="utf-8")
+            name = ("index.html" if path == "/" else
+                    "categories/index.html" if path == "/categories/" else
+                    "directory.html" if path == "/directory" else
+                    path.lstrip("/") + ".html")
+            return (release / name).read_text(encoding="utf-8")
+        issues = run(release, fetch=fetch)
+        self.assertTrue(any("deployed browser search code differs" in issue for issue in issues), issues)
+
 
     def test_run_uses_injected_public_fetch_and_flags_missing_live_script(self):
         with TemporaryDirectory() as temp:
