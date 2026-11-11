@@ -73,25 +73,25 @@ export const PROVIDERS = Object.freeze([
   {
     id: 'somuch', name: 'SoMuch', host: 'somuch.com',
     url: 'https://www.somuch.com/submit-links/',
-    mode: 'policy_review_required',
+    mode: 'excluded_policy_not_verified',
   },
 ]);
 export const TEXT_FIELDS = Object.freeze([
   {
     key: 'name', value: '링크위키 (LinkWiki)',
-    labels: ['프로젝트 이름', '서비스 이름', '제품 이름', '프로덕트 이름', 'Project name', 'Product name'],
+    labels: ['프로젝트 이름', '서비스 이름', '제품 이름', '프로덕트 이름', 'Project name', 'Product name', 'Website name', 'Startup or product name'],
   },
   {
     key: 'short', value: '주소모음·링크모음·사이트모음을 분야별로 검색하고 탐색하는 한국어 웹 디렉터리',
-    labels: ['한 줄 소개', '한줄 소개', '한 줄 설명', '짧은 소개', 'Tagline', 'Short description'],
+    labels: ['한 줄 소개', '한줄 소개', '한 줄 설명', '짧은 소개', 'Tagline', 'Short description', 'One-line description', 'Headline'],
   },
   {
     key: 'description', value: DRAFT.description,
-    labels: ['프로젝트 설명', '자세한 소개', '서비스 소개', '상세 설명', '제품 설명', 'Description'],
+    labels: ['프로젝트 설명', '자세한 소개', '서비스 소개', '상세 설명', '제품 설명', 'Description', 'Long description', 'Full description'],
   },
   {
     key: 'website', value: TARGET,
-    labels: ['공식 사이트', '웹사이트 URL', '서비스 URL', '외부 링크', 'Website URL', 'Product URL'],
+    labels: ['공식 사이트', '웹사이트 URL', '서비스 URL', '외부 링크', 'Website URL', 'Product URL', 'Website Link'],
   },
 ]);
 export function queuePlan(items = PROVIDERS) {
@@ -100,7 +100,7 @@ export function queuePlan(items = PROVIDERS) {
     status: mode === 'already_submitted' ? 'skip_previously_submitted'
       : mode === 'requires_domain_dns_verification' ? 'manual_dns_verification'
       : mode === 'blocked_human_verification' ? 'skip_automation_blocked'
-      : mode === 'policy_review_required' ? 'manual_policy_review'
+      : mode === 'excluded_policy_not_verified' ? 'skip_policy_review'
       : mode === 'embedded_form_bot_check' ? 'manual_antibot_review'
       : mode === 'embedded_typeform' ? 'third_party_form_review'
       : 'needs_form_and_contact_review',
@@ -252,9 +252,57 @@ export function eligibleForReview(providers, latest) {
   return providers.filter(item => {
     if (['already_submitted','requires_domain_dns_verification',
       'blocked_human_verification','embedded_form_bot_check',
-      'embedded_typeform'].includes(item.mode)) return false;
+      'embedded_typeform','excluded_policy_not_verified'].includes(item.mode)) return false;
     return latest.get(item.id) === 'visible_form_manual_review';
   });
+}
+/**
+ * One-command safe preparation without repeated prompts: open every previously
+ * scanned public form, fill only unambiguous project fields, leave all tabs
+ * open until the operator presses Enter once. Never post or sign in.
+ */
+export function prepareTargets(providers, latest) {
+  return eligibleForReview(providers, latest).filter(item =>
+    !['policy_review_required','excluded_policy_not_verified'].includes(item.mode));
+}
+async function prepareBatch(args) {
+  const latest = new Map((await readState()).map(item => [item.provider,item.status]));
+  const candidates = prepareTargets(PROVIDERS, latest);
+  console.log('등록 양식 준비:', candidates.length, '곳; 인증·개인정보·제출은 자동 처리하지 않습니다.');
+  if (!candidates.length) return;
+  const context = await guardedBrowser(args);
+  const records = await readState();
+  const rl = createInterface({ input: stdin, output: stdout });
+  try {
+    for (const item of candidates) {
+      await requireVpn(args);
+      const page = await context.newPage();
+      let status = 'manual_review_needed';
+      try {
+        const response = await page.goto(item.url, {
+          waitUntil: 'domcontentloaded',timeout:20000,
+        });
+        if (response?.status() !== 200 || !originAllowed(page.url(),item)) {
+          status = 'manual_login_needed';
+        } else {
+          const outcomes = await fillSafeFields(page);
+          status = outcomes.filled.length ? 'filled_for_review' : 'no_supported_form';
+          console.log(item.name+': 작성 '+(outcomes.filled.join(', ') || '없음')+
+            ' / 미작성 '+outcomes.skipped.join(', '));
+        }
+      } catch {
+        status = 'manual_review_needed';
+        console.log(item.name+': 폼 접근 실패; 수동 검토 필요');
+      }
+      records.push({provider:item.id,status,checked_on:new Date().toISOString().slice(0,10)});
+      await writeState(records);
+    }
+    console.log('화면에서 연락처 공개 범위와 등록 정책을 확인하세요. 프로그램은 제출 버튼을 누르지 않았습니다.');
+    await rl.question('모든 검토를 마쳤다면 Enter를 눌러 자동화 브라우저를 닫습니다: ');
+  } finally {
+    rl.close();
+    await context.close();
+  }
 }
 async function runBatch(args) {
   const plan = queuePlan();
@@ -293,7 +341,7 @@ async function runBatch(args) {
 export function triageTargets(items=PROVIDERS) {
   return items.filter(item => ![
     'already_submitted','requires_domain_dns_verification',
-    'blocked_human_verification',
+    'blocked_human_verification','excluded_policy_not_verified',
   ].includes(item.mode));
 }
 export function classifyForm({httpStatus, formFields, externalForm, antibot, redirectsOut}) {
@@ -374,10 +422,11 @@ async function main() {
     for (const item of latest.values()) console.log(item.provider, item.status, item.checked_on);
     return;
   }
-  if (!['run','scan'].includes(command)) throw new Error('Commands: plan, status, scan, run');
+  if (!['run','scan','prepare'].includes(command)) throw new Error('Commands: plan, status, scan, prepare, run');
   if (!hasPrivacyConsent(args)) throw new Error('Need --privacy-confirmed for any external access');
   await requireVpn(args);
   if (command === 'scan') return scanWithoutPosting(args);
+  if (command === 'prepare') return prepareBatch(args);
   await runBatch(args);
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
