@@ -59,7 +59,7 @@
       const placeholder = doc.createElement('option');
       placeholder.value = '';
       placeholder.textContent = '사이트를 선택하세요';
-      field.append(placeholder);
+      field.replaceChildren(placeholder);
       items.forEach((site, index) => {
         const option = doc.createElement('option');
         option.value = String(index);
