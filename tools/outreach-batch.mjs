@@ -45,6 +45,36 @@ export const PROVIDERS = Object.freeze([
     url: 'https://web-directory.itjeom.com/',
     mode: 'requires_domain_dns_verification', // manual domain ownership proof
   },
+  {
+    id: 'joinly', name: 'Joinly', host: 'joinly.xyz',
+    url: 'https://joinly.xyz/submit-startup',
+    mode: 'public_form_needs_brand_email_and_image',
+  },
+  {
+    id: 'launchpedia', name: 'LaunchPedia', host: 'launchpedia.co',
+    url: 'https://launchpedia.co/submit/',
+    mode: 'public_form_requires_contact_details',
+  },
+  {
+    id: 'phyco', name: 'Phyco', host: 'phyco.org',
+    url: 'https://phyco.org/submit',
+    mode: 'public_form_needs_email_and_assets',
+  },
+  {
+    id: 'startupcollections', name: 'Startup Collections', host: 'startupcollections.com',
+    url: 'https://startupcollections.com/submit-product/',
+    mode: 'embedded_form_bot_check',
+  },
+  {
+    id: 'startupstash', name: 'Startup Stash', host: 'startupstash.com',
+    url: 'https://startupstash.com/add-listing/',
+    mode: 'embedded_typeform',
+  },
+  {
+    id: 'somuch', name: 'SoMuch', host: 'somuch.com',
+    url: 'https://www.somuch.com/submit-links/',
+    mode: 'policy_review_required',
+  },
 ]);
 export const TEXT_FIELDS = Object.freeze([
   {
@@ -70,7 +100,10 @@ export function queuePlan(items = PROVIDERS) {
     status: mode === 'already_submitted' ? 'skip_previously_submitted'
       : mode === 'requires_domain_dns_verification' ? 'manual_dns_verification'
       : mode === 'blocked_human_verification' ? 'skip_automation_blocked'
-      : 'needs_login_and_review',
+      : mode === 'policy_review_required' ? 'manual_policy_review'
+      : mode === 'embedded_form_bot_check' ? 'manual_antibot_review'
+      : mode === 'embedded_typeform' ? 'third_party_form_review'
+      : 'needs_form_and_contact_review',
   }));
 }
 export function normalizeState(input) {
