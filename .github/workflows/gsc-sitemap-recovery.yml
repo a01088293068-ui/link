@@ -1,0 +1,45 @@
+name: LinkWiki GSC sitemap recovery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'seo/sitemap_submit.py'
+      - 'tests/test_sitemap_submit.py'
+      - '.github/workflows/gsc-sitemap-recovery.yml'
+
+# Submission is limited to the official Sitemap API, only if the public
+# canonical XML is valid and Google has not recorded a download.
+permissions:
+  contents: read
+
+concurrency:
+  group: linkwiki-gsc-sitemap-recovery
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test sitemap submission safety
+        run: python3 -B -m unittest discover -s tests -p 'test_sitemap_submit.py' -v
+      - name: Install Google service-account auth
+        run: python3 -m pip install 'google-auth>=2,<3' 'requests>=2,<3'
+      - name: Verify public sitemap and conditionally submit to Google
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          set -euo pipefail
+          python3 -B seo/sitemap_submit.py
+      - name: Explain result
+        if: always()
+        run: |
+          echo 'A successful sitemap PUT only accepts a submission request.'
+          echo 'It does not imply a Google download, URL discovery, indexation, or ranking.'
+          echo 'The existing read-only Search Console monitoring workflow tracks the result.'
