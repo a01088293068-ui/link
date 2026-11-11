@@ -59,7 +59,7 @@ class KoreanKeywordClusterTests(unittest.TestCase):
                 url = "https://linkwiki.info/blog/" + slug + "/"
                 self.assertIn(url, indexed)
                 html = (dist / "blog" / slug / "index.html").read_text(encoding="utf-8")
-                self.assertIn('href="' + url + '" rel="canonical"', html)
+                self.assertIn('<link rel="canonical" href="' + url + '">', html)
                 self.assertIn('href="/directory"', html)
                 self.assertIn('href="/categories/', html)
                 self.assertNotIn('name="robots" content="noindex"', html)
