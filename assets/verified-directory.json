@@ -1264,5 +1264,71 @@
     "url": "https://mykorean.org/",
     "category": "한인교민",
     "description": "말레이시아 현지 한인회 관련 소식과 교민 안내를 살펴볼 수 있습니다. 행사·민원 일정과 현지 기관의 최신 공지를 확인하세요."
+  },
+  {
+    "name": "Cursor",
+    "category": "AI 도구",
+    "url": "https://cursor.com/",
+    "description": "코드 편집기에서 AI를 활용해 코드 작성·수정과 프로젝트 탐색을 돕는 개발 도구입니다. 편집기 설치 및 요금제 조건을 확인하세요."
+  },
+  {
+    "name": "Replit",
+    "category": "AI 도구",
+    "url": "https://replit.com/",
+    "description": "브라우저에서 앱과 웹사이트를 만들고 AI 기반 개발 작업을 시도할 수 있는 서비스입니다. 배포·사용량과 유료 옵션을 확인하세요."
+  },
+  {
+    "name": "GitHub Copilot",
+    "category": "AI 도구",
+    "url": "https://github.com/features/copilot",
+    "description": "개발 환경과 GitHub 작업에서 AI로 코드 작성, 수정 및 관련 작업을 지원하는 도구입니다. 지원 환경과 요금제를 확인하세요."
+  },
+  {
+    "name": "Poe",
+    "category": "AI 도구",
+    "url": "https://poe.com/",
+    "description": "여러 대화형 AI 모델과 봇을 하나의 인터페이스에서 이용하는 서비스입니다. 계정·모델별 사용 제한과 개인정보 처리 조건을 확인하세요."
+  },
+  {
+    "name": "NBA 공식 홈페이지",
+    "category": "스포츠",
+    "url": "https://www.nba.com/",
+    "description": "미국 프로농구 NBA의 경기 일정, 결과, 팀·선수 기록과 공식 뉴스를 확인할 수 있습니다. 중계 이용 조건은 별도로 확인하세요."
+  },
+  {
+    "name": "KBL 한국프로농구",
+    "category": "스포츠",
+    "url": "https://www.kbl.or.kr/",
+    "description": "한국프로농구 KBL의 경기 일정과 결과, 팀 순위 및 기록을 확인하는 공식 사이트입니다. 시즌별 일정은 최신 공지를 확인하세요."
+  },
+  {
+    "name": "대한체육회",
+    "category": "스포츠",
+    "url": "https://www.sports.or.kr/sports/main/main.do",
+    "description": "대한체육회의 전국 체육대회, 선수·지도자 정보, 생활체육 프로그램과 공지 사항을 확인할 수 있습니다."
+  },
+  {
+    "name": "한국배구연맹 KOVO",
+    "category": "스포츠",
+    "url": "https://kovo.co.kr/",
+    "description": "프로배구 V-리그 일정과 선수·팀 기록 등 한국배구연맹이 제공하는 경기 정보를 확인할 수 있습니다."
+  },
+  {
+    "name": "쿠팡플레이",
+    "category": "영상·OTT",
+    "url": "https://www.coupangplay.com/",
+    "description": "영상 콘텐츠와 스포츠 관련 프로그램을 제공하는 국내 스트리밍 서비스입니다. 시청 지역·로그인·이용 조건에 따라 접근이 제한될 수 있습니다."
+  },
+  {
+    "name": "왓챠",
+    "category": "영상·OTT",
+    "url": "https://watcha.com/",
+    "description": "영화와 드라마 등 영상 콘텐츠를 탐색하고 시청할 수 있는 국내 스트리밍 서비스입니다. 제공 작품과 이용권 조건은 최신 안내를 확인하세요."
+  },
+  {
+    "name": "문피아",
+    "category": "만화·웹툰",
+    "url": "https://www.munpia.com/",
+    "description": "무협·판타지 등 다양한 장르의 한국 웹소설을 찾아볼 수 있는 플랫폼입니다. 작품별 무료 공개 범위와 유료 회차를 구분하세요."
   }
 ]
