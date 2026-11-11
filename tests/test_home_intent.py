@@ -53,8 +53,21 @@ class HomeIntentTests(unittest.TestCase):
             count = sum(item.get("category") == category for item in records)
             self.assertIn(f'href="/categories/{slug}"', output)
             self.assertIn(f"{category} {count}개", output)
-            self.assertIn(next(item["name"] for item in records if item.get("category") == category), output)
+            first = next(item for item in records if item.get("category") == category)
+            self.assertIn(first["name"], output)
+            self.assertIn('href="#' + build.directory_card_anchor(first) + '"', output)
+        self.assertEqual(output.count('href="#site-'), 16)
         self.assertNotIn("인기 순위", output.split("</p>", 1)[0])
+
+    def test_stable_card_anchors_have_no_duplicate_ids(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        ids = [build.directory_card_anchor(record) for record in records]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertTrue(all(id.startswith("site-") for id in ids))
+        cards = build.render_directory_catalog_cards(records)
+        for id in ids:
+            self.assertEqual(cards.count('id="' + id + '"'), 1)
 
     def test_directory_comparison_fails_if_category_has_no_listings(self):
         root = Path(__file__).resolve().parents[1]
