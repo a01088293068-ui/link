@@ -48,6 +48,10 @@ export function normalizePublicUrl(value) {
       !/^[a-z0-9.-]+\.[a-z]{2,}$/.test(h)) {
     throw new Error('Private or invalid host');
   }
+  // Do not persist provider-issued login tokens, tracking parameters or fragments.
+  if (url.search || url.hash) {
+    throw new Error('Remove query parameters and fragments before verifying a public page');
+  }
   return url.href;
 }
 export function isLinkwikiHref(href) {
