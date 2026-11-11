@@ -140,3 +140,25 @@ npm run outreach:batch -- status
 페이지가 사람 인증을 요구할 경우 이를 우회하지 않고 별도 검토 상태로 남깁니다.
 로컬 결과 파일에는 등록처 ID, 제한된 상태명, 날짜만 기록합니다.
 공개 사이트에는 VPN 인터페이스를 통한 접속이 발생하므로, VPN의 킬 스위치와 누출 보호는 계속 필요합니다.
+
+## 2026-11-11: 폼 3개 한 번에 준비
+
+공개 등록 화면을 조사한 결과 Joinly, LaunchPedia, Phyco는 일반 폼이 확인됐습니다.
+SoMuch는 사이트 정책상 LinkWiki의 콘텐츠 적합성이 검증되지 않아 자동 입력에서 제외했습니다.
+Startup Collections/Startup Stash에는 봇 검사/외부 폼이 있으므로 제외합니다.
+
+**이전 `scan`이 실행된 뒤** 다음 명령을 한 번 사용하면 세 사이트를 각각 별도 탭에
+열어 **정확히 식별된 사이트 이름·설명·홈페이지 주소만** 자동으로 채웁니다.
+사이트별 `y` 프롬프트가 없습니다. 인증·이메일·개인 주소·이미지·약관 동의·
+제출은 자동으로 처리하지 않습니다. Google/사이트 정책에 따라 로그인이 차단될 수 있습니다.
+
+```bash
+cd ~/Downloads/linkwiki-seo-deploy
+git pull --ff-only origin main
+npm run outreach:test
+npm run outreach:batch -- prepare --privacy-confirmed --vpn-interface utun0
+```
+
+브라우저가 떠 있는 동안 최종 제출은 사용자가 직접 내용을 검토한 뒤 해당 사이트에서
+진행해야 하며, 이 도구는 등록 성공이라고 기록하지 않습니다.
+모든 검토가 끝나면 터미널에서 Enter를 한 번 누르세요.
