@@ -847,6 +847,37 @@ def replace_directory_catalog_cards(html, records):
 def sync_category_card_copy(html, records, category):
     """Preserve each category layout while deriving descriptions from one source."""
     selected = [item for item in records if item.get("category") == category]
+    # Standard category templates use a single `div.items`. Render its entire
+    # list from the same catalog as /directory so verified additions can't
+    # silently vanish from individual category pages.
+    if html.count('<div class="items">') == 1:
+        if not selected:
+            raise RuntimeError("No published category items: " + category)
+        cards = []
+        for item in selected:
+            name, description, url = item["name"], item["description"], item["url"]
+            parsed = urlparse(url)
+            if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+                raise RuntimeError("Invalid category listing URL: " + name)
+            cards.append(
+                '<article class="item" data-search="' +
+                escape(name + " " + category + " " + description, quote=True) +
+                '"><strong>' + escape(name) + '</strong><small>' +
+                escape(category) + '</small><p>' + escape(description) +
+                '</p><span class="site-domain">' + escape(parsed.hostname) +
+                '</span><a aria-label="' + escape(name, quote=True) +
+                ' 사이트 새 창에서 열기" href="' + escape(url, quote=True) +
+                '" rel="noopener noreferrer external" target="_blank">사이트 방문</a></article>'
+            )
+        html, replaced = re.subn(
+            r'<div class="items">.*?</div>',
+            lambda _: '<div class="items">' + ''.join(cards) + '</div>',
+            html, count=1, flags=re.S)
+        if replaced != 1:
+            raise RuntimeError("Category item container malformed: " + category)
+        html = re.sub(r'\\b\\d+개(?=\\s+사이트 안내)',
+                      lambda _: str(len(selected)) + "개", html)
+        return html
     pattern = re.compile(
         r'<article class="(?:item|v6-card)"[^>]*>.*?</article>', re.S)
     index = 0
