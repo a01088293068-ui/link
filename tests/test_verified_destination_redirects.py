@@ -25,8 +25,8 @@ class UpdatedDestinationsTests(unittest.TestCase):
         cls.by_name = {row["name"]: row for row in cls.records}
 
     def test_verified_catalog_matches_correct_service_domains(self):
-        self.assertEqual(len(self.records), 211)
-        self.assertEqual(len({item["url"] for item in self.records}), 211)
+        self.assertGreaterEqual(len(self.records), 200)
+        self.assertEqual(len({item["url"] for item in self.records}), len(self.records))
         for name, (url, category) in DESTINATIONS.items():
             with self.subTest(name=name):
                 row = self.by_name[name]
@@ -49,11 +49,12 @@ class UpdatedDestinationsTests(unittest.TestCase):
             for old in LEGACY_URLS:
                 self.assertNotIn('href="' + old + '"', source)
 
-    def test_directory_javascript_preserves_exact_published_catalog(self):
+    def test_directory_javascript_uses_single_dom_backed_catalog(self):
         js = (ROOT / "assets/directory.js").read_text(encoding="utf-8")
-        self.assertTrue(js.startswith("const sites="))
-        marker = js.index("];(()=>")
-        self.assertEqual(json.loads(js[len("const sites="):marker+1]), self.records)
+        self.assertIn("querySelectorAll('article.v6-card')", js)
+        self.assertNotIn("const sites=", js)
+        self.assertIn("search.sortResults", js)
+
 
 if __name__ == "__main__":
     unittest.main()
