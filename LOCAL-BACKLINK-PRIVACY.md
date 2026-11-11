@@ -209,3 +209,21 @@ LINKWIKI_OUTREACH_EMAIL='a01088293068@gmail.com' LINKWIKI_CONTACT_NAME='리쑤�
 인증·광고/마케팅 개인정보 동의·필수 이미지/카테고리·양식 변경을 요구하면
 임의로 동의하거나 우회하지 않고 해당 사이트를 건너뜁니다. Joinly는 현재
 결합된 마케팅 관련 개인정보 동의 때문에 자동 제출을 허용하지 않습니다.
+
+## 제출 상태 오류 분석 — 2026-11-11
+
+실행 로그: `joinly blocked_consent`, `launchpedia missing_fields`, `phyco missing_asset`.
+세 곳 모두 신규 등록 성공이 아니며 **공개 백링크 0건**입니다.
+
+개선된 `tools/outreach-submit.mjs`는:
+- Downloads/Desktop의 링크위키 이미지 관련 하위 폴더까지 4단계 이내 탐색하며
+  원본 이미지/개인 사진은 GitHub로 올리지 않습니다.
+- LaunchPedia의 관련 입력란을 명시적 label, placeholder, name/id 순으로 찾고
+  일치하는 필드가 여럿일 경우 안전하게 건너뜁니다.
+- 찾지 못한 입력란의 **필드 키만** 터미널에 출력합니다.
+- 사이트 측 인증·이메일·개인정보 동의·필수 이미지를 자동으로 위조하지 않습니다.
+- 위 세 상태는 제출 실패/미실행 상태이므로 필요한 코드를 수정한 뒤 재진단이 가능합니다.
+- 실제 Chrome 브라우저 기반 엔드투엔드 제출은 개발 환경에서 검증하지 않았습니다.
+
+코드 테스트는 대체로 실제 폼 상호작용 테스트가 아니므로 `npm run outreach:test`
+통과만으로 제출 성공을 주장할 수 없습니다.
