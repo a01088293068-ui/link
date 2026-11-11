@@ -23,7 +23,8 @@ export const PROVIDERS=Object.freeze([
   {id:'joinly',url:'https://joinly.xyz/submit-startup',host:'joinly.xyz',
    requiresLogo:true,needsMarketingConsent:true},
   {id:'launchpedia',url:'https://launchpedia.co/submit/',host:'launchpedia.co',
-   requiresLogo:false,needsMarketingConsent:false},
+   requiresLogo:false,needsMarketingConsent:false,
+   disabledReason:'automated_form_not_rendered'},
   {id:'phyco',url:'https://phyco.org/submit',host:'phyco.org',
    requiresLogo:true,needsMarketingConsent:false},
 ]);
@@ -79,7 +80,8 @@ export function cleanHistory(rows) {
   const allowed=new Set(['submitted_unverified','submission_unconfirmed','blocked_consent',
     'blocked_captcha','missing_fields','missing_asset','form_changed','navigation_failed',
     'blocked_required_checkbox','skipped_previous_attempt','prepared_only',
-    'external_form_review','no_rendered_fields','ambiguous_multiple_frames']);
+    'external_form_review','no_rendered_fields','ambiguous_multiple_frames',
+    'skipped_inaccessible_form']);
   return rows.filter(r=>PROVIDERS.some(p=>p.id===r.provider)).slice(-60).map(r=>({
     provider:r.provider,
     status:allowed.has(r.status)?r.status:'submission_unconfirmed',
@@ -313,6 +315,13 @@ async function operate(args) {
   const history=await readHistory();
   try{
     for(const provider of parseProviderFilter(args)){
+      if(provider.disabledReason){
+        console.log(provider.id,': skipped_inaccessible_form (반복 접속 제외)');
+        history.push({provider:provider.id,status:'skipped_inaccessible_form',
+          date:new Date().toISOString().slice(0,10)});
+        await writeHistory(history);
+        continue;
+      }
       const attempted=history.some(r=>r.provider===provider.id &&
         ['submitted_unverified','submission_unconfirmed'].includes(r.status));
       let state='navigation_failed';
