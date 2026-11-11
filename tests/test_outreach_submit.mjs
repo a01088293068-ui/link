@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   chooseAsset, domainInput, submissionGate, cleanHistory, finalResult, PROVIDERS,
+  uniqueFieldIndex, normalizedFieldToken,
 } from '../tools/outreach-submit.mjs';
 
 const provider=id=>PROVIDERS.find(p=>p.id===id);
@@ -49,4 +50,26 @@ test('only observed result can count as submitted, never guaranteed backlink',()
   assert.equal(finalResult('https://launchpedia.co/submit/','https://launchpedia.co/thanks/','Thank you'),'submitted_unverified');
   assert.equal(finalResult('https://launchpedia.co/submit/','https://launchpedia.co/submit/','Try again'),'submission_unconfirmed');
   assert.equal(finalResult('https://launchpedia.co/submit/','https://elsewhere.example/','No confirmation'),'submission_unconfirmed');
+});
+
+test('LaunchPedia fields resolve by exact label or placeholder even without associated HTML label',()=>{
+  const controls=[
+    {tag:'input',type:'text',label:'Name',placeholder:'',aria:'',name:'contact_name',id:'',visible:true,disabled:false},
+    {tag:'input',type:'email',label:'Email',placeholder:'',aria:'',name:'user_email',id:'',visible:true,disabled:false},
+    {tag:'input',type:'text',label:'',placeholder:'',aria:'',name:'Product Name',id:'',visible:true,disabled:false},
+    {tag:'input',type:'url',label:'Website Link',placeholder:'',aria:'',name:'site_link',id:'',visible:true,disabled:false},
+    {tag:'input',type:'text',label:'Affiliate link',placeholder:'',aria:'',name:'afflink',id:'',visible:true,disabled:false},
+  ];
+  assert.equal(uniqueFieldIndex(controls,['Name','Your name'],'name'),0);
+  assert.equal(uniqueFieldIndex(controls,['Email'],'email'),1);
+  assert.equal(uniqueFieldIndex(controls,['Product Name'],'product'),2);
+  assert.equal(uniqueFieldIndex(controls,['Website Link'],'website'),3);
+  assert.equal(normalizedFieldToken(' Product-Name:* '),'product name');
+});
+test('ambiguous matches and hidden or email-mismatched fields fail closed',()=>{
+  const c={tag:'input',type:'text',label:'Name',placeholder:'',aria:'',name:'name',id:'',visible:true,disabled:false};
+  assert.equal(uniqueFieldIndex([c,c],['Name'],'name'),-1);
+  assert.equal(uniqueFieldIndex([{...c,visible:false}],['Name'],'name'),-1);
+  assert.equal(uniqueFieldIndex([c],['Email'],'email'),-1);
+  assert.equal(uniqueFieldIndex([{...c,type:'email',label:'Name'}],['Name'],'name'),-1);
 });
