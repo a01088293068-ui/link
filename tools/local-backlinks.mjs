@@ -110,7 +110,7 @@ async function routeFor(family, address) {
     return '';
   }
 }
-async function requireVpn(args) {
+export async function requireVpn(args) {
   if (process.platform !== 'darwin') {
     throw new Error('VPN gate requires macOS route verification; refusing network');
   }
