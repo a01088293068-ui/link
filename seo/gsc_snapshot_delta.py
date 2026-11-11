@@ -5,6 +5,7 @@ The report only compares Google's saved inspection data and public query rows.
 No API call requests indexing and no private GSC data is committed to Git.
 """
 import argparse
+from datetime import date
 import io
 import json
 import os
@@ -96,6 +97,14 @@ def render(current, previous=None, prior_run_url="", reason=""):
                       if row.get("keyword") == keyword), {})
         return entry.get("recent") or {}
     same_window = (current.get("end_date") == previous.get("end_date"))
+    # Search Console's rolling 7-day windows overlap when compared daily.
+    # Shared days mean differences are NOT independent week-over-week growth.
+    try:
+        current_end = date.fromisoformat(str(current["end_date"]))
+        prior_end = date.fromisoformat(str(previous["end_date"]))
+        days_apart = (current_end - prior_end).days
+    except (ValueError, KeyError, TypeError):
+        days_apart = None
     for key in KEYWORDS:
         past, now = recent(previous, key), recent(current, key)
         def display(row):
@@ -109,6 +118,10 @@ def render(current, previous=None, prior_run_url="", reason=""):
             status = "국가 필터 API 오류로 비교 불가"
         elif same_window:
             status = "동일 집계 종료일 · 성과 추세 판정 불가"
+        elif days_apart is None or days_apart < 0:
+            status = "집계 날짜 누락/역행 · 비교 불가"
+        elif 0 < days_apart < 7:
+            status = f"최근 7일 구간 {7-days_apart}일 중복 · 독립 기간 대비 아님"
         elif not past.get("observed") and not now.get("observed"):
             status = "양쪽 모두 미관측 · 변화 판정 불가"
         else:
@@ -116,6 +129,9 @@ def render(current, previous=None, prior_run_url="", reason=""):
         lines.append("| " + " | ".join(map(_table_cell, (
             key, display(past), display(now), status,
         ))) + " |")
+    lines += ["",
+              "- 7일 성과를 하루 간격으로 비교할 때 같은 날짜가 6일 겹칩니다. 따라서 노출/평균순위 차이는 독립적인 주간 성과 개선으로 해석하지 않습니다.",
+              ""]
     lines += ["",
               "## 이 보고서의 판단 기준", "",
               "1. Googlebot 재크롤링 시각 갱신이 색인 성공이나 순위 상승을 뜻하지는 않습니다.",
