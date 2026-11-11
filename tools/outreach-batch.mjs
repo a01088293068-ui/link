@@ -151,19 +151,13 @@ export async function fillSafeFields(page) {
         result.ambiguous.push(field.key);
       }
     }
-    const distinct = [];
-    for (const candidate of candidates) {
-      const handle = await candidate.elementHandle();
-      if (handle && !distinct.some(x => x.handle && x.handle.toString() === handle.toString())) {
-        distinct.push({ locator: candidate, handle });
-      }
-    }
-    // Discard rather than guess where multiple aliases match different controls.
-    if (distinct.length !== 1 || result.ambiguous.includes(field.key)) {
+    // Strict cardinality: if two aliases matched distinct controls, do not guess.
+    // Duplicate labels can indicate a profile field instead of project data.
+    if (candidates.length !== 1 || result.ambiguous.includes(field.key)) {
       result.skipped.push(field.key);
       continue;
     }
-    const element = distinct[0].locator;
+    const element = candidates[0];
     const current = await element.inputValue();
     if (current && current.trim() && current.trim() !== field.value.trim()) {
       result.skipped.push(field.key); // do not overwrite existing user data
