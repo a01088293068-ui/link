@@ -144,6 +144,7 @@ def release_content_sections(html, path):
         "/": (
             r'<section class="wrap seo-directory-examples"[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-home-task-paths\b)[^>]*>.*?</section>',
+            r'<section\b(?=[^>]*\bclass="[^"]*\bseo-home-search-guides\b)[^>]*>.*?</section>',
         ),
         "/directory": (
             r'<section\b(?=[^>]*\bid="directory-quick-compare")[^>]*>.*?</section>',
