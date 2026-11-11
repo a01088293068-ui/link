@@ -7,7 +7,7 @@ def fixture(card_count=2):
     source = [{"name": f"Example {i}", "category":"검색·포털"} for i in range(card_count)]
     cards = ''.join('<article class="v6-card" id="site-'+format(i,'014x')+'"><h3>Example</h3>'
                     '<a href="https://example.org/">사이트 방문</a></article>'
-                    for _ in range(card_count))
+                    for i in range(card_count))
     nav = ''.join(f'<a href="/categories/{slug}">category</a>' for slug in CATEGORIES)
     directory = ('<html><head><link rel="canonical" href="'+ORIGIN+'/directory">'
                  '</head><body><h1>주소모음·링크모음·사이트모음</h1>'
