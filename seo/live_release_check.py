@@ -24,6 +24,32 @@ CATEGORY_PATHS = (
 )
 
 
+# These five unique Korean search-intent guides are central to the directory
+# content cluster. Verify their actual deployment instead of assuming that a
+# successful local build means Google can fetch the new articles.
+PRIORITY_GUIDE_SLUGS = (
+    "seo-20261111-address-directory-search-examples",
+    "seo-20261111-links-sites-comparison-checklist",
+    "seo-20261111-address-directory-no-results",
+    "seo-20261111-site-directory-selection-by-purpose",
+    "seo-20261111-mobile-address-directory-check",
+)
+
+
+def priority_guide_pages(dist):
+    """Return existing generated priority articles, preserving test fixtures."""
+    return {
+        "/blog/" + slug + "/": dist / "blog" / slug / "index.html"
+        for slug in PRIORITY_GUIDE_SLUGS
+        if (dist / "blog" / slug / "index.html").is_file()
+    }
+
+
+def article_body(html):
+    match = re.search(r'<div class="blog-content">(.*?)</div>', html, re.S)
+    return match.group(1) if match else None
+
+
 class PageMetadata(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
@@ -262,6 +288,15 @@ def check_page(expected_html, live_html, path):
             errors.append("/: core keyword search-intent section missing on live site")
         if "/directory" not in live.links or "/categories/" not in live.links:
             errors.append("/: links to primary directory and category hub missing")
+    if path.startswith("/blog/"):
+        expected_body = article_body(expected_html)
+        live_body = article_body(live_html)
+        if expected_body is None or live_body is None:
+            errors.append(f"{path}: published guide body missing")
+        elif expected_body != live_body:
+            errors.append(f"{path}: deployed guide body differs from generated build")
+        if "/directory" not in live.links or "/categories/" not in live.links:
+            errors.append(f"{path}: published guide lacks canonical directory/category navigation")
     if path == "/categories/":
         for link in CATEGORY_PATHS:
             if link not in live.links:
@@ -292,6 +327,7 @@ def check_sitemap(text):
     urls = {el.text for el in root.iter() if el.tag.endswith("}loc") and el.text}
     required = {SITE + "/", SITE + "/directory", SITE + "/categories/"}
     required.update(SITE + path for path in CATEGORY_PATHS)
+    required.update(SITE + "/blog/" + slug + "/" for slug in PRIORITY_GUIDE_SLUGS)
     return [f"sitemap missing {url}" for url in sorted(required - urls)]
 
 
@@ -386,7 +422,11 @@ def run(dist, fetch=fetch_public):
         path: dist / "categories" / (path.rsplit("/", 1)[-1] + ".html")
         for path in CATEGORY_PATHS
     })
+    expected_map.update(priority_guide_pages(dist))
     problems = []
+    for slug in PRIORITY_GUIDE_SLUGS:
+        if not (dist / "blog" / slug / "index.html").is_file():
+            problems.append("expected priority guide missing from build: " + slug)
     for path, source in expected_map.items():
         expected = source.read_text(encoding="utf-8")
         try:
