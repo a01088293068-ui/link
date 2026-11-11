@@ -7,9 +7,11 @@ on:
       - 'tools/local-backlinks.mjs'
       - 'tools/outreach-batch.mjs'
       - 'tools/outreach-submit.mjs'
+      - 'tools/backlink-evidence.mjs'
       - 'tests/test_local_backlinks.mjs'
       - 'tests/test_outreach_batch.mjs'
       - 'tests/test_outreach_submit.mjs'
+      - 'tests/test_backlink_evidence.mjs'
       - 'package.json'
       - '.gitignore'
       - 'LOCAL-BACKLINK-PRIVACY.md'
@@ -28,7 +30,7 @@ jobs:
         with:
           node-version: '24'
       - name: Verify local outreach never needs credentials or an external browser in tests
-        run: node --test tests/test_local_backlinks.mjs tests/test_outreach_batch.mjs tests/test_outreach_submit.mjs
+        run: npm run outreach:test
       - name: Verify private profile directories are ignored by Git
         shell: bash
         run: |
