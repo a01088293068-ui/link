@@ -24,3 +24,28 @@
 .hero .lw-search-line button{background:#fff;border-color:#abc5b8;color:#006b60}
 .hero .lw-search-line button:hover{background:#e9f5ef}
 @media(max-width:680px){.hero .direct-action{margin:21px 0 25px}.hero .main-site-button{width:100%;min-height:80px;padding:16px 18px;gap:12px}.main-site-button .cta-copy strong{font-size:1.3rem}.main-site-button .cta-copy small{font-size:.75rem}.main-site-button .cta-icon{width:36px;height:36px;flex-basis:36px;font-size:23px}}
+
+/* Direct jumps from the published category comparison to real directory cards. */
+#v6-results .v6-card[id^="site-"]{scroll-margin-top:88px}
+#v6-results .v6-card[id^="site-"]:target{
+  outline:2px solid #008275;
+  outline-offset:3px;
+  background:#f0f8f4;
+}
+.seo-category-quick-compare ul{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px 16px;
+  list-style:none;
+  padding:0;
+  margin:14px 0;
+}
+.seo-category-quick-compare li{
+  border:1px solid #d7e3dc;
+  border-radius:6px;
+  padding:12px 14px;
+  background:#fff;
+}
+.seo-category-quick-compare li p{margin:5px 0 0;font-size:.9rem}
+.seo-category-quick-compare li span{display:block;margin-top:5px}
+@media(max-width:680px){.seo-category-quick-compare ul{grid-template-columns:1fr}}
