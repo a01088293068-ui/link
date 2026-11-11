@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   PROVIDERS, TEXT_FIELDS, queuePlan, normalizeState,
-  originAllowed, selectUniqueMatch, fieldPlan, triageTargets, classifyForm, eligibleForReview,
+  originAllowed, selectUniqueMatch, fieldPlan, triageTargets, classifyForm, eligibleForReview, prepareTargets,
 } from '../tools/outreach-batch.mjs';
 
 test('known submissions never return to the candidate queue', () => {
@@ -60,15 +60,15 @@ test('captcha-blocked provider stays out of automated submission and review queu
   const candidates = PROVIDERS.filter(x => ![
     'already_submitted','requires_domain_dns_verification','blocked_human_verification'
   ].includes(x.mode));
-  assert.equal(candidates.length, 6);
+  assert.equal(candidates.length, 5);
   const [state] = normalizeState([{provider: 'disquiet',status: 'human_verification_blocked',checked_on: '2026-11-11'}]);
   assert.equal(state.status, 'human_verification_blocked');
 });
 
 test('public triage only inspects unsubmitted locations; excludes CAPTCHA failures and previously submitted', () => {
   const ids = triageTargets().map(x=>x.id);
-  assert.deepEqual(ids.sort(), ['joinly','launchpedia','phyco','somuch','startupcollections','startupstash'].sort());
-  assert.equal(triageTargets().length,6);
+  assert.deepEqual(ids.sort(), ['joinly','launchpedia','phyco','startupcollections','startupstash'].sort());
+  assert.equal(triageTargets().length,5);
 });
 test('form scan clearly separates third-party forms and anti-bot from open forms', () => {
   assert.equal(classifyForm({httpStatus:200,formFields:4,externalForm:false,antibot:false,redirectsOut:false}), 'visible_form_manual_review');
@@ -108,6 +108,21 @@ test('batch review only includes public forms explicitly seen in the latest scan
     ['dreamboat','visible_form_manual_review'],
   ]);
   const selected = eligibleForReview(PROVIDERS, latest).map(x=>x.id).sort();
-  assert.deepEqual(selected,['joinly','launchpedia','phyco','somuch']);
+  assert.deepEqual(selected,['joinly','launchpedia','phyco']);
   assert.deepEqual(eligibleForReview(PROVIDERS,new Map()),[]);
+});
+
+test('one-shot prepare excludes previously registered, CAPTCHA and policy-risk destinations', () => {
+  const latest = new Map([
+    ['joinly','visible_form_manual_review'],
+    ['launchpedia','visible_form_manual_review'],
+    ['phyco','visible_form_manual_review'],
+    ['startupcollections','embedded_form_manual_review'],
+    ['startupstash','antibot_manual_review'],
+    ['somuch','visible_form_manual_review'],
+  ]);
+  assert.deepEqual(prepareTargets(PROVIDERS, latest).map(x=>x.id),
+    ['joinly','launchpedia','phyco']);
+  assert.equal(queuePlan().find(x=>x.id==='somuch').status, 'skip_policy_review');
+  assert.deepEqual(prepareTargets(PROVIDERS,new Map()),[]);
 });
