@@ -13,7 +13,7 @@ spec.loader.exec_module(monitor)
 
 
 class Response:
-    def __init__(self, data=b'{"rows":[{"keys":["주소모음"],"clicks":2}]}'):
+    def __init__(self, data='{"rows":[{"keys":["주소모음"],"clicks":2}]}'.encode("utf-8")):
         self.data = data
     def __enter__(self):
         return BytesIO(self.data)
