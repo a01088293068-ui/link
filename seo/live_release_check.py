@@ -418,18 +418,15 @@ def run(dist, fetch=fetch_public):
         live_script = fetch("/assets/directory.js")
         if "window.LinkWikiSearch.sortResults" not in live_script:
             problems.append("/assets/directory.js: relevance search integration not deployed")
-        # A previous 188-site search bundle must not pass after 192 cards
-        # deploy. Compare the exact data, not just the presence of search code.
+        # Search uses server-rendered HTML cards, not an embedded JS copy.
+        # Require byte-for-byte matching browser behavior across live and build.
         expected_script = dist / "assets" / "directory.js"
         if expected_script.is_file():
-            source_sites = extract_directory_sites(expected_script.read_text(encoding="utf-8"))
-            try:
-                deployed_sites = extract_directory_sites(live_script)
-                if deployed_sites != source_sites:
-                    problems.append("/assets/directory.js: deployed search dataset differs from release "
-                                    f"({len(deployed_sites)} vs {len(source_sites)} records)")
-            except ValueError as error:
-                problems.append(f"/assets/directory.js: invalid deployed site data: {error}")
+            source_script = expected_script.read_text(encoding="utf-8")
+            if live_script != source_script:
+                problems.append("/assets/directory.js: deployed browser search code differs from release")
+            if "querySelectorAll('article.v6-card')" not in live_script:
+                problems.append("/assets/directory.js: live static-card search binding missing")
     except (OSError, RuntimeError, ValueError) as error:
         problems.append(f"/assets/directory.js: fetch failed: {error}")
     return problems
