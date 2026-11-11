@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   PROVIDERS, TEXT_FIELDS, queuePlan, normalizeState,
-  originAllowed, selectUniqueMatch, fieldPlan, triageTargets, classifyForm,
+  originAllowed, selectUniqueMatch, fieldPlan, triageTargets, classifyForm, eligibleForReview,
 } from '../tools/outreach-batch.mjs';
 
 test('known submissions never return to the candidate queue', () => {
@@ -94,4 +94,20 @@ test('scan classifications survive local persistence and remain distinct', () =>
   assert.doesNotMatch(JSON.stringify(result), /do-not-persist|@example\.org/);
   const invalid = normalizeState([{provider:'joinly',status:'invented_verified_link',checked_on:'2026-11-11'}]);
   assert.equal(invalid[0].status, 'manual_review_needed');
+});
+
+test('batch review only includes public forms explicitly seen in the latest scan', () => {
+  const latest = new Map([
+    ['joinly','visible_form_manual_review'],
+    ['launchpedia','visible_form_manual_review'],
+    ['phyco','visible_form_manual_review'],
+    ['startupcollections','embedded_form_manual_review'],
+    ['startupstash','antibot_manual_review'],
+    ['somuch','visible_form_manual_review'],
+    ['disquiet','visible_form_manual_review'],
+    ['dreamboat','visible_form_manual_review'],
+  ]);
+  const selected = eligibleForReview(PROVIDERS, latest).map(x=>x.id).sort();
+  assert.deepEqual(selected,['joinly','launchpedia','phyco','somuch']);
+  assert.deepEqual(eligibleForReview(PROVIDERS,new Map()),[]);
 });
