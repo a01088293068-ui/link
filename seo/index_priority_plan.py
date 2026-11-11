@@ -127,6 +127,38 @@ def render(snapshot):
         crawled = str((row or {}).get("last_crawl") or "-")
         values = (url, changed or "-", crawled, status, freshness, action)
         lines.append("| " + " | ".join(str(v).replace("|", "%7C").replace("\n", " ") for v in values) + " |")
+    # Article diagnostics are evidence-based: list only URLs actually
+    # returned by Google's stored inspection API, not all build artifacts.
+    article_rows = sorted(
+        (row for row in snapshot.get("inspections") or []
+         if isinstance(row, dict)
+         and str(row.get("url") or "").startswith(SITE + "/blog/")
+         and str(row.get("url") or "").endswith("/")),
+        key=lambda row: str(row.get("url") or ""),
+    )
+    lines.extend(["", "## 핵심 가이드의 Google 저장 색인 상태", "",
+                  "- URL Inspection API로 실제 조회된 글만 표시합니다. "
+                  "표의 부재는 색인 실패나 노출 0회를 뜻하지 않습니다."])
+    if not article_rows:
+        lines.append("- 검사된 블로그 가이드 URL 없음")
+    else:
+        lines.extend(["", "| 가이드 URL | Google 저장 색인 상태 | 마지막 크롤링 | 우선 조치 |",
+                      "|---|---|---|---|"])
+        for row in article_rows:
+            url = str(row["url"])
+            state, freshness, action = decide(row, "")
+            if state == "색인됨":
+                action = "검색어별 실제 노출 URL과 클릭·순위 추적"
+            elif state == "크롤링 후 미색인":
+                action = "글의 독립적인 검색 목적과 원문 가치 확인; 중복 글 양산 금지"
+            elif state == "Google 발견 기록 없음":
+                action = "사이트맵·디렉터리 유입 링크·HTTP 응답 검사"
+            else:
+                action = "Google 저장 상태와 canonical 확인"
+            cells = (url, state, row.get("last_crawl") or "-", action)
+            lines.append("| " + " | ".join(
+                str(v).replace("|", "%7C").replace("\\n", " ") for v in cells) + " |")
+
     mismatches = historic_canonical_mismatches(snapshot.get("inspections"))
     lines.extend(["", "## Google 저장본 Canonical 차이", ""])
     if mismatches:
