@@ -43,6 +43,26 @@ class HomeIntentTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "not backed"):
             build.homepage_task_paths(without_sample)
 
+    def test_directory_above_fold_category_comparison_uses_real_catalog(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        output = build.directory_quick_comparison(records, build.CATEGORY_LANDING)
+        self.assertEqual(output.count("<li>"), len(build.CATEGORY_LANDING))
+        self.assertIn('id="directory-quick-compare"', output)
+        for category, slug, _, _ in build.CATEGORY_LANDING:
+            count = sum(item.get("category") == category for item in records)
+            self.assertIn(f'href="/categories/{slug}"', output)
+            self.assertIn(f"{category} {count}개", output)
+            self.assertIn(next(item["name"] for item in records if item.get("category") == category), output)
+        self.assertNotIn("인기 순위", output.split("</p>", 1)[0])
+
+    def test_directory_comparison_fails_if_category_has_no_listings(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        without_ai = [item for item in records if item.get("category") != "AI 도구"]
+        with self.assertRaisesRegex(RuntimeError, "Missing active category"):
+            build.directory_quick_comparison(without_ai, build.CATEGORY_LANDING)
+
     def test_generated_homepage_exposes_broad_directory_intent_without_redirects(self):
         path = Path(__file__).resolve().parents[1] / "dist" / "index.html"
         if not path.exists():
