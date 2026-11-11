@@ -12,7 +12,8 @@ test('known submissions never return to the candidate queue', () => {
   assert.equal(dreamboat.status, 'skip_previously_submitted');
   assert.equal(syde.status, 'skip_previously_submitted');
   assert.ok(plan.every(p => p.url.startsWith('https://')));
-  assert.equal(plan.filter(p => p.status === 'needs_login_and_review').length, 1);
+  assert.equal(plan.filter(p => p.status === 'needs_login_and_review').length, 0);
+  assert.equal(plan.find(p => p.id === 'disquiet').status, 'skip_automation_blocked');
 });
 test('DNS verification is manual and must not be treated as a submitted backlink', () => {
   assert.equal(queuePlan().find(p => p.id === 'itjeom').status, 'manual_dns_verification');
@@ -51,4 +52,15 @@ test('local ledger strips all PII, tokens, raw URLs and unsupported statuses', (
     {provider:'itjeom',status:'manual_review_needed',checked_on:''},
   ]);
   assert.doesNotMatch(JSON.stringify(rows), /secret|private|1\.2\.3\.4|pretend_approved/);
+});
+
+test('captcha-blocked provider stays out of automated submission and review queue', () => {
+  const p = PROVIDERS.find(x => x.id === 'disquiet');
+  assert.equal(p.mode, 'blocked_human_verification');
+  const candidates = PROVIDERS.filter(x => ![
+    'already_submitted','requires_domain_dns_verification','blocked_human_verification'
+  ].includes(x.mode));
+  assert.equal(candidates.length, 0);
+  const [state] = normalizeState([{provider: 'disquiet',status: 'human_verification_blocked',checked_on: '2026-11-11'}]);
+  assert.equal(state.status, 'human_verification_blocked');
 });
