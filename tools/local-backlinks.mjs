@@ -6,19 +6,22 @@
  * Commands:
  *   node tools/local-backlinks.mjs list
  *   node tools/local-backlinks.mjs privacy
- *   node tools/local-backlinks.mjs open dreamboat --privacy-confirmed
- *   node tools/local-backlinks.mjs open syde --privacy-confirmed
- *   node tools/local-backlinks.mjs verify https://example.com/public/linkwiki --privacy-confirmed
+ *   node tools/local-backlinks.mjs open dreamboat --privacy-confirmed --vpn-interface utunN
+ *   node tools/local-backlinks.mjs open syde --privacy-confirmed --vpn-interface utunN
+ *   node tools/local-backlinks.mjs verify https://example.com/public/linkwiki --privacy-confirmed --vpn-interface utunN
  *
  * 'open' only opens the provider and prints a listing draft. Any login,
  * permission prompts, field entry, and submission are controlled by the user.
  */
 import { createInterface } from 'node:readline/promises';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { stdin, stdout } from 'node:process';
 import { mkdir, chmod, readFile, writeFile } from 'node:fs/promises';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const runProcess = promisify(execFile);
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PROFILE = join(ROOT, '.local-backlink-profile');
 const PRIVATE = join(ROOT, '.local-backlink-state');
@@ -68,12 +71,56 @@ export function privacyNotice() {
     '- 이 도구는 비밀번호, Google 이메일, 쿠키, 로컬 사용자명, IP를 기록하지 않습니다.',
     '- macOS 사용자명과 로컬 파일 경로를 외부 제출에 넣지 않습니다.',
     '- Playwright 자체는 실제 IP, 브라우저 특성, Google 계정을 숨기지 못합니다.',
-    '- VPN을 사용하려면 먼저 사용자가 직접 연결하고 외부 IP 변경을 확인해야 합니다.',
+    '- VPN을 사용해도 IP·DNS·IPv6·WebRTC 누출 가능성이 남습니다.',
+    '- VPN 앱 킬 스위치와 DNS/IPv6 누출 보호를 활성화해야 합니다.',
+    '- 외부 접속은 지정한 VPN 터널로 IPv4·IPv6 경로가 확인된 경우에만 허용합니다.',
     '- Google OAuth 로그인은 해당 사이트에 계정 정보가 제공될 수 있습니다.',
     '- CAPTCHA 우회, 브라우저 핑거프린트 위조, 자동 대량 제출을 하지 않습니다.',
     '- 아래 --privacy-confirmed 는 네트워크 보호를 보장하지 않으며 사용자의 확인 표시입니다.',
   ].join('\n');
 }
+export function parseRouteInterface(output) {
+  const found = String(output).match(/^\s*interface:\s*([a-zA-Z0-9]+)\s*$/m);
+  return found?.[1] || '';
+}
+export function expectedVpnInterface(args) {
+  const index = args.indexOf('--vpn-interface');
+  const value = index < 0 ? '' : args[index + 1] || '';
+  if (!/^(utun\d+|tun\d+|wg\d+|ppp\d+)$/.test(value)) {
+    throw new Error('VPN gate: specify --vpn-interface utunN; refusing network');
+  }
+  return value;
+}
+export function assertTunnelRoutes(expected, routes) {
+  for (const [family, value] of Object.entries(routes)) {
+    if (value !== expected) {
+      throw new Error('VPN gate: ' + family + ' route does not use approved tunnel; refusing network');
+    }
+  }
+  if (!routes.ipv4 || !routes.ipv6) throw new Error('VPN gate: dual stack routes unverified');
+  return true;
+}
+async function routeFor(family, address) {
+  try {
+    const result = await runProcess('route', ['-n', 'get', family, address], {
+      timeout: 5000, maxBuffer: 16384,
+    });
+    return parseRouteInterface(result.stdout);
+  } catch {
+    return '';
+  }
+}
+async function requireVpn(args) {
+  if (process.platform !== 'darwin') {
+    throw new Error('VPN gate requires macOS route verification; refusing network');
+  }
+  const expected = expectedVpnInterface(args);
+  const ipv4 = await routeFor('-inet', '1.1.1.1');
+  const ipv6 = await routeFor('-inet6', '2606:4700:4700::1111');
+  // An unavailable IPv6 route cannot be assumed safe.
+  assertTunnelRoutes(expected, { ipv4, ipv6 });
+}
+
 export function hasPrivacyConsent(args) {
   return args.includes('--privacy-confirmed');
 }
@@ -85,6 +132,7 @@ async function openSite(key) {
   const context = await chromium.launchPersistentContext(PROFILE, {
     channel: 'chrome', headless: false, acceptDownloads: false,
     permissions: [], viewport: { width: 1200, height: 800 },
+    args: ['--force-webrtc-ip-handling-policy=disable_non_proxied_udp'],
   });
   const rl = createInterface({ input: stdin, output: stdout });
   try {
@@ -103,7 +151,8 @@ async function openSite(key) {
 async function verify(url) {
   const safe = normalizePublicUrl(url);
   const { chromium } = await import('playwright');
-  const browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const browser = await chromium.launch({ channel: 'chrome', headless: true,
+    args: ['--force-webrtc-ip-handling-policy=disable_non_proxied_udp'] });
   try {
     const page = await browser.newPage({ acceptDownloads: false });
     const response = await page.goto(safe, { waitUntil: 'domcontentloaded', timeout: 25000 });
@@ -149,6 +198,7 @@ async function main(args) {
     console.log(privacyNotice());
     throw new Error('Blocked: review privacy first, then add --privacy-confirmed');
   }
+  await requireVpn(args);
   if (cmd === 'open') return openSite(arg);
   if (cmd === 'verify') return verify(arg);
 }
