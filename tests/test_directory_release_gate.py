@@ -12,6 +12,8 @@ def fixture(card_count=2):
     directory = ('<html><head><link rel="canonical" href="'+ORIGIN+'/directory">'
                  '</head><body><h1>주소모음·링크모음·사이트모음</h1>'
                  f'<p>{card_count}개 등록 사이트</p><nav>{nav}</nav>'
+                 '<form id="v6-form"></form>'
+                 '<section id="directory-quick-compare"><ul>' + nav + '</ul></section>'
                  f'<div id="v6-results">{cards}</div></body></html>')
     home = ('<html><head><title>주소모음·링크모음·사이트모음</title>'
             '<link rel="canonical" href="'+ORIGIN+'/"></head><body>'
@@ -28,6 +30,11 @@ def fixture(card_count=2):
 class DirectoryReleaseGateTests(unittest.TestCase):
     def test_complete_static_directory_passes(self):
         self.assertEqual(validate(*fixture()), [])
+
+    def test_missing_quick_category_navigation_fails(self):
+        parts = list(fixture())
+        parts[0] = parts[0].replace('id="directory-quick-compare"', 'id="removed"')
+        self.assertTrue(any("quick category comparison" in issue for issue in validate(*parts)))
 
     def test_missing_static_card_fails_even_if_js_would_fill_it(self):
         parts = list(fixture())
