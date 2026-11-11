@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   chooseAsset, domainInput, submissionGate, cleanHistory, finalResult, PROVIDERS,
-  uniqueFieldIndex, normalizedFieldToken,
+  uniqueFieldIndex, normalizedFieldToken, parseProviderFilter,
 } from '../tools/outreach-submit.mjs';
 
 const provider=id=>PROVIDERS.find(p=>p.id===id);
@@ -72,4 +72,12 @@ test('ambiguous matches and hidden or email-mismatched fields fail closed',()=>{
   assert.equal(uniqueFieldIndex([{...c,visible:false}],['Name'],'name'),-1);
   assert.equal(uniqueFieldIndex([c],['Email'],'email'),-1);
   assert.equal(uniqueFieldIndex([{...c,type:'email',label:'Name'}],['Name'],'name'),-1);
+});
+
+test('select a single provider without re-opening failed privacy or image-gated listings',()=>{
+  assert.deepEqual(parseProviderFilter(['--only','launchpedia']).map(x=>x.id),['launchpedia']);
+  assert.deepEqual(parseProviderFilter(['--only','phyco,launchpedia']).map(x=>x.id),['launchpedia','phyco']);
+  assert.equal(parseProviderFilter([]).length,3);
+  assert.throws(()=>parseProviderFilter(['--only','evil']),/Unknown --only target/);
+  assert.throws(()=>parseProviderFilter(['--only']),/Unknown --only target/);
 });
