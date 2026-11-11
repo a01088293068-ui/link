@@ -10,6 +10,7 @@ from datetime import date, timedelta
 import json
 import os
 import re
+import time
 from pathlib import Path
 from urllib.parse import quote
 from urllib.request import Request, urlopen
@@ -49,8 +50,21 @@ def query_performance(token, property_url, start_date, end_date, dimensions, lim
     request = Request(endpoint, json.dumps(payload).encode('utf-8'),
                       {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'},
                       method='POST')
-    with urlopen(request, timeout=30) as response:
-        return json.load(response).get('rows', [])
+    # Read-only Search Analytics requests occasionally time out transiently.
+    # Retrying only 429/5xx, socket timeout and transport errors avoids aborting
+    # the entire daily snapshot; do not repeat credential or permission errors.
+    for attempt in range(3):
+        try:
+            with urlopen(request, timeout=30) as response:
+                return json.load(response).get('rows', [])
+        except HTTPError as exc:
+            if exc.code not in (429, 500, 502, 503, 504) or attempt == 2:
+                raise
+        except (URLError, TimeoutError, ConnectionError):
+            if attempt == 2:
+                raise
+        time.sleep(2 ** (attempt + 1))
+    raise RuntimeError('unreachable GSC retry state')
 
 
 INSPECT_URLS = (
