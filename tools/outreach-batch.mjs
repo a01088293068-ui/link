@@ -278,6 +278,75 @@ async function runBatch(args) {
   }
   console.log('검토 기록 저장 완료 (인증·게시 여부와 무관). 등록 성공은 공개 링크 확인 후 집계하세요.');
 }
+export function triageTargets(items=PROVIDERS) {
+  return items.filter(item => ![
+    'already_submitted','requires_domain_dns_verification',
+    'blocked_human_verification',
+  ].includes(item.mode));
+}
+export function classifyForm({httpStatus, formFields, externalForm, antibot, redirectsOut}) {
+  if (redirectsOut) return 'external_redirect_manual_review';
+  if (antibot) return 'antibot_manual_review';
+  if (!httpStatus || httpStatus >= 400) return 'not_accessible';
+  if (externalForm) return 'embedded_form_manual_review';
+  return formFields >= 2 ? 'visible_form_manual_review' : 'no_visible_form';
+}
+async function scanWithoutPosting(args) {
+  // No existing login sessions, no screenshots, no user account information.
+  // Each allowed provider is visited once; never click a submit element.
+  const targets = triageTargets();
+  const { chromium } = await import('playwright');
+  await requireVpn(args);
+  const browser = await chromium.launch({
+    channel: 'chrome', headless: true,
+    args: ['--disable-background-networking',
+      '--force-webrtc-ip-handling-policy=disable_non_proxied_udp'],
+  });
+  const observations = [];
+  try {
+    for (const item of targets) {
+      await requireVpn(args);
+      const context = await browser.newContext({
+        permissions: [], acceptDownloads: false, serviceWorkers: 'block',
+      });
+      await context.route('**/*', async route => {
+        try { await requireVpn(args); await route.continue(); }
+        catch { await route.abort('blockedbyclient'); }
+      });
+      const page = await context.newPage();
+      let status = 'not_accessible';
+      try {
+        const response = await page.goto(item.url, {
+          waitUntil: 'domcontentloaded', timeout: 16000,
+        });
+        const external = !originAllowed(page.url(), item);
+        const details = await page.evaluate(() => ({
+          formFields: [...document.querySelectorAll('input,textarea,select')]
+            .filter(el => !['hidden','password','email'].includes(
+              (el.getAttribute('type')||'').toLowerCase())).length,
+          externalForm: !!document.querySelector('iframe[src*="typeform"],iframe[src*="docs.google"]'),
+          antibot: !!document.querySelector('[class*="captcha"],[id*="captcha"],iframe[src*="challenges.cloudflare.com"]'),
+        }));
+        status = classifyForm({
+          httpStatus: response?.status()||0, ...details,
+          redirectsOut: external,
+        });
+      } catch {
+        status = 'not_accessible';
+      }
+      observations.push({
+        provider: item.id, status, checked_on: new Date().toISOString().slice(0,10),
+      });
+      await context.close();
+      console.log(item.name + ': ' + status);
+    }
+  } finally {
+    await browser.close();
+  }
+  const saved = await readState();
+  await writeState([...saved, ...observations]);
+  console.log('자동 진단 완료: 실제 등록이나 로그인은 수행하지 않았습니다.');
+}
 async function main() {
   const args = process.argv.slice(2);
   const command = args[0] || 'plan';
@@ -290,9 +359,10 @@ async function main() {
     for (const item of await readState()) console.log(item.provider, item.status, item.checked_on);
     return;
   }
-  if (command !== 'run') throw new Error('Commands: plan, status, run');
+  if (!['run','scan'].includes(command)) throw new Error('Commands: plan, status, scan, run');
   if (!hasPrivacyConsent(args)) throw new Error('Need --privacy-confirmed for any external access');
   await requireVpn(args);
+  if (command === 'scan') return scanWithoutPosting(args);
   await runBatch(args);
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
