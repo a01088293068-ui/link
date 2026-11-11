@@ -201,7 +201,7 @@ async function findInput(page,key){
         .filter(n=>!n.querySelector('input,textarea,button,select'))
         .map(n=>(n.textContent||'').replace(/\*/g,'').trim())
         .filter(s=>s.length>0&&s.length<50);
-      const headings=captions.filter(s=>/^(name|your name|email|product name|website link|website url|startup or product name)$/i.test(s));
+      const headings=[...new Set(captions.filter(s=>/^(name|your name|email|product name|website link|website url|startup or product name)$/i.test(s)))];
       if(headings.length===1){nearby=headings[0];break;}
     }
     return {
