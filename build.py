@@ -1349,14 +1349,33 @@ def article_category_links(title, categories):
 
 
 def category_article_links(posts, slug, limit=5):
-    """Select published, relevant guides only; never invent article URLs."""
+    """Preserve essential reference guides while mixing newer topical guides.
+
+    Links must still come from published post records, never invented slugs.
+    """
     from seo.auto_seo import related_categories
+    pins = {
+        "search": (
+            "/blog/seo-20261030-26325b73af/",
+            "/blog/seo-20261110-korean-education-sites-guide/",
+        ),
+        "ai": ("/blog/seo-20261110-korean-ai-tools-by-task-guide/",),
+    }
     selected = []
-    for post in posts:
-        if any(url == f"/categories/{slug}" for _, url in related_categories(post["title"])):
+    seen = set()
+    relevant = [
+        post for post in posts
+        if any(url == f"/categories/{slug}" for _, url in related_categories(post["title"]))
+    ]
+    for pinned in pins.get(slug, ()):
+        chosen = next((post for post in relevant if post["url"] == pinned), None)
+        if chosen is not None and len(selected) < limit:
+            selected.append(chosen)
+            seen.add(pinned)
+    for post in relevant:
+        if post["url"] not in seen and len(selected) < limit:
             selected.append(post)
-        if len(selected) == limit:
-            break
+            seen.add(post["url"])
     return selected
 
 
