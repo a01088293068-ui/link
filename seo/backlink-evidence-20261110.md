@@ -74,3 +74,14 @@ MeWebLink는 공개 링크 404, 정책 충돌 가능성.
 3. 접수 영수증과 승인·공개 링크를 분리하고, 공개 URL의 direct href/rel/noindex를 확인.
 4. Google의 주소모음·링크모음·사이트모음 한국 검색 성과와 페이지 색인 상태를
    최소 일주일 단위로 실측. 링크를 만들었다는 사실만으로 순위 상승을 주장하지 않음.
+
+## 2026-11-11 추가 확인: Dreamboat 실제 공개 등록
+
+- 사용자 기존 계정에서 한 번 등록 완료: https://dreamboat.kr/u/linkwikiinfo/p/linkwiki
+- 프로젝트명: 링크위키 (LinkWiki), 버전 v0.1, 업데이트 1건.
+- 로그인하지 않은 외부 공개 렌더링에서 https://linkwiki.info/ 링크 추출 확인.
+- 페이지 robots: `index, follow` 확인. 외부 링크 `rel` 값, Google 색인·순위 반영은 확인하지 못함.
+- 공개된 자체 작성 소개글이므로 독립적인 제3자 추천으로 계산하지 않음.
+- 장부: `seo/backlink-registry.json`에 Dreamboat 신규 1건 반영 (총 49건).
+- 다음 후보 SYDE(https://syde.kr/showcase): 공개 쇼케이스와 '내 프로젝트 등록하기' 확인, 기존 등록 여부/정책/인증 검토 전에는 미제출.
+- 로그인 계정의 이메일·개인 IP·맥북 식별자 및 Chrome 쿠키는 장부에 기록하지 않음.
