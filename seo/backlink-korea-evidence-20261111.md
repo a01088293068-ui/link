@@ -34,3 +34,18 @@ Google 순위 개선 증거가 아니다. Search Console 검색 성과에서 7/2
 
 2026-11-11 이번 회차 신규 자동 등록/제출 **0건**.
 기존에 공개된 한국어 페이지 **1건 추가 발견**. 앞선 Dreamboat와 중복 아님.
+
+## 2026-11-11 SEO 공개 페이지 추가 검증
+
+공개 콘텐츠 재조회 결과:
+- `https://linkwiki.info/directory`: 접근 가능한 HTML/JS 렌더링 페이지 확인, title
+  `사이트모음 전체 목록: 211개 사이트 검색 | 링크위키`, robots 지시 `index,follow`
+- `https://linkwiki.info/sitemap.xml`: 사이트맵 제공 확인, 38 URL 표기,
+  `https://linkwiki.info/directory` 포함
+- `https://linkwiki.info/`: 주소모음·링크모음·사이트모음 키워드와 안내/분류 링크 공개 확인.
+  다만 외부 수집 시점이 다른 수치(홈 97개·목록 211개)가 확인되어 같은 시점
+  캐시/빌드 불일치 여부 확인이 필요하다.
+
+주의: 페이지가 접근 가능하고 robots가 `index,follow`인 것과 Google 색인은 별개.
+Google Search Console의 실제 색인·검색어 노출·CTR 데이터는 확보하지 못했다.
+이번 증거는 검색 순위 상승이나 색인 성공을 증명하지 않는다.
