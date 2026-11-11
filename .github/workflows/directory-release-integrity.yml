@@ -9,6 +9,7 @@ on:
       - 'directory.html'
       - 'index.html'
       - 'assets/verified-directory.json'
+      - 'seo/significant-page-updates.json'
       - 'assets/style.css'
       - 'seo/directory_release_gate.py'
       - 'tests/test_directory_release_gate.py'
