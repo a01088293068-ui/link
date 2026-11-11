@@ -5,7 +5,7 @@ from seo.directory_release_gate import validate, CATEGORIES, ORIGIN
 
 def fixture(card_count=2):
     source = [{"name": f"Example {i}", "category":"검색·포털"} for i in range(card_count)]
-    cards = ''.join('<article class="v6-card"><h3>Example</h3>'
+    cards = ''.join('<article class="v6-card" id="site-'+format(i,'014x')+'"><h3>Example</h3>'
                     '<a href="https://example.org/">사이트 방문</a></article>'
                     for _ in range(card_count))
     nav = ''.join(f'<a href="/categories/{slug}">category</a>' for slug in CATEGORIES)
@@ -13,7 +13,9 @@ def fixture(card_count=2):
                  '</head><body><h1>주소모음·링크모음·사이트모음</h1>'
                  f'<p>{card_count}개 등록 사이트</p><nav>{nav}</nav>'
                  '<form id="v6-form"></form>'
-                 '<section id="directory-quick-compare"><ul>' + nav + '</ul></section>'
+                 '<section id="directory-quick-compare"><ul>' + nav
+                 + '<a href="#site-00000000000000">첫 번째 항목</a>'
+                 + '</ul></section>'
                  f'<div id="v6-results">{cards}</div></body></html>')
     home = ('<html><head><title>주소모음·링크모음·사이트모음</title>'
             '<link rel="canonical" href="'+ORIGIN+'/"></head><body>'
@@ -36,9 +38,16 @@ class DirectoryReleaseGateTests(unittest.TestCase):
         parts[0] = parts[0].replace('id="directory-quick-compare"', 'id="removed"')
         self.assertTrue(any("quick category comparison" in issue for issue in validate(*parts)))
 
+    def test_broken_example_anchor_stops_release(self):
+        parts = list(fixture())
+        parts[0] = parts[0].replace('href="#site-00000000000000"',
+                                    'href="#site-aaaaaaaaaaaaaa"')
+        self.assertIn("quick comparison has missing or broken listing anchors",
+                      validate(*parts))
+
     def test_missing_static_card_fails_even_if_js_would_fill_it(self):
         parts = list(fixture())
-        parts[0] = parts[0].replace('<article class="v6-card">','<article class="removed">',1)
+        parts[0] = parts[0].replace('class="v6-card"', 'class="removed"',1)
         self.assertTrue(any('static directory cards' in x for x in validate(*parts)))
 
     def test_missing_category_or_canonical_fails(self):
