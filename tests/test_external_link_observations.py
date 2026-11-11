@@ -74,7 +74,7 @@ class LinkObservationsTests(unittest.TestCase):
 
     def test_ambiguous_restricted_and_redirect_are_not_marked_dead(self):
         cases = [(302, "redirect_review"), (403, "access_limited"),
-                 (405, "access_limited"), (429, "access_limited"),
+                 (405, "network_uncertain"), (429, "access_limited"),
                  (404, "http_error_review"), (503, "http_error_review")]
         for status, expected in cases:
             with self.subTest(status=status):
