@@ -193,3 +193,19 @@ LINKWIKI_OUTREACH_EMAIL='a01088293068@gmail.com' npm run outreach:submit -- --pr
 브라우저 실제 제출은 사용자 맥북에서만 수행됩니다. GitHub CI에서는 실제 외부
 사이트 제출을 테스트하지 않으며, 정책 변경 및 CAPTCHA 때문에 0건 제출될 수도 있습니다.
 VPN은 트래픽 안전을 완전히 보증하지 않으므로 킬 스위치, DNS/IPv6 누출 방지 확인이 필요합니다.
+
+### 이름 필드도 포함한 단일 실행 예시
+
+사용자 지정 리쑤화 연락 이메일과 표시 이름은 **맥북 프로세스에만 전달**합니다.
+
+```bash
+cd ~/Downloads/linkwiki-seo-deploy
+git pull --ff-only origin main
+npm run outreach:test
+LINKWIKI_OUTREACH_EMAIL='a01088293068@gmail.com' LINKWIKI_CONTACT_NAME='리쑤화' npm run outreach:submit -- --privacy-confirmed --vpn-interface utun0 --submit
+```
+
+`--submit`은 실제 등록 버튼을 누르는 **시도**까지 포함합니다. 사이트가
+인증·광고/마케팅 개인정보 동의·필수 이미지/카테고리·양식 변경을 요구하면
+임의로 동의하거나 우회하지 않고 해당 사이트를 건너뜁니다. Joinly는 현재
+결합된 마케팅 관련 개인정보 동의 때문에 자동 제출을 허용하지 않습니다.
