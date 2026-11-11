@@ -93,21 +93,50 @@ def classify_status(code):
 
 
 def check_url(url, opener=None, timeout=8):
+    """Observe one HEAD; only HEAD 404/405 merits one conservative GET.
+
+    A GET success can clear a misleading HEAD error but cannot establish
+    ownership, user-flow availability or safety. No redirect following,
+    download of response content, authentication, retry loops or writes.
+    """
     safe_target(url)
     if opener is None:
         opener = build_opener(HTTPSHandler(), NoRedirect())
-    request = Request(url, method="HEAD", headers={
-        "User-Agent": "LinkWiki-Directory-Maintenance/1.0",
-        "Accept": "*/*",
-    })
-    try:
-        with opener.open(request, timeout=timeout) as resp:
-            return {"status": classify_status(resp.status), "http_code": resp.status}
-    except HTTPError as exc:
-        return {"status": classify_status(exc.code), "http_code": exc.code}
-    except (URLError, TimeoutError, ConnectionError, socket.timeout, OSError) as exc:
-        # Never reveal detailed external HTML, credentials or network internals.
-        return {"status": "network_uncertain", "error_type": type(exc).__name__}
+
+    def request_once(method):
+        request = Request(url, method=method, headers={
+            "User-Agent": "LinkWiki-Directory-Maintenance/1.0",
+            "Accept": "*/*",
+            **({"Range": "bytes=0-0"} if method == "GET" else {}),
+        })
+        try:
+            with opener.open(request, timeout=timeout) as resp:
+                return {"status": classify_status(resp.status), "http_code": resp.status}
+        except HTTPError as exc:
+            return {"status": classify_status(exc.code), "http_code": exc.code}
+        except (URLError, TimeoutError, ConnectionError, socket.timeout, OSError) as exc:
+            return {"status": "network_uncertain", "error_type": type(exc).__name__}
+
+    initial = request_once("HEAD")
+    if initial.get("http_code") not in (404, 405):
+        return initial
+    followup = request_once("GET")
+    if followup["status"] == "http_responded":
+        # Do not call this verified; it only confirms a server response.
+        return {
+            "status": "http_responded", "http_code": followup["http_code"],
+            "head_http_code": initial["http_code"],
+            "confirmation_method": "GET after HEAD 404/405",
+        }
+    # A failed or blocked GET does not prove that a live service disappeared.
+    return {
+        "status": "http_error_review" if followup["status"] == "http_error_review"
+                  else "network_uncertain",
+        "head_http_code": initial["http_code"],
+        "get_http_code": followup.get("http_code"),
+        "confirmation_method": "GET after HEAD 404/405",
+        "note": "HEAD and GET inconclusive; manual browser review required",
+    }
 
 
 def run(day, entries, batch_size=DEFAULT_BATCH, observer=check_url):
@@ -123,7 +152,7 @@ def run(day, entries, batch_size=DEFAULT_BATCH, observer=check_url):
         "date_utc": day.isoformat(),
         "checked_count": len(findings),
         "catalog_count": len(entries),
-        "method": "HEAD without following redirects",
+        "method": "HEAD; one GET after HEAD 404/405; redirects not followed",
         "disclaimer": (
             "HTTP response observations only. Does not verify official ownership, "
             "safety, active user flows, or full site functionality. Never automatically "
