@@ -1445,6 +1445,37 @@ def copy_public_sources(source_root, output_root):
         shutil.copy2(source, output_root / name)
 
 
+
+def article_provenance(title, canonical, published_date):
+    """Describe editorial evidence without invented reviewers or testing."""
+    markup = (
+        '<aside class="blog-source-note" aria-label="글의 정보 근거">'
+        '<h2>이 글의 정보 기준</h2>'
+        '<p>발행: 링크위키. 서비스 이름·분야·주소 설명은 링크위키 공개 등록 목록을 '
+        '바탕으로 정리했습니다. 글 작성 과정에는 자동화 도구가 활용될 수 있습니다. '
+        '외부 사이트에 로그인하거나 결제하여 검증했다고 주장하지 않습니다.</p>'
+        '<p>최신 서비스 기능과 운영 조건은 해당 운영기관에서 다시 확인하세요. '
+        '<a href="/about">자료 작성·확인 원칙</a>에서 검증 범위와 오류 신고 방법을 볼 수 있습니다.</p>'
+        '</aside>'
+    )
+    if not published_date:
+        return markup, ""
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": title,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
+        "datePublished": published_date,
+        "author": {"@type": "Organization", "name": "링크위키", "url": SITE + "/about"},
+        "publisher": {"@type": "Organization", "name": "링크위키", "url": SITE + "/"},
+        "inLanguage": "ko",
+    }
+    script = '<script type="application/ld+json">' + json.dumps(
+        schema, ensure_ascii=False, separators=(",", ":")
+    ).replace("<", "\\u003c") + '</script>'
+    return markup, script
+
+
 def build():
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -1476,6 +1507,8 @@ def build():
         url = f"/blog/{quote(name)}/"
         canonical = SITE + url
         content_body = re.sub(r'^#\s+.*(?:\n|$)', '', body, count=1)
+        provenance, structured_article = article_provenance(
+            title, canonical, stable_post_lastmod(source))
         from seo.auto_seo import related_categories
         related_links = article_category_links(title, related_categories(title))
         article = (f'<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / '
@@ -1483,6 +1516,7 @@ def build():
                    f'<p class="eyebrow">LINKWIKI · 사이트 정보</p><h1>{escape(title)}</h1>'
                    + (f'<p class="blog-date">{display_date}</p>' if display_date else '') +
                    f'<div class="blog-content">{markdown(content_body)}</div>'
+                   + provenance +
                    '<div class="blog-bottom"><a href="/">주소모음·링크모음 홈</a>'
                    '<a href="/directory">전체 주소모음·사이트모음 검색</a>'
                    '<a href="/categories/">분야별 링크모음 보기</a>'
@@ -1491,7 +1525,10 @@ def build():
                    '<a href="https://linkwiki01.com/" rel="noopener noreferrer">링크위키 바로가기</a></div></article></div>')
         target = OUT / "blog" / name / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(document(title, desc, canonical, article, header, footer), encoding="utf-8")
+        built_html = document(title, desc, canonical, article, header, footer)
+        if structured_article:
+            built_html = built_html.replace("</head>", structured_article + "</head>", 1)
+        target.write_text(built_html, encoding="utf-8")
         posts.append({"title": title, "description": desc, "url": url, "date": display_date,
                       "modified": stable_post_lastmod(source)})
 
