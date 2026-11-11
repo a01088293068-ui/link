@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   TARGET, SITES, DRAFT, isLinkwikiHref, normalizePublicUrl,
-  privacyNotice, hasPrivacyConsent,
+  privacyNotice, hasPrivacyConsent, parseRouteInterface, expectedVpnInterface, assertTunnelRoutes,
 } from '../tools/local-backlinks.mjs';
 
 test('listing only uses public SEO site, not separate service or private user details', () => {
@@ -44,4 +44,21 @@ test('real link matches only the SEO domain, never lookalikes or HTTP', () => {
     'https://fake-linkwiki.info/', 'https://linkwiki.info.attacker.test/',
     'https://linkwiki01.com/', 'http://linkwiki.info/', 'javascript:alert(1)',
   ]) assert.equal(isLinkwikiHref(url), false);
+});
+
+test('only explicitly approved VPN interfaces are accepted', () => {
+  assert.equal(expectedVpnInterface(['open','dreamboat','--vpn-interface','utun4']), 'utun4');
+  assert.equal(expectedVpnInterface(['verify','https://example.com','--vpn-interface','wg1']), 'wg1');
+  for (const value of ['en0','lo0','bridge0','','utunX','../../bad']) {
+    assert.throws(() => expectedVpnInterface(['--vpn-interface', value]), /VPN gate/);
+  }
+});
+test('macOS route parser refuses missing or unfamiliar routes', () => {
+  assert.equal(parseRouteInterface('   interface: utun4\n'), 'utun4');
+  assert.equal(parseRouteInterface('   interface: en0\n'), 'en0');
+  assert.equal(parseRouteInterface('gateway: 192.168.1.1'), '');
+  assert.equal(assertTunnelRoutes('utun4', {ipv4:'utun4',ipv6:'utun4'}), true);
+  assert.throws(() => assertTunnelRoutes('utun4',{ipv4:'utun4',ipv6:'en0'}), /VPN gate/);
+  assert.throws(() => assertTunnelRoutes('utun4',{ipv4:'en0',ipv6:'utun4'}), /VPN gate/);
+  assert.throws(() => assertTunnelRoutes('utun4',{ipv4:'utun4',ipv6:''}), /VPN gate/);
 });
