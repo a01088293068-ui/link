@@ -7,7 +7,7 @@ from tempfile import TemporaryDirectory
 
 from build import fingerprint_directory_scripts
 
-NAMES = ("directory-search.js", "directory.js", "mobile-menu.js", "address-inspector.js")
+NAMES = ("directory-search.js", "directory.js", "mobile-menu.js", "address-inspector.js", "site-comparison.js")
 
 
 class DirectoryAssetFingerprintTests(unittest.TestCase):
@@ -20,7 +20,7 @@ class DirectoryAssetFingerprintTests(unittest.TestCase):
         self.html = "".join(
             '<script defer src="assets/' + name + '?v=old"></script>'
             for name in NAMES[:3]
-        ) + '<script defer src="/assets/address-inspector.js"></script>'
+        ) + '<script defer src="/assets/address-inspector.js"></script>' + '<script defer src="/assets/site-comparison.js"></script>'
 
     def test_each_script_gets_digest_from_actual_file(self):
         result = fingerprint_directory_scripts(self.html, self.root)
@@ -35,7 +35,7 @@ class DirectoryAssetFingerprintTests(unittest.TestCase):
         (self.root / "directory.js").write_text("console.log('changed')", encoding="utf-8")
         updated = fingerprint_directory_scripts(original, self.root)
         self.assertNotEqual(original, updated)
-        for name in ("directory-search.js", "mobile-menu.js", "address-inspector.js"):
+        for name in ("directory-search.js", "mobile-menu.js", "address-inspector.js", "site-comparison.js"):
             pattern = r"assets/" + re.escape(name) + r"\?v=([a-f0-9]{12})"
             self.assertEqual(re.search(pattern, original).group(1),
                              re.search(pattern, updated).group(1))
