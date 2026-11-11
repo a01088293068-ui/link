@@ -79,6 +79,25 @@ def recent_published_post_urls(limit=3):
         for path in sorted(posts.glob("seo-*.md"), reverse=True)[:limit]
     ]
 
+# Recent task-specific articles linked directly from the canonical directory.
+# These are checked only when the corresponding published Markdown exists;
+# never send fabricated URLs to Google's URL Inspection API.
+DIRECTORY_INTENT_ARTICLES = (
+    "seo-20261111-address-directory-no-results",
+    "seo-20261111-site-directory-selection-by-purpose",
+    "seo-20261111-mobile-address-directory-check",
+)
+
+
+def directory_intent_inspection_urls():
+    posts = ROOT / "content"
+    return [
+        "https://linkwiki.info/blog/" + slug + "/"
+        for slug in DIRECTORY_INTENT_ARTICLES
+        if (posts / (slug + ".md")).is_file()
+    ]
+
+
 def inspection_targets(page_rows, limit=20, core_query_pages=None):
     """Inspect core canonical URLs first, then target-query landing pages.
 
@@ -116,6 +135,14 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None):
         if len(keys) < 2 or ''.join(str(keys[0]).split()) not in CORE_KEYWORDS:
             continue
         append_observed(keys[1])
+
+    # Prioritize three distinct directory-task guides even when same-day
+    # filename ordering would omit them from a generic newest-three sample.
+    # Exact-query landing pages above always take precedence.
+    for url in directory_intent_inspection_urls():
+        if url not in seen and len(urls) < limit:
+            urls.append(url)
+            seen.add(url)
 
     # Keep newly published articles represented, independent of traffic.
     for url in recent_published_post_urls():
