@@ -1,0 +1,25 @@
+name: LinkWiki GSC measurement integrity tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'seo/gsc_snapshot_delta.py'
+      - 'tests/test_gsc_snapshot_delta.py'
+      - '.github/workflows/gsc-delta-offline-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  measurement-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check no overlap-induced false ranking claims (offline, no GSC credentials)
+        run: python3 -B -m unittest discover -s tests -p 'test_gsc_snapshot_delta.py' -v
