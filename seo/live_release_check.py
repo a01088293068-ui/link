@@ -297,8 +297,16 @@ def check_page(expected_html, live_html, path):
             errors.append(f"{path}: published guide body missing")
         elif expected_body != live_body:
             errors.append(f"{path}: deployed guide body differs from generated build")
+        note_pattern = r'<aside class="blog-source-note"[^>]*>.*?</aside>'
+        expected_note = re.search(note_pattern, expected_html, re.S)
+        live_note = re.search(note_pattern, live_html, re.S)
+        if expected_note and (not live_note or expected_note.group() != live_note.group()):
+            errors.append(f"{path}: deployed editorial provenance differs from generated build")
         if "/directory" not in live.links or "/categories/" not in live.links:
             errors.append(f"{path}: published guide lacks canonical directory/category navigation")
+    if path == "/about" and "글 작성과 정보 확인 범위" in expected_html:
+        if "글 작성과 정보 확인 범위" not in live_html:
+            errors.append("/about: editorial methodology not deployed")
     if path == "/categories/":
         for link in CATEGORY_PATHS:
             if link not in live.links:
@@ -392,13 +400,13 @@ def fetch_public(path):
         # A 200 response reached through /directory.html or another URL is
         # not proof the extensionless canonical was served directly. Such
         # redirects can leave Google inspecting a different URL variant.
-        if path in ("/", "/directory", "/categories/") + CATEGORY_PATHS or path.startswith("/blog/"):
+        if path in ("/", "/directory", "/categories/", "/about") + CATEGORY_PATHS or path.startswith("/blog/"):
             if final.path != path or final.query or final.fragment:
                 raise RuntimeError("Canonical URL redirected or gained query parameters: "
                                    + url + " -> " + response.geturl())
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}: {url}")
-        if path in ("/", "/directory", "/categories/") + CATEGORY_PATHS or path.startswith("/blog/"):
+        if path in ("/", "/directory", "/categories/", "/about") + CATEGORY_PATHS or path.startswith("/blog/"):
             tags = response.headers.get_all("X-Robots-Tag", [])
             if google_index_blocked_by_header(tags):
                 raise RuntimeError("HTTP X-Robots-Tag prohibits Google indexing: " + url)
@@ -425,6 +433,8 @@ def run(dist, fetch=fetch_public):
         for path in CATEGORY_PATHS
     })
     expected_map.update(priority_guide_pages(dist))
+    if (dist / "about.html").is_file():
+        expected_map["/about"] = dist / "about.html"
     problems = []
     for slug in PRIORITY_GUIDE_SLUGS:
         if (dist / "blog").is_dir() and not (dist / "blog" / slug / "index.html").is_file():
