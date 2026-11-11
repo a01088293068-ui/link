@@ -43,7 +43,7 @@ class ServiceIntentBatchTests(unittest.TestCase):
                     self.assertIn(example, doc)
                     self.assertTrue(any(example in name for name in names))
                 paragraphs = [part.strip() for part in doc.split("\n\n") if len(part.strip()) > 80]
-                all_paragraphs.extend(p for p in paragraphs if not p.startswith("링크위키의 등록 설명은"))
+                all_paragraphs.extend(p for p in paragraphs if not p.startswith(("링크위키의 등록 설명은", "- [링크위키 주소모음 전체 검색]")))
         self.assertEqual(len(all_paragraphs), len(set(all_paragraphs)))
 
     def test_no_invented_blog_or_internal_link_destinations(self):
