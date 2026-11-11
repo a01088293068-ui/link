@@ -157,40 +157,68 @@ export function uniqueFieldIndex(controls, aliases, key) {
   }
   return weak.length===1?weak[0]:-1;
 }
-async function findInput(page,key){
-  // Gather non-secret field metadata only; do not read field values.
-  // Use an exact selector for the chosen input and keep the lookup within a
-  // form container to avoid matching footer newsletter forms.
-  const candidates=await page.locator('form').count();
-  const scopes=candidates?await page.locator('form').all():[page.locator('body')];
-  const matches=[];
-  for(const scope of scopes){
-    const loc=scope.locator('input,textarea');
-    const metadata=await loc.evaluateAll(nodes=>nodes.map(el=>{
-      const lab=el.labels?.[0] ||
-        (el.id && document.querySelector('label[for="'+CSS.escape(el.id)+'"]')) ||
-        (el.previousElementSibling?.tagName==='LABEL'?el.previousElementSibling:null) ||
-        (el.parentElement?.previousElementSibling?.tagName==='LABEL'
-          ?el.parentElement.previousElementSibling:null);
-      const rect=el.getBoundingClientRect();
-      return {
-        tag:el.tagName.toLowerCase(),
-        type:el.tagName==='TEXTAREA'?'textarea':(el.getAttribute('type')||'text').toLowerCase(),
-        label:lab?.textContent?.trim().slice(0,120)||'',
-        placeholder:el.getAttribute('placeholder')||'',
-        aria:el.getAttribute('aria-label')||'',
-        name:el.getAttribute('name')||'',
-        id:el.id||'',
-        visible:rect.width>0&&rect.height>0,
-        disabled:el.disabled,
-      };
-    }));
-    const index=uniqueFieldIndex(metadata,mapping[key]||[],key);
-    if(index>=0)matches.push(loc.nth(index));
+/**
+ * Match a text field by its visible, nearby title without depending on the
+ * author's HTML <label for>. E.g. some site builders render:
+ *   <div class="field"><div>Product Name</div><input ...></div>
+ * Refuses ambiguous, hidden, sensitive or multiform matches.
+ */
+export function indexFromFieldGroups(groups, aliases, key){
+  const expected=new Set(aliases.map(normalizedFieldToken));
+  const matched=[];
+  for(let i=0;i<groups.length;i++){
+    const g=groups[i], type=g.type||'text';
+    if(!g.visible||g.disabled||!['text','email','url','textarea'].includes(type))continue;
+    const identity=/(password|phone|username|user_id|search|coupon|affiliate)/i.test(
+      [g.name,g.id,g.autocomplete].join(' '));
+    if(identity)continue;
+    if(key!=='email'&&type==='email')continue;
+    const exact=[g.label,g.placeholder,g.aria,g.nearby,g.name,g.id]
+      .some(s=>expected.has(normalizedFieldToken(s)));
+    // E-mail label may use text input; require nearby explicit email title.
+    if(key==='email'&&!exact)continue;
+    if(exact)matched.push(i);
   }
-  // Refuse ambiguous forms or competing input candidates.
-  return matches.length===1?matches[0]:null;
+  return matched.length===1?matched[0]:-1;
 }
+async function findInput(page,key){
+  // DOM-only metadata, never read field values or private content.
+  // Include inputs outside <form>; Elementor/React sometimes renders forms
+  // without semantic form wrappers.
+  const items=page.locator('input,textarea');
+  const fields=await items.evaluateAll(nodes=>nodes.map(el=>{
+    const rect=el.getBoundingClientRect();
+    const label=el.labels?.[0]?.textContent?.trim()||'';
+    let nearby='';
+    let parent=el.parentElement;
+    for(let depth=0;parent&&depth<5;parent=parent.parentElement,depth++){
+      // Only read nearby captions if this group owns *one* visible data
+      // control, otherwise text may describe a different person's fields.
+      const controls=[...parent.querySelectorAll('input,textarea')]
+        .filter(n=>n.getBoundingClientRect().width>0&&n.getBoundingClientRect().height>0);
+      if(controls.length!==1||controls[0]!==el)continue;
+      const captions=[...parent.querySelectorAll('label,span,p,div,strong,small')]
+        .filter(n=>!n.querySelector('input,textarea,button,select'))
+        .map(n=>(n.textContent||'').replace(/\*/g,'').trim())
+        .filter(s=>s.length>0&&s.length<50);
+      const headings=captions.filter(s=>/^(name|your name|email|product name|website link|website url|startup or product name)$/i.test(s));
+      if(headings.length===1){nearby=headings[0];break;}
+    }
+    return {
+      tag:el.tagName.toLowerCase(),
+      type:el.tagName==='TEXTAREA'?'textarea':(el.getAttribute('type')||'text').toLowerCase(),
+      label,nearby,placeholder:el.getAttribute('placeholder')||'',
+      aria:el.getAttribute('aria-label')||'',
+      name:el.getAttribute('name')||'',id:el.id||'',
+      autocomplete:el.getAttribute('autocomplete')||'',
+      visible:rect.width>0&&rect.height>0&&getComputedStyle(el).visibility!=='hidden',
+      disabled:el.disabled,
+    };
+  }));
+  const matched=indexFromFieldGroups(fields,mapping[key]||[],key);
+  return matched>=0?items.nth(matched):null;
+}
+
 async function fillField(page,key,value){
   const field=await findInput(page,key);
   if(!field)return false;
