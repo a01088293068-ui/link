@@ -464,8 +464,8 @@ def deterministic_review(topic, article, text, titles, require_structured=False)
     # Unverified first-person field-test narratives must not be published as
     # actual editorial experience. Hypothetical explanations are still fine.
     first_person_claims = (
-        r"(?:제가|저희가|직접)\\s*(?:실제로\\s*)?(?:테스트(?:해|했)|실험(?:해|했)|방문(?:해|했)|써\\s*봤|사용해\\s*봤)",
-        r"(?:직접|실제로)\\s*(?:실패해\\s*봤|실패했|측정했|확인해\\s*봤)",
+        r"(?:제가|저희가|직접)\s*(?:실제로\s*)?(?:테스트(?:해|했)|실험(?:해|했)|방문(?:해|했)|써\s*봤|사용해\s*봤)",
+        r"(?:직접|실제로)\s*(?:실패해\s*봤|실패했|측정했|확인해\s*봤)",
     )
     prose = " ".join([
         str(article.get("introduction", "")),
