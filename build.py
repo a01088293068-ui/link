@@ -970,7 +970,7 @@ def fingerprint_directory_scripts(html, assets_dir):
     avoiding stale browser search code after deployment.
     """
     filenames = ("directory-search.js", "directory.js", "mobile-menu.js",
-                 "address-inspector.js")
+                 "address-inspector.js", "site-comparison.js")
     for filename in filenames:
         script = assets_dir / filename
         if not script.is_file():
@@ -1080,6 +1080,39 @@ def directory_task_paths(records):
         '<ul>' + ''.join(output) + '</ul>'
         '<p><a href="/categories/search">국내 공공 서비스 전체 비교하기</a> · '
         '<a href="/guides/address-check">공식 주소 확인 방법</a></p>'
+        '</section>'
+    )
+
+
+
+def directory_two_site_comparison(records):
+    """Interactive, local-only comparison backed by the existing static cards.
+
+    This panel adds a real user task to the canonical directory page, rather
+    than creating templated doorway pages for individual site pairs.
+    """
+    if not isinstance(records, list) or len(records) < 2:
+        raise RuntimeError("Two-site comparison requires real catalog records")
+    return (
+        '<section id="directory-two-site-compare" '
+        'class="lw-safety-note lw-site-compare" '
+        'aria-labelledby="site-compare-heading">'
+        '<h2 id="site-compare-heading">사이트모음에서 두 서비스 직접 비교</h2>'
+        '<p>아래에서 등록된 사이트 두 곳을 고르면 분야·도메인·설명을 나란히 볼 수 있습니다. '
+        '기존 주소모음 목록과 동일한 등록 정보만 이용하며 외부 서비스로 데이터를 보내지 않습니다.</p>'
+        '<form id="lw-site-compare-form">'
+        '<label for="lw-site-compare-first">첫 번째 사이트</label>'
+        '<select id="lw-site-compare-first" required>'
+        '<option value="">자바스크립트로 등록 목록을 불러옵니다</option></select>'
+        '<label for="lw-site-compare-second">두 번째 사이트</label>'
+        '<select id="lw-site-compare-second" required>'
+        '<option value="">자바스크립트로 등록 목록을 불러옵니다</option></select>'
+        '<button type="submit">두 사이트 비교하기</button>'
+        '</form>'
+        '<div id="lw-site-compare-result" role="status" aria-live="polite">'
+        '<p>두 사이트의 차이를 확인하려면 목록에서 각각 선택하세요.</p></div>'
+        '<p>실제 이용 조건은 바뀔 수 있습니다. '
+        '<a href="/guides/address-check">공식 주소 확인 방법</a>을 함께 참고하세요.</p>'
         '</section>'
     )
 
@@ -1627,6 +1660,7 @@ def build():
         + '<a href="#site-category-comparison">분야별 등록 예시</a>'
         + '<a href="#site-purpose-comparison">목적별 선택법</a>'
         + '<a href="#directory-everyday-tasks">생활 목적별 비교</a>'
+        + '<a href="#directory-two-site-compare">두 사이트 직접 비교</a>'
         + '<a href="#site-related-guides">관련 이용 가이드</a>'
         + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
     )
@@ -1640,7 +1674,8 @@ def build():
     directory_html = search_form.sub(
         lambda match: match.group(1)
         + directory_quick_comparison(records, CATEGORY_LANDING)
-        + directory_task_paths(records),
+        + directory_task_paths(records)
+        + directory_two_site_comparison(records),
         directory_html, count=1)
 
     # Site descriptions are static and crawlable, not dependent on JavaScript.
@@ -1667,7 +1702,9 @@ def build():
     directory_html = directory_html.replace("</head>", schema + "</head>", 1)
     # Keep current list/search code unchanged; the new verifier is isolated.
     directory_html = directory_html.replace(
-        '</body>', '<script defer src="/assets/address-inspector.js"></script></body>', 1)
+        '</body>',
+        '<script defer src="/assets/address-inspector.js"></script>'
+        '<script defer src="/assets/site-comparison.js"></script></body>', 1)
     directory_html = fingerprint_directory_scripts(directory_html, OUT / "assets")
     directory_path.write_text(directory_html, encoding="utf-8")
     category_cards = []
