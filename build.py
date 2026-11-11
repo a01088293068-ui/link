@@ -763,6 +763,46 @@ def korean_first_shortcuts(records):
     )
 
 
+HOME_SEARCH_GUIDES = (
+    ("seo-20261111-address-directory-search-examples", "주소모음 검색 방법",
+     "사이트 이름과 도메인을 이용해 찾는 순서를 확인하세요."),
+    ("seo-20261111-links-sites-comparison-checklist", "링크모음 비교 기준",
+     "여러 사이트를 이용 목적과 조건에 따라 비교하세요."),
+    ("seo-20261111-address-directory-no-results", "검색 결과가 없을 때",
+     "등록 목록에서 원하는 사이트를 찾지 못했을 때 확인할 항목입니다."),
+    ("seo-20261111-site-directory-selection-by-purpose", "사이트모음 이용 목적별 선택",
+     "검색·커뮤니티·AI·스포츠 서비스를 용도별로 구분합니다."),
+    ("seo-20261111-mobile-address-directory-check", "모바일에서 주소 확인",
+     "휴대전화에서 실제 도메인을 확인하는 순서입니다."),
+)
+
+
+def homepage_search_guide_links(posts_root=POSTS):
+    """Give Google's already-indexed homepage direct links to real useful guides.
+
+    This supplements directory and blog navigation; no thin doorway pages,
+    invented popularity claims, external links, or duplicate article content.
+    """
+    items = []
+    for slug, label, explanation in HOME_SEARCH_GUIDES:
+        article = posts_root / (slug + ".md")
+        if not article.is_file() or not article.read_text(encoding="utf-8").startswith("# "):
+            raise RuntimeError("Missing published homepage search guide: " + slug)
+        items.append(
+            '<li><a href="/blog/' + escape(slug, quote=True) + '/">'
+            + escape(label) + '</a><p>' + escape(explanation) + '</p></li>'
+        )
+    return (
+        '<section class="wrap seo-related-links seo-home-search-guides" '
+        'aria-label="주소모음과 링크모음 이용 가이드">'
+        '<h2>사이트를 찾을 때 필요한 이용 가이드</h2>'
+        '<p>전체 목록에서 검색한 뒤 필요한 경우 다음 안내를 살펴보세요. '
+        '이 글들은 실시간 접속 여부나 사이트 신뢰도를 보증하지 않습니다.</p>'
+        '<ul>' + ''.join(items) + '</ul>'
+        '</section>'
+    )
+
+
 def homepage_task_paths(records):
     """Match broad directory-search intent with real multi-category tasks."""
     by_name = {
@@ -1434,7 +1474,7 @@ def build():
         raise RuntimeError("Homepage directory count labels changed; review required")
     homepage_intents = core_search_intent_section(actual_count)
     real_directory_examples = homepage_directory_examples(first_party_records, CATEGORY_LANDING)
-    home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_intents + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
+    home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_intents + homepage_search_guide_links() + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
