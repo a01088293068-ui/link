@@ -108,3 +108,9 @@ test('iframe form is only eligible when same origin and uniquely visible',()=>{
   assert.deepEqual(frameDecision('launchpedia.co',[main,{...child,captcha:true}]),{status:'blocked_captcha',index:-1});
   assert.deepEqual(frameDecision('launchpedia.co',[{...main,visibleFields:2},child]),{status:'ambiguous_multiple_frames',index:-1});
 });
+
+test('LaunchPedia is quarantined when headless browser renders no visible form fields', () => {
+  const site=PROVIDERS.find(p=>p.id==='launchpedia');
+  assert.equal(site.disabledReason,'automated_form_not_rendered');
+  assert.equal(cleanHistory([{provider:'launchpedia',status:'skipped_inaccessible_form',date:'2026-11-11'}])[0].status,'skipped_inaccessible_form');
+});
