@@ -970,7 +970,7 @@ def fingerprint_directory_scripts(html, assets_dir):
     avoiding stale browser search code after deployment.
     """
     filenames = ("directory-search.js", "directory.js", "mobile-menu.js",
-                 "address-inspector.js")
+                 "address-inspector.js", "site-comparison.js")
     for filename in filenames:
         script = assets_dir / filename
         if not script.is_file():
