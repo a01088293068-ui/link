@@ -89,6 +89,28 @@ class HomeIntentTests(unittest.TestCase):
         self.assertNotIn('href="/directory.html"', html)
         self.assertIn('href="https://linkwiki.info/" rel="canonical"', html)
 
+    def test_expanded_catalog_is_present_in_all_generated_category_pages(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(records), 222)
+        expected = {
+            "ai": ("Cursor", "Replit", "GitHub Copilot", "Poe"),
+            "sports": ("NBA 공식 홈페이지", "KBL 한국프로농구", "대한체육회", "한국배구연맹 KOVO"),
+            "video": ("쿠팡플레이", "왓챠"),
+            "webtoon": ("문피아",),
+        }
+        for slug, names in expected.items():
+            page = (root / "dist" / "categories" / f"{slug}.html")
+            if not page.exists():
+                self.skipTest("Generated release not built")
+            html = page.read_text(encoding="utf-8")
+            category = next(name for name, key, _, _ in build.CATEGORY_LANDING if key == slug)
+            count = sum(row.get("category") == category for row in records)
+            self.assertEqual(html.count('<article class="item"'), count)
+            self.assertIn(f"{count}개 사이트 안내", html)
+            for name in names:
+                self.assertIn(f"<strong>{name}</strong>", html)
+
     def test_old_homepage_counts_are_synced_to_directory_data(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / "index.html").read_text(encoding="utf-8")
