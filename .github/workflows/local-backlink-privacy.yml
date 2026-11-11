@@ -1,0 +1,36 @@
+name: LinkWiki local outreach privacy safety
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/local-backlinks.mjs'
+      - 'tests/test_local_backlinks.mjs'
+      - 'package.json'
+      - '.gitignore'
+      - 'LOCAL-BACKLINK-PRIVACY.md'
+      - '.github/workflows/local-backlink-privacy.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  privacy-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify local outreach never needs credentials or an external browser in tests
+        run: node --test tests/test_local_backlinks.mjs
+      - name: Verify private profile directories are ignored by Git
+        shell: bash
+        run: |
+          git check-ignore .local-backlink-profile/storage.json
+          git check-ignore .local-backlink-state/results.json
+          git check-ignore .env
+          git check-ignore storage-state.json
+      - name: Offline browser helper privacy check
+        run: node tools/local-backlinks.mjs privacy
