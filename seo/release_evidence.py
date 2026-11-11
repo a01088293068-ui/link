@@ -34,9 +34,11 @@ def release_evidence(dist):
     if cards != len(records):
         raise ValueError(f"Directory HTML has {cards} cards for {len(records)} records")
     js = (dist / "assets" / "directory.js").read_text(encoding="utf-8")
-    match = re.search(r"const sites=(\[.*?\]);\s*\(\(\)=>", js, re.S)
-    if match is None or json.loads(match.group(1)) != records:
-        raise ValueError("Directory search JavaScript and published JSON differ")
+    # The browser searches server-rendered cards; never ship another JS copy.
+    if "querySelectorAll('article.v6-card')" not in js:
+        raise ValueError("Directory search JavaScript is not wired to static catalog cards")
+    if re.search(r"const\\s+sites\\s*=\\s*\\[", js) or "fetch(" in js:
+        raise ValueError("Directory search JavaScript duplicates or fetches the catalog")
     by_category = Counter(entry["category"] for entry in records)
     pages = {}
     for category, slug in CATEGORY_PATHS.items():
@@ -88,7 +90,8 @@ def release_evidence(dist):
         "sites": len(records),
         "categories": pages,
         "directory_cards": cards,
-        "js_records": len(records),
+        "js_records": 0,
+        "browser_search_source": "server_rendered_catalog_cards",
         "directory_json_sha256": sha256(source).hexdigest(),
         "directory_html_sha256": sha256(card_html.encode("utf-8")).hexdigest(),
         "directory_js_sha256": sha256(js.encode("utf-8")).hexdigest(),
