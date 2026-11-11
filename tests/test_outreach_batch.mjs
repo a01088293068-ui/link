@@ -58,7 +58,8 @@ test('captcha-blocked provider stays out of automated submission and review queu
   const p = PROVIDERS.find(x => x.id === 'disquiet');
   assert.equal(p.mode, 'blocked_human_verification');
   const candidates = PROVIDERS.filter(x => ![
-    'already_submitted','requires_domain_dns_verification','blocked_human_verification'
+    'already_submitted','requires_domain_dns_verification','blocked_human_verification',
+    'excluded_policy_not_verified'
   ].includes(x.mode));
   assert.equal(candidates.length, 5);
   const [state] = normalizeState([{provider: 'disquiet',status: 'human_verification_blocked',checked_on: '2026-11-11'}]);
