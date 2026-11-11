@@ -86,6 +86,10 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         section = directory_html[first:directory_html.find("</section>", first)]
         if any('href="/categories/' + slug + '"' not in section for slug in CATEGORIES):
             issues.append("quick category comparison missing category links")
+        targets = re.findall(r'href="#(site-[a-f0-9]{14})"', section)
+        card_ids = set(re.findall(r'<article\\b[^>]*\\bid="(site-[a-f0-9]{14})"', directory_html))
+        if not targets or any(anchor not in card_ids for anchor in targets):
+            issues.append("quick comparison has missing or broken listing anchors")
     if len(parser.cards) != count:
         issues.append(f"static directory cards {len(parser.cards)} != data {count}")
     if any(card["names"] != 1 or card["external_links"] != 1 for card in parser.cards):
