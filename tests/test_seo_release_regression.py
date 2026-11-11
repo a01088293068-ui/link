@@ -55,8 +55,14 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("사이트모음은 어떤 기준으로 비교하나요?", section)
         self.assertIn("광고 링크는 어떻게 구분하나요?", section)
         urls = re.findall(r'href="(/blog/[^"]+/)"', section)
-        self.assertEqual(len(urls), 5)
-        self.assertEqual(len(set(urls)), 5)
+        self.assertGreaterEqual(len(urls), 7)
+        self.assertEqual(len(set(urls)), len(urls))
+        for slug in (
+            "seo-20261111-address-directory-no-results",
+            "seo-20261111-site-directory-selection-by-purpose",
+            "seo-20261111-mobile-address-directory-check",
+        ):
+            self.assertIn("/blog/" + slug + "/", urls)
         inbound = internal_inbound_links(root / "dist")
         for url in urls:
             self.assertTrue((root / "dist" / url.lstrip("/") / "index.html").is_file())
