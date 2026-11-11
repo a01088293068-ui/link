@@ -109,13 +109,13 @@
       "submission_url": "https://dreamboat.kr/new",
       "public_url": "https://dreamboat.kr/u/linkwikiinfo/p/linkwiki",
       "submission_status": "approved",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
+      "audit_status": "verified_link",
+      "last_checked": "2026-11-11",
+      "http_status": 200,
+      "link_found": true,
       "rel": [],
-      "noindex": null,
-      "notes": "2026-11-11 사용자 공유 브라우저 화면에서 공개 프로젝트 v0.1 및 linkwiki.info 바로 써보기 버튼 확인. 자체 등록 페이지이며 정적 HTML href/Google SEO 반영은 검증 대기. 개인 계정·기기 정보 기록하지 않음."
+      "noindex": false,
+      "notes": "2026-11-11 사용자 등록 완료. TinyFish 독립 공개 렌더링에서 외부 링크 https://linkwiki.info/ 추출, robots=index,follow. HTML 원본의 rel 및 Google 평가 미검증. 자체 작성 프로젝트이며 제3자 추천 아님."
     },
     {
       "id": "86bbbf38da1b7b64",
