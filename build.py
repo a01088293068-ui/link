@@ -423,10 +423,11 @@ def sync_directory_count(html, total_sites):
 
 
 def homepage_directory_examples(records, categories):
-    """Expose two real listed services per category in static homepage HTML.
+    """Keep the homepage a short navigation hub, not a second full directory.
 
-    More visitors can judge the relevance of a category before navigating.
-    No artificial rankings, live-status promises, or external endorsements.
+    The canonical /directory remains the place for detailed per-site
+    descriptions, hosts, search, filters and comparison tools. Homepage cards
+    show at most two *real names* per category to help users choose a path.
     """
     if not isinstance(records, list) or not records:
         raise RuntimeError("Homepage examples require verified directory data")
@@ -440,31 +441,28 @@ def homepage_directory_examples(records, categories):
         ][:2]
         if not entries:
             raise RuntimeError(f"Missing descriptive directory example: {category}")
-        excerpts = []
         for entry in entries:
             parsed = urlparse(str(entry.get("url", "")))
             if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
                 raise RuntimeError(f"Invalid registered example URL: {category}")
-            excerpts.append(
-                '<p><strong>' + escape(entry["name"].strip()) + '</strong> — '
-                + escape(entry["description"].strip()) + '</p>'
-                '<p class="site-domain">등록 도메인: ' + escape(parsed.hostname) + '</p>'
-            )
+        examples = " · ".join(escape(item["name"].strip()) for item in entries)
         cards.append(
             '<article class="v6-card">'
             f'<h3><a href="/categories/{escape(slug, quote=True)}">{escape(heading)}</a></h3>'
-            + ''.join(excerpts) +
+            f'<p>{escape(purpose)}</p>'
+            f'<p class="home-example-names">등록 예시: {examples}</p>'
             f'<a href="/categories/{escape(slug, quote=True)}">이 분야 사이트 더 보기</a>'
             '</article>'
         )
     return (
-        '<section class="wrap seo-directory-examples" aria-label="실제 등록 사이트 분야별 예시">'
-        '<div class="v47-section-heading"><h2>분야별 사이트모음 실제 등록 예시</h2></div>'
-        '<p>아래는 실제 등록된 사이트의 분야별 예시이며, 각 분야에서 최대 두 곳을 보여줍니다. '
-        '인기 순위나 추천 등급이 아니며 접속 가능 여부를 실시간으로 보증하지 않습니다.</p>'
+        '<section class="wrap seo-directory-examples" aria-label="분야별 사이트 탐색 길잡이">'
+        '<div class="v47-section-heading"><h2>관심 분야부터 찾기</h2></div>'
+        '<p>첫 화면에서는 분야별 용도와 실제 등록 예시만 안내합니다. '
+        '각 사이트의 도메인·상세 설명·검색·직접 비교는 '
+        '<a href="/directory">전체 주소모음 목록</a>에서 확인하세요. '
+        '아래 예시는 인기 순위나 안전 등급이 아닙니다.</p>'
         '<div class="v6-grid">' + ''.join(cards) + '</div></section>'
     )
-
 
 RELATED_CATEGORY_PATHS = {
     "community": (("sports", "스포츠 일정과 기록 찾기"),
