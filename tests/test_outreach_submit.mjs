@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   chooseAsset, domainInput, submissionGate, cleanHistory, finalResult, PROVIDERS,
-  uniqueFieldIndex, normalizedFieldToken, parseProviderFilter,
+  uniqueFieldIndex, normalizedFieldToken, parseProviderFilter, indexFromFieldGroups,
 } from '../tools/outreach-submit.mjs';
 
 const provider=id=>PROVIDERS.find(p=>p.id===id);
@@ -80,4 +80,21 @@ test('select a single provider without re-opening failed privacy or image-gated 
   assert.equal(parseProviderFilter([]).length,3);
   assert.throws(()=>parseProviderFilter(['--only','evil']),/Unknown --only target/);
   assert.throws(()=>parseProviderFilter(['--only']),/Unknown --only target/);
+});
+
+test('builder form fields work even without native label or form wrapper',()=>{
+  const fields=[
+    {type:'hidden',visible:false,nearby:'Name'},
+    {type:'text',visible:true,disabled:false,nearby:'Name',name:'full_name'},
+    {type:'text',visible:true,disabled:false,nearby:'Email',name:'contact'},
+    {type:'text',visible:true,disabled:false,nearby:'Product Name',name:'item'},
+    {type:'url',visible:true,disabled:false,nearby:'Website Link',name:'url'},
+    {type:'text',visible:true,disabled:false,nearby:'Affiliate link',name:'affiliate'},
+  ];
+  assert.equal(indexFromFieldGroups(fields,['Name','Your name'],'name'),1);
+  assert.equal(indexFromFieldGroups(fields,['Email','Email address'],'email'),2);
+  assert.equal(indexFromFieldGroups(fields,['Product Name'],'product'),3);
+  assert.equal(indexFromFieldGroups(fields,['Website Link'],'website'),4);
+  assert.equal(indexFromFieldGroups([...fields,{type:'text',visible:true,nearby:'Product Name'}],['Product Name'],'product'),-1);
+  assert.equal(indexFromFieldGroups([{type:'text',visible:false,nearby:'Name'}],['Name'],'name'),-1);
 });
