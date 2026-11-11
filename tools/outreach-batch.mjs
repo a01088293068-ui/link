@@ -248,18 +248,19 @@ async function inspectProvider(context, provider) {
     return 'manual_review_needed';
   } finally { /* Keep tab available for owner review; close at end of batch. */ }
 }
+export function eligibleForReview(providers, latest) {
+  return providers.filter(item => {
+    if (['already_submitted','requires_domain_dns_verification',
+      'blocked_human_verification','embedded_form_bot_check',
+      'embedded_typeform'].includes(item.mode)) return false;
+    return latest.get(item.id) === 'visible_form_manual_review';
+  });
+}
 async function runBatch(args) {
   const plan = queuePlan();
   const records = await readState();
   const latest = new Map(records.map(item => [item.provider, item.status]));
-  const eligible = PROVIDERS.filter(x => {
-    if (['already_submitted','requires_domain_dns_verification',
-      'blocked_human_verification','embedded_form_bot_check',
-      'embedded_typeform'].includes(x.mode)) return false;
-    // A scan is not a submission. But blocked/unknown inputs must not be
-    // automatically revisited; require a fresh successful form scan.
-    return latest.get(x.id) === 'visible_form_manual_review';
-  });
+  const eligible = eligibleForReview(PROVIDERS, latest);
   console.log('대상:', plan.length, '기존제출 생략:', plan.filter(x=>x.status==='skip_previously_submitted').length,
     '자동 입력 검토 후보:', eligible.length, '사람 인증 차단:', plan.filter(x=>x.status==='skip_automation_blocked').length);
   if (!eligible.length) {
