@@ -162,3 +162,34 @@ npm run outreach:batch -- prepare --privacy-confirmed --vpn-interface utun0
 브라우저가 떠 있는 동안 최종 제출은 사용자가 직접 내용을 검토한 뒤 해당 사이트에서
 진행해야 하며, 이 도구는 등록 성공이라고 기록하지 않습니다.
 모든 검토가 끝나면 터미널에서 Enter를 한 번 누르세요.
+
+## 등록 시도 자동화 (2026-11-11)
+
+사이트를 여는 것에 그치지 않고, **등록 제출 버튼까지 조건부로 한 번만 시도**하는 별도
+`outreach:submit` 명령을 추가했습니다. 로컬의 Downloads/Desktop에서
+파일 이름에 LinkWiki/링크위키 및 logo/로고가 들어 있는 유일한 이미지를 자동 탐색합니다.
+후보가 여러 개이면 개인 사진이나 잘못된 배너가 업로드되지 않도록 자동 첨부하지 않습니다.
+
+기존에 지정한 **리쑤화 이메일**은 개인 주소가 GitHub 파일에 남지 않도록 맥북 실행 시 환경변수로만 전달합니다.
+프로그램은 이메일·사진 원본 파일명·쿠키를 CI 로그 또는 GitHub에 기록하지 않습니다.
+
+```bash
+cd ~/Downloads/linkwiki-seo-deploy
+git pull --ff-only origin main
+npm run outreach:test
+LINKWIKI_OUTREACH_EMAIL='a01088293068@gmail.com' npm run outreach:submit -- --privacy-confirmed --vpn-interface utun0 --submit
+```
+
+실제 제출이 가능한 범위:
+- LaunchPedia: 사이트의 Name/Email/Product Name/Website Link 등 필수 입력란을
+  모두 안전하게 식별할 수 있고 인증/약관/추가 항목이 없으면 한 번 제출 시도
+- Phyco: 이미지와 필요한 등록 항목을 확보하고 인증이 없을 때만 제출 시도
+- Joinly: 제출 조항에 **마케팅 관련 개인정보 처리 동의**가 포함되어 있어
+  사용자가 그 동의를 별도로 명시하지 않은 현재 상태에서는 자동 제출을 차단
+- CAPTCHA·필수 체크박스·인증·미확인 개인정보는 자동 처리하지 않음
+- 결과는 `.local-backlink-state/submission-attempts.json`에 저장.
+  'submitted_unverified'는 등록 승인이 아닌 **제출 시도 후 확인 문구를 본 상태**입니다.
+
+브라우저 실제 제출은 사용자 맥북에서만 수행됩니다. GitHub CI에서는 실제 외부
+사이트 제출을 테스트하지 않으며, 정책 변경 및 CAPTCHA 때문에 0건 제출될 수도 있습니다.
+VPN은 트래픽 안전을 완전히 보증하지 않으므로 킬 스위치, DNS/IPv6 누출 방지 확인이 필요합니다.
