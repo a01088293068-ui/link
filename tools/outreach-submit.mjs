@@ -5,7 +5,7 @@
  * privacy/marketing terms. Only self-submits a vetted public site listing.
  * Browser profile and history stay entirely local (git-ignored).
  */
-import { resolve, dirname, join, extname } from 'node:path';
+import { resolve, dirname, join, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readdir, stat, readFile, writeFile, mkdir, chmod } from 'node:fs/promises';
 import { homedir } from 'node:os';
@@ -43,13 +43,23 @@ export function chooseAsset(files,kind) {
 }
 export async function findAssets() {
   const files=[];
+  let seen=0;
+  const ignored=/^(node_modules|\.git|\.local-backlink-profile|\.local-backlink-state|Library|backups|\.DS_Store)$/i;
   async function scan(dir,prefix='',depth=0){
-    let names=[];
-    try{names=await readdir(dir,{withFileTypes:true});}catch{return;}
-    for(const entry of names){
-      if(entry.isDirectory() && depth===0 && /(linkwiki|링크위키|assets|이미지|로고)/i.test(entry.name)){
-        await scan(join(dir,entry.name),entry.name+' ',depth+1);
-      } else if(entry.isFile() && /\.(png|jpe?g|webp)$/i.test(entry.name)){
+    if(depth>4||seen>4000)return;
+    let entries=[];
+    try{entries=await readdir(dir,{withFileTypes:true});}catch{return;}
+    for(const entry of entries){
+      if(++seen>4000)break;
+      if(entry.isSymbolicLink()||ignored.test(entry.name))continue;
+      if(entry.isDirectory()){
+        // Traverse only folders likely to store website deliverables. Avoid
+        // unrelated private photos, system files, or a whole project checkout.
+        const related=/(linkwiki|링크위키|assets|images|이미지|로고|logo|design|디자인|배너|banner|public|screenshots|스크린샷)/i;
+        if(related.test(entry.name) || (depth===0 && /^(Downloads|Desktop)$/.test(basename(dir)))) {
+          await scan(join(dir,entry.name),prefix+entry.name+' ',depth+1);
+        }
+      }else if(entry.isFile()&&/\.(png|jpe?g|webp)$/i.test(entry.name)){
         const path=join(dir,entry.name);
         const info=await stat(path).catch(()=>null);
         if(info)files.push({path,name:prefix+entry.name,bytes:info.size,ext:extname(entry.name)});
@@ -57,8 +67,14 @@ export async function findAssets() {
     }
   }
   for(const dir of ASSET_DIRS)await scan(dir);
-  return {logo:chooseAsset(files,'logo'),screenshot:chooseAsset(files,'screenshot')};
+  return {
+    logo:chooseAsset(files,'logo'),
+    screenshot:chooseAsset(files,'screenshot'),
+    candidates: files.filter(f=>/(linkwiki|링크위키)/i.test(f.name)).length,
+    filesScanned:files.length,
+  };
 }
+
 export function cleanHistory(rows) {
   const allowed=new Set(['submitted_unverified','submission_unconfirmed','blocked_consent',
     'blocked_captcha','missing_fields','missing_asset','form_changed','navigation_failed',
@@ -91,40 +107,81 @@ export function submissionGate({provider,hasCaptcha,uncheckedRequiredCheckboxes,
   return 'ready';
 }
 const mapping={
-  name:['Name','Your name'],product:['Startup or product name','Product Name','Website name'],
-  website:['Website URL','Website Link','Website URL*'],
+  name:['Name','Your name'],
+  product:['Startup or product name','Product Name','Website name','Startup name'],
+  website:['Website URL','Website Link','Website','Product URL'],
   email:['Email address','Email','Your email'],
-  headline:['Headline'],description:['Long description','Description','Full description'],
+  headline:['Headline'],
+  description:['Long description','Description','Full description'],
 };
+export function normalizedFieldToken(s){
+  return String(s||'').toLowerCase().normalize('NFKC').replace(/[\s_\-:*]+/g,' ').trim();
+}
+export function uniqueFieldIndex(controls, aliases, key) {
+  const names=new Set(aliases.map(normalizedFieldToken));
+  // 1) Prefer actual label / placeholder / ARIA name over HTML names.
+  // 2) Every chosen field is constrained to the provider's form.
+  // 3) Never infer that contact Name means project name.
+  const strong=[];
+  for(let i=0;i<controls.length;i++){
+    const c=controls[i];
+    if(!['input','textarea'].includes(c.tag) ||
+      !['text','url','email','textarea'].includes(c.type) ||
+      c.disabled||!c.visible)continue;
+    if(key==='email' && c.type!=='email' && !/email/i.test(c.name||''))continue;
+    if(key!=='email' && c.type==='email')continue;
+    if(names.has(normalizedFieldToken(c.label))||
+      names.has(normalizedFieldToken(c.placeholder))||
+      names.has(normalizedFieldToken(c.aria)))strong.push(i);
+  }
+  if(strong.length===1)return strong[0];
+  if(strong.length>1)return -1;
+  const weak=[];
+  for(let i=0;i<controls.length;i++){
+    const c=controls[i];
+    if(!['input','textarea'].includes(c.tag)||c.disabled||!c.visible||
+      !['text','url','email','textarea'].includes(c.type))continue;
+    if(key==='email' && c.type!=='email' && !/email/i.test(c.name||''))continue;
+    if(key!=='email' && c.type==='email')continue;
+    if(names.has(normalizedFieldToken(c.name))||names.has(normalizedFieldToken(c.id))){
+      weak.push(i);
+    }
+  }
+  return weak.length===1?weak[0]:-1;
+}
 async function findInput(page,key){
-  // The field must have a unique, exact accessible label; no positional guessing.
-  const items=[];
-  for(const name of mapping[key]||[]){
-    const l=page.getByLabel(name,{exact:true});
-    if(await l.count()===1 && await l.isVisible() && await l.isEnabled()){
-      const meta=await l.evaluate(el=>({
-        tag:el.tagName.toLowerCase(),type:(el.getAttribute('type')||'text').toLowerCase(),
-        name:(el.getAttribute('name')||'').toLowerCase()
-      }));
-      if(['input','textarea'].includes(meta.tag) &&
-        ['text','url','email'].includes(meta.type) &&
-        !(key!=='email'&&/(email|phone|password|username|user_id)/i.test(meta.name))){
-        items.push(l);
-      }
-    }
+  // Gather non-secret field metadata only; do not read field values.
+  // Use an exact selector for the chosen input and keep the lookup within a
+  // form container to avoid matching footer newsletter forms.
+  const candidates=await page.locator('form').count();
+  const scopes=candidates?await page.locator('form').all():[page.locator('body')];
+  const matches=[];
+  for(const scope of scopes){
+    const loc=scope.locator('input,textarea');
+    const metadata=await loc.evaluateAll(nodes=>nodes.map(el=>{
+      const lab=el.labels?.[0] ||
+        (el.id && document.querySelector('label[for="'+CSS.escape(el.id)+'"]')) ||
+        (el.previousElementSibling?.tagName==='LABEL'?el.previousElementSibling:null) ||
+        (el.parentElement?.previousElementSibling?.tagName==='LABEL'
+          ?el.parentElement.previousElementSibling:null);
+      const rect=el.getBoundingClientRect();
+      return {
+        tag:el.tagName.toLowerCase(),
+        type:el.tagName==='TEXTAREA'?'textarea':(el.getAttribute('type')||'text').toLowerCase(),
+        label:lab?.textContent?.trim().slice(0,120)||'',
+        placeholder:el.getAttribute('placeholder')||'',
+        aria:el.getAttribute('aria-label')||'',
+        name:el.getAttribute('name')||'',
+        id:el.id||'',
+        visible:rect.width>0&&rect.height>0,
+        disabled:el.disabled,
+      };
+    }));
+    const index=uniqueFieldIndex(metadata,mapping[key]||[],key);
+    if(index>=0)matches.push(loc.nth(index));
   }
-  if(items.length===1)return items[0];
-  if(items.length>1)return null;
-  // Some official forms only expose placeholders, not proper label elements.
-  // Only a unique *exact* placeholder match is acceptable.
-  const placeholders=[];
-  for(const name of mapping[key]||[]){
-    const candidate=page.getByPlaceholder(name,{exact:true});
-    if(await candidate.count()===1 && await candidate.isVisible() && await candidate.isEnabled()){
-      placeholders.push(candidate);
-    }
-  }
-  return placeholders.length===1?placeholders[0]:null;
+  // Refuse ambiguous forms or competing input candidates.
+  return matches.length===1?matches[0]:null;
 }
 async function fillField(page,key,value){
   const field=await findInput(page,key);
@@ -134,6 +191,7 @@ async function fillField(page,key,value){
   if(!previous)await field.fill(value);
   return true;
 }
+
 async function checkBlockers(page){
   return await page.evaluate(()=>{
     const captcha=!!document.querySelector(
@@ -161,9 +219,9 @@ async function operate(args) {
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(CONTACT_EMAIL))throw Error('LINKWIKI_OUTREACH_EMAIL env is required');
   if(CONTACT_NAME && CONTACT_NAME.length>100)throw Error('LINKWIKI_CONTACT_NAME too long');
   const {chromium}=await import('playwright');
-  const {logo,screenshot}=await findAssets();
+  const {logo,screenshot,candidates,filesScanned}=await findAssets();
   console.log('LinkWiki 등록 준비: 이메일 계정 사용(주소는 로그에 출력하지 않음).');
-  console.log('로고 발견:',!!logo,'스크린샷 발견:',!!screenshot);
+  console.log('이미지 탐색:',filesScanned,'개 / 링크위키 관련 후보:',candidates,'개 / 로고:',!!logo,'/ 화면:',!!screenshot);
   // Request each remote site only after checking both VPN routes.
   const browser=await chromium.launch({channel:'chrome',headless:true,
     args:['--force-webrtc-ip-handling-policy=disable_non_proxied_udp',
@@ -197,9 +255,11 @@ async function operate(args) {
           const wanted=provider.id==='launchpedia'?['name','product','website','email']:
             provider.id==='joinly'?['product','website','email','headline','description']:
               ['product','website','email','description'];
+          const missingKeys=[];
           let filled=0;
           for(const key of wanted){
             if(fields[key] && await fillField(page,key,fields[key]))filled++;
+            else missingKeys.push(key);
           }
           // Do not upload a wide banner or any unrecognized personal photo.
           if(provider.requiresLogo && logo){
@@ -210,7 +270,8 @@ async function operate(args) {
             }
           }
           const blockers=await checkBlockers(page);
-          const missing=wanted.length-filled+blockers.missingCount;
+          const missing=missingKeys.length+blockers.missingCount;
+          if(missingKeys.length)console.log(provider.id,'찾지 못한 필드:',missingKeys.join(','));
           const gate=submissionGate({
             provider,hasCaptcha:blockers.captcha,
             uncheckedRequiredCheckboxes:blockers.unchecked,
