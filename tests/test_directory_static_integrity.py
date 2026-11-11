@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CARD = re.compile(
-    r'<article class="v6-card"\\s+id="site-[a-f0-9]{14}"><small>(.*?)</small><h3>(.*?)</h3>'
+    r'<article class="v6-card"\s+id="site-[a-f0-9]{14}"><small>(.*?)</small><h3>(.*?)</h3>'
     r'<p>(.*?)</p><span class="site-domain">.*?</span>'
     r'<a\b[^>]*href="([^"]+)"',
     re.S,
