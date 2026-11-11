@@ -682,6 +682,8 @@ def directory_purpose_comparison(records, categories):
 def directory_relevant_guides(posts):
     """Visible contextual guide entry points using only published article URLs."""
     intents = (
+        ("주소모음에서 원하는 사이트를 더 정확히 찾으려면?", ("주소모음 검색 실전 가이드",)),
+        ("링크모음과 사이트모음을 어떤 기준으로 비교하나요?", ("링크모음·사이트모음 비교 기준",)),
         ("사이트를 어떻게 검색하나요?", ("검색 기능 활용법", "검색 기능", "검색")),
         ("사이트모음은 어떤 기준으로 비교하나요?", ("비교 기준", "사이트모음 비교")),
         ("광고 링크는 어떻게 구분하나요?", ("광고 구분", "광고")),
