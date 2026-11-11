@@ -61,7 +61,7 @@ class ArticleProvenanceTests(unittest.TestCase):
         self.assertIn("글 작성과 정보 확인 범위", about)
         self.assertIn("자동화 도구", about)
         self.assertIn("실시간 정확성", about)
-        self.assertIn("실제로 이용한 경험", about)
+        self.assertIn("직접 이용한 경험", about)
 
 
 if __name__ == "__main__":
