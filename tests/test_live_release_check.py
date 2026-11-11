@@ -412,6 +412,22 @@ class LiveReleaseCheckTests(unittest.TestCase):
             "duplicate URL" in issue
             for issue in check_crawl_files(robots, duplicate, duplicate)))
 
+    def test_live_directory_detects_missing_quick_comparison_after_deployment(self):
+        from seo.live_release_check import check_page
+        root = Path(__file__).resolve().parents[1]
+        built = root / "dist/directory.html"
+        if not built.is_file():
+            self.skipTest("build.py not run yet")
+        html = built.read_text(encoding="utf-8")
+        start = html.find('id="directory-quick-compare"')
+        self.assertGreater(start, 0)
+        begin = html.rfind("<section", 0, start)
+        end = html.find("</section>", start) + len("</section>")
+        self.assertGreater(end, begin)
+        outdated = html[:begin] + html[end:]
+        issues = check_page(html, outdated, "/directory")
+        self.assertTrue(any("deployed directory examples differ" in issue for issue in issues), issues)
+
     def test_live_directory_search_data_matches_real_published_records(self):
         import json
         from seo.live_release_check import directory_cards
