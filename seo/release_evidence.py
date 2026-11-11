@@ -37,7 +37,7 @@ def release_evidence(dist):
     # The browser searches server-rendered cards; never ship another JS copy.
     if "querySelectorAll('article.v6-card')" not in js:
         raise ValueError("Directory search JavaScript is not wired to static catalog cards")
-    if re.search(r"const\\s+sites\\s*=\\s*\\[", js) or "fetch(" in js:
+    if re.search(r"const\s+sites\s*=\s*\[", js) or "fetch(" in js:
         raise ValueError("Directory search JavaScript duplicates or fetches the catalog")
     by_category = Counter(entry["category"] for entry in records)
     pages = {}
