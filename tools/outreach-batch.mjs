@@ -38,7 +38,7 @@ export const PROVIDERS = Object.freeze([
   {
     id: 'disquiet', name: 'Disquiet', host: 'disquiet.io',
     url: 'https://disquiet.io/products',
-    mode: 'needs_account_and_policy_review', // no verified writable form selector
+    mode: 'blocked_human_verification', // CAPTCHA failed in automation Chrome; don't retry
   },
   {
     id: 'itjeom', name: 'ITJEOM', host: 'web-directory.itjeom.com',
@@ -69,6 +69,7 @@ export function queuePlan(items = PROVIDERS) {
     id, name, url,
     status: mode === 'already_submitted' ? 'skip_previously_submitted'
       : mode === 'requires_domain_dns_verification' ? 'manual_dns_verification'
+      : mode === 'blocked_human_verification' ? 'skip_automation_blocked'
       : 'needs_login_and_review',
   }));
 }
@@ -79,7 +80,7 @@ export function normalizeState(input) {
       provider: item.provider,
       status: ['form_detected','filled_for_review','manual_login_needed',
         'no_supported_form','already_registered','requires_domain_proof',
-        'network_blocked','manual_review_needed'].includes(item.status)
+        'network_blocked','manual_review_needed','human_verification_blocked'].includes(item.status)
         ? item.status : 'manual_review_needed',
       // No raw URL or page text: might contain personal identifiers or tokens.
       checked_on: /^\d{4}-\d{2}-\d{2}$/.test(item.checked_on) ? item.checked_on : '',
@@ -193,6 +194,7 @@ async function guardedBrowser(args) {
 async function inspectProvider(context, provider) {
   if (provider.mode === 'already_submitted') return 'already_registered';
   if (provider.mode === 'requires_domain_dns_verification') return 'requires_domain_proof';
+  if (provider.mode === 'blocked_human_verification') return 'human_verification_blocked';
   const page = context.pages()[0] || await context.newPage();
   try {
     await page.goto(provider.url, { waitUntil: 'domcontentloaded', timeout: 25000 });
@@ -213,10 +215,13 @@ async function inspectProvider(context, provider) {
 async function runBatch(args) {
   const plan = queuePlan();
   const eligible = PROVIDERS.filter(x =>
-    !['already_submitted','requires_domain_dns_verification'].includes(x.mode));
+    !['already_submitted','requires_domain_dns_verification','blocked_human_verification'].includes(x.mode));
   console.log('대상:', plan.length, '기존제출 생략:', plan.filter(x=>x.status==='skip_previously_submitted').length,
-    '추가 인증 필요:', eligible.length);
-  if (!eligible.length) return;
+    '자동화 가능 후보:', eligible.length, '사람 인증 차단:', plan.filter(x=>x.status==='skip_automation_blocked').length);
+  if (!eligible.length) {
+    console.log('자동 처리할 수 있는 검증된 등록처가 없습니다. CAPTCHA 재시도 없이 종료합니다.');
+    return;
+  }
   const rl = createInterface({ input: stdin, output: stdout });
   const context = await guardedBrowser(args);
   const results = await readState();
