@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   PROVIDERS, TEXT_FIELDS, queuePlan, normalizeState,
-  originAllowed, selectUniqueMatch, fieldPlan,
+  originAllowed, selectUniqueMatch, fieldPlan, triageTargets, classifyForm,
 } from '../tools/outreach-batch.mjs';
 
 test('known submissions never return to the candidate queue', () => {
@@ -12,7 +12,7 @@ test('known submissions never return to the candidate queue', () => {
   assert.equal(dreamboat.status, 'skip_previously_submitted');
   assert.equal(syde.status, 'skip_previously_submitted');
   assert.ok(plan.every(p => p.url.startsWith('https://')));
-  assert.equal(plan.filter(p => p.status === 'needs_login_and_review').length, 0);
+  assert.equal(plan.filter(p => p.status === 'needs_form_and_contact_review').length, 3);
   assert.equal(plan.find(p => p.id === 'disquiet').status, 'skip_automation_blocked');
 });
 test('DNS verification is manual and must not be treated as a submitted backlink', () => {
@@ -63,4 +63,17 @@ test('captcha-blocked provider stays out of automated submission and review queu
   assert.equal(candidates.length, 0);
   const [state] = normalizeState([{provider: 'disquiet',status: 'human_verification_blocked',checked_on: '2026-11-11'}]);
   assert.equal(state.status, 'human_verification_blocked');
+});
+
+test('public triage only inspects unsubmitted locations; excludes CAPTCHA failures and previously submitted', () => {
+  const ids = triageTargets().map(x=>x.id);
+  assert.deepEqual(ids.sort(), ['joinly','launchpedia','phyco','somuch','startupcollections','startupstash'].sort());
+  assert.equal(triageTargets().length,6);
+});
+test('form scan clearly separates third-party forms and anti-bot from open forms', () => {
+  assert.equal(classifyForm({httpStatus:200,formFields:4,externalForm:false,antibot:false,redirectsOut:false}), 'visible_form_manual_review');
+  assert.equal(classifyForm({httpStatus:200,formFields:6,externalForm:true,antibot:false,redirectsOut:false}), 'embedded_form_manual_review');
+  assert.equal(classifyForm({httpStatus:200,formFields:6,externalForm:false,antibot:true,redirectsOut:false}), 'antibot_manual_review');
+  assert.equal(classifyForm({httpStatus:401,formFields:0,externalForm:false,antibot:false,redirectsOut:false}), 'not_accessible');
+  assert.equal(classifyForm({httpStatus:200,formFields:6,externalForm:false,antibot:false,redirectsOut:true}), 'external_redirect_manual_review');
 });
