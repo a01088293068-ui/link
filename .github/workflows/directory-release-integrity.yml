@@ -1,0 +1,33 @@
+name: LinkWiki crawlable directory release gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'build.py'
+      - 'directory.html'
+      - 'index.html'
+      - 'assets/verified-directory.json'
+      - 'seo/directory_release_gate.py'
+      - 'tests/test_directory_release_gate.py'
+      - '.github/workflows/directory-release-integrity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  static-directory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test fail-closed crawlability rules
+        run: python3 -B -m unittest discover -s tests -p 'test_directory_release_gate.py' -v
+      - name: Build production site
+        run: python3 -B build.py
+      - name: Validate complete server-rendered directory and canonical sitemap
+        run: python3 -B seo/directory_release_gate.py
