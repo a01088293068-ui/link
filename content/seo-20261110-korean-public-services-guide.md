@@ -40,6 +40,12 @@
 
 링크위키에서 찾을 때는 [전체 사이트모음 검색](/directory)에서 기관명을 입력하거나 [검색·포털 사이트 목록](/categories/search)을 이용하세요. 주소의 철자가 낯설다면 [공식 주소 확인 방법](/guides/address-check)도 참고할 수 있습니다.
 
+## 두 사이트 중 어디로 갈지 헷갈린다면
+
+- [정부24와 국민신문고 차이: 증명서 발급과 민원·제안 접수](/blog/seo-20261111-gov24-epeople-complaint-certificate/)
+- [홈택스와 위택스 차이: 국세·지방세 신고와 납부](/blog/seo-20261111-tax-hometax-wetax-difference/)
+- [공공데이터포털과 KOSIS 차이: 파일·API와 국가통계표](/blog/seo-20261111-public-data-vs-kosis-usage/)
+
 ## 자주 묻는 질문
 
 ### 정부24에서 모든 세금을 납부할 수 있나요?
