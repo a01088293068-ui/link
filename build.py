@@ -1083,6 +1083,36 @@ def directory_task_paths(records):
 
 
 
+
+def directory_address_correction_request(records):
+    """Visible human correction path, with no fabricated verification or backend.
+
+    Registered directory data is read-only in the static SEO deployment.
+    Readers can supply a precise, source-backed correction request through
+    the existing public editorial contact on the About page.
+    """
+    if not isinstance(records, list) or len(records) < 2:
+        raise RuntimeError("Address correction guidance needs the real catalog")
+    return (
+        '<section id="directory-correction-request" '
+        'class="lw-safety-note seo-directory-corrections" '
+        'aria-labelledby="directory-correction-heading">'
+        '<h2 id="directory-correction-heading">주소가 바뀌었거나 설명이 틀렸나요?</h2>'
+        '<p>현재 등록된 사이트 주소가 이동했거나 연결되지 않는다면 알려주세요. '
+        '목록의 등록 상태는 실시간 접속 확인이나 공식 인증을 뜻하지 않습니다. '
+        '제보는 검토한 뒤 필요한 경우에만 반영합니다.</p>'
+        '<ol><li>사이트 이름과 링크위키에 표시된 주소를 적습니다.</li>'
+        '<li>변경된 공식 주소가 있다면 운영기관의 공지·공식 페이지 근거를 첨부합니다.</li>'
+        '<li>문제 종류(연결 오류·이동·설명 오류)와 확인 날짜를 적습니다.</li></ol>'
+        '<p><a href="https://t.me/linkwiki_info" rel="noopener noreferrer external" '
+        'target="_blank">등록 주소 오류 제보하기 (텔레그램)</a> · '
+        '<a href="/about">목록 관리·검증 범위 보기</a></p>'
+        '<p>비밀번호·인증번호·결제정보 등 민감한 내용은 보내지 마세요. '
+        '제보만으로 링크가 자동 변경되거나 안전하다고 표시되지 않습니다.</p>'
+        '</section>'
+    )
+
+
 def directory_two_site_comparison(records):
     """Interactive, local-only comparison backed by the existing static cards.
 
@@ -1659,6 +1689,7 @@ def build():
         + '<a href="#site-purpose-comparison">목적별 선택법</a>'
         + '<a href="#directory-everyday-tasks">생활 목적별 비교</a>'
         + '<a href="#directory-two-site-compare">두 사이트 직접 비교</a>'
+        + '<a href="#directory-correction-request">주소 오류 제보</a>'
         + '<a href="#site-related-guides">관련 이용 가이드</a>'
         + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
     )
@@ -1673,7 +1704,8 @@ def build():
         lambda match: match.group(1)
         + directory_quick_comparison(records, CATEGORY_LANDING)
         + directory_task_paths(records)
-        + directory_two_site_comparison(records),
+        + directory_two_site_comparison(records)
+        + directory_address_correction_request(records),
         directory_html, count=1)
 
     # Site descriptions are static and crawlable, not dependent on JavaScript.
