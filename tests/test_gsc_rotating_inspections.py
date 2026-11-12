@@ -66,7 +66,7 @@ class RotatingInspectionTests(unittest.TestCase):
             self.assertEqual(selected[:len(monitor.INSPECT_URLS)],
                              list(monitor.INSPECT_URLS))
             self.assertIn("https://linkwiki.info/guides/address-check", selected)
-            rotating = monitor.rotating_inspection_urls(date(2026, 11, 11), root=root)
+            rotating = monitor.rotating_inspection_urls(date(2026, 11, 11), limit=2, root=root)
             self.assertTrue(all(url in selected for url in rotating))
             self.assertLessEqual(len(selected), 20)
 
