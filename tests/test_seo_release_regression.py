@@ -51,7 +51,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('href="#site-related-guides"', page)
         section = re.search(
             r'<section id="site-related-guides".*?</section>', page, re.S).group()
-        self.assertIn("사이트를 어떻게 검색하나요?", section)
+        self.assertIn("주소모음에서 원하는 사이트를 더 정확히 찾으려면?", section)
+        self.assertIn('검색한 두 사이트를 나란히 비교하려면?</strong> '
+                      '<a href="/blog/seo-20261028-2a8841090c/"', section)
         self.assertIn("사이트모음은 어떤 기준으로 비교하나요?", section)
         self.assertIn("광고 링크는 어떻게 구분하나요?", section)
         urls = re.findall(r'href="(/blog/[^"]+/)"', section)
