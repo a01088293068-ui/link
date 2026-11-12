@@ -1125,6 +1125,72 @@ def format_core_keyword_index_alignment(focused_pages, inspections, error=''):
     return '\n'.join(lines)
 
 
+
+LONG_TAIL_GUIDES = (
+    ('정부24·국민신문고', 'seo-20261111-gov24-epeople-complaint-certificate'),
+    ('홈택스·위택스', 'seo-20261111-tax-hometax-wetax-difference'),
+    ('공공데이터포털·KOSIS', 'seo-20261111-public-data-vs-kosis-usage'),
+    ('해외 한인 생활정보', 'seo-20261110-overseas-korean-community-guide'),
+    ('국내 웹툰 플랫폼', 'seo-20261110-korean-webtoon-platform-guide'),
+    ('주소모음 검색 실전', 'seo-20261111-address-directory-search-examples'),
+    ('두 사이트 비교', 'seo-20261028-2a8841090c'),
+)
+
+
+def korea_guide_query_filters():
+    slugs = '|'.join(re.escape(slug) for _, slug in LONG_TAIL_GUIDES)
+    return [{'groupType': 'and', 'filters': [
+        {'dimension': 'country', 'operator': 'equals', 'expression': 'kor'},
+        {'dimension': 'page', 'operator': 'includingRegex',
+         'expression': rf'^https://linkwiki[.]info/blog/({slugs})/$'},
+    ]}]
+
+
+def format_korea_guide_queries(rows, end, error=''):
+    current = end - timedelta(days=6)
+    previous = end - timedelta(days=13)
+    lines = [
+        '', '', '## 대한민국 검색어별 비교 가이드 실적', '',
+        f'직전 7일 {previous}~{current - timedelta(days=1)} / 최근 7일 {current}~{end}.',
+        'Google이 제공한 검색어 행을 가이드마다 최대 5개 표시합니다. '
+        '미관측은 검색량 0이나 미색인을 뜻하지 않습니다.', '',
+    ]
+    if error:
+        return '\n'.join(lines + [f'조회 실패: {error}', ''])
+    by_page = {}
+    for row in rows:
+        keys = row.get('keys', [])
+        if len(keys) != 3 or not previous.isoformat() <= keys[2] <= end.isoformat():
+            continue
+        query, page, day = keys
+        impressions = int(row.get('impressions', 0))
+        if impressions <= 0:
+            continue
+        period = int(day >= current.isoformat())
+        totals = by_page.setdefault(page, {}).setdefault(query, [[0, 0, 0.0], [0, 0, 0.0]])
+        totals[period][0] += impressions
+        totals[period][1] += int(row.get('clicks', 0))
+        totals[period][2] += impressions * float(row.get('position', 0))
+
+    def metric(period):
+        impressions, clicks, weighted = period
+        return f'{impressions} / {clicks} / {weighted / impressions:.1f}' if impressions else '미관측'
+
+    lines += ['| 가이드 | 검색어 | 직전 노출 / 클릭 / 평균 순위 | 최근 노출 / 클릭 / 평균 순위 |',
+              '|---|---|---:|---:|']
+    for label, slug in LONG_TAIL_GUIDES:
+        page = f'https://linkwiki.info/blog/{slug}/'
+        queries = by_page.get(page, {})
+        top = sorted(queries, key=lambda q: (-queries[q][1][0], -queries[q][0][0], q))[:5]
+        if not top:
+            lines.append(f'| [{label}]({page}) | 미관측 | — | — |')
+        for query in top:
+            escaped = query.replace('|', '\\|').replace('\n', ' ')
+            before, after = queries[query]
+            lines.append(f'| [{label}]({page}) | {escaped} | {metric(before)} | {metric(after)} |')
+    return '\n'.join(lines) + '\n'
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--property', default=os.environ.get('GSC_PROPERTY', 'sc-domain:linkwiki.info'))
@@ -1204,6 +1270,16 @@ def main():
                '- 아래 평균 순위는 실제 한국 이용자 대상 검색 노출의 가중 평균입니다.\n')
     report += format_core_keyword_weekly_comparison(
         korea_core_rows, end.isoformat(), korea_core_error, scope='korea')
+    guide_rows, guide_error = [], ''
+    try:
+        guide_rows = query_performance(
+            token, args.property, (end - timedelta(days=13)).isoformat(), end.isoformat(),
+            ['query', 'page', 'date'], limit=1000, filter_groups=korea_guide_query_filters())
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+        guide_error = type(exc).__name__
+        if isinstance(exc, HTTPError):
+            guide_error += f' HTTP {exc.code}'
+    report += format_korea_guide_queries(guide_rows, end, guide_error)
     report += format_core_landing_page_split(focused_pages, focused_error)
     report += format_core_keyword_index_alignment(focused_pages, inspections, focused_error or inspection_error)
     report += format_index_inspection(inspections, inspection_error)

@@ -11,6 +11,36 @@ spec.loader.exec_module(monitor)
 
 
 class SearchConsoleMonitorTests(unittest.TestCase):
+    def test_korea_guide_report_keeps_periods_and_pages_separate(self):
+        from datetime import date
+        page = "https://linkwiki.info/blog/seo-20261111-gov24-epeople-complaint-certificate/"
+        rows = [
+            {"keys": ["정부24|민원", page, "2026-11-02"], "impressions": 2, "clicks": 1, "position": 30},
+            {"keys": ["정부24|민원", page, "2026-11-03"], "impressions": 3, "clicks": 1, "position": 10},
+            {"keys": ["정부24|민원", page, "2026-11-09"], "impressions": 1, "clicks": 0, "position": 18},
+            {"keys": ["기간 제외", page, "2026-10-26"], "impressions": 100},
+            {"keys": ["다른 페이지", "https://linkwiki.info/", "2026-11-09"], "impressions": 100},
+        ]
+        report = monitor.format_korea_guide_queries(rows, date(2026, 11, 9))
+        self.assertIn(r"정부24\|민원 | 2 / 1 / 30.0 | 4 / 1 / 12.0", report)
+        self.assertIn("미관측", report)
+        self.assertNotIn("기간 제외", report)
+        self.assertNotIn("다른 페이지", report)
+        failed = monitor.format_korea_guide_queries([], date(2026, 11, 9), "HTTPError HTTP 403")
+        self.assertIn("조회 실패: HTTPError HTTP 403", failed)
+        self.assertNotIn("| 가이드 |", failed)
+
+    def test_korea_guide_filter_uses_exact_published_page_urls(self):
+        import re
+        filters = monitor.korea_guide_query_filters()[0]["filters"]
+        self.assertEqual(filters[0], {"dimension": "country", "operator": "equals", "expression": "kor"})
+        pattern = re.compile(filters[1]["expression"])
+        for _, slug in monitor.LONG_TAIL_GUIDES:
+            self.assertTrue((SOURCE.parents[1] / "content" / (slug + ".md")).is_file())
+            url = f"https://linkwiki.info/blog/{slug}/"
+            self.assertIsNotNone(pattern.fullmatch(url))
+            self.assertIsNone(pattern.fullmatch(url + "?q=1"))
+
     def test_scheduled_gsc_reports_are_not_cancelled_by_deployment_bursts(self):
         workflow = (SOURCE.parents[1] /
                     ".github/workflows/search-console-monitor.yml").read_text(encoding="utf-8")
