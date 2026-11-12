@@ -4,12 +4,13 @@
 No external form submission, no Google SERP scraping, no GSC rank claim.
 Any HTTP error or blocking is reported as inconclusive, not 'link removed'.
 """
+from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 from datetime import datetime, timezone
-import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,25 +63,29 @@ def check_one(name, url, fetch=None):
         def fetch(page):
             req = Request(page, headers={"User-Agent": "LinkWiki-CitationAudit/1.0"})
             with urlopen(req, timeout=18) as res:
-                return res.getcode(), res.geturl(), res.read(700_000)
+                return res.getcode(), res.geturl(), res.read(700_000), res.headers.get_all("X-Robots-Tag", [])
     try:
-        status, final_url, body = fetch(url)
+        status, final_url, body, *header_fields = fetch(url)
+        xrobots = header_fields[0] if header_fields else []
         if status != 200:
             return {"name": name, "url": url, "state": "unverified",
                     "detail": f"HTTP {status}"}
         parser = LinkInspector(final_url)
         parser.feed(body.decode("utf-8", errors="replace"))
+        noindex = any(re.search(r"\b(?:noindex|none)\b", meta, re.I) for meta in parser.robots)
+        robots_detail = f"meta_noindex={noindex}; X-Robots-Tag={xrobots or '—'}"
         if not parser.matches:
             state, detail = "no_direct_link", "200 OK but no direct https://linkwiki.info/ anchor in fetched HTML"
         else:
             rels = [" ".join(r.split()) if isinstance(r, str) else " ".join(r)
                     for r in parser.matches]
-            noindex = any("noindex" in meta.lower() for meta in parser.robots)
             state = "public_link_found"
             paths = sorted(set(parser.destinations))
             detail = (f"{len(rels)} direct href(s), targets={paths}, "
-                      f"rel={rels}; meta_noindex={noindex}")
-        return {"name": name, "url": url, "state": state, "detail": detail,
+                      f"rel={rels}")
+        return {"name": name, "url": url, "state": state, "detail": f"{detail}; {robots_detail}",
+                "source_type": "self-authored" if "self-authored" in name else "unconfirmed",
+                "final_url": final_url,
                 "targets": sorted(set(parser.destinations))}
     except HTTPError as exc:
         return {"name": name, "url": url, "state": "unverified",
@@ -93,33 +98,39 @@ def check_one(name, url, fetch=None):
 def distinct_referring_domains(rows):
     """Count domain diversity, never multiple pages on the same host as new domains."""
     return sorted({
-        urlparse(row["url"]).hostname.removeprefix("www.")
+        urlparse(row.get("final_url", row["url"])).hostname.removeprefix("www.")
         for row in rows
         if row["state"] == "public_link_found"
-        and urlparse(row["url"]).hostname
+        and urlparse(row.get("final_url", row["url"])).hostname
     })
 
 
 def markdown(rows):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    directory_rows = [row for row in rows if "/directory" in row.get("targets", [])]
+    own_directory_rows = [row for row in directory_rows if row.get("source_type") == "self-authored"]
     lines = [f"# LinkWiki external public citation check — {now}", "",
              "Read-only HTTP checks. 200 + direct HTML anchor proves only current link visibility, not Google indexing or SEO value.",
              "403/404/errors are NOT treated as permanent deletion without separate human verification.",
              "Confirmed distinct referring domains in this HTTP sample: " +
              str(len(distinct_referring_domains(rows))) +
              " (pages on the same domain count once; self-authored listings are not independent endorsements).",
-             "", "| Source | Result | Target pages | Evidence |", "|---|---|---|---|"]
+             f"Direct /directory links: {len(distinct_referring_domains(directory_rows))} domains "
+             f"({len(distinct_referring_domains(own_directory_rows))} known self-authored).",
+             "Other listing authorship is unconfirmed. Meta and HTTP directives are observed signals.",
+             "", "| Source | Result | Target pages | Authorship | Evidence |", "|---|---|---|---|---|"]
     for r in rows:
         detail = r["detail"].replace("|", "/").replace("\n", " ")
         targets = ", ".join(r.get("targets") or []) or "미확인"
         lines.append(f'| [{r["name"]}]({r["url"]}) | {r["state"]} | '
-                     f'{targets} | {detail} |')
+                     f'{targets} | {r.get("source_type", "—")} | {detail} |')
     lines.extend(["", "Target: https://linkwiki.info/", "No submissions, credentials, or paid services were used.", ""])
     return "\n".join(lines)
 
 
 def main():
-    rows = [check_one(name, url) for name, url in SITES.items()]
+    with ThreadPoolExecutor(max_workers=6) as workers:
+        rows = list(workers.map(check_one, SITES, SITES.values()))
     REPORT.write_text(markdown(rows), encoding="utf-8")
     print(REPORT.read_text(encoding="utf-8"))
     # Link vanishing or a provider outage should not prevent future checks.

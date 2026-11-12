@@ -63,6 +63,18 @@ class BacklinkPublicCheckTests(unittest.TestCase):
         row = monitor.check_one("test", self.URL, lambda _: (404, self.URL, b""))
         self.assertEqual(row["state"], "unverified")
 
+    def test_report_distinguishes_own_directory_links_and_http_robots(self):
+        html = b'<a href="https://linkwiki.info/directory" rel="ugc">Visit</a>'
+        row = monitor.check_one(
+            "Example (self-authored)", self.URL,
+            lambda _: (200, "https://canonical.example/linkwiki", html,
+                       ["googlebot: noindex", "otherbot: nofollow"]))
+        report = monitor.markdown([row])
+        self.assertIn("meta_noindex=False", report)
+        self.assertIn("googlebot: noindex", report)
+        self.assertIn("Direct /directory links: 1 domains (1 known self-authored)", report)
+        self.assertEqual(monitor.distinct_referring_domains([row]), ["canonical.example"])
+
     def test_relative_href_is_not_target_domain(self):
         html = b'<a href="/directory">LinkWiki</a>'
         row = monitor.check_one("test", self.URL, lambda _: (200, self.URL, html))
