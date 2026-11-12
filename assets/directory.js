@@ -112,4 +112,7 @@
   });
   window.addEventListener('popstate', () => { readURL(); render(); });
   render();
+  // A shared search or homepage search already has a query. Preserve explicit
+  // destinations such as the comparison panel when the link includes a fragment.
+  if (input.value.trim() && !location.hash) count.focus();
 })();

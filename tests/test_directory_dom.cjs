@@ -25,7 +25,7 @@ function makeElement(props = {}) {
   };
 }
 
-function makeFixture() {
+function makeFixture(href = "https://linkwiki.info/directory") {
   const specs = [
     ['네이버', '검색·포털', '국내 포털 서비스', 'https://www.naver.com/'],
     ['중고나라', '커뮤니티', '중고 거래 플랫폼', 'https://cafe.naver.com/joonggonara'],
@@ -48,7 +48,8 @@ function makeFixture() {
     assert.equal(selector, 'article.v6-card');
     return cards;
   };
-  const location = {href: 'https://linkwiki.info/directory', search: ''};
+  const initialURL = new URL(href);
+  const location = {href: initialURL.href, search: initialURL.search, hash: initialURL.hash};
   const history = {};
   for (const method of ['pushState', 'replaceState']) {
     history[method] = (state, title, url) => {
@@ -115,6 +116,20 @@ test('explicit search focuses the results count without moving focus during typi
   controls['v6-form'].listeners.submit({preventDefault() {}});
   assert.equal(count.focused, true);
   assert.equal(count.textContent, '‘Claude’ 검색 결과 1개');
+});
+
+test('prefilled searches focus the result while explicit comparison anchors stay in control', () => {
+  const search = 'https://linkwiki.info/directory?q=Claude';
+  const shared = makeFixture(search);
+  assert.equal(shared.controls['v6-count'].focused, true);
+  assert.equal(shared.controls['v6-count'].textContent, '‘Claude’ 검색 결과 1개');
+
+  const comparison = makeFixture(search + '#directory-two-site-compare');
+  assert.equal(comparison.controls['v6-count'].focused, undefined);
+  assert.equal(comparison.controls['v6-count'].textContent, '‘Claude’ 검색 결과 1개');
+
+  const plain = makeFixture();
+  assert.equal(plain.controls['v6-count'].focused, undefined);
 });
 
 test('browser back navigation restores query and category', () => {
