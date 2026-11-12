@@ -914,6 +914,20 @@
       "rel": [],
       "noindex": null,
       "notes": "공식 General Tools 양식에 /directory 및 공개 favicon 첨부 후 제출 시도. 신청 정보가 유지되고 접수 또는 실패 응답은 확인되지 않아 상태 미확정. 중복 방지를 위해 접수 여부 확인 전 재제출 보류."
+    },
+    {
+      "id": "lorik_roo_20261112",
+      "platform": "Lorik Roo",
+      "submission_url": "https://www.lorikroo.com/",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "Community Freebies의 Productivity 분류로 /directory 제출 시도. 양식이 유지되고 접수 문구나 공개 등록이 확인되지 않아 상태 미확정. 중복 제출 보류."
     }
   ]
 }
