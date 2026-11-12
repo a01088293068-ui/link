@@ -757,6 +757,62 @@
       "rel": [],
       "noindex": null,
       "notes": "홈페이지 등록 접수 확인. 관리자 심사 대기."
+    },
+    {
+      "id": "itjeom_20261112",
+      "platform": "ITJEOM Web Directory",
+      "submission_url": "https://lab.itjeom.com/page/seo_lab_backlink",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "/directory 입력 후 linkwiki.info DNS TXT 소유 인증 단계 확인. 최종 제출·공개 전. 기존 공개 사례와 비회원 안내 확인."
+    },
+    {
+      "id": "shareyourstartup_20261112",
+      "platform": "Share Your Startup",
+      "submission_url": "https://shareyourstartup.com/submit.html",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "LinkWiki 이름 검색 결과 없음. 무료·무계정, 공개까지 7일 안내. 필수 연락 이메일과 Turnstile 확인. 무료 링크는 nofollow ugc 안내. 미제출."
+    },
+    {
+      "id": "247webdirectory_20261112",
+      "platform": "247WebDirectory",
+      "submission_url": "https://www.247webdirectory.com/submit",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "한국 분류 및 무료 심사 제공. 연락 이메일과 사람 확인 문항 필요. 무료 심사 기한 미보장. 미제출."
+    },
+    {
+      "id": "launchpedia_20261112",
+      "platform": "LaunchPedia",
+      "submission_url": "https://launchpedia.co/submit/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "출시 관련 제품·도구 소개 사이트. 이름·이메일·제품명·URL 양식. 링크위키와 직접 맞는 공개 분류 미확인. 미제출."
     }
   ]
 }
