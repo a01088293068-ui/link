@@ -692,7 +692,7 @@ def directory_relevant_guides(posts):
         ("해외 한인 생활정보를 지역별로 어디서 찾나요?", ("해외 한인 사이트모음",)),
         ("취업·장학금·복지 정보는 어떻게 찾나요?", ("고용24·한국장학재단·복지로 구분",)),
         ("글쓰기·번역·디자인 AI는 어떻게 고르나요?", ("한국어 AI 사이트모음 선택법",)),
-        ("사이트를 어떻게 검색하나요?", ("검색 기능 활용법", "검색 기능", "검색")),
+        ("검색한 두 사이트를 나란히 비교하려면?", ("검색 결과에서 두 사이트 비교하기",)),
         ("사이트모음은 어떤 기준으로 비교하나요?", ("비교 기준", "사이트모음 비교")),
         ("광고 링크는 어떻게 구분하나요?", ("광고 구분", "광고")),
     )
@@ -1732,11 +1732,16 @@ def build():
     if directory_html.count("</head>") != 1:
         raise RuntimeError("Directory head structure changed; schema review required")
     directory_html = directory_html.replace("</head>", schema + "</head>", 1)
-    # Keep current list/search code unchanged; the new verifier is isolated.
+    # Snapshot the complete catalog before directory.js applies URL filters.
+    directory_script = re.compile(r'<script\b[^>]*src="/?assets/directory\.js(?:\?[^"]*)?"[^>]*>')
+    directory_html, comparison_insertions = directory_script.subn(
+        lambda match: '<script defer src="/assets/site-comparison.js"></script>' + match.group(),
+        directory_html,
+    )
+    if comparison_insertions != 1:
+        raise RuntimeError("Expected one directory search script before adding comparison")
     directory_html = directory_html.replace(
-        '</body>',
-        '<script defer src="/assets/address-inspector.js"></script>'
-        '<script defer src="/assets/site-comparison.js"></script></body>', 1)
+        '</body>', '<script defer src="/assets/address-inspector.js"></script></body>', 1)
     directory_html = fingerprint_directory_scripts(directory_html, OUT / "assets")
     directory_path.write_text(directory_html, encoding="utf-8")
     category_cards = []
