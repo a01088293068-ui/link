@@ -42,7 +42,7 @@ class RealSiteComparisonTests(unittest.TestCase):
         self.assertEqual(html.count('href="#directory-two-site-compare"'), 1)
         self.assertEqual(html.count('<article class="v6-card"'), len(self.records))
         self.assertEqual(len(re.findall(r'<script[^>]*src="/assets/site-comparison.js\?v=[a-f0-9]{12}"', html)), 1)
-        self.assertLess(html.index('id="directory-two-site-compare"'), html.index('id="v6-results"'))
+        self.assertLess(html.index('id="v6-results"'), html.index('id="directory-two-site-compare"'))
         search_script = re.search(r'src="/?assets/directory\.js\?', html)
         self.assertIsNotNone(search_script)
         self.assertLess(html.index('src="/assets/site-comparison.js?'),
