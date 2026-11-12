@@ -150,6 +150,7 @@ def release_content_sections(html, path):
             r'<section\b(?=[^>]*\bid="directory-quick-compare")[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-task-paths\b)[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bid="directory-two-site-compare")[^>]*>.*?</section>',
+            r'<section\b(?=[^>]*\bid="directory-correction-request")[^>]*>.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-search-help\b)[^>]*>.*?</section>',
             r'<section class="seo-directory-category">.*?</section>',
             r'<section\b(?=[^>]*\bclass="[^"]*\bseo-purpose-comparison\b)[^>]*>.*?</section>',
