@@ -176,6 +176,16 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None, as_of=None):
             continue
         append_observed(keys[1])
 
+    # Scheduled reports keep two available slots for older real guides.
+    # The original ordering could exhaust the 20-URL inspection cap before
+    # reaching the rotating section; reserve actual slots after exact-query
+    # landings while retaining those high-priority observed pages.
+    if as_of is not None and limit >= len(INSPECT_URLS) + 2:
+        for url in rotating_inspection_urls(as_of, limit=2):
+            if url not in seen and len(urls) < limit:
+                urls.append(url)
+                seen.add(url)
+
     # Inspect actually observed legacy .html URLs with their canonical
     # counterparts before spending the remaining quota on newly published
     # articles. Otherwise a content batch can evict real Google redirect
@@ -192,15 +202,6 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None, as_of=None):
         if url not in seen and len(urls) < limit:
             urls.append(url)
             seen.add(url)
-
-    # On scheduled real runs, reserve three rotating slots before the newest
-    # generic posts can fill the 20-URL quota. Direct offline callers retain
-    # the historical selection unless they opt in with as_of.
-    if as_of is not None and limit >= 18:
-        for url in rotating_inspection_urls(as_of):
-            if url not in seen and len(urls) < limit:
-                urls.append(url)
-                seen.add(url)
 
     # Keep newly published articles represented, independent of traffic.
     for url in recent_published_post_urls():
