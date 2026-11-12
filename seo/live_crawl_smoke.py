@@ -11,7 +11,8 @@ import sys
 import xml.etree.ElementTree as ET
 
 ORIGIN = "https://linkwiki.info"
-TARGETS = ("/", "/directory", "/categories/", "/robots.txt", "/sitemap.xml")
+SITEMAPS = ("/sitemap.xml", "/sitemap-v2.xml")
+TARGETS = ("/", "/directory", "/categories/", "/robots.txt", *SITEMAPS)
 
 
 class PageParser(HTMLParser):
@@ -105,32 +106,38 @@ def inspect(fetcher=fetch):
             if (line := raw.partition("#")[0].strip())
             and line.lower().startswith("sitemap:")
         ]
-        if ORIGIN + "/sitemap.xml" not in declared_sitemaps:
-            findings.append("robots.txt: canonical sitemap not declared")
+        for path in SITEMAPS:
+            if ORIGIN + path not in declared_sitemaps:
+                findings.append(f"robots.txt: {path} not declared")
         rules = RobotFileParser()
         rules.parse(robots.splitlines())
-        for path in ("/", "/directory", "/categories/"):
+        for path in ("/", "/directory", "/categories/", *SITEMAPS):
             if not rules.can_fetch("Googlebot", ORIGIN + path):
                 findings.append(f"robots.txt: Googlebot disallowed {path}")
-    if "/sitemap.xml" in bodies:
+    if all(path in bodies for path in SITEMAPS) and bodies[SITEMAPS[0]] != bodies[SITEMAPS[1]]:
+        findings.append("sitemap.xml and sitemap-v2.xml: live XML contents differ")
+    for path in SITEMAPS:
+        if path not in bodies:
+            continue
+        label = path.lstrip("/")
         try:
-            root = ET.fromstring(bodies["/sitemap.xml"])
+            root = ET.fromstring(bodies[path])
             urls = [e.text for e in root.iter() if e.tag.endswith("}loc")]
             if ORIGIN + "/directory" not in urls:
-                findings.append("sitemap.xml: /directory missing")
+                findings.append(f"{label}: /directory missing")
             if ORIGIN + "/" not in urls:
-                findings.append("sitemap.xml: homepage missing")
+                findings.append(f"{label}: homepage missing")
             # Detect redirecting or duplicate URLs before sending them to Google.
             if len(urls) != len(set(urls)):
-                findings.append("sitemap.xml: duplicate URL entries")
+                findings.append(f"{label}: duplicate URL entries")
             for url in urls:
                 parts = urlsplit(url or "")
                 if parts.scheme != "https" or parts.netloc != "linkwiki.info":
-                    findings.append(f"sitemap.xml: off-origin or invalid URL {url!r}")
+                    findings.append(f"{label}: off-origin or invalid URL {url!r}")
                 elif parts.query or parts.fragment or parts.path.endswith(".html"):
-                    findings.append(f"sitemap.xml: noncanonical URL {url!r}")
+                    findings.append(f"{label}: noncanonical URL {url!r}")
         except ET.ParseError:
-            findings.append("sitemap.xml: invalid XML")
+            findings.append(f"{label}: invalid XML")
     return findings, records
 
 
