@@ -35,6 +35,7 @@ class LinkInspector(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.page_url = page_url
         self.matches = []
+        self.destinations = []
         self.robots = []
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -43,8 +44,14 @@ class LinkInspector(HTMLParser):
         if tag != "a" or not attrs.get("href"):
             return
         url = urlparse(urljoin(self.page_url, attrs["href"]))
-        if url.scheme == "https" and url.hostname == "linkwiki.info" and url.path in ("", "/"):
+        # The canonical listing landing is just as important as the homepage.
+        # Do not treat linkwiki.info-looking subdomains, credentials, legacy
+        # .html URLs, or offsite links as direct canonical referrals.
+        if (url.scheme == "https" and url.hostname == "linkwiki.info"
+                and not url.username and not url.password and
+                url.port in (None, 443) and url.path in ("", "/", "/directory")):
             self.matches.append(attrs.get("rel", ""))
+            self.destinations.append(url.path or "/")
 
 
 def check_one(name, url, fetch=None):
@@ -67,8 +74,11 @@ def check_one(name, url, fetch=None):
                     for r in parser.matches]
             noindex = any("noindex" in meta.lower() for meta in parser.robots)
             state = "public_link_found"
-            detail = f"{len(rels)} direct href(s), rel={rels}; meta_noindex={noindex}"
-        return {"name": name, "url": url, "state": state, "detail": detail}
+            paths = sorted(set(parser.destinations))
+            detail = (f"{len(rels)} direct href(s), targets={paths}, "
+                      f"rel={rels}; meta_noindex={noindex}")
+        return {"name": name, "url": url, "state": state, "detail": detail,
+                "targets": sorted(set(parser.destinations))}
     except HTTPError as exc:
         return {"name": name, "url": url, "state": "unverified",
                 "detail": f"HTTP {exc.code} (may be temporary or bot-blocked)"}
@@ -95,10 +105,12 @@ def markdown(rows):
              "Confirmed distinct referring domains in this HTTP sample: " +
              str(len(distinct_referring_domains(rows))) +
              " (pages on the same domain count once; self-authored listings are not independent endorsements).",
-             "", "| Source | Result | Evidence |", "|---|---|---|"]
+             "", "| Source | Result | Target pages | Evidence |", "|---|---|---|---|"]
     for r in rows:
         detail = r["detail"].replace("|", "/").replace("\n", " ")
-        lines.append(f'| [{r["name"]}]({r["url"]}) | {r["state"]} | {detail} |')
+        targets = ", ".join(r.get("targets") or []) or "미확인"
+        lines.append(f'| [{r["name"]}]({r["url"]}) | {r["state"]} | '
+                     f'{targets} | {detail} |')
     lines.extend(["", "Target: https://linkwiki.info/", "No submissions, credentials, or paid services were used.", ""])
     return "\n".join(lines)
 
