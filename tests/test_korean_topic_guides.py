@@ -16,6 +16,11 @@ SOURCES = (
     "seo-20261110-korean-ott-video-site-selection-guide.md",
     "seo-20261110-overseas-korean-community-guide.md",
 )
+PUBLIC_SERVICE_COMPARISONS = (
+    "/blog/seo-20261111-gov24-epeople-complaint-certificate/",
+    "/blog/seo-20261111-tax-hometax-wetax-difference/",
+    "/blog/seo-20261111-public-data-vs-kosis-usage/",
+)
 CATEGORIES = (
     "community", "korean", "comics-directory", "webtoon",
     "ai", "search", "sports", "video",
@@ -36,11 +41,17 @@ class KoreanTopicGuidesTests(unittest.TestCase):
                                 "All cited services must be actual catalog URLs")
                 internal = re.findall(r"\]\((/[^)]+)\)", text)
                 self.assertGreaterEqual(len(internal), 2)
+                expected = ("/directory", "/guides/address-check")
+                if filename == "seo-20261110-korean-public-services-guide.md":
+                    expected += PUBLIC_SERVICE_COMPARISONS
+                    for url in PUBLIC_SERVICE_COMPARISONS:
+                        self.assertIn(url, internal)
+                        self.assertTrue((ROOT / "content" / (url.strip("/").split("/")[-1] + ".md")).is_file())
                 for url in internal:
                     if url.startswith("/categories/"):
                         self.assertIn(url.split("/")[2], CATEGORIES)
                     else:
-                        self.assertIn(url, ("/directory", "/guides/address-check"))
+                        self.assertIn(url, expected)
     def test_distinct_task_subjects(self):
         titles = [(ROOT / "content" / f).read_text(encoding="utf-8").splitlines()[0]
                   for f in SOURCES]
