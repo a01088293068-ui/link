@@ -295,7 +295,8 @@
   },
   {
     "name": "대한상공회의소 코참넷",
-    "url": "https://www.korcham.net/",
+    "url": "https://www.korcham.net/nCham/Service/Main/appl/Main.asp",
+    "anchor_url": "https://www.korcham.net/",
     "category": "검색·포털",
     "description": "기업 활동에 참고할 경제·경영 자료와 상공회의소 안내를 제공하는 사이트입니다. 보고서 기준 시점과 실제 지원·민원 담당 기관을 확인하세요."
   },
