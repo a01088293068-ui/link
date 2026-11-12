@@ -813,6 +813,20 @@
       "rel": [],
       "noindex": null,
       "notes": "출시 관련 제품·도구 소개 사이트. 이름·이메일·제품명·URL 양식. 링크위키와 직접 맞는 공개 분류 미확인. 미제출."
+    },
+    {
+      "id": "web_apps_directory_20261112",
+      "platform": "Web Apps Directory",
+      "submission_url": "https://webapps.directory/submit",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 무료 Standard 양식에서 https://linkwiki.info/directory를 Utilities로 제출. 접수 화면: Submission received — thank you! 담당자 수동 심사 약 32일 안내. 결과는 제출 이메일로 통지. 공개 페이지 미확인. 재제출 금지."
     }
   ]
 }
