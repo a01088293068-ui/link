@@ -289,8 +289,11 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             for name in KOREAN_FIRST_SEARCH_NAMES:
                 self.assertIn('>' + name + '</a>', content)
         directory = (root / "dist/directory.html").read_text(encoding="utf-8")
-        self.assertLess(directory.index('class="lw-safety-note korean-first-shortcuts"'),
-                        directory.index('id="v6-form"'))
+        self.assertLess(directory.index('id="v6-form"'),
+                        directory.index('class="lw-safety-note korean-first-shortcuts"'))
+        self.assertLess(directory.index('id="v6-form"'), directory.index('class="lw-guide-nav"'))
+        self.assertIn('href="#v6-count">검색 결과로 이동', directory)
+        self.assertRegex(directory, r'<p[^>]+id="v6-count"[^>]+tabindex="-1"')
         self.assertEqual(directory.count('class="v6-card"'), len(records))
 
     def test_directory_search_examples_link_to_real_registered_names(self):

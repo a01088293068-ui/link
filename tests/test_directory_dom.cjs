@@ -105,6 +105,18 @@ test('pasted full URL filters source cards without creating replacements', () =>
   assert.equal(input.focused, true);
 });
 
+test('explicit search focuses the results count without moving focus during typing', () => {
+  const {controls} = makeFixture();
+  const input = controls['v6-query'];
+  const count = controls['v6-count'];
+  input.value = 'Claude';
+  input.listeners.input();
+  assert.equal(count.focused, undefined);
+  controls['v6-form'].listeners.submit({preventDefault() {}});
+  assert.equal(count.focused, true);
+  assert.equal(count.textContent, '‘Claude’ 검색 결과 1개');
+});
+
 test('browser back navigation restores query and category', () => {
   const {controls, window, location, cards} = makeFixture();
   location.href = 'https://linkwiki.info/directory?category=AI+%EB%8F%84%EA%B5%AC&q=Claude';
