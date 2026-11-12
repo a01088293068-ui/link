@@ -35,15 +35,17 @@ class SearchIntentAndCorrectionsTests(unittest.TestCase):
             with self.subTest(sample=sample), self.assertRaises(RuntimeError):
                 build.directory_address_correction_request(sample)
 
-    def test_live_build_exposes_correction_before_full_static_catalog(self):
+    def test_live_build_links_to_correction_before_full_static_catalog(self):
         dist = ROOT / "dist" / "directory.html"
         if not dist.exists():
             self.skipTest("Run build.py before checking integrated HTML")
         html = dist.read_text(encoding="utf-8")
         self.assertEqual(html.count('id="directory-correction-request"'), 1)
         self.assertEqual(html.count('href="#directory-correction-request"'), 1)
-        self.assertLess(html.index('id="directory-correction-request"'),
+        self.assertLess(html.index('href="#directory-correction-request"'),
                         html.index('id="v6-results"'))
+        self.assertLess(html.index('id="v6-results"'),
+                        html.index('id="directory-correction-request"'))
         self.assertEqual(html.count('<article class="v6-card" id="site-'), 222)
         self.assertIn('href="https://linkwiki.info/directory" rel="canonical"', html)
 

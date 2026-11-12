@@ -1697,7 +1697,6 @@ def build():
         + '<a href="#site-category-comparison">분야별 등록 예시</a>'
         + '<a href="#site-purpose-comparison">목적별 선택법</a>'
         + '<a href="#directory-everyday-tasks">생활 목적별 비교</a>'
-        + '<a href="#directory-correction-request">주소 오류 제보</a>'
         + '<a href="#site-related-guides">관련 이용 가이드</a>'
         + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
     )
@@ -1706,6 +1705,7 @@ def build():
         '<a href="#v6-count">검색 결과로 이동</a>'
         '<a href="/categories/">분야별 사이트</a>'
         '<a href="#directory-two-site-compare">두 사이트 직접 비교</a>'
+        '<a href="#directory-correction-request">주소 오류 제보</a>'
         '<a href="#site-related-guides">관련 이용 가이드</a></nav>'
     )
     directory_html = re.sub(
