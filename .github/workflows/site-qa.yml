@@ -11,6 +11,7 @@ on:
       - 'assets/verified-directory.json'
       - 'assets/directory.js'
       - 'assets/directory-search.js'
+      - 'assets/site-comparison.js'
       - 'assets/address-inspector.js'
       - 'assets/style.css'
       - 'assets/blog.css'
@@ -47,6 +48,7 @@ on:
       - 'assets/verified-directory.json'
       - 'assets/directory.js'
       - 'assets/directory-search.js'
+      - 'assets/site-comparison.js'
       - 'assets/address-inspector.js'
       - 'assets/style.css'
       - 'assets/blog.css'
@@ -95,8 +97,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Test browser directory multi-term search
-        run: node --test tests/test_directory_search.cjs
+      - name: Test directory search and comparison actions
+        run: node --test tests/test_directory_search.cjs tests/test_comparison_card_actions.cjs
       - name: Test local address hostname inspector
         run: node --test tests/test_address_inspector.cjs
       - name: Verify generated sitemap and canonical URLs

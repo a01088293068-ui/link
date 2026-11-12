@@ -41,18 +41,22 @@
     const cards = doc.getElementById('v6-results');
     if (!form || !first || !second || !output || !cards) return;
 
-    const items = [...cards.querySelectorAll('article.v6-card')].map(card => {
+    const items = [];
+    const actions = [];
+    for (const card of cards.querySelectorAll('article.v6-card')) {
       const name = card.querySelector('h3');
       const category = card.querySelector('small');
       const description = card.querySelector('p');
       const link = card.querySelector('a[href]');
-      return name && category && description && link ? {
+      if (!name || !category || !description || !link) continue;
+      const site = normalizedSite({
         name: name.textContent || '',
         category: category.textContent || '',
         description: description.textContent || '',
         url: link.href
-      } : null;
-    }).filter(normalizedSite);
+      });
+      if (site) items.push({ ...site, card });
+    }
 
     if (items.length < 2) return;
     for (const field of [first, second]) {
@@ -98,8 +102,7 @@
       return article;
     }
 
-    form.addEventListener('submit', event => {
-      event.preventDefault();
+    function showComparison() {
       if (!first.value || !second.value) {
         message('두 사이트를 모두 선택해 주세요.');
         return;
@@ -107,7 +110,7 @@
       const one = items[Number(first.value)];
       const two = items[Number(second.value)];
       const result = compareSites(one, two);
-      if (!result.ok) { message(result.message); return; }
+      if (!result.ok) { message(result.message); return false; }
       const grid = doc.createElement('div');
       grid.className = 'lw-site-compare-grid';
       result.sites.forEach(site => grid.append(makeSummary(site)));
@@ -118,6 +121,53 @@
       const disclaimer = doc.createElement('p');
       disclaimer.textContent = result.note;
       output.replaceChildren(grid, categoryNote, disclaimer);
+      return true;
+    }
+
+    function syncButtons() {
+      actions.forEach((button, index) => {
+        const value = String(index);
+        const selected = first.value === value || second.value === value;
+        button.setAttribute('aria-pressed', String(selected));
+      });
+    }
+
+    items.forEach((site, index) => {
+      const value = String(index);
+      const button = doc.createElement('button');
+      button.type = 'button';
+      button.className = 'lw-card-compare-action';
+      button.textContent = '비교에 담기';
+      button.setAttribute('aria-label', '비교에 담기: ' + site.name);
+      button.addEventListener('click', () => {
+        if (first.value === value) first.value = '';
+        else if (second.value === value) second.value = '';
+        else if (!first.value) first.value = value;
+        else second.value = value;
+        syncButtons();
+        if (first.value && second.value && showComparison()) {
+          output.focus();
+        } else {
+          const selected = first.value || second.value;
+          message(selected
+            ? items[Number(selected)].name + ' 선택됨. 비교할 사이트를 한 곳 더 선택해 주세요.'
+            : '비교할 사이트를 두 곳 선택해 주세요.');
+        }
+      });
+      site.card.append(button);
+      actions.push(button);
+    });
+    syncButtons();
+    output.tabIndex = -1;
+    for (const field of [first, second]) {
+      field.addEventListener('change', () => {
+        syncButtons();
+        message('두 사이트를 고른 뒤 비교 버튼을 눌러 주세요.');
+      });
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      showComparison();
     });
     message('목록에 등록된 사이트 두 곳을 선택하면 각 서비스의 정보가 나란히 표시됩니다.');
   }
