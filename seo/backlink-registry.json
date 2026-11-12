@@ -827,6 +827,48 @@
       "rel": [],
       "noindex": null,
       "notes": "공식 무료 Standard 양식에서 https://linkwiki.info/directory를 Utilities로 제출. 접수 화면: Submission received — thank you! 담당자 수동 심사 약 32일 안내. 결과는 제출 이메일로 통지. 공개 페이지 미확인. 재제출 금지."
+    },
+    {
+      "id": "theindex_fyi_20261112",
+      "platform": "theindex.fyi",
+      "submission_url": "https://theindex.fyi/submit",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 무료 양식으로 https://linkwiki.info/directory를 Curated Directories 분류에 제출. 화면: Thanks — your submission is in the queue. 편집 검수 대기. 이메일 미입력. 공개 URL 미확인. 재제출 금지."
+    },
+    {
+      "id": "topsimilarsites_20261112",
+      "platform": "TopSimilarSites",
+      "submission_url": "https://www.topsimilarsites.com/add",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 제안 양식에서 /directory와 소개문 입력 후 인증 안내가 표시되어 접수되지 않음. 사람 인증 필요. 이메일 미입력."
+    },
+    {
+      "id": "web_jamboree_20261112",
+      "platform": "Web Jamboree",
+      "submission_url": "https://www.webjamboree.net/add/",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 양식의 /computers/internet 분류로 /directory 제안. CAPTCHA 응답이 유효하지 않아 요청을 처리하지 않았다는 안내. 인증 필요, 공개 미확인. 이메일 미입력."
     }
   ]
 }
