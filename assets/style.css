@@ -65,3 +65,21 @@
 .lw-site-compare-card p{margin:7px 0}
 .lw-site-compare-card a{display:inline-block;margin-top:10px}
 @media(max-width:680px){#lw-site-compare-form{grid-template-columns:1fr}#lw-site-compare-form label,#lw-site-compare-first,#lw-site-compare-second,#lw-site-compare-form button{grid-column:1;grid-row:auto}.lw-site-compare-grid{grid-template-columns:1fr}}
+
+.v6-card .lw-card-compare-action {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 5px 9px;
+  min-height: 36px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: .85rem;
+  cursor: pointer;
+}
+.v6-card .lw-card-compare-action[aria-pressed="true"] {
+  font-weight: 700;
+  text-decoration: underline;
+}
