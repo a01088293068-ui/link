@@ -29,6 +29,7 @@ SITES = {
     "VibeLabs Lab (self-authored listing)": "https://vibelabs.kr/lab/projects/238",
     "Cozit (self-authored listing)": "https://cozit.app/projects/716284cf-ad69-42af-970c-ad3874860797",
     "JocoHunt (self-authored listing)": "https://jocohunt.com/p/3k65c9py",
+    "nologin.tools (self-authored submission)": "https://nologin.tools/tool/linkwiki-info-directory",
     "GitHub public project README (self-authored)": "https://github.com/a01088293068-ui/link",
 }
 REPORT = ROOT / "seo/backlink-public-check-report.md"

@@ -883,6 +883,51 @@
       "rel": [],
       "noindex": null,
       "notes": "공식 무료 App 양식으로 https://linkwiki.info/directory 제출. 기존에 맞는 분류가 없어 Website directories and discovery 분류 제안. 화면: Thanks! Your submission has been received and will be reviewed. 이메일 미입력. 공개 URL 미확인. 재제출 금지."
+    },
+    {
+      "id": "nologin_tools_20261112",
+      "platform": "nologin.tools",
+      "submission_url": "https://nologin.tools/submit",
+      "public_url": "https://nologin.tools/tool/linkwiki-info-directory",
+      "submission_status": "pending_review",
+      "audit_status": "noindex",
+      "last_checked": "2026-11-12",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "noopener",
+        "noreferrer"
+      ],
+      "noindex": true,
+      "notes": "무료 Standard 신청 접수. 초기 대기 1176번, 약 118일 안내. 비로그인 공개 상세 HTML에서 /directory 직접 링크, robots noindex, follow 확인. 제출자가 만든 심사 전 상세 페이지. 독립 추천으로 집계하지 않음. 재제출 금지."
+    },
+    {
+      "id": "nosignuptools_20261112",
+      "platform": "NoSignupTools",
+      "submission_url": "https://nosignuptools.com/submit",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 General Tools 양식에 /directory 및 공개 favicon 첨부 후 제출 시도. 신청 정보가 유지되고 접수 또는 실패 응답은 확인되지 않아 상태 미확정. 중복 방지를 위해 접수 여부 확인 전 재제출 보류."
+    },
+    {
+      "id": "lorik_roo_20261112",
+      "platform": "Lorik Roo",
+      "submission_url": "https://www.lorikroo.com/",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-12",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "Community Freebies의 Productivity 분류로 /directory 제출 시도. 양식이 유지되고 접수 문구나 공개 등록이 확인되지 않아 상태 미확정. 중복 제출 보류."
     }
   ]
 }
