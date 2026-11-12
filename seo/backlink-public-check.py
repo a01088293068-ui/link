@@ -26,6 +26,7 @@ SITES = {
     "StartupAccelerator": "https://startupaccelerator.dev/project/linkwiki",
     "PHIndex": "https://phindex.si/en/products/linkwiki.info",
     "VibeLabs Lab (self-authored listing)": "https://vibelabs.kr/lab/projects/238",
+    "GitHub public project README (self-authored)": "https://github.com/a01088293068-ui/link",
 }
 REPORT = ROOT / "seo/backlink-public-check-report.md"
 
