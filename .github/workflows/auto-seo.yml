@@ -53,13 +53,13 @@ jobs:
           MANUAL_PUBLISH: ${{ inputs.publish }}
         shell: bash
         run: |
-          if [[ "$EVENT_NAME" == "schedule" || "$MANUAL_PUBLISH" == "true" ]]; then
+          if [[ "$EVENT_NAME" == "workflow_dispatch" && "$MANUAL_PUBLISH" == "true" ]]; then
             python3 seo/auto_seo.py --publish
           else
             python3 seo/auto_seo.py
           fi
       - name: Commit qualified article
-        if: (github.event_name == 'schedule' || inputs.publish == true) && inputs.diagnose_models != true
+        if: github.event_name == 'workflow_dispatch' && inputs.publish == true && inputs.diagnose_models != true
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
@@ -72,7 +72,7 @@ jobs:
             echo 'No article passed review; nothing committed.'
           fi
       - name: Upload reviewed draft
-        if: github.event_name == 'workflow_dispatch' && inputs.publish != true && inputs.diagnose_models != true
+        if: github.event_name == 'schedule' || (inputs.publish != true && inputs.diagnose_models != true)
         uses: actions/upload-artifact@v4
         with:
           name: seo-reviewed-draft
