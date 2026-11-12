@@ -63,6 +63,8 @@ class CatalogConsistencyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        fields = ("name", "url", "category", "description")
+        cls.public_records = [{key: row[key] for key in fields} for row in cls.records]
 
     def test_catalog_has_unique_real_https_links_and_korean_first_order(self):
         from urllib.parse import urlsplit
@@ -85,14 +87,14 @@ class CatalogConsistencyTests(unittest.TestCase):
         path = ROOT / "dist/directory.html"
         if not path.exists():
             self.skipTest("build.py not run yet")
-        self.assertEqual(cards(path), self.records)
+        self.assertEqual(cards(path), self.public_records)
 
     def test_production_categories_contain_all_verified_listings(self):
         if not (ROOT / "dist/directory.html").exists():
             self.skipTest("build.py not run yet")
         for category, slug in CATEGORY_FILES.items():
             with self.subTest(category=category):
-                expected = [r for r in self.records if r["category"] == category]
+                expected = [r for r in self.public_records if r["category"] == category]
                 path = ROOT / "dist/categories" / (slug + ".html")
                 self.assertTrue(path.exists(), slug)
                 self.assertEqual(cards(path), expected)
@@ -125,6 +127,16 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
                                  str(ROOT / "assets/verified-directory.json")],
                                 capture_output=True, text=True, timeout=15)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+
+    def test_korcham_secure_destination_keeps_existing_comparison_anchor(self):
+        from build import directory_card_anchor
+
+        records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        site = next(record for record in records if record["name"] == "대한상공회의소 코참넷")
+        self.assertEqual(site["url"], "https://www.korcham.net/nCham/Service/Main/appl/Main.asp")
+        self.assertEqual(directory_card_anchor(site),
+                         directory_card_anchor({"url": "https://www.korcham.net/"}))
 
 
 if __name__ == "__main__":

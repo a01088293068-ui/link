@@ -841,9 +841,9 @@ def homepage_task_paths(records):
 
 def directory_card_anchor(record):
     """Stable on-page anchor; no separate indexable thin page per listing."""
-    url = record.get("url") if isinstance(record, dict) else None
+    url = record.get("anchor_url", record.get("url")) if isinstance(record, dict) else None
     if not isinstance(url, str) or not url.startswith("https://"):
-        raise RuntimeError("Directory anchor requires real HTTPS listing")
+        raise RuntimeError("Directory anchor requires a real current or previous HTTPS address")
     return "site-" + hashlib.sha256(url.encode("utf-8")).hexdigest()[:14]
 
 
