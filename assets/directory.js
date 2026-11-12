@@ -101,6 +101,7 @@
     event.preventDefault();
     updateURL();
     render();
+    count.focus();
   });
   reset.addEventListener('click', () => {
     category = '전체';

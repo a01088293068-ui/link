@@ -1673,18 +1673,20 @@ def build():
     directory_html = directory_path.read_text(encoding="utf-8")
     directory_html = sync_directory_count(directory_html, len(records))
     directory_html = replace_directory_catalog_cards(directory_html, records)
-    # Put Korean site navigation above the 171-card grid, where visitors see it.
-    shortcut_anchor = '<form class="v6-search" id="v6-form"'
-    if directory_html.count(shortcut_anchor) != 1:
-        raise RuntimeError("Directory primary search form changed")
-    directory_html = directory_html.replace(
-        shortcut_anchor, korean_first_shortcuts(records) + shortcut_anchor, 1)
+    # Lead with search before the category and editorial shortcuts.
+    search_form = re.compile(r'<form class="v6-search" id="v6-form".*?</form>', re.S)
+    forms = search_form.findall(directory_html)
+    if len(forms) != 1:
+        raise RuntimeError("Directory search form missing or duplicated")
+    directory_html = search_form.sub('', directory_html, count=1)
     directory_nav_pattern = (r'<nav aria-label="분야별 사이트모음 바로가기"'
                              r' class="lw-guide-nav">.*?</nav>')
     if len(re.findall(directory_nav_pattern, directory_html, flags=re.S)) != 1:
         raise RuntimeError("Directory category navigation changed; review required")
     directory_nav = (
-        '<nav aria-label="분야별 사이트모음 바로가기" class="lw-guide-nav">'
+        forms[0]
+        + '<nav aria-label="분야별 사이트모음 바로가기" class="lw-guide-nav">'
+        + '<a href="#v6-count">검색 결과로 이동</a>'
         + ''.join(
             f'<a href="/categories/{slug}">{escape(category)} {counts[category]}개</a>'
             for category, slug, _, _ in CATEGORY_LANDING
@@ -1700,20 +1702,16 @@ def build():
         + '<a href="#site-related-guides">관련 이용 가이드</a>'
         + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
     )
-    directory_html = re.sub(directory_nav_pattern, lambda _: directory_nav,
-                            directory_html, count=1, flags=re.S)
-    # Keep search input first; put concise task routing immediately after it,
-    # before the long static list, rather than burying guidance below 206 cards.
-    search_form = re.compile(r'(<form class="v6-search" id="v6-form".*?</form>)', re.S)
-    if len(search_form.findall(directory_html)) != 1:
-        raise RuntimeError("Directory search form missing or duplicated")
-    directory_html = search_form.sub(
-        lambda match: match.group(1)
+    directory_html = re.sub(
+        directory_nav_pattern,
+        lambda _: directory_nav
+        + korean_first_shortcuts(records)
         + directory_quick_comparison(records, CATEGORY_LANDING)
         + directory_task_paths(records)
         + directory_two_site_comparison(records)
         + directory_address_correction_request(records),
-        directory_html, count=1)
+        directory_html, count=1, flags=re.S,
+    )
 
     # Site descriptions are static and crawlable, not dependent on JavaScript.
     # Keep existing search/filter controls and every directory card unchanged.

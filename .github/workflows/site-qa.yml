@@ -98,7 +98,7 @@ jobs:
         with:
           node-version: '22'
       - name: Test directory search and comparison actions
-        run: node --test tests/test_directory_search.cjs tests/test_comparison_card_actions.cjs
+        run: node --test tests/test_directory_search.cjs tests/test_directory_dom.cjs tests/test_comparison_card_actions.cjs
       - name: Test local address hostname inspector
         run: node --test tests/test_address_inspector.cjs
       - name: Verify generated sitemap and canonical URLs
