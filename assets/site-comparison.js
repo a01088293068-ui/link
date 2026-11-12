@@ -120,7 +120,11 @@
         : '두 사이트는 등록 목록에서 서로 다른 분야로 분류되어 있습니다.';
       const disclaimer = doc.createElement('p');
       disclaimer.textContent = result.note;
-      output.replaceChildren(grid, categoryNote, disclaimer);
+      const share = doc.createElement('a');
+      const params = new URLSearchParams({ compare: [one.card.id, two.card.id].join(',') });
+      share.href = '/directory?' + params + '#directory-two-site-compare';
+      share.textContent = '이 비교의 링크 열기';
+      output.replaceChildren(grid, categoryNote, disclaimer, share);
       return true;
     }
 
@@ -169,7 +173,22 @@
       event.preventDefault();
       showComparison();
     });
-    message('목록에 등록된 사이트 두 곳을 선택하면 각 서비스의 정보가 나란히 표시됩니다.');
+    const preset = new URLSearchParams(doc.location?.search || '').get('compare');
+    if (preset === null) {
+      message('목록에 등록된 사이트 두 곳을 선택하면 각 서비스의 정보가 나란히 표시됩니다.');
+      return;
+    }
+    const [left, right, extra] = preset.split(',', 3);
+    const firstIndex = items.findIndex(site => site.card.id === left);
+    const secondIndex = items.findIndex(site => site.card.id === right);
+    if (extra !== undefined || firstIndex < 0 || secondIndex < 0 || firstIndex === secondIndex) {
+      message('비교 링크에 등록되지 않은 항목이 있습니다. 두 사이트를 목록에서 다시 선택해 주세요.');
+      return;
+    }
+    first.value = String(firstIndex);
+    second.value = String(secondIndex);
+    syncButtons();
+    showComparison();
   }
 
   if (typeof module !== 'undefined' && module.exports) {

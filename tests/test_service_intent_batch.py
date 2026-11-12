@@ -2,7 +2,7 @@
 from pathlib import Path
 import re
 import unittest
-from urllib.parse import unquote
+from urllib.parse import parse_qs, unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,6 +62,24 @@ class ServiceIntentBatchTests(unittest.TestCase):
                         self.assertTrue((ROOT / "content" / (path.strip("/").split("/")[-1] + ".md")).is_file())
                     else:
                         self.fail("Unreviewed internal path: " + target)
+
+    def test_comparison_presets_point_to_the_intended_catalog_entries(self):
+        import json
+        from build import directory_card_anchor
+
+        records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        names = {directory_card_anchor(record): record["name"] for record in records}
+        for slug in list(SLUGS)[:3]:
+            with self.subTest(slug=slug):
+                doc = (ROOT / "content" / (slug + ".md")).read_text(encoding="utf-8")
+                link = re.search(r"\]\((/directory\?compare=[^)]+)\)", doc)
+                self.assertIsNotNone(link)
+                url = urlsplit(link.group(1))
+                self.assertEqual(url.fragment, "directory-two-site-compare")
+                ids = parse_qs(url.query)["compare"][0].split(",")
+                self.assertEqual(len(ids), 2)
+                for card_id, expected in zip(ids, SLUGS[slug]):
+                    self.assertIn(expected, names[card_id])
 
     def test_build_exposes_all_five_canonicals_and_directory_links(self):
         dist = ROOT / "dist"
