@@ -13,10 +13,10 @@ def fixture(card_count=2):
                  '</head><body><h1>주소모음·링크모음·사이트모음</h1>'
                  f'<p>{card_count}개 등록 사이트</p><nav>{nav}</nav>'
                  '<form id="v6-form"></form>'
+                 f'<div id="v6-results">{cards}</div>'
                  '<section id="directory-quick-compare"><ul>' + nav
                  + '<a href="#site-00000000000000">첫 번째 항목</a>'
-                 + '</ul></section>'
-                 f'<div id="v6-results">{cards}</div></body></html>')
+                 + '</ul></section></body></html>')
     home = ('<html><head><title>주소모음·링크모음·사이트모음</title>'
             '<link rel="canonical" href="'+ORIGIN+'/"></head><body>'
             '<a href="/directory">directory</a></body></html>')

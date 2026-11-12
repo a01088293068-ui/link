@@ -32,8 +32,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(directory.count('id="directory-task-paths"'), 1)
         self.assertLess(directory.index('id="v6-form"'),
                         directory.index('id="directory-task-paths"'))
-        self.assertLess(directory.index('id="directory-task-paths"'),
-                        directory.index('id="v6-results"'))
+        self.assertLess(directory.index('id="v6-form"'), directory.index('id="v6-results"'))
+        self.assertLess(directory.index('id="v6-results"'), directory.index('id="directory-task-paths"'))
         for name in (
             "국민신문고", "정부24", "KIPRIS 지식재산정보검색",
             "특허로", "K-Startup 창업지원포털", "기업마당",

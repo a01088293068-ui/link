@@ -47,6 +47,12 @@ class KoreanTopicGuidesTests(unittest.TestCase):
                     for url in PUBLIC_SERVICE_COMPARISONS:
                         self.assertIn(url, internal)
                         self.assertTrue((ROOT / "content" / (url.strip("/").split("/")[-1] + ".md")).is_file())
+                if filename in ("seo-20261110-korean-sports-live-scores-guide.md",
+                                "seo-20261110-korean-ott-video-site-selection-guide.md"):
+                    time_guide = "/blog/seo-20261111-dfe1e7199b/"
+                    expected += (time_guide,)
+                    self.assertIn(time_guide, internal)
+                    self.assertTrue((ROOT / "content/seo-20261111-dfe1e7199b.md").is_file())
                 for url in internal:
                     if url.startswith("/categories/"):
                         self.assertIn(url.split("/")[2], CATEGORIES)

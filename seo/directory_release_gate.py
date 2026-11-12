@@ -81,8 +81,8 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         first = directory_html.index('id="directory-quick-compare"')
         search = directory_html.find('id="v6-form"')
         results = directory_html.find('id="v6-results"')
-        if search < 0 or results < 0 or not (search < first < results):
-            issues.append("directory category comparison not adjacent to search")
+        if search < 0 or results < 0 or not (search < results < first):
+            issues.append("directory results must precede the category comparison")
         section = directory_html[first:directory_html.find("</section>", first)]
         if any('href="/categories/' + slug + '"' not in section for slug in CATEGORIES):
             issues.append("quick category comparison missing category links")

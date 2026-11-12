@@ -689,6 +689,8 @@ def directory_relevant_guides(posts):
         ("행정 증명서와 민원 제안은 어디로 가나요?", ("정부24와 국민신문고 차이",)),
         ("공공데이터 파일과 통계표는 어떻게 다른가요?", ("공공데이터포털과 KOSIS 차이", "공공데이터포털과 KOSIS 선택법")),
         ("웹툰과 웹소설 원작은 어디에서 찾나요?", ("국내 웹툰 사이트모음",)),
+        ("KBO·K리그 일정과 해외 경기 점수는 어디서 보나요?", ("스포츠 사이트모음: KBO",)),
+        ("해외 경기 시간이 다른 날짜로 보이면 어떻게 하나요?", ("해외 스포츠 경기 한국 시간 확인법",)),
         ("해외 한인 생활정보를 지역별로 어디서 찾나요?", ("해외 한인 사이트모음",)),
         ("취업·장학금·복지 정보는 어떻게 찾나요?", ("고용24·한국장학재단·복지로 구분",)),
         ("글쓰기·번역·디자인 AI는 어떻게 고르나요?", ("한국어 AI 사이트모음 선택법",)),
@@ -1684,9 +1686,7 @@ def build():
     if len(re.findall(directory_nav_pattern, directory_html, flags=re.S)) != 1:
         raise RuntimeError("Directory category navigation changed; review required")
     directory_nav = (
-        forms[0]
-        + '<nav aria-label="분야별 사이트모음 바로가기" class="lw-guide-nav">'
-        + '<a href="#v6-count">검색 결과로 이동</a>'
+        '<nav aria-label="분야별 사이트모음 바로가기" class="lw-guide-nav">'
         + ''.join(
             f'<a href="/categories/{slug}">{escape(category)} {counts[category]}개</a>'
             for category, slug, _, _ in CATEGORY_LANDING
@@ -1697,20 +1697,34 @@ def build():
         + '<a href="#site-category-comparison">분야별 등록 예시</a>'
         + '<a href="#site-purpose-comparison">목적별 선택법</a>'
         + '<a href="#directory-everyday-tasks">생활 목적별 비교</a>'
-        + '<a href="#directory-two-site-compare">두 사이트 직접 비교</a>'
         + '<a href="#directory-correction-request">주소 오류 제보</a>'
         + '<a href="#site-related-guides">관련 이용 가이드</a>'
         + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
     )
+    search_navigation = (
+        '<nav aria-label="검색 도구 바로가기" class="lw-guide-nav">'
+        '<a href="#v6-count">검색 결과로 이동</a>'
+        '<a href="/categories/">분야별 사이트</a>'
+        '<a href="#directory-two-site-compare">두 사이트 직접 비교</a>'
+        '<a href="#site-related-guides">관련 이용 가이드</a></nav>'
+    )
     directory_html = re.sub(
-        directory_nav_pattern,
-        lambda _: directory_nav
+        directory_nav_pattern, lambda _: forms[0] + search_navigation,
+        directory_html, count=1, flags=re.S,
+    )
+    after_results = '<nav aria-label="관련 안내" class="lw-guide-nav">'
+    if directory_html.count(after_results) != 1:
+        raise RuntimeError("Directory related navigation changed; review required")
+    directory_html = directory_html.replace(
+        after_results,
+        directory_nav
         + korean_first_shortcuts(records)
         + directory_quick_comparison(records, CATEGORY_LANDING)
         + directory_task_paths(records)
         + directory_two_site_comparison(records)
-        + directory_address_correction_request(records),
-        directory_html, count=1, flags=re.S,
+        + directory_address_correction_request(records)
+        + after_results,
+        1,
     )
 
     # Site descriptions are static and crawlable, not dependent on JavaScript.
