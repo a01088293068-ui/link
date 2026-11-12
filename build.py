@@ -1509,7 +1509,7 @@ def copy_public_sources(source_root, output_root):
 
 
 
-def article_provenance(title, canonical, published_date):
+def article_provenance(title, canonical, published_date, modified_date=None):
     """Describe editorial evidence without invented reviewers or testing."""
     markup = (
         '<aside class="blog-source-note" aria-label="글의 정보 근거">'
@@ -1533,6 +1533,8 @@ def article_provenance(title, canonical, published_date):
         "publisher": {"@type": "Organization", "name": "링크위키", "url": SITE + "/"},
         "inLanguage": "ko",
     }
+    if modified_date and modified_date > published_date:
+        schema["dateModified"] = modified_date
     script = '<script type="application/ld+json">' + json.dumps(
         schema, ensure_ascii=False, separators=(",", ":")
     ).replace("<", "\\u003c") + '</script>'
@@ -1550,6 +1552,8 @@ def build():
         if improved_html != existing_html:
             existing_page.write_text(improved_html, encoding='utf-8')
     header, footer = chrome()
+    significant_updates = json.loads(
+        (ROOT / "seo" / "significant-page-updates.json").read_text(encoding="utf-8"))
     posts = []
     for source in sorted(POSTS.glob("*.md"), reverse=True) if POSTS.exists() else []:
         body = source.read_text(encoding="utf-8-sig")
@@ -1558,26 +1562,27 @@ def build():
         name = slug_for(source)
         title = extract_title(body)
         desc = excerpt(re.sub(r'^#.*$', '', body, count=1, flags=re.M))
-        date = re.search(r'20\d{6}', source.stem)
-        date_text = date.group() if date else ""
-        if date_text:
-            try:
-                display_date = datetime.strptime(date_text, "%Y%m%d").strftime("%Y.%m.%d")
-            except ValueError:
-                display_date = ""
-        else:
-            display_date = ""
         url = f"/blog/{quote(name)}/"
         canonical = SITE + url
+        published_date = stable_post_lastmod(source)
+        modified_date = significant_updates.get(url)
+        display_date = published_date.replace("-", ".") if published_date else ""
+        date_labels = (
+            f'게시 <time datetime="{published_date}">{display_date}</time>'
+            if published_date else ""
+        )
+        if published_date and modified_date and modified_date > published_date:
+            modified_display = escape(modified_date.replace("-", "."))
+            date_labels += f' · 수정 <time datetime="{escape(modified_date)}">{modified_display}</time>'
         content_body = re.sub(r'^#\s+.*(?:\n|$)', '', body, count=1)
         provenance, structured_article = article_provenance(
-            title, canonical, stable_post_lastmod(source))
+            title, canonical, published_date, modified_date)
         from seo.auto_seo import related_categories
         related_links = article_category_links(title, related_categories(title))
         article = (f'<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / '
                    f'<a href="/blog/">사이트 정보</a></nav><article class="blog-article">'
                    f'<p class="eyebrow">LINKWIKI · 사이트 정보</p><h1>{escape(title)}</h1>'
-                   + (f'<p class="blog-date">{display_date}</p>' if display_date else '') +
+                   + (f'<p class="blog-date">{date_labels}</p>' if date_labels else '') +
                    f'<div class="blog-content">{markdown(content_body)}</div>'
                    + provenance +
                    '<div class="blog-bottom"><a href="/">주소모음·링크모음 홈</a>'
@@ -1593,7 +1598,7 @@ def build():
             built_html = built_html.replace("</head>", structured_article + "</head>", 1)
         target.write_text(built_html, encoding="utf-8")
         posts.append({"title": title, "description": desc, "url": url, "date": display_date,
-                      "modified": stable_post_lastmod(source)})
+                      "published": published_date, "modified": modified_date or published_date})
 
     # Related articles add genuine crawlable paths between matching guides.
     # Construct after all posts are collected, without modifying Markdown.
@@ -1770,9 +1775,7 @@ def build():
     hub_path.write_text(document("분야별 사이트모음·링크모음", "커뮤니티, 웹툰, 스포츠, AI 도구, 검색·포털, 영상·OTT, 해외 교민 등 분야별 사이트 목록과 주소 확인 방법을 살펴보세요.",
                                  SITE + "/categories/", hub, header, footer), encoding="utf-8")
     from seo.directory_maintenance import render as maintenance_render
-    maintenance_changes = json.loads(
-        (ROOT / "seo" / "significant-page-updates.json").read_text(encoding="utf-8"))
-    maintenance_body = maintenance_render(records, maintenance_changes, CATEGORY_LANDING)
+    maintenance_body = maintenance_render(records, significant_updates, CATEGORY_LANDING)
     maintenance_path = OUT / "guides" / "directory-maintenance.html"
     maintenance_path.write_text(
         document("사이트모음 관리 기록과 주소 점검 범위",
@@ -1829,21 +1832,19 @@ def build():
     hub_entries = [{"url": "/categories/", "modified": None},
                    {"url": "/blog/", "modified": max(dated_posts) if dated_posts else None},
                    {"url": "/guides/directory-maintenance",
-                    "modified": maintenance_changes.get("/directory")}]
+                    "modified": significant_updates.get("/directory")}]
     for entry in hub_entries + posts:
         loc = SITE + entry["url"]
         if loc in existing:
             continue
         element = ET.SubElement(urlset, f"{{{ns}}}url")
         ET.SubElement(element, f"{{{ns}}}loc").text = loc
-        if entry["modified"]:
-            ET.SubElement(element, f"{{{ns}}}lastmod").text = entry["modified"]
+        initial_date = entry.get("published", entry["modified"])
+        if initial_date:
+            ET.SubElement(element, f"{{{ns}}}lastmod").text = initial_date
         existing.add(loc)
     # Document only dated, substantive content edits (not every CI build).
-    changes = ROOT / "seo" / "significant-page-updates.json"
-    if changes.is_file():
-        apply_significant_lastmods(
-            urlset, json.loads(changes.read_text(encoding="utf-8")), ns)
+    apply_significant_lastmods(urlset, significant_updates, ns)
     tree.write(OUT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     (OUT / "sitemap-v2.xml").write_bytes((OUT / "sitemap.xml").read_bytes())
     from seo.directory_release_gate import validate as validate_directory_release, CATEGORIES as RELEASE_CATEGORIES

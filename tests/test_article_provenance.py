@@ -56,6 +56,30 @@ class ArticleProvenanceTests(unittest.TestCase):
                     self.assertIn('"datePublished":', html)
                     self.assertNotIn('"@type":"Person"', html)
 
+    def test_visible_and_structured_update_dates_match_the_sitemap(self):
+        import xml.etree.ElementTree as ET
+
+        dist = ROOT / "dist"
+        if not (dist / "sitemap.xml").is_file():
+            self.skipTest("Build first")
+        updates = json.loads((ROOT / "seo/significant-page-updates.json").read_text())
+        ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        dates = {
+            row.findtext("s:loc", namespaces=ns): row.findtext("s:lastmod", namespaces=ns)
+            for row in ET.parse(dist / "sitemap.xml").getroot()
+        }
+        for url, day in updates.items():
+            if not url.startswith("/blog/"):
+                continue
+            with self.subTest(url=url):
+                html = (dist / url.strip("/") / "index.html").read_text()
+                scripts = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html)
+                posting = next(json.loads(script) for script in scripts if '"BlogPosting"' in script)
+                self.assertLess(posting["datePublished"], day)
+                self.assertEqual(posting["dateModified"], day)
+                self.assertIn(f'수정 <time datetime="{day}">', html)
+                self.assertEqual(dates["https://linkwiki.info" + url], day)
+
     def test_about_page_explains_automated_article_workflow_limits(self):
         about = (ROOT / "about.html").read_text(encoding="utf-8")
         self.assertIn("글 작성과 정보 확인 범위", about)
