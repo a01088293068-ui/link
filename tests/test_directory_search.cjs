@@ -82,6 +82,7 @@ test('Pasted HTTPS/HTTP URLs and www-prefix resolve exact registered services', 
     'https://cafe.naver.com/joonggonara',
     'http://cafe.naver.com/joonggonara?utm_source=test#foo',
     'www.cafe.naver.com/joonggonara/',
+    'cafe.naver.com/joonggonara/?utm_source=test#foo',
   ]) {
     assert.deepEqual(sortResults(entries, query).map(x => x.name), ['중고나라'], query);
   }

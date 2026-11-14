@@ -16,10 +16,12 @@
   }
   function pastedUrl(value) {
     const raw = String(value ?? '').trim();
-    if (!/^(?:https?:\/\/|www\.)/i.test(raw)) return null;
+    const explicit = /^https?:\/\//i.test(raw);
+    const copiedAddress = /^(?:[a-z0-9-]+\.)+[a-z0-9-]+(?::\d+)?[/?#][^\s]*$/i.test(raw);
+    if (!explicit && !copiedAddress && !/^www\./i.test(raw)) return null;
     try {
-      const parsed = new URL(/^www\./i.test(raw) ? 'https://' + raw : raw);
-      if (!/^https?:$/.test(parsed.protocol)) return null;
+      const parsed = new URL(explicit ? raw : 'https://' + raw);
+      if (parsed.username || parsed.password) return null;
       return {
         host: parsed.hostname.toLocaleLowerCase('ko').replace(/^www\./, ''),
         path: decodeURI(parsed.pathname).replace(/\/$/, '') || '/'
