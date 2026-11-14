@@ -320,5 +320,41 @@
     "checked_on": "2026-11-14",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://ohou.se/",
+    "name": "오늘의집",
+    "source_url": "https://ohou.se/",
+    "scope": "오늘의집 공식 첫 화면에서 인테리어 콘텐츠·쇼핑·시공 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.daangn.com/kr/",
+    "name": "당근",
+    "source_url": "https://www.daangn.com/kr/",
+    "scope": "당근 한국 공식 첫 화면에서 지역 기반 중고거래·동네 정보 서비스 안내와 canonical 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://mobile.a-bly.com/",
+    "name": "에이블리",
+    "source_url": "https://mobile.a-bly.com/",
+    "scope": "에이블리 공식 모바일 웹 첫 화면에서 패션·뷰티·라이프 쇼핑 서비스 안내와 최종 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.wconcept.co.kr/",
+    "name": "W컨셉",
+    "source_url": "https://display.wconcept.co.kr/rn/women",
+    "scope": "W컨셉 공식 사이트의 패션·뷰티·라이프 편집숍 첫 화면 및 canonical 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
