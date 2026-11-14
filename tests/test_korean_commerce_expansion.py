@@ -38,7 +38,7 @@ class KoreanCommerceExpansionTests(unittest.TestCase):
                 self.assertEqual(row["name"], name)
                 self.assertEqual(row["source_url"], source)
                 self.assertEqual(row["evidence_type"], "service_page")
-                self.assertEqual(row["checked_on"], "2026-11-15")
+                self.assertEqual(row["checked_on"], "2026-11-14")
                 self.assertEqual(row["freshness_days"], 180)
 
     def test_shopping_entries_remain_in_canonical_category_order(self):
