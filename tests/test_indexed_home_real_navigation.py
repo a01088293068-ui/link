@@ -54,6 +54,17 @@ class HomepageRealNavigationTests(unittest.TestCase):
         self.assertIn('action="/directory"', html)
         self.assertNotIn('id="directory-two-site-compare"', html)
 
+    def test_homepage_exposes_every_category_and_the_full_link_hub(self):
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        parser = Links()
+        parser.feed(html)
+        hrefs = {link.get("href") for link in parser.links}
+        for _, slug, _, _ in CATEGORY_LANDING:
+            with self.subTest(slug=slug):
+                self.assertIn(f"categories/{slug}.html", hrefs)
+        self.assertIn("categories/", hrefs)
+        self.assertIn("directory.html", hrefs)
+
     def test_unsafe_data_does_not_enter_indexed_homepage(self):
         records = [dict(r) for r in self.records]
         first_category = CATEGORY_LANDING[0][0]
