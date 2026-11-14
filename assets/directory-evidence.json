@@ -212,5 +212,113 @@
     "checked_on": "2026-11-14",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.tmoney.co.kr/",
+    "name": "티머니",
+    "source_url": "https://www.tmoney.co.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.knps.or.kr/",
+    "name": "국립공원공단",
+    "source_url": "https://www.knps.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kice.re.kr/",
+    "name": "한국교육과정평가원",
+    "source_url": "https://www.kice.re.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bok.or.kr/",
+    "name": "한국은행",
+    "source_url": "https://www.bok.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mcst.go.kr/",
+    "name": "문화체육관광부",
+    "source_url": "https://www.mcst.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mois.go.kr/",
+    "name": "행정안전부",
+    "source_url": "https://www.mois.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.moleg.go.kr/",
+    "name": "법제처",
+    "source_url": "https://www.moleg.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.humanrights.go.kr/",
+    "name": "국가인권위원회",
+    "source_url": "https://www.humanrights.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.keco.or.kr/",
+    "name": "한국환경공단",
+    "source_url": "https://www.keco.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.museum.go.kr/",
+    "name": "국립중앙박물관",
+    "source_url": "https://www.museum.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.korean.go.kr/",
+    "name": "국립국어원",
+    "source_url": "https://www.korean.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kisa.or.kr/",
+    "name": "한국인터넷진흥원 KISA",
+    "source_url": "https://www.kisa.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
