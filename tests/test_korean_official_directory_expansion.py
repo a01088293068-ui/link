@@ -44,6 +44,11 @@ class VerifiedPublicServiceExpansionTests(TestCase):
         self.assertTrue(all(row["candidate_url"] in published for row in added))
         self.assertEqual(len({row["candidate_url"] for row in evidence["candidates"]}), 51)
 
+    def test_sports_promotion_service_uses_the_sports_category(self):
+        item = next(record for record in self.records
+                    if record["name"] == "서울올림픽기념 국민체육진흥공단")
+        self.assertEqual(item["category"], "스포츠")
+
     def test_task_paths_offer_real_named_destinations_and_practical_disambiguation(self):
         html = directory_task_paths(self.records)
         for name in NAMES:
