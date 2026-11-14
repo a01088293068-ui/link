@@ -1023,6 +1023,20 @@
       "rel": [],
       "noindex": null,
       "notes": "공식 양식에서 linkwiki.info is in the review queue 확인. 공개 상세 페이지 및 직접 href 미확인. 기존 공개 방문 버튼은 내부 /go/ 경유. 재제출 금지."
+    },
+    {
+      "id": "c0d07104c784ae2d",
+      "platform": "Cootab",
+      "submission_url": "https://cootab.com/recommend-site",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "운영 측 제안이라고 명시해 홈페이지 제출. Recommendation received 접수 화면 확인. 공개 상세 링크 미확인. 재제출 금지."
     }
   ]
 }
