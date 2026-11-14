@@ -821,6 +821,29 @@ def homepage_search_guide_links(posts_root=POSTS):
     )
 
 
+def quick_service_searches(records, *, collapsed=False):
+    """Task labels open real directory searches without typing."""
+    registered = {item["name"] for item in records}
+    tasks = (
+        ("증명서 발급", "정부24"),
+        ("국세 신고", "국세청 홈택스"),
+        ("일자리 검색", "고용24"),
+        ("프로야구 일정", "KBO 공식 홈페이지"),
+        ("웹툰 보기", "네이버 웹툰"),
+    )
+    navigation = (
+        '<nav class="lw-guide-nav" aria-label="업무별 사이트 검색">'
+        + ''.join(
+            f'<a href="/directory?q={quote(name, safe="")}">{label} · {escape(name)}</a>'
+            for label, name in tasks if name in registered
+        )
+        + '</nav>'
+    )
+    if collapsed:
+        return '<details><summary>업무별 사이트 검색</summary>' + navigation + '</details>'
+    return navigation
+
+
 def homepage_task_paths(records):
     """Match broad directory-search intent with real multi-category tasks."""
     by_name = {
@@ -1667,6 +1690,8 @@ def build():
     )
     if count_replacements < 2:
         raise RuntimeError("Homepage directory count labels changed; review required")
+    search_form_end = home.index("</form>", home.index('id="lw-home-query"')) + len("</form>")
+    home = home[:search_form_end] + quick_service_searches(first_party_records) + home[search_form_end:]
     homepage_intents = core_search_intent_section(actual_count)
     real_directory_examples = homepage_directory_examples(first_party_records, CATEGORY_LANDING)
     home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_intents + homepage_search_guide_links() + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
@@ -1720,7 +1745,7 @@ def build():
         '<a href="#site-related-guides">관련 이용 가이드</a></nav>'
     )
     directory_html = re.sub(
-        directory_nav_pattern, lambda _: forms[0] + search_navigation,
+        directory_nav_pattern, lambda _: forms[0] + search_navigation + quick_service_searches(records, collapsed=True),
         directory_html, count=1, flags=re.S,
     )
     after_results = '<nav aria-label="관련 안내" class="lw-guide-nav">'
