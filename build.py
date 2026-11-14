@@ -821,7 +821,7 @@ def homepage_search_guide_links(posts_root=POSTS):
     )
 
 
-def quick_service_searches(records):
+def quick_service_searches(records, *, collapsed=False):
     """Task labels open real directory searches without typing."""
     registered = {item["name"] for item in records}
     tasks = (
@@ -831,7 +831,7 @@ def quick_service_searches(records):
         ("프로야구 일정", "KBO 공식 홈페이지"),
         ("웹툰 보기", "네이버 웹툰"),
     )
-    return (
+    navigation = (
         '<nav class="lw-guide-nav" aria-label="업무별 사이트 검색">'
         + ''.join(
             f'<a href="/directory?q={quote(name, safe="")}">{label} · {escape(name)}</a>'
@@ -839,6 +839,9 @@ def quick_service_searches(records):
         )
         + '</nav>'
     )
+    if collapsed:
+        return '<details><summary>업무별 사이트 검색</summary>' + navigation + '</details>'
+    return navigation
 
 
 def homepage_task_paths(records):
@@ -1742,7 +1745,7 @@ def build():
         '<a href="#site-related-guides">관련 이용 가이드</a></nav>'
     )
     directory_html = re.sub(
-        directory_nav_pattern, lambda _: forms[0] + search_navigation + quick_service_searches(records),
+        directory_nav_pattern, lambda _: forms[0] + search_navigation + quick_service_searches(records, collapsed=True),
         directory_html, count=1, flags=re.S,
     )
     after_results = '<nav aria-label="관련 안내" class="lw-guide-nav">'
