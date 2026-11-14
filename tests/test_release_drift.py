@@ -2,8 +2,8 @@ import unittest
 from email.message import Message
 from seo.check_release_drift import BASE, check
 
-SOURCE = "<title>주소모음 링크모음 사이트모음</title><h1>주소모음 링크모음 사이트모음</h1>"
-HOME = f'<title>주소모음 링크모음 사이트모음</title><link rel="canonical" href="{BASE}/"><h1>주소모음 링크모음 사이트모음</h1>'
+SOURCE = "<title>주소모음 | 사이트 주소 찾기 - 링크위키</title><h1>사이트 주소모음</h1>"
+HOME = f'<title>주소모음 | 사이트 주소 찾기 - 링크위키</title><link rel="canonical" href="{BASE}/"><h1>사이트 주소모음</h1>'
 DIRECTORY = f'<link rel="canonical" href="{BASE}/directory">'
 ROBOTS = f"User-agent: *\nAllow: /\nSitemap: {BASE}/sitemap.xml\n"
 SITEMAP = f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>{BASE}/</loc></url><url><loc>{BASE}/directory</loc></url></urlset>'
@@ -25,11 +25,16 @@ class ReleaseDriftTests(unittest.TestCase):
     def test_stale_title_and_h1(self):
         def stale(path):
             status, url, body, headers = fixture(path)
-            if path == "/": body = body.replace("주소모음 링크모음 사이트모음", "오래된 홈페이지")
+            if path == "/": body = body.replace("주소모음 | 사이트 주소 찾기 - 링크위키", "오래된 홈페이지").replace("사이트 주소모음", "오래된 홈페이지")
             return status, url, body, headers
         problems, _ = check(SOURCE, stale)
         self.assertTrue(any("differs" in p for p in problems))
         self.assertTrue(any("missing 주소모음" in p for p in problems))
+
+    def test_home_title_checks_its_own_address_intent_not_other_landing_terms(self):
+        problems, _ = check(SOURCE, fixture)
+        self.assertFalse(any("title missing 링크모음" in p or "title missing 사이트모음" in p
+                             for p in problems))
 
     def test_noindex_and_missing_sitemap(self):
         def broken(path):

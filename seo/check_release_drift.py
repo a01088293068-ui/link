@@ -136,7 +136,11 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
                 for tag in ("title", "h1"):
                     if source.value(tag) != page.value(tag):
                         errors.append(f"/: live {tag} differs from built output")
-                for keyword in ("주소모음", "링크모음", "사이트모음"):
+                # The homepage serves the address-finding intent. Other
+                # primary intents have their own landing pages; requiring all
+                # three phrases in this title both duplicates intent and
+                # contradicts the published page strategy.
+                for keyword in ("주소모음",):
                     if keyword not in page.value("title"):
                         errors.append(f"/: title missing {keyword}")
         except Exception as exc:
