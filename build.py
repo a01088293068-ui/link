@@ -427,7 +427,8 @@ def homepage_directory_examples(records, categories):
 
     The canonical /directory remains the place for detailed per-site
     descriptions, hosts, search, filters and comparison tools. Homepage cards
-    show at most two *real names* per category to help users choose a path.
+    show five verified, independently named destinations per category, so users
+    arriving via an already-indexed homepage can reach more sites directly.
     """
     if not isinstance(records, list) or not records:
         raise RuntimeError("Homepage examples require verified directory data")
@@ -438,7 +439,7 @@ def homepage_directory_examples(records, categories):
             if isinstance(item, dict) and item.get("category") == category
             and isinstance(item.get("name"), str) and item["name"].strip()
             and isinstance(item.get("description"), str) and item["description"].strip()
-        ][:2]
+        ][:5]
         if not entries:
             raise RuntimeError(f"Missing descriptive directory example: {category}")
         for entry in entries:
@@ -446,8 +447,8 @@ def homepage_directory_examples(records, categories):
             if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
                 raise RuntimeError(f"Invalid registered example URL: {category}")
         # A real user can open a registered service directly from the
-        # indexed homepage. Keep only two per category so /directory remains
-        # the unique exhaustive searchable collection.
+        # indexed homepage. Five per category remain a curated small fraction
+        # of the unique exhaustive /directory collection.
         examples = " · ".join(
             '<a href="' + escape(item["url"], quote=True) +
             '" target="_blank" rel="noopener noreferrer external" aria-label="' +
