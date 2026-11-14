@@ -40,7 +40,8 @@
   if (!entries.length) return;
 
   const categories = ['전체', '검색·포털', '영상·OTT', '커뮤니티', '만화',
-                      '스포츠', 'AI 도구', '한인교민', '만화·웹툰'];
+                      '스포츠', 'AI 도구', '한인교민', '만화·웹툰', '금융·경제',
+                      '교육·취업', '뉴스·언론', '쇼핑·가격비교', '생활·교통·여행'];
   const elements = new Map(entries.map(entry => [entry.site, entry.element]));
   let category = '전체';
 
