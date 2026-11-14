@@ -34,7 +34,7 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
                 self.assertNotIn("등록 도메인: " + entries[0]["url"], overview)
 
     def test_full_directory_is_the_sole_all_records_details_page(self):
-        self.assertEqual(len(self.records), 228)
+        self.assertEqual(len(self.records), 229)
         path = ROOT / "dist" / "directory.html"
         home = ROOT / "dist" / "index.html"
         if not path.exists() or not home.exists():

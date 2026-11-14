@@ -326,6 +326,38 @@ def polish_home_intent(home):
                 raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
         else:
             raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
+    title = f"주소모음 | {total_sites}개 사이트 주소 검색 - 링크위키"
+    description = (
+        "사이트 이름이나 도메인으로 등록된 주소를 찾고, 분야별 서비스 설명과 이용 조건을 살펴보세요. "
+        "외부 주소의 공식성 및 실시간 접속 여부는 서비스 운영기관에서 확인하세요."
+    )
+    home, title_count = re.subn(r"<title>.*?</title>", "<title>" + escape(title) + "</title>", home, count=1, flags=re.S)
+    if title_count != 1:
+        raise RuntimeError("Homepage search title missing")
+    for key, value in (("property", "og:title"), ("name", "twitter:title")):
+        pattern = re.compile(r"<meta\b(?=[^>]*\b" + key + r"=\"" + re.escape(value) + r"\")[^>]*>", re.I)
+        home, count = pattern.subn(
+            lambda match: re.sub(r"\bcontent=\"[^\"]*\"", 'content="' + escape(title, quote=True) + '"', match.group(0), count=1),
+            home, count=1,
+        )
+        if count != 1:
+            raise RuntimeError("Homepage social title missing: " + value)
+    for key, value in (("name", "description"), ("property", "og:description"),
+                       ("name", "twitter:description")):
+        pattern = re.compile(r"<meta\b(?=[^>]*\b" + key + r"=\"" + re.escape(value) + r"\")[^>]*>", re.I)
+        home, count = pattern.subn(
+            lambda match: re.sub(r"\bcontent=\"[^\"]*\"", 'content="' + escape(description, quote=True) + '"', match.group(0), count=1),
+            home, count=1,
+        )
+        if count != 1:
+            raise RuntimeError("Homepage description missing: " + value)
+    schema = re.compile(r'<script\b[^>]*type="application/ld\+json"[^>]*>(.*?)</script>', re.S)
+    match = schema.search(home)
+    if match:
+        data = json.loads(match.group(1))
+        if data.get("@type") == "WebSite":
+            data["description"] = description
+            home = home[:match.start(1)] + json.dumps(data, ensure_ascii=False) + home[match.end(1):]
     return home
 
 
@@ -419,6 +451,13 @@ def sync_directory_count(html, total_sites):
     )
     if inline_count < 5 or status_count != 1:
         raise RuntimeError("Directory SEO count markers changed; review required")
+    if 'id="directory-heading"' in html:
+        heading, changed = re.subn(
+            r'(<h1\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)',
+            r'\1사이트모음: 이름·도메인으로 사이트 비교\2', html, count=1, flags=re.S)
+        if changed != 1:
+            raise RuntimeError("Directory intent heading malformed")
+        html = heading
     return html
 
 
@@ -884,11 +923,54 @@ def directory_card_anchor(record):
     return "site-" + hashlib.sha256(url.encode("utf-8")).hexdigest()[:14]
 
 
-def render_directory_catalog_cards(records):
+def load_directory_evidence(records):
+    """Load only explicit, source-backed URL and service-scope checks."""
+    path = ROOT / "assets" / "directory-evidence.json"
+    evidence = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else []
+    if not isinstance(evidence, list):
+        raise RuntimeError("Directory evidence must be a list")
+    known = {item.get("url"): item for item in records if isinstance(item, dict)}
+    checked = {}
+    from datetime import date
+    for row in evidence:
+        if not isinstance(row, dict):
+            raise RuntimeError("Directory evidence record must be an object")
+        url, name, source = row.get("url"), row.get("name"), row.get("source_url")
+        scope, checked_on = row.get("scope"), row.get("checked_on")
+        if (not isinstance(url, str) or url not in known or known[url].get("name") != name
+                or not isinstance(source, str) or urlparse(source).scheme != "https"
+                or not urlparse(source).hostname or not isinstance(scope, str) or not scope.strip()
+                or not isinstance(checked_on, str)):
+            raise RuntimeError("Incomplete or mismatched directory evidence: " + str(url))
+        try:
+            checked_date = date.fromisoformat(checked_on)
+            if checked_date > date.today():
+                raise RuntimeError("Source-check date is in the future: " + str(url))
+        except ValueError as error:
+            raise RuntimeError("Invalid source-check date: " + str(url)) from error
+        for change in row.get("history", []):
+            if (not isinstance(change, dict) or not isinstance(change.get("date"), str)
+                    or not isinstance(change.get("event"), str) or not change["event"].strip()
+                    or not isinstance(change.get("source_url"), str)
+                    or urlparse(change["source_url"]).scheme != "https"
+                    or not urlparse(change["source_url"]).hostname):
+                raise RuntimeError("Invalid source-backed directory history: " + str(url))
+            try:
+                date.fromisoformat(change["date"])
+            except ValueError as error:
+                raise RuntimeError("Invalid directory history date: " + str(url)) from error
+        if url in checked:
+            raise RuntimeError("Duplicate directory evidence URL: " + url)
+        checked[url] = row
+    return checked
+
+
+def render_directory_catalog_cards(records, evidence=None):
     """Render crawlable cards directly from the verified catalog."""
     if not isinstance(records, list) or len(records) < 200:
         raise RuntimeError("Verified directory catalog unexpectedly empty")
     cards = []
+    evidence = evidence or {}
     seen = set()
     for item in records:
         if not isinstance(item, dict):
@@ -905,6 +987,23 @@ def render_directory_catalog_cards(records):
         if url in seen:
             raise RuntimeError("Duplicate directory URL: " + url)
         seen.add(url)
+        source = evidence.get(url)
+        evidence_markup = ''
+        if source:
+            evidence_markup = (
+                '<p class="directory-evidence"><span>공식 출처 안내 대조</span> · '
+                '<a class="directory-source" href="' + escape(source["source_url"], quote=True) + '" '
+                'rel="noopener noreferrer external" target="_blank">근거 보기 ↗</a>'
+                '<small>' + escape(source["scope"]) + ' · 확인 '
+                + escape(source["checked_on"]) + '</small>'
+                + ''.join(
+                    '<small class="directory-history">변경 기록 (' + escape(change["date"]) + '): '
+                    + escape(change["event"]) + ' · '
+                    + '<a class="directory-source" href="' + escape(change["source_url"], quote=True) + '" '
+                    'rel="noopener noreferrer external" target="_blank">근거</a></small>'
+                    for change in source.get("history", [])
+                ) + '</p>'
+            )
         cards.append(
             '<article class="v6-card" id="' + directory_card_anchor(item) + '"><small>' + escape(category) +
             '</small><h3>' + escape(name) + '</h3><p>' + escape(description) +
@@ -912,12 +1011,13 @@ def render_directory_catalog_cards(records):
             '<a aria-label="' + escape(name, quote=True) +
             ' 사이트 새 창에서 열기" href="' + escape(url, quote=True) +
             '" rel="noopener noreferrer external" target="_blank">사이트 방문 ↗</a>'
+            + evidence_markup +
             '</article>'
         )
     return "".join(cards)
 
 
-def replace_directory_catalog_cards(html, records):
+def replace_directory_catalog_cards(html, records, evidence=None):
     """Keep published static cards synchronized with the verified catalog."""
     pattern = re.compile(
         r'(?P<open><div class="v6-grid" id="v6-results">)'
@@ -925,7 +1025,7 @@ def replace_directory_catalog_cards(html, records):
         r'(?P<close></div>)', re.S)
     if len(pattern.findall(html)) != 1:
         raise RuntimeError("Directory static list container changed")
-    rendered = render_directory_catalog_cards(records)
+    rendered = render_directory_catalog_cards(records, evidence)
     return pattern.sub(
         lambda match: match.group("open") + rendered + match.group("close"),
         html, count=1)
@@ -1073,6 +1173,9 @@ def directory_task_paths(records):
     """Helpful canonical search links derived from existing catalog records."""
     existing = {entry.get("name") for entry in records if isinstance(entry, dict)}
     tasks = (
+        ("재난 문자와 대피 안전정보",
+         "국민안전24", "기상청 날씨누리",
+         "재난·대피시설·행동요령과 일기예보는 제공 기관과 상황 정보가 다르므로 각각의 공식 안내를 확인하세요."),
         ("민원 접수와 증명서 발급",
          "국민신문고", "정부24",
          "민원·제안 접수와 정부 증명서 발급은 서로 다른 업무입니다."),
@@ -1136,6 +1239,54 @@ def directory_task_paths(records):
     )
 
 
+
+
+def directory_keyword_intents(records):
+    """Answer three distinct tasks on the directory instead of repeating keywords."""
+    names = {item.get("name") for item in records if isinstance(item, dict)}
+    required = ("정부24", "국민신문고", "주소정보누리집 도로명주소",
+                "대법원 인터넷등기소", "네이버", "카카오맵",
+                "한국은행 경제통계시스템 ECOS", "국가통계포털 KOSIS")
+    missing = [name for name in required if name not in names]
+    if missing:
+        raise RuntimeError("Keyword intent guide missing real directory records: " + ", ".join(missing))
+    address = (
+        '<section id="intent-address-collection" class="lw-safety-note seo-keyword-intent">'
+        '<h2>주소모음: 알고 있는 사이트 주소를 찾고 대조하기</h2>'
+        '<p>사이트 이름이나 도메인을 알고 있다면 전체 목록 검색창에 입력해 등록 설명과 이동 호스트를 확인하세요. '
+        '행정 주소 검색처럼 서비스 기능 자체를 찾는 경우에는 도로명주소 검색과 등기사항 열람을 구분해야 합니다. '
+        '주소가 바뀌었거나 비슷한 도메인이 의심되면 링크를 바로 열기 전에 공식 운영기관의 안내와 대조하세요.</p>'
+        '<ul><li><a href="/directory?q=' + quote("주소정보누리집 도로명주소", safe="") + '">도로명주소 검색 서비스 찾기</a></li>'
+        '<li><a href="/directory?q=' + quote("대법원 인터넷등기소", safe="") + '">부동산·법인 등기 서비스 찾기</a></li>'
+        '<li><a href="/guides/address-check">접속할 사이트의 공식 주소 확인 순서</a></li></ul></section>'
+    )
+    links = (
+        '<section id="intent-link-collection" class="lw-safety-note seo-keyword-intent">'
+        '<h2>링크모음: 해야 할 일에 맞는 분야와 바로가기 선택하기</h2>'
+        '<p>링크를 분야 이름만으로 고르기보다 지금 처리할 일을 먼저 나누면 목적이 다른 사이트를 혼동하지 않습니다. '
+        '증명서·행정 서비스, 민원·제안 접수, 통계 확인은 서로 다른 경로입니다. 아래 항목은 실제 등록된 서비스 검색으로 연결됩니다.</p>'
+        '<ul><li><a href="/directory?q=' + quote("정부24", safe="") + '">증명서 발급과 행정 업무: 정부24</a></li>'
+        '<li><a href="/directory?q=' + quote("국민신문고", safe="") + '">민원·제안 접수: 국민신문고</a></li>'
+        '<li><a href="/directory?q=' + quote("국가통계포털 KOSIS", safe="") + '">공식 통계표 찾기: KOSIS</a></li>'
+        '<li><a href="/categories/search">검색·공공정보 분야 전체 보기</a></li></ul></section>'
+    )
+    sites = (
+        '<section id="intent-site-collection" class="lw-safety-note seo-keyword-intent">'
+        '<h2>사이트모음: 기능과 운영 주체를 비교하고 선택하기</h2>'
+        '<p>사이트 목록은 인기 순위가 아닙니다. 같은 목적의 후보를 두 곳 이상 열어 제공 기능, 운영기관이 밝힌 이용 조건, '
+        '로그인이나 결제 필요 여부를 서비스 원문에서 비교하세요. 링크위키는 근거 링크가 등록된 일부 공공 서비스에만 '
+        '출처와 확인일을 함께 표시하며, 나머지 주소의 공식성이나 현재 작동 여부를 인증하지 않습니다.</p>'
+        '<ul><li><a href="/directory?q=' + quote("네이버", safe="") + '">네이버 서비스 항목 보기</a> · '
+        '<a href="/directory?q=' + quote("카카오맵", safe="") + '">카카오맵 서비스 항목 보기</a></li>'
+        '<li><a href="/directory?q=' + quote("한국은행 경제통계시스템 ECOS", safe="") + '">한국은행 경제통계시스템 ECOS</a> · '
+        '<a href="/directory?q=' + quote("국가통계포털 KOSIS", safe="") + '">국가통계포털 KOSIS</a></li>'
+        '<li><a href="/guides/directory-comparison">목록과 서비스 비교 체크리스트</a></li></ul></section>'
+    )
+    return (
+        '<section id="directory-search-intents" aria-label="주소·링크·사이트 목록별 이용법">'
+        '<h2>찾으려는 정보에 따라 목록을 사용하는 방법</h2>'
+        + address + links + sites + '</section>'
+    )
 
 
 def directory_address_correction_request(records):
@@ -1391,7 +1542,7 @@ def directory_collection_schema(records, categories):
         "@type": "CollectionPage",
         "@id": SITE + "/directory#collection",
         "url": SITE + "/directory",
-        "name": "주소모음·링크모음·사이트모음 통합 검색",
+        "name": "사이트모음 검색과 분야별 링크 목록",
         "inLanguage": "ko",
         "mainEntity": {
             "@type": "ItemList",
@@ -1702,7 +1853,7 @@ def build():
     # The source HTML preserves its editorial layout; only generated output changes.
     actual_count = len(first_party_records)
     home, count_replacements = re.subn(
-        r"\b\d+개(?= 등록 (?:사이트|항목))",
+        r"\b\d+개(?=(?: 등록)? (?:사이트|항목|검색))",
         lambda match: f"{actual_count}개", home,
     )
     if count_replacements < 2:
@@ -1727,7 +1878,8 @@ def build():
     directory_path = OUT / "directory.html"
     directory_html = directory_path.read_text(encoding="utf-8")
     directory_html = sync_directory_count(directory_html, len(records))
-    directory_html = replace_directory_catalog_cards(directory_html, records)
+    directory_evidence = load_directory_evidence(records)
+    directory_html = replace_directory_catalog_cards(directory_html, records, directory_evidence)
     # Lead with search before the category and editorial shortcuts.
     search_form = re.compile(r'<form class="v6-search" id="v6-form".*?</form>', re.S)
     forms = search_form.findall(directory_html)
@@ -1749,6 +1901,7 @@ def build():
         + '<a href="#site-list-guide">검색 이용 안내</a>'
         + '<a href="#site-category-comparison">분야별 등록 예시</a>'
         + '<a href="#site-purpose-comparison">목적별 선택법</a>'
+        + '<a href="#directory-search-intents">목록별 이용 방법</a>'
         + '<a href="#directory-everyday-tasks">생활 목적별 비교</a>'
         + '<a href="#site-related-guides">관련 이용 가이드</a>'
         + '<a href="/guides/directory-maintenance">목록 관리 기록</a></nav>'
@@ -1813,7 +1966,8 @@ def build():
     help_section = directory_search_help(records, CATEGORY_LANDING)
     directory_html = directory_html.replace(
         overview_marker,
-        help_section + directory_address_inspector() + overview
+        help_section + directory_keyword_intents(records)
+        + directory_address_inspector() + overview
         + directory_purpose_comparison(records, CATEGORY_LANDING)
         + directory_everyday_task_paths(records)
         + directory_relevant_guides(posts) + overview_marker, 1)
@@ -1852,7 +2006,7 @@ def build():
             f'<a href="/categories/{slug}">사이트 목록 보기</a></article>')
     hub = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 분야별 사이트</nav>'
            '<div class="blog-heading"><p class="eyebrow">LINKWIKI · DIRECTORY</p>'
-           '<h1>분야별 사이트모음·링크모음</h1>'
+           '<h1>분야별 링크모음: 목적에 맞는 사이트 찾기</h1>'
            '<p>필요한 분야를 선택하면 등록된 사이트의 이름과 주소, 이용 목적을 살펴볼 수 있습니다.</p></div>'
            '<div class="v6-grid">' + ''.join(category_cards) + '</div>'
            '<section class="seo-guidance"><h2>사이트를 선택할 때</h2>'
@@ -1861,7 +2015,7 @@ def build():
            '<p><a href="/directory">전체 등록 사이트 검색</a> · <a href="/guides/address-check">주소 확인 방법</a></p>'
            '</section></div>')
     hub_path = OUT / "categories" / "index.html"
-    hub_path.write_text(document("분야별 사이트모음·링크모음", "커뮤니티, 웹툰, 스포츠, AI 도구, 검색·포털, 영상·OTT, 해외 교민 등 분야별 사이트 목록과 주소 확인 방법을 살펴보세요.",
+    hub_path.write_text(document("분야별 링크모음", "분야와 이용 목적에 맞는 사이트를 찾아보고, 서비스별 운영 안내와 이용 조건을 확인하세요.",
                                  SITE + "/categories/", hub, header, footer), encoding="utf-8")
     from seo.directory_maintenance import render as maintenance_render
     maintenance_body = maintenance_render(records, significant_updates, CATEGORY_LANDING)

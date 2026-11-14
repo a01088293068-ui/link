@@ -319,8 +319,10 @@ def check_page(expected_html, live_html, path):
         if expected_cards and expected_cards != live_cards:
             errors.append(f"/directory: deployed site cards differ from generated build "
                           f"({len(live_cards)} vs {len(expected_cards)} cards)")
-        if not all(keyword in "".join(live.headings) for keyword in CORE):
-            errors.append("/directory: three primary keywords missing from visible H1")
+        if not all(keyword in live_html for keyword in CORE):
+            errors.append("/directory: a primary search intent is missing from visible content")
+        if not any("사이트모음" in heading for heading in live.headings):
+            errors.append("/directory: site-comparison purpose missing from visible H1")
         if "v6-results" not in live.ids or "v6-query" not in live.ids:
             errors.append("/directory: working search UI anchors missing")
         if "directory-category-schema" not in live.ids:

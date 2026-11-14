@@ -75,7 +75,12 @@ def check_entry(entry, opener=OPENER):
         except HTTPError as e:
             code = e.code
             location = e.headers.get("Location", "") if e.headers else ""
-            e.close()
+            # HTTPError normally owns a response file, but mocked errors and
+            # older macOS Python may not; cleanup must not hide the HTTP code.
+            try:
+                e.close()
+            except (KeyError, AttributeError, OSError):
+                pass
             return code, location
 
     method = "HEAD"

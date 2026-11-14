@@ -317,7 +317,7 @@ def audit_site(dist):
             r'<article\s+class="v6-card"[^>]*>(.*?)</article>', listing, re.I | re.S)
         card_urls = []
         for block in card_blocks:
-            anchors = re.findall(r'<a\b[^>]*\bhref="(https://[^"]+)"', block)
+            anchors = re.findall(r'<a\b(?![^>]*\bclass="[^"]*directory-source)[^>]*\bhref="(https://[^"]+)"', block)
             if len(anchors) != 1:
                 errors.append("directory card has missing/multiple destination links")
             else:

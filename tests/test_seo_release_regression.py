@@ -374,7 +374,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
         title = f"사이트모음 전체 목록 | {PUBLISHED_COUNT}개 사이트 검색·비교 - 링크위키"
-        heading = "주소모음·링크모음·사이트모음 통합 검색"
+        heading = "사이트모음: 이름·도메인으로 사이트 비교"
         self.assertIn("<title>" + title + "</title>", html)
         self.assertIn(f"{PUBLISHED_COUNT}개 사이트의 이름·주소·설명을 검색", html)
         self.assertIn('property="og:title"', html)

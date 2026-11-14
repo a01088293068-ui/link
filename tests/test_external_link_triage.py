@@ -41,7 +41,7 @@ class ExternalLinkTriageTests(unittest.TestCase):
         self.assertIn("307", rendered)
         self.assertIn("HTTP 응답 관찰 목록 (미검증)", rendered)
         self.assertIn("한 번의 관찰만으로 링크를 삭제하거나 수정하지 않습니다", rendered)
-        self.assertIn("228개 중 24개", rendered)
+        self.assertIn("229개 중 24개", rendered)
         self.assertIn("GET으로 한 차례 재확인", rendered)
         self.assertIn("우회하거나 반복 요청하지 않습니다", rendered)
 

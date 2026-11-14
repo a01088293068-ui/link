@@ -1,0 +1,58 @@
+[
+  {
+    "url": "https://ecrm.police.go.kr/minwon/main",
+    "name": "경찰청 사이버범죄 신고시스템 ECRM",
+    "source_url": "https://ecrm.police.go.kr/minwon/crs/quick/process",
+    "scope": "경찰청 안내에서 사이버범죄 신고·상담 절차와 연결 주소를 대조",
+    "checked_on": "2026-11-14"
+  },
+  {
+    "url": "https://www.juso.go.kr/",
+    "name": "주소정보누리집 도로명주소",
+    "source_url": "https://www.juso.go.kr/",
+    "scope": "주소정보누리집의 주소 검색 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-14"
+  },
+  {
+    "url": "https://www.iros.go.kr/",
+    "name": "대법원 인터넷등기소",
+    "source_url": "https://www.iros.go.kr/index.jsp",
+    "scope": "인터넷등기소의 등기 열람·발급 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14"
+  },
+  {
+    "url": "https://ecos.bok.or.kr/",
+    "name": "한국은행 경제통계시스템 ECOS",
+    "source_url": "https://www.bok.or.kr/portal/main/contents.do?menuNo=200672",
+    "scope": "한국은행 ECOS 소개와 연결 주소를 대조",
+    "checked_on": "2026-11-14"
+  },
+  {
+    "url": "https://ecfs.scourt.go.kr/",
+    "name": "대한민국 법원 전자소송포털",
+    "source_url": "https://www.scourt.go.kr/work2025/helpinfo.html",
+    "scope": "대한민국 법원의 전자민원센터 통합 안내와 현재 전자소송포털 주소를 대조",
+    "checked_on": "2026-11-14",
+    "history": [
+      {
+        "date": "2025-01-31",
+        "event": "전자민원센터 서비스가 전자소송포털로 통합됨",
+        "source_url": "https://www.scourt.go.kr/work2025/helpinfo.html"
+      }
+    ]
+  },
+  {
+    "url": "https://www.edunet.net/main",
+    "name": "에듀넷 티클리어",
+    "source_url": "https://school.cbe.go.kr/_cmm/widget/bannerList/kch-h",
+    "scope": "교육기관 안내 페이지가 연결하는 에듀넷 서비스 주소를 대조",
+    "checked_on": "2026-11-14"
+  },
+  {
+    "url": "https://www.safekorea.go.kr/",
+    "name": "국민안전24",
+    "source_url": "https://www.safekorea.go.kr/",
+    "scope": "국민안전24 공식 첫 화면의 재난 상황 정보·안전 안내 메뉴와 연결 주소를 대조",
+    "checked_on": "2026-11-14"
+  }
+]
