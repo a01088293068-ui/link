@@ -981,6 +981,20 @@
       ],
       "noindex": false,
       "notes": "기존 공개 게시물. 비로그인 브라우저 렌더링에서 https://linkwiki.info/ 직접 href 2개 확인. 초기 응답 HTML에는 방문 링크가 없음. 신규 제출 아님."
+    },
+    {
+      "id": "2b0fd6f90cd28b6f",
+      "platform": "The Open Web Directory",
+      "submission_url": "https://owd.samguest.co.uk/submit.html",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "도메인 검색 화면에서 노드 미연결 표시. https://linkwiki.info/ 등록 양식 1회 실행 후 Connecting to network 상태에서 접수 확인 없음. 공개 결과가 확인되거나 노드가 정상화될 때까지 재제출하지 않음."
     }
   ]
 }
