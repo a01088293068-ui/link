@@ -44,7 +44,7 @@ class KoreanCommerceExpansionTests(unittest.TestCase):
     def test_shopping_entries_remain_in_canonical_category_order(self):
         shopping = [row for row in self.records if row["category"] == "쇼핑·가격비교"]
         self.assertEqual([row["name"] for row in shopping[-4:]],
-                         ["오늘의집", "당근", "에이블리", "W컨셉"])
+                         ["에이블리", "W컨셉", "오늘의집", "당근"])
         self.assertEqual(len({row["url"] for row in self.records}), len(self.records))
 
 
