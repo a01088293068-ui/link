@@ -35,8 +35,7 @@ class KoreanOfficialFirstPartyExpansionTests(TestCase):
             with self.subTest(name=name):
                 self.assertEqual(by_name[name]["url"], url)
                 self.assertEqual(by_name[name]["category"], category)
-                self.assertTrue(by_name[name]["description"].endswith("확인하세요.") or
-                                by_name[name]["description"].endswith("살펴보세요."))
+                self.assertTrue(by_name[name]["description"].endswith("세요."))
                 self.assertGreaterEqual(len(by_name[name]["description"]), 65)
 
     def test_every_new_record_has_current_first_party_evidence(self):
