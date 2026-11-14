@@ -1,60 +1,37 @@
 # 링크위키 백링크 현황
 
-기록 시각: 2026-11-08T02:29:27+00:00 (UTC)
-대상: linkwiki.info
-등록처: 40개
+기록 시각: 2026-11-15 (UTC)
+대상: https://linkwiki.info/
+등록처 장부: 81개
 
 ## 공개 링크 검증 상태
 
-- fetch_error: 1
-- unverified: 37
-- verified_link: 2
+| 검사 상태 | 건수 | 의미 |
+|---|---:|---|
+| verified_link | 9 | 공개 페이지에서 직접 링크 확인. 제3자 추천 여부는 별도 구분 필요 |
+| link_with_rel | 4 | 실제 링크이나 nofollow/ugc 등 제한 rel 포함 |
+| noindex | 1 | 공개 페이지에 링크는 있으나 검색 색인 제한 확인 |
+| unverified | 65 | 공개 링크 확인 전 또는 미검증 |
+| missing_link | 1 | 검사 페이지에서 링크 미발견 |
+| fetch_error | 1 | 페이지 접근 오류로 검증 불가 |
 
-상태가 `verified_link`여도 SEO 순위 상승이나 색인을 보장하지 않습니다.
-`link_with_rel`은 nofollow/ugc/sponsored 중 하나가 포함된 실제 링크입니다.
-자바스크립트로 삽입되는 링크는 이 정적 HTML 검출기에 잡히지 않을 수 있습니다.
+주의: verified_link는 링크의 존재와 페이지 색인 지시를 확인했다는 뜻이지, Google이 해당 링크를 색인하거나 순위 신호로 반영했다는 뜻이 아니다. 자체 작성·직접 등록 페이지는 독립적인 제3자 추천과 구분한다. 동일 플랫폼 도메인의 여러 URL은 한 출처로 계산한다.
 
-## 등록처별 상세
+## 이번 점검에서 확인한 내용
 
-| 등록처 | 제출 | 검사 | 마지막 확인 | 공개 URL |
-|---|---|---|---|---|
-| Anoox | submitted | unverified |  |  |
-| B3 Directory | not_submitted | unverified | 2026-10-29 |  |
-| DevElif | submitted | verified_link | 2026-11-08 | https://develif.com/s/website-search-and-address-guides-by-linkwiki |
-| ExactSeek | pending_review | unverified |  |  |
-| FreeWebSubmission | submitted | unverified |  |  |
-| FWS - Amidalla | not_submitted | unverified |  |  |
-| FWS - Archive | pending_review | unverified |  |  |
-| FWS - Portelo | submitted | unverified |  |  |
-| FWS - SearchThis | submitted | unverified |  |  |
-| FWS - SecretSELabs | submitted | unverified |  |  |
-| FWS - SitesOnDisplay | submitted | unverified |  |  |
-| FWS - SonicRun | submitted | unverified |  |  |
-| Global Site Directory | not_submitted | unverified | 2026-10-29 |  |
-| LinkCentre | pending_review | unverified |  |  |
-| MeWebLink | not_submitted | unverified |  |  |
-| Sites Internationaux | unknown | unverified |  |  |
-| SoMuch | unknown | unverified | 2026-10-29 |  |
-| Submit.biz | unknown | unverified |  |  |
-| Tiny Web Directory | not_submitted | unverified | 2026-10-29 |  |
-| Viesearch | pending_review | unverified |  |  |
-| Zearches | not_submitted | unverified | 2026-10-29 |  |
-| TOP Adult Directory | submitted | fetch_error | 2026-11-08 | https://topadultdir.com/en/www/linkwiki-korean-web-directory/97 |
-| saaskr | submitted | verified_link | 2026-11-08 | https://saaskr.com/saas/linkwiki-info |
-| 사이트다 | unknown | unverified | 2026-10-28 |  |
-| VibeLabs | unknown | unverified | 2026-10-28 |  |
-| SpicyRanked | pending_review | unverified | 2026-10-28 |  |
-| FetishX Hub | not_submitted | unverified | 2026-10-28 |  |
-| OpenWebSide | pending_review | unverified | 2026-10-29 |  |
-| GainWeb | pending_review | unverified | 2026-10-29 |  |
-| Cipinet | not_submitted | unverified | 2026-10-29 |  |
-| BusinessSeek | not_submitted | unverified | 2026-10-29 |  |
-| PRKatalog | not_submitted | unverified | 2026-10-29 |  |
-| Productivus | not_submitted | unverified | 2026-10-29 |  |
-| OnToplist | not_submitted | unverified | 2026-10-29 |  |
-| DirJournal | not_submitted | unverified | 2026-10-29 |  |
-| Jasmine Directory | not_submitted | unverified | 2026-10-29 |  |
-| adultXsites | not_submitted | unverified | 2026-10-29 |  |
-| Korea Local Pages | not_submitted | unverified | 2026-10-29 |  |
-| TopSiteNet | unknown | unverified | 2026-10-29 |  |
-| PornRanked | not_submitted | unverified | 2026-10-29 |  |
+- OpenWebSide의 LinkWiki 상세 페이지는 공개 상태이며 LinkWiki 공식 도메인으로 연결된다. 등록 FAQ는 무료 등록, 소유권 인증, 관리자 심사 절차를 명시한다.
+- Dreamboat 프로젝트 페이지는 공개되어 있고 robots가 index, follow로 확인된다. 운영자 본인이 작성한 프로젝트 소개이므로 제3자 추천으로 계산하지 않는다.
+- saaskr, 모두의 앱 등 기존 공개 페이지의 링크도 장부에 반영되어 있다. 실제 링크가 있더라도 소개문 작성 주체와 rel 속성을 별도로 본다.
+- GeekNews는 개발·기술·스타트업 커뮤니티이며 작성 경로가 로그인 필요 상태다. 단순 링크 투척이 아니라 독창적인 개발/운영 경험 글이 있을 때만 검토한다.
+- Disquiet는 한국 IT 메이커 프로덕트 목록을 운영한다. 신규 등록은 로그인 및 제품 적합성 확인이 필요하므로 아직 제출하지 않았다.
+
+## 다음 점검 우선순위
+
+1. 심사 대기 중인 기존 등록처의 공개 승인 여부 확인. 중복 제출 금지.
+2. 한국 사용자 대상 소개 플랫폼(OpenWebSide 등)의 기존 링크 상태·색인 지시 재확인.
+3. GeekNews/Disquiet는 커뮤니티 규칙과 콘텐츠 적합성을 먼저 확인하고, 실질적인 소개 글이 준비된 경우에만 게시.
+4. 신규 링크의 공개 URL, 실제 href, rel, robots/canonical을 확인한 뒤에만 검증 상태 변경.
+
+## 집계 한계
+
+이 장부는 공개 페이지의 링크 유무를 기록한다. Google 순위 상승, 색인, 클릭 유입 또는 링크의 평가 가중치를 증명하지 않는다. 검색 순위 성과는 Search Console 및 동일 조건의 SERP 기록으로 별도 측정한다.
