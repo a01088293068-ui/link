@@ -1543,6 +1543,7 @@ PUBLIC_SOURCE_FILES = (
     "favicon.ico", "favicon.png", "index.html",
     "naver8cd598bf6fee0ad116a386a3d915bb9f.html",
     "privacy.html", "robots.txt", "sitemap.xml", "sitemap-v2.xml",
+    "53f284d85bb5eed6bab927f5a93d8da8.txt",  # IndexNow root ownership proof for Naver/Bing
 )
 
 

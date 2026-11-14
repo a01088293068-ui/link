@@ -1,0 +1,51 @@
+name: LinkWiki IndexNow Naver/Bing updated homepage submission
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '53f284d85bb5eed6bab927f5a93d8da8.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linkwiki-indexnow-home
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Confirm domain verification key is actually live on Cloudflare
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 30); do
+            hosted="$(curl --silent --show-error --fail --max-time 12 'https://linkwiki.info/53f284d85bb5eed6bab927f5a93d8da8.txt' || true)"
+            if [[ "$hosted" == '53f284d85bb5eed6bab927f5a93d8da8' ]]; then
+              echo "IndexNow ownership key is live and matches expected value."
+              exit 0
+            fi
+            if [[ "$attempt" -eq 30 ]]; then
+              echo "::error::Key not publicly deployed; refusing unverified submission."
+              exit 1
+            fi
+            sleep 15
+          done
+      - name: Notify Naver and other IndexNow participants of recently updated homepage
+        shell: bash
+        run: |
+          set -euo pipefail
+          status="$(curl --silent --show-error --max-time 35 -o /tmp/indexnow-response -w '%{http_code}' --get \
+            --data-urlencode 'url=https://linkwiki.info/' \
+            --data-urlencode 'key=53f284d85bb5eed6bab927f5a93d8da8' \
+            'https://searchadvisor.naver.com/indexnow')"
+          echo "Naver IndexNow HTTP status: $status"
+          case "$status" in
+            200) echo "PASS: URL update notification accepted." ;;
+            202) echo "PASS: URL notification received; ownership verification pending." ;;
+            *) cat /tmp/indexnow-response; echo "::error::IndexNow notification was not accepted."; exit 1 ;;
+          esac
