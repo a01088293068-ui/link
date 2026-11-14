@@ -95,10 +95,10 @@ class LinkObservationsTests(unittest.TestCase):
         result = check.run(date(2026, 11, 11), entries, batch_size=2,
                            observer=lambda url: {"status": "network_uncertain"})
         self.assertEqual(result["checked_count"], 2)
-        self.assertEqual(result["catalog_count"], len(records))
+        self.assertEqual(result["catalog_count"], len(entries))
         self.assertEqual(result["results"][0]["name"], entries[0]["name"])
         self.assertIn("Never automatically delete", result["disclaimer"])
-        self.assertEqual(len(entries), len(records))
+        self.assertEqual(len(entries), len(check.catalog_entries()))
 
     def test_json_catalog_validation_rejects_duplicate(self):
         with TemporaryDirectory() as temp:
