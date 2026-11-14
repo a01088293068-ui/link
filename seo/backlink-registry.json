@@ -1037,6 +1037,76 @@
       "rel": [],
       "noindex": null,
       "notes": "운영 측 제안이라고 명시해 홈페이지 제출. Recommendation received 접수 화면 확인. 공개 상세 링크 미확인. 재제출 금지."
+    },
+    {
+      "id": "da6cf27247b00c6e",
+      "platform": "Sitedex",
+      "submission_url": "https://eltacrew.com/sitedex/submit",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "운영사 접수 메시지 확인. 공개 검색에서 상세 페이지 미확인. 중복 제출하지 않음."
+    },
+    {
+      "id": "5a05bb79b641e7b7",
+      "platform": "BitsExplorer",
+      "submission_url": "https://bitsexplorer.com/submit",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공개 사이트 및 저장소 제출 후 운영자 검토 안내 확인. 중복 제출하지 않음."
+    },
+    {
+      "id": "72be17621ebd85aa",
+      "platform": "Cool Site of the Day",
+      "submission_url": "https://coolsiteoftheday.com/?page_id=1073#submit",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "LinkWiki 이름으로 편집 심사 접수 확인. 중복 제출하지 않음."
+    },
+    {
+      "id": "b8c559be01f1d447",
+      "platform": "AppRater",
+      "submission_url": "https://apprater.net/#submit",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "LinkWiki is in the review queue 표시 확인. 중복 제출하지 않음."
+    },
+    {
+      "id": "95451ffbdcc46132",
+      "platform": "Phyco",
+      "submission_url": "https://phyco.org/submit",
+      "public_url": "",
+      "submission_status": "unknown",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "최종 제출 화면이 Submitting 상태로 남았다. 접수 증거 없음. 중복 제출하지 않음."
     }
   ]
 }
