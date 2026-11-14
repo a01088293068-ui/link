@@ -1107,6 +1107,48 @@
       "rel": [],
       "noindex": null,
       "notes": "최종 제출 화면이 Submitting 상태로 남았다. 접수 증거 없음. 중복 제출하지 않음."
+    },
+    {
+      "id": "b964ce710b42963c",
+      "platform": "D-I-R",
+      "submission_url": "https://d-i-r.com/submit.php",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "Regional → Asia 무료 심사. 승인 대기 접수 확인. 비로그인 공개 검색 결과 없음. 중복 제출 금지."
+    },
+    {
+      "id": "0e66dafbbce0590f",
+      "platform": "Information Crawler",
+      "submission_url": "https://www.informationcrawler.com/submit.php",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "Regional → Asia 무료 심사. 승인 대기 접수 확인. 비로그인 공개 검색 결과 없음. 중복 제출 금지."
+    },
+    {
+      "id": "cd3ca0c7f945a181",
+      "platform": "Quality Internet Directory",
+      "submission_url": "https://www.qualityinternetdirectory.com/submit.php",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "Web Directories 무료 일반 등록. 접수 확인. 비로그인 공개 검색 결과 없음. 중복 제출 금지."
     }
   ]
 }
