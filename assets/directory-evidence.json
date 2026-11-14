@@ -158,5 +158,59 @@
     "checked_on": "2026-11-14",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gmarket.co.kr/",
+    "name": "G마켓",
+    "source_url": "https://www.gmarket.co.kr/",
+    "scope": "G마켓 공식 첫 화면에서 종합 온라인 쇼핑 서비스와 상품 탐색 기능을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://zigzag.kr/",
+    "name": "지그재그",
+    "source_url": "https://zigzag.kr/",
+    "scope": "지그재그 공식 첫 화면과 카카오스타일 판매중개 고지에서 쇼핑 플랫폼 및 중개 역할을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kurly.com/main",
+    "name": "컬리",
+    "source_url": "https://www.kurly.com/main",
+    "scope": "컬리 공식 첫 화면에서 식품·뷰티·라이프스타일 상품을 판매하는 쇼핑 서비스와 주소를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.oliveyoung.co.kr/store/main/main.do",
+    "name": "올리브영 온라인몰",
+    "source_url": "https://www.oliveyoung.co.kr/store/main/main.do",
+    "scope": "올리브영 공식 온라인몰 첫 화면에서 뷰티·헬스·라이프스타일 쇼핑 서비스와 주소를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.29cm.co.kr/",
+    "name": "29CM",
+    "source_url": "https://www.29cm.co.kr/",
+    "scope": "29CM 공식 첫 화면에서 패션·라이프스타일·컬처 상품 큐레이션 서비스와 주소를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.danawa.com/",
+    "name": "다나와",
+    "source_url": "https://www.danawa.com/",
+    "scope": "다나와 공식 첫 화면에서 가전·컴퓨터·생활용품 가격비교 및 판매처 탐색 서비스를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
