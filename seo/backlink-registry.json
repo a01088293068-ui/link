@@ -572,15 +572,19 @@
       "id": "syde_showcase_linkwiki_20261111",
       "platform": "SYDE Showcase (self-authored project)",
       "submission_url": "https://syde.kr/showcase/create",
-      "public_url": "",
-      "submission_status": "submitted",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
-      "rel": [],
-      "noindex": null,
-      "notes": "2026-11-11 사용자 SYDE 프로젝트 등록 완료 보고. 공개 상세 URL·실제 linkwiki.info href 아직 미확인. 자체 제출이며 개인정보 기록 안 함. 재제출 전에 공개 페이지 확인."
+      "public_url": "https://syde.kr/showcase/%EB%A7%81%ED%81%AC%EC%9C%84%ED%82%A4-linkwiki",
+      "submission_status": "approved",
+      "audit_status": "link_with_rel",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "nofollow",
+        "noopener",
+        "noreferrer"
+      ],
+      "noindex": false,
+      "notes": "11월 11일 사용자가 등록한 자체 게시물. 11월 14일 비로그인 공개 화면의 렌더링된 DOM에서 홈페이지 직접 링크 2개 확인. 소개 본문 nofollow, 방문 버튼 noopener noreferrer. HTML 로봇 메타와 HTTP X-Robots-Tag 색인 제한 미관측. 정규 URL로 기록. 초기 HTTP HTML에는 링크 미노출."
     },
     {
       "id": "fd1bf677bf3a39c4",
