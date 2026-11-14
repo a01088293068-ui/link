@@ -1765,6 +1765,30 @@ def build():
         directory_nav_pattern, lambda _: forms[0] + search_navigation + quick_service_searches(records, collapsed=True),
         directory_html, count=1, flags=re.S,
     )
+    recent_changes = (
+        ("https://ecfs.scourt.go.kr/", "전자민원센터 서비스는 전자소송포털로 통합됐습니다."),
+        ("https://www.korcham.net/nCham/Service/Main/appl/Main.asp", "코참넷의 HTTPS 첫 화면으로 연결합니다."),
+        ("https://kosis.kr/index/index.do", "국가통계포털의 통계 검색 첫 화면으로 연결합니다."),
+    )
+    records_by_url = {record["url"]: record for record in records}
+    change_links = []
+    for url, context in recent_changes:
+        record = records_by_url.get(url)
+        if record:
+            change_links.append(
+                f'<li><a href="/directory?q={quote(url, safe="")}">{escape(record["name"])}</a>'
+                f' · {escape(context)}</li>'
+            )
+    if change_links:
+        directory_html = directory_html.replace(
+            search_navigation,
+            search_navigation
+            + '<details class="seo-guidance" id="directory-changed-addresses">'
+            '<summary>등록 주소가 바뀐 사이트 찾기</summary>'
+            '<ul>' + ''.join(change_links) + '</ul>'
+            '<p><a href="/guides/directory-maintenance">이전 주소와 변경 근거 보기</a></p></details>',
+            1,
+        )
     after_results = '<nav aria-label="관련 안내" class="lw-guide-nav">'
     if directory_html.count(after_results) != 1:
         raise RuntimeError("Directory related navigation changed; review required")
