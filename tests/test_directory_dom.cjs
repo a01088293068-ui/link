@@ -78,7 +78,7 @@ test('directory controls are populated using the existing server HTML cards', ()
   assert.equal(controls['v6-results'].children.length, 3);
   assert.strictEqual(controls['v6-results'].children[0], cards[0]);
   assert.equal(controls['v6-count'].textContent, '등록 사이트 3개');
-  assert.equal(controls['v6-tabs'].children.length, 9);
+  assert.equal(controls['v6-tabs'].children.length, 14);
 });
 
 test('category filtering reuses the same cards and updates the URL', () => {
@@ -145,4 +145,17 @@ test('browser back navigation restores query and category', () => {
 test('JavaScript bundle has no second hardcoded list of directory sites', () => {
   assert.doesNotMatch(source, /const\s+sites\s*=\s*\[/);
   assert.match(source, /querySelectorAll\('article\.v6-card'\)/);
+});
+
+test('all published catalog categories are available as directory filters', () => {
+  const catalog = require('../assets/verified-directory.json');
+  const {controls} = makeFixture();
+  const filterNames = controls['v6-tabs'].children.map(button => button.dataset.cat);
+  const publishedNames = [...new Set(catalog.map(site => site.category))];
+  for (const category of publishedNames) {
+    assert.ok(filterNames.includes(category), 'missing filter for ' + category);
+    assert.ok(catalog.some(site => site.category === category), 'empty category ' + category);
+  }
+  assert.equal(publishedNames.length, 13);
+  assert.equal(filterNames.length, 14); // includes "전체"
 });
