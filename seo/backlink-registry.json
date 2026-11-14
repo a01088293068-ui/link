@@ -965,6 +965,22 @@
       "rel": [],
       "noindex": null,
       "notes": "공식 제출 양식에서 https://linkwiki.info/directory 접수 응답 확인. 수동 심사 3~5 영업일 안내. 공개 상세 URL 확인 전까지 재제출하지 않음."
+    },
+    {
+      "id": "e958e0cc44bb6165",
+      "platform": "모두의 앱",
+      "submission_url": "https://moduapp.kr/submit",
+      "public_url": "https://moduapp.kr/app/cmvnio1z800p6e75nz4ynskix",
+      "submission_status": "approved",
+      "audit_status": "verified_link",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "noreferrer"
+      ],
+      "noindex": false,
+      "notes": "기존 공개 게시물. 비로그인 브라우저 렌더링에서 https://linkwiki.info/ 직접 href 2개 확인. 초기 응답 HTML에는 방문 링크가 없음. 신규 제출 아님."
     }
   ]
 }
