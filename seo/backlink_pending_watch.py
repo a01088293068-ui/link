@@ -53,8 +53,8 @@ def pending_hosts(registry):
     return known
 
 
-def query_serper(website, api_key):
-    query = f'site:{website} "linkwiki.info"'
+def query_serper(website, api_key, search_term="linkwiki.info"):
+    query = f'site:{website} "{search_term}"'
     payload = json.dumps({"q": query, "num": 10, "gl": "kr", "hl": "ko"}).encode()
     request = Request(SERPER_URL, data=payload, headers={
         "Content-Type": "application/json", "Accept": "application/json",
@@ -62,6 +62,15 @@ def query_serper(website, api_key):
     }, method="POST")
     with urlopen(request, timeout=20) as response:
         return json.load(response).get("organic", [])
+
+
+def search_for_listing(website, api_key):
+    """Also find profiles whose indexed text omits the destination URL."""
+    results = query_serper(website, api_key)
+    if any(candidate_url(result, website) for result in results):
+        return results
+    return query_serper(website, api_key, "LinkWiki") + query_serper(
+        website, api_key, "링크위키")
 
 
 def candidate_url(result, expected_host):
@@ -160,7 +169,7 @@ def main():
     if not key:
         parser.error("SERPER_API_KEY required for submitted-domain discovery")
     registry = backlink_manager.load_registry(args.registry)
-    data = inspect(registry, lambda source: query_serper(source, key))
+    data = inspect(registry, lambda source: search_for_listing(source, key))
     data["checked_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     args.json.parent.mkdir(parents=True, exist_ok=True)
     args.json.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
