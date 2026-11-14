@@ -95,5 +95,28 @@ class EvidenceAndFormatTests(unittest.TestCase):
                 self.assertIn("2026년 11월 11일", html)
 
 
+    def test_shopping_evidence_uses_first_party_pages_and_expiry(self):
+        records = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
+        evidence = json.loads((ROOT / "assets" / "directory-evidence.json").read_text(encoding="utf-8"))
+        by_url = {row["url"]: row for row in evidence}
+        expected = {
+            "https://www.gmarket.co.kr/": "G마켓",
+            "https://zigzag.kr/": "지그재그",
+            "https://www.kurly.com/main": "컬리",
+            "https://www.oliveyoung.co.kr/store/main/main.do": "올리브영 온라인몰",
+            "https://www.29cm.co.kr/": "29CM",
+            "https://www.danawa.com/": "다나와",
+        }
+        record_names = {row["url"]: row["name"] for row in records}
+        for url, name in expected.items():
+            with self.subTest(name=name):
+                self.assertEqual(record_names.get(url), name)
+                self.assertEqual(by_url[url]["name"], name)
+                self.assertEqual(by_url[url]["source_url"], url)
+                self.assertEqual(by_url[url]["evidence_type"], "service_page")
+                self.assertEqual(by_url[url]["freshness_days"], 180)
+                self.assertEqual(by_url[url]["checked_on"], "2026-11-14")
+
+
 if __name__ == "__main__":
     unittest.main()
