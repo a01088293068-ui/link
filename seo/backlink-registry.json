@@ -1149,6 +1149,34 @@
       "rel": [],
       "noindex": null,
       "notes": "Web Directories 무료 일반 등록. 접수 확인. 비로그인 공개 검색 결과 없음. 중복 제출 금지."
+    },
+    {
+      "id": "geeknews_linkwiki_20261115",
+      "platform": "GeekNews (긱뉴스)",
+      "submission_url": "https://news.hada.io/write",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-15",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "2026-11-15 공개 사이트·작성 경로 확인. 개발/기술/스타트업 뉴스 커뮤니티이며 /write는 비로그인 접근 시 login_required. 단순 링크 홍보가 아닌 한국 웹사이트 디렉터리의 실제 개발·검증 과정 또는 공개 데이터/사용성에 관한 독창적 글이 있을 때만 게시 검토. 계정 로그인 및 커뮤니티 규칙 확인 필요. 제출/게시하지 않음."
+    },
+    {
+      "id": "disquiet_linkwiki_20261115",
+      "platform": "Disquiet*",
+      "submission_url": "https://disquiet.io/products",
+      "public_url": "",
+      "submission_status": "not_submitted",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-15",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "2026-11-15 프로덕트 목록과 공개 게시물 확인. 한국 IT 메이커 커뮤니티로 제품 등록 사례 다수. 신규 제품 등록 경로는 로그인 필요(현재 /posts/new 비로그인 login_required); LinkWiki의 실제 제품 성격·커뮤니티 적합성 및 중복 등록 여부를 계정에서 확인한 뒤 진행. 단순 백링크 목적 게시 금지. 제출/게시하지 않음."
     }
   ]
 }
