@@ -445,7 +445,17 @@ def homepage_directory_examples(records, categories):
             parsed = urlparse(str(entry.get("url", "")))
             if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
                 raise RuntimeError(f"Invalid registered example URL: {category}")
-        examples = " · ".join(escape(item["name"].strip()) for item in entries)
+        # A real user can open a registered service directly from the
+        # indexed homepage. Keep only two per category so /directory remains
+        # the unique exhaustive searchable collection.
+        examples = " · ".join(
+            '<a href="' + escape(item["url"], quote=True) +
+            '" target="_blank" rel="noopener noreferrer external" aria-label="' +
+            escape(item["name"].strip(), quote=True) +
+            ' 등록 사이트 새 창에서 열기">' +
+            escape(item["name"].strip()) + '</a>'
+            for item in entries
+        )
         cards.append(
             '<article class="v6-card">'
             f'<h3><a href="/categories/{escape(slug, quote=True)}">{escape(heading)}</a></h3>'
@@ -457,9 +467,10 @@ def homepage_directory_examples(records, categories):
     return (
         '<section class="wrap seo-directory-examples" aria-label="분야별 사이트 탐색 길잡이">'
         '<div class="v47-section-heading"><h2>관심 분야부터 찾기</h2></div>'
-        '<p>첫 화면에서는 분야별 용도와 실제 등록 예시만 안내합니다. '
-        '각 사이트의 도메인·상세 설명·검색·직접 비교는 '
+        '<p>첫 화면에서 관심 분야를 선택하거나 등록된 사이트를 바로 열 수 있습니다. '
+        '전체 도메인·상세 설명·검색·직접 비교는 '
         '<a href="/directory">전체 주소모음 목록</a>에서 확인하세요. '
+        '외부 연결은 등록된 주소로 이동할 뿐 공식성·실시간 접속·안전성을 보증하지 않습니다. '
         '아래 예시는 인기 순위나 안전 등급이 아닙니다.</p>'
         '<div class="v6-grid">' + ''.join(cards) + '</div></section>'
     )
