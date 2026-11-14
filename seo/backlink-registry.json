@@ -694,15 +694,15 @@
       "id": "ceeff64a32ddc26b",
       "platform": "Viesearch",
       "submission_url": "https://viesearch.com/2a2n3/plan",
-      "public_url": "",
+      "public_url": "https://viesearch.com/2a2n3/linkwiki",
       "submission_status": "pending_review",
       "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
+      "last_checked": "2026-11-14",
+      "http_status": 200,
       "link_found": false,
       "rel": [],
-      "noindex": null,
-      "notes": "Wait in Line 선택 후 무료 목록 미리보기에 LinkWiki 표시됨. 심사 대기"
+      "noindex": false,
+      "notes": "Wait in Line 선택 후 무료 목록 미리보기에 LinkWiki 표시됨. 심사 대기 2026-11-14 비로그인 상세 페이지 HTTP 200. 방문 버튼 href가 홈페이지 대신 HTML이 붙은 /assets/style.css URL이라 유효한 방문 링크 미확인. 재제출 금지."
     },
     {
       "id": "6891225d0b012dc4",
