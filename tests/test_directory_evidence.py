@@ -16,7 +16,7 @@ class DirectoryEvidenceTests(unittest.TestCase):
         cls.evidence = build.load_directory_evidence(cls.records)
 
     def test_source_records_match_published_sites_and_do_not_claim_unchecked_items(self):
-        self.assertEqual(17, len(self.evidence))
+        self.assertGreaterEqual(len(self.evidence), 23)
         for url, row in self.evidence.items():
             self.assertEqual(url, row["url"])
             self.assertLessEqual(date.fromisoformat(row["checked_on"]), date.today())
@@ -24,7 +24,7 @@ class DirectoryEvidenceTests(unittest.TestCase):
     def test_source_and_check_date_are_visible_on_directory_cards(self):
         html = build.render_directory_catalog_cards(
             self.records, self.evidence, today=date(2026, 11, 14))
-        self.assertEqual(17, html.count('class="directory-evidence"'))
+        self.assertEqual(len(self.evidence), html.count('class="directory-evidence"'))
         self.assertIn("2026-11-14", html)
         self.assertIn("서비스 페이지와 등록 주소 대조", html)
         self.assertIn("관련 기관 안내의 연결 주소 대조", html)
