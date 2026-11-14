@@ -25,13 +25,13 @@ def module():
 class EvidenceAndFormatTests(unittest.TestCase):
     def test_three_articles_have_distinct_tables_and_checklists(self):
         registered = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(registered), 222)
+        self.assertEqual(len(registered), 228)
         distinct_headers = []
         for slug in SLUGS:
             with self.subTest(slug=slug):
                 text = (ROOT / "content" / (slug + ".md")).read_text(encoding="utf-8")
                 self.assertIn("2026년 11월 11일", text)
-                self.assertIn("222개", text)
+                self.assertIn("228개", text)
                 self.assertNotIn("직접 사용해 봤", text)
                 self.assertNotIn("직접 실패했", text)
                 self.assertIn("|---|---|---|", text)
