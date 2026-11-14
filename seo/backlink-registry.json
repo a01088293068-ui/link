@@ -1009,6 +1009,20 @@
       "rel": [],
       "noindex": null,
       "notes": "비로그인 사이트 검색 https://search.daum.net/search?w=site&q=linkwiki.info 에 기존 등록 결과 링크위키(regsite-11677271) 확인. 검색 결과 data-href는 http://linkwiki.info이며 HTTPS 홈페이지로 301 후 200. 독립 소개 페이지 및 직접 href 백링크 집계 제외. 중복 제출 금지."
+    },
+    {
+      "id": "4915e7e3ccbf12d5",
+      "platform": "DebutBoard",
+      "submission_url": "https://debutboard.com/#list",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 양식에서 linkwiki.info is in the review queue 확인. 공개 상세 페이지 및 직접 href 미확인. 기존 공개 방문 버튼은 내부 /go/ 경유. 재제출 금지."
     }
   ]
 }
