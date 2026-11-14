@@ -31,7 +31,7 @@ class EvidenceAndFormatTests(unittest.TestCase):
             with self.subTest(slug=slug):
                 text = (ROOT / "content" / (slug + ".md")).read_text(encoding="utf-8")
                 self.assertIn("2026년 11월 11일", text)
-                self.assertIn("228개", text)
+                # A dated November 11 article preserves its historical 222-site\n                # snapshot; it is not a live catalog-count assertion.\n                self.assertIn("222개", text)
                 self.assertNotIn("직접 사용해 봤", text)
                 self.assertNotIn("직접 실패했", text)
                 self.assertIn("|---|---|---|", text)
