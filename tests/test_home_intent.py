@@ -18,10 +18,10 @@ class HomeIntentTests(unittest.TestCase):
 
     def test_home_primary_keyword_intent_is_visible_and_consistent(self):
         source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
-        for phrase in ("주소모음", "링크모음", "사이트모음"):
-            self.assertIn(phrase, source.split("</title>", 1)[0])
+        self.assertIn("<title>주소모음 |", source)
+        self.assertIn("분야별 링크모음", source)
         count = len(json.loads((Path(__file__).resolve().parents[1] / "assets/verified-directory.json").read_text(encoding="utf-8")))
-        self.assertIn(f'<h1 class="home-keyword-heading">주소모음·링크모음·사이트모음, {count}개 사이트 검색</h1>', source)
+        self.assertIn(f'<h1 class="home-keyword-heading">사이트 주소모음 · {count}개 사이트 검색</h1>', source)
         self.assertIn('href="https://linkwiki.info/" rel="canonical"', source)
         self.assertIn('name="description"', source)
         self.assertIn("사이트 이름이나 도메인을 입력해 주소를 찾거나", source)
