@@ -995,6 +995,20 @@
       "rel": [],
       "noindex": null,
       "notes": "도메인 검색 화면에서 노드 미연결 표시. https://linkwiki.info/ 등록 양식 1회 실행 후 Connecting to network 상태에서 접수 확인 없음. 공개 결과가 확인되거나 노드가 정상화될 때까지 재제출하지 않음."
+    },
+    {
+      "id": "6a50e9d13058e981",
+      "platform": "Daum 검색등록",
+      "submission_url": "https://register.search.daum.net/",
+      "public_url": "",
+      "submission_status": "approved",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "비로그인 사이트 검색 https://search.daum.net/search?w=site&q=linkwiki.info 에 기존 등록 결과 링크위키(regsite-11677271) 확인. 검색 결과 data-href는 http://linkwiki.info이며 HTTPS 홈페이지로 301 후 200. 독립 소개 페이지 및 직접 href 백링크 집계 제외. 중복 제출 금지."
     }
   ]
 }
