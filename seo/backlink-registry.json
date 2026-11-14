@@ -951,6 +951,20 @@
       "rel": [],
       "noindex": null,
       "notes": "Community Freebies의 Productivity 분류로 /directory 제출 시도. 양식이 유지되고 접수 문구나 공개 등록이 확인되지 않아 상태 미확정. 중복 제출 보류."
+    },
+    {
+      "id": "240b15e567325454",
+      "platform": "FreeNoSignup",
+      "submission_url": "https://freenosignup.com/submit/",
+      "public_url": "",
+      "submission_status": "pending_review",
+      "audit_status": "unverified",
+      "last_checked": "2026-11-14",
+      "http_status": null,
+      "link_found": false,
+      "rel": [],
+      "noindex": null,
+      "notes": "공식 제출 양식에서 https://linkwiki.info/directory 접수 응답 확인. 수동 심사 3~5 영업일 안내. 공개 상세 URL 확인 전까지 재제출하지 않음."
     }
   ]
 }
