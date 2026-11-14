@@ -79,7 +79,7 @@
       "public_url": "https://develif.com/s/website-search-and-address-guides-by-linkwiki",
       "submission_status": "submitted",
       "audit_status": "verified_link",
-      "last_checked": "2026-11-08T02:29:26+00:00",
+      "last_checked": "2026-11-14",
       "http_status": 200,
       "link_found": true,
       "rel": [
@@ -110,10 +110,13 @@
       "public_url": "https://dreamboat.kr/u/linkwikiinfo/p/linkwiki",
       "submission_status": "approved",
       "audit_status": "verified_link",
-      "last_checked": "2026-11-11",
+      "last_checked": "2026-11-14",
       "http_status": 200,
       "link_found": true,
-      "rel": [],
+      "rel": [
+        "noopener",
+        "noreferrer"
+      ],
       "noindex": false,
       "notes": "2026-11-11 사용자 등록 완료. TinyFish 독립 공개 렌더링에서 외부 링크 https://linkwiki.info/ 추출, robots=index,follow. HTML 원본의 rel 및 Google 평가 미검증. 자체 작성 프로젝트이며 제3자 추천 아님."
     },
@@ -291,12 +294,16 @@
       "submission_url": "https://launch.ignlab.net/t/linkwiki-2",
       "public_url": "https://launch.ignlab.net/t/linkwiki-2",
       "submission_status": "unknown",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
-      "rel": [],
-      "noindex": null,
+      "audit_status": "link_with_rel",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "nofollow",
+        "noopener",
+        "ugc"
+      ],
+      "noindex": false,
       "notes": "2026-11-09 기존 공개 링크로 기록됨. rel=ugc/nofollow 가능, 신규 제출 아님."
     },
     {
@@ -389,12 +396,15 @@
       "submission_url": "https://openwebside.com/my/products?submitted=757213b7-1ce9-41ed-9eb2-6bae9af82688",
       "public_url": "https://openwebside.com/products/757213b7-1ce9-41ed-9eb2-6bae9af82688",
       "submission_status": "approved",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
-      "rel": [],
-      "noindex": null,
+      "audit_status": "verified_link",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "noopener",
+        "noreferrer"
+      ],
+      "noindex": false,
       "notes": "2026-10-29 리쑤화 계정으로 링크위키 등록 접수 #757213b7-1ce9-41ed-9eb2-6bae9af82688. 소유권 인증 완료, 관리자 심사 대기 1~3영업일 안내. GitHub index.html ows-verify 태그 갱신 (commit a029e6d). 공개 URL 및 HTML 링크는 아직 미확인. 중복 제출 금지. 2026-11-10 공개 페이지 직접 확인(기존 접수 #757213b7); 외부 링크는 별도 HTML 감사에서 확정. 이전 소개 페이지 ID b0d7-a807df42adf7도 존재 기록이 있으나 같은 도메인으로 1개 출처만 계산. 신규 제출 없음."
     },
     {
@@ -460,7 +470,7 @@
       "public_url": "https://saaskr.com/saas/linkwiki-info",
       "submission_status": "submitted",
       "audit_status": "verified_link",
-      "last_checked": "2026-11-08T02:29:27+00:00",
+      "last_checked": "2026-11-14",
       "http_status": 200,
       "link_found": true,
       "rel": [
@@ -476,12 +486,15 @@
       "submission_url": "https://sidedock.io/products/%EB%A7%81%ED%81%AC%EC%9C%84%ED%82%A4linkwiki",
       "public_url": "https://sidedock.io/products/%EB%A7%81%ED%81%AC%EC%9C%84%ED%82%A4linkwiki",
       "submission_status": "unknown",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
-      "rel": [],
-      "noindex": null,
+      "audit_status": "verified_link",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "noopener",
+        "noreferrer"
+      ],
+      "noindex": false,
       "notes": "2026-11-09 기존 Sidedock 공개 제품 페이지와 maker 프로필 링크 확인. 같은 도메인 출처 1개로 집계. 신규 제출 아님."
     },
     {
@@ -546,12 +559,16 @@
       "submission_url": "https://startupaccelerator.dev/project/linkwiki",
       "public_url": "https://startupaccelerator.dev/project/linkwiki",
       "submission_status": "unknown",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
-      "rel": [],
-      "noindex": null,
+      "audit_status": "link_with_rel",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "nofollow",
+        "noopener",
+        "noreferrer"
+      ],
+      "noindex": false,
       "notes": "2026-11-09 기존 공개 프로젝트 링크 확인; nofollow 가능. 신규 제출 아님."
     },
     {
@@ -606,12 +623,12 @@
       "submission_url": "https://blacktetherscan.tistory.com/2",
       "public_url": "https://blacktetherscan.tistory.com/2",
       "submission_status": "unknown",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
+      "audit_status": "verified_link",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
       "rel": [],
-      "noindex": null,
+      "noindex": false,
       "notes": "링크위키 운영자 작성 글. 공개 링크지만 독립 제3자 추천 아님. 신규 제출 아님."
     },
     {
@@ -663,12 +680,14 @@
       "submission_url": "https://vibelabs.kr/lab/projects/238",
       "public_url": "https://vibelabs.kr/lab/projects/238",
       "submission_status": "unknown",
-      "audit_status": "unverified",
-      "last_checked": "",
-      "http_status": null,
-      "link_found": false,
-      "rel": [],
-      "noindex": null,
+      "audit_status": "verified_link",
+      "last_checked": "2026-11-14",
+      "http_status": 200,
+      "link_found": true,
+      "rel": [
+        "noopener"
+      ],
+      "noindex": false,
       "notes": "운영자 작성 또는 관련 프로젝트 소개. 공개 링크지만 독립 제3자 추천 아님. 신규 제출 아님."
     },
     {
@@ -720,7 +739,7 @@
       "public_url": "https://cozit.app/projects/716284cf-ad69-42af-970c-ad3874860797",
       "submission_status": "approved",
       "audit_status": "link_with_rel",
-      "last_checked": "2026-11-12",
+      "last_checked": "2026-11-14",
       "http_status": 200,
       "link_found": true,
       "rel": [
@@ -738,7 +757,7 @@
       "public_url": "https://jocohunt.com/p/3k65c9py",
       "submission_status": "approved",
       "audit_status": "verified_link",
-      "last_checked": "2026-11-12",
+      "last_checked": "2026-11-14",
       "http_status": 200,
       "link_found": true,
       "rel": [
@@ -895,7 +914,7 @@
       "public_url": "https://nologin.tools/tool/linkwiki-info-directory",
       "submission_status": "pending_review",
       "audit_status": "noindex",
-      "last_checked": "2026-11-12",
+      "last_checked": "2026-11-14",
       "http_status": 200,
       "link_found": true,
       "rel": [
