@@ -136,9 +136,11 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
                 for tag in ("title", "h1"):
                     if source.value(tag) != page.value(tag):
                         errors.append(f"/: live {tag} differs from built output")
-                    for keyword in ("주소모음", "링크모음", "사이트모음"):
-                        if keyword not in page.value(tag):
-                            errors.append(f"/: {tag} missing {keyword}")
+                # Search title covers all three intents; H1 may be concise.
+                # Its exact parity with the built release is verified above.
+                for keyword in ("주소모음", "링크모음", "사이트모음"):
+                    if keyword not in page.value("title"):
+                        errors.append(f"/: title missing {keyword}")
         except Exception as exc:
             errors.append(f"{path}: fetch error ({type(exc).__name__}: {exc})")
     if script_source is not None:
