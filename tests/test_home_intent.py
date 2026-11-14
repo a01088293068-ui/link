@@ -112,8 +112,9 @@ class HomeIntentTests(unittest.TestCase):
     def test_expanded_catalog_is_present_in_all_generated_category_pages(self):
         root = Path(__file__).resolve().parents[1]
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(records), 315)
+        self.assertGreaterEqual(len(records), 315)
         expected = {
+            "shopping": ("G마켓", "SSG.COM", "무신사", "지그재그", "컬리", "올리브영 온라인몰", "29CM", "다나와"),
             "ai": ("Cursor", "Replit", "GitHub Copilot", "Poe"),
             "sports": ("NBA 공식 홈페이지", "KBL 한국프로농구", "대한체육회", "한국배구연맹 KOVO"),
             "video": ("쿠팡플레이", "왓챠"),

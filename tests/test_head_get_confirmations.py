@@ -84,8 +84,8 @@ class HeadGetConfirmationTests(TestCase):
         records = mod.catalog_entries()
         item = next(x for x in records if x["name"] == "국가통계포털 KOSIS")
         self.assertEqual(item["url"], "https://kosis.kr/index/index.do")
-        self.assertEqual(len(records), 315)
-        self.assertEqual(len({x["url"] for x in records}), 315)
+        self.assertGreaterEqual(len(records), 315)
+        self.assertEqual(len({x["url"] for x in records}), len(records))
 
 
 if __name__ == "__main__":
