@@ -68,5 +68,95 @@
     "checked_on": "2026-11-14",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gov.kr/",
+    "name": "정부24",
+    "source_url": "https://www.gov.kr/portal/main",
+    "scope": "정부24 첫 화면에서 민원 신청·보조금·정책정보 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hometax.go.kr/",
+    "name": "국세청 홈택스",
+    "source_url": "https://www.hometax.go.kr/",
+    "scope": "국세청 홈택스 첫 화면의 세금 신고·납부 및 민원 서비스 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.work24.go.kr/",
+    "name": "고용24",
+    "source_url": "https://www.work24.go.kr/",
+    "scope": "고용24 첫 화면의 구직·실업급여·직업훈련 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nhis.or.kr/nhis/index.do",
+    "name": "국민건강보험공단",
+    "source_url": "https://www.nhis.or.kr/nhis/index.do",
+    "scope": "국민건강보험공단 첫 화면의 보험료·자격·건강검진 민원 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nps.or.kr/main.do",
+    "name": "국민연금공단",
+    "source_url": "https://www.nps.or.kr/main.do",
+    "scope": "국민연금공단 첫 화면의 연금·가입·민원 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.safedriving.or.kr/",
+    "name": "안전운전 통합민원",
+    "source_url": "https://www.safedriving.or.kr/",
+    "scope": "한국도로교통공단 안전운전 통합민원 첫 화면의 면허·교통 관련 민원 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ebsi.co.kr/",
+    "name": "EBSi 고교강의",
+    "source_url": "https://www.ebsi.co.kr/ebs/pot/poti/main.ebs",
+    "scope": "EBSi 국가대표 고교강의 서비스 첫 화면과 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.data.go.kr/",
+    "name": "공공데이터포털",
+    "source_url": "https://www.data.go.kr/",
+    "scope": "공공데이터포털 첫 화면의 공공데이터 검색·활용 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://kosis.kr/index/index.do",
+    "name": "국가통계포털 KOSIS",
+    "source_url": "https://kosis.kr/index/index.do",
+    "scope": "국가통계포털 첫 화면의 통계 검색·시각화 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.schoolinfo.go.kr/Main.do",
+    "name": "학교알리미",
+    "source_url": "https://www.schoolinfo.go.kr/Main.do",
+    "scope": "학교알리미 첫 화면의 학교별 공시정보 검색 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]

@@ -68,11 +68,13 @@ def select_batch(entries, day, batch_size=DEFAULT_BATCH):
         raise ValueError("invalid batch size")
     if not entries:
         return []
-    # Fixed launch anchor yields stable consecutive-day round robin.
+    # Rotate in complete, non-overlapping windows. The final window may be
+    # shorter so catalog growth never causes early wraparound and omissions.
     number = (day - date(2026, 11, 11)).days
-    first = (number * batch_size) % len(entries)
-    return [entries[(first + i) % len(entries)]
-            for i in range(min(batch_size, len(entries)))]
+    windows = (len(entries) + batch_size - 1) // batch_size
+    window = number % windows
+    first = window * batch_size
+    return entries[first:first + batch_size]
 
 
 class NoRedirect(HTTPRedirectHandler):

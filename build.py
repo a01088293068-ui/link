@@ -1093,36 +1093,64 @@ def replace_directory_catalog_cards(html, records, evidence=None):
 def sync_category_card_copy(html, records, category):
     """Preserve each category layout while deriving descriptions from one source."""
     selected = [item for item in records if item.get("category") == category]
-    # Standard category templates use a single `div.items`. Render its entire
-    # list from the same catalog as /directory so verified additions can't
-    # silently vanish from individual category pages.
-    if html.count('<div class="items">') == 1:
-        if not selected:
-            raise RuntimeError("No published category items: " + category)
+
+    def catalog_cards(card_class="item"):
         cards = []
         for item in selected:
             name, description, url = item["name"], item["description"], item["url"]
             parsed = urlparse(url)
             if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
                 raise RuntimeError("Invalid category listing URL: " + name)
-            cards.append(
-                '<article class="item" data-search="' +
-                escape(name + " " + category + " " + description, quote=True) +
-                '"><strong>' + escape(name) + '</strong><small>' +
-                escape(category) + '</small><p>' + escape(description) +
-                '</p><span class="site-domain">' + escape(parsed.hostname) +
-                '</span><a aria-label="' + escape(name, quote=True) +
-                ' 사이트 새 창에서 열기" href="' + escape(url, quote=True) +
-                '" rel="noopener noreferrer external" target="_blank">사이트 방문</a></article>'
-            )
+            if card_class == "item":
+                cards.append(
+                    '<article class="item" data-search="' +
+                    escape(name + " " + category + " " + description, quote=True) +
+                    '"><strong>' + escape(name) + '</strong><small>' +
+                    escape(category) + '</small><p>' + escape(description) +
+                    '</p><span class="site-domain">' + escape(parsed.hostname) +
+                    '</span><a aria-label="' + escape(name, quote=True) +
+                    ' 사이트 새 창에서 열기" href="' + escape(url, quote=True) +
+                    '" rel="noopener noreferrer external" target="_blank">사이트 방문</a></article>'
+                )
+            else:
+                cards.append(
+                    '<article class="v6-card"><h3>' + escape(name) + '</h3><small>' +
+                    escape(category) + '</small><span class="site-domain">' +
+                    escape(parsed.hostname) + '</span><p>' + escape(description) +
+                    '</p><a aria-label="' + escape(name, quote=True) +
+                    ' 사이트 새 창에서 열기" href="' + escape(url, quote=True) +
+                    '" rel="noopener noreferrer external" target="_blank">사이트 열기</a></article>'
+                )
+        return ''.join(cards)
+
+    # Standard category templates use a single `div.items`. Render its entire
+    # list from the same catalog as /directory so verified additions can't
+    # silently vanish from individual category pages.
+    if html.count('<div class="items">') == 1:
+        if not selected:
+            raise RuntimeError("No published category items: " + category)
         html, replaced = re.subn(
             r'<div class="items">.*?</div>',
-            lambda _: '<div class="items">' + ''.join(cards) + '</div>',
+            lambda _: '<div class="items">' + catalog_cards() + '</div>',
             html, count=1, flags=re.S)
         if replaced != 1:
             raise RuntimeError("Category item container malformed: " + category)
         html = re.sub(r'\b\d+개(?=\s+사이트 안내)',
                       lambda _: str(len(selected)) + "개", html)
+        return html
+    # Editorially structured v6 category pages used to carry a frozen subset
+    # of the directory. Replace only their card grid from the canonical data
+    # so new, verified sites appear on both the hub and the crawlable category
+    # landing page without removing its unique guidance sections.
+    if html.count('<div class="v6-grid">') == 1:
+        if not selected:
+            raise RuntimeError("No published category items: " + category)
+        html, replaced = re.subn(
+            r'<div class="v6-grid">.*?</div>',
+            lambda _: '<div class="v6-grid">' + catalog_cards("v6-card") + '</div>',
+            html, count=1, flags=re.S)
+        if replaced != 1:
+            raise RuntimeError("Category card grid malformed: " + category)
         return html
     pattern = re.compile(
         r'<article class="(?:item|v6-card)"[^>]*>.*?</article>', re.S)

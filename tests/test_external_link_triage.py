@@ -22,7 +22,7 @@ class ExternalLinkTriageTests(unittest.TestCase):
             "네이버": {"status": "http_responded", "http_code": 200},
             "다음": {"status": "http_error_review", "http_code": 404},
             "Brave Search": {"status": "access_limited", "http_code": 429},
-            "Swisscows": {"status": "redirect_review", "http_code": 307},
+            "Swisscows": {"status": "redirect_review", "http_code": 315},
         }
         selected_names = {"네이버", "다음", "Brave Search", "Swisscows"}
         selected = [row for row in self.records if row["name"] in selected_names]
@@ -44,10 +44,10 @@ class ExternalLinkTriageTests(unittest.TestCase):
             self.assertIn(name, rendered)
         self.assertIn("404", rendered)
         self.assertIn("429", rendered)
-        self.assertIn("307", rendered)
+        self.assertIn("315", rendered)
         self.assertIn("HTTP 응답 관찰 목록 (미검증)", rendered)
         self.assertIn("한 번의 관찰만으로 링크를 삭제하거나 수정하지 않습니다", rendered)
-        self.assertIn("279개 중 4개", rendered)
+        self.assertIn("315개 중 4개", rendered)
         self.assertIn("GET으로 한 차례 재확인", rendered)
         self.assertIn("우회하거나 반복 요청하지 않습니다", rendered)
 
