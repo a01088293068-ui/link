@@ -35,10 +35,10 @@ class Opener:
 
 
 class LinkObservationsTests(unittest.TestCase):
-    def test_real_catalog_has_222_unique_public_https_targets(self):
+    def test_real_catalog_has_228_unique_public_https_targets(self):
         records = check.catalog_entries()
-        self.assertEqual(len(records), 222)
-        self.assertEqual(len({r["url"] for r in records}), 222)
+        self.assertEqual(len(records), 228)
+        self.assertEqual(len({r["url"] for r in records}), 228)
         self.assertTrue(all(check.safe_target(r["url"]) for r in records))
 
     def test_block_local_private_and_insecure_urls(self):
@@ -61,7 +61,7 @@ class LinkObservationsTests(unittest.TestCase):
             self.assertEqual(len(selected), 24)
             self.assertEqual(len({x["url"] for x in selected}), 24)
             observed += [x["url"] for x in selected]
-        self.assertEqual(len(set(observed)), 222)
+        self.assertEqual(len(set(observed)), 228)
 
     def test_head_only_no_request_body_and_no_redirect_following(self):
         opener = Opener(200)
@@ -92,10 +92,10 @@ class LinkObservationsTests(unittest.TestCase):
         result = check.run(date(2026, 11, 11), entries, batch_size=2,
                            observer=lambda url: {"status": "network_uncertain"})
         self.assertEqual(result["checked_count"], 2)
-        self.assertEqual(result["catalog_count"], 222)
+        self.assertEqual(result["catalog_count"], 228)
         self.assertEqual(result["results"][0]["name"], entries[0]["name"])
         self.assertIn("Never automatically delete", result["disclaimer"])
-        self.assertEqual(len(entries), 222)
+        self.assertEqual(len(entries), 228)
 
     def test_json_catalog_validation_rejects_duplicate(self):
         with TemporaryDirectory() as temp:

@@ -14,7 +14,7 @@ class KoreanTaskPathwayTests(unittest.TestCase):
 
     def test_seven_tasks_are_grounded_in_registered_names(self):
         fragment = directory_task_paths(self.records)
-        self.assertEqual(fragment.count("<li><strong>"), 7)
+        self.assertEqual(fragment.count("<li><strong>"), 12)
         for name in ("국민신문고", "정부24", "KIPRIS 지식재산정보검색",
                      "특허로", "K-Startup 창업지원포털", "기업마당",
                      "국세청 홈택스", "위택스", "국민건강보험공단",
