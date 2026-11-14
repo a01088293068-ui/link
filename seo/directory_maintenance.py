@@ -3,6 +3,48 @@ from datetime import date
 from html import escape
 
 
+def render_address_changes(records):
+    """Show documented link changes whose destinations still match the catalogue."""
+    changes = (
+        (
+            "2026-11-14", "대한민국 법원 전자소송포털",
+            "기존 전자민원센터", "https://ecfs.scourt.go.kr/",
+            "법원이 2025년 1월 31일 전자민원센터 서비스를 전자소송포털로 통합했습니다. 소송 관련 서식과 절차 안내를 이곳에서 찾을 수 있습니다.",
+            "https://www.scourt.go.kr/work2025/helpinfo.html", "법원 통합 공지",
+        ),
+        (
+            "2026-11-12", "대한상공회의소 코참넷",
+            "https://www.korcham.net/", "https://www.korcham.net/nCham/Service/Main/appl/Main.asp",
+            "링크위키에서 HTTPS 메인 페이지로 바로 이동하도록 등록 경로를 바꿨습니다.",
+            "https://github.com/a01088293068-ui/link/pull/79", "등록 경로 변경 근거",
+        ),
+        (
+            "2026-11-11", "국가통계포털 KOSIS",
+            "https://kosis.kr/", "https://kosis.kr/index/index.do",
+            "링크위키에 포털 첫 화면으로 직접 연결되는 경로를 등록했습니다.",
+            "https://github.com/a01088293068-ui/link/pull/65", "등록 경로 변경 근거",
+        ),
+    )
+    current_destinations = {record["url"] for record in records}
+    entries = []
+    for edited, name, previous, current, reason, source, source_label in changes:
+        if current not in current_destinations:
+            continue
+        entries.append(
+            f'<li><time datetime="{edited}">{edited}</time> · '
+            f'<strong>{escape(name)}</strong><br>{escape(previous)} → '
+            f'<a href="{escape(current)}">{escape(current)}</a>'
+            f'<p>{escape(reason)} <a href="{escape(source)}">{escape(source_label)}</a></p></li>'
+        )
+    if not entries:
+        return ""
+    return (
+        '<section class="seo-guidance"><h2>서비스 이전과 등록 주소 변경 기록</h2>'
+        '<p>날짜는 링크위키에 반영한 날입니다. 서비스 이전과 같은 도메인 내 접속 경로 변경을 아래에서 확인할 수 있습니다.</p>'
+        '<ul>' + "".join(entries) + '</ul></section>'
+    )
+
+
 def render(records, changes, categories):
     """Produce update disclosure from the real catalogue and dated edit ledger."""
     if not isinstance(records, list) or not records:
@@ -45,6 +87,7 @@ def render(records, changes, categories):
         '개별 도메인의 마지막 테스트나 변경 이력을 뜻하지 않습니다.</p>'
         '<table><thead><tr><th>분야</th><th>등록 사이트</th><th>페이지 수정일</th>'
         '</tr></thead><tbody>' + ''.join(rows) + '</tbody></table></section>'
+        + render_address_changes(records) +
         '<section class="seo-guidance"><h2>사이트 이동 전 확인할 사항</h2>'
         '<ol><li>목록에 표시된 도메인과 이동 후 주소창의 도메인을 비교하세요.</li>'
         '<li>로그인·결제·개인정보 제공 전에는 운영기관의 최신 안내를 확인하세요.</li>'
