@@ -130,10 +130,16 @@ class LinkParser(HTMLParser):
             return
         href = str(info.get("href") or "")
         try:
-            host = urllib.parse.urlsplit(href).hostname
+            destination = urllib.parse.urlsplit(href)
+            host = destination.hostname
+            port = destination.port
         except ValueError:
             return
-        if host and host.lower().removeprefix("www.") == self.domain:
+        if (destination.scheme == "https"
+                and host and host.lower().removeprefix("www.") == self.domain
+                and destination.username is None and destination.password is None
+                and port in (None, 443)
+                and not urllib.parse.unquote(destination.path).lower().startswith("/assets/")):
             rel = str(info.get("rel") or "").lower().split()
             self.matches.append(sorted(set(rel)))
 
