@@ -23,7 +23,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
         cls.records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
 
     def test_actual_catalog_is_deduplicated_and_explained(self):
-        self.assertEqual(len(self.records), 229)
+        self.assertEqual(len(self.records), 279)
         self.assertEqual(len({record["name"] for record in self.records}), len(self.records))
         self.assertEqual(len({record["url"] for record in self.records}), len(self.records))
         added = [entry for entry in self.records if entry["name"] in NAMES]
@@ -46,7 +46,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
     def test_static_page_metadata_counts_match_catalog(self):
         for path in ("index.html", "directory.html"):
             original = (ROOT / path).read_text(encoding="utf-8")
-            self.assertIn("229개", original)
+            self.assertIn("279개", original)
             self.assertNotIn("222개", original)
 
     def test_build_produces_seven_actual_crawlable_public_service_cards(self):
@@ -56,7 +56,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
         html = built.read_text(encoding="utf-8")
         for name in NAMES:
             self.assertIn(name, html)
-        self.assertEqual(html.count('<article class="v6-card" id="site-'), 229)
+        self.assertEqual(html.count('<article class="v6-card" id="site-'), 279)
         self.assertIn("주소정보누리집 도로명주소", html)
         self.assertIn("국민안전24", html)
         self.assertIn("https://www.safekorea.go.kr/", html)

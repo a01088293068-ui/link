@@ -24,7 +24,7 @@ class CatalogRenderTests(unittest.TestCase):
         self.assertTrue(all(len(description) <= 200 for description in descriptions))
         self.assertEqual(len({
             item["category"] for item in self.records
-        }), 8)
+        }), 13)
 
     def test_all_records_render_as_safe_crawlable_html(self):
         html = render_directory_catalog_cards(self.records)

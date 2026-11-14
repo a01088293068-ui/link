@@ -5,7 +5,7 @@ from seo.index_priority_plan import decide, render, historic_canonical_mismatche
 
 class IndexPriorityPlanTests(unittest.TestCase):
     def test_gsc_priority_report_covers_all_directory_category_landings(self):
-        self.assertEqual(len(PRIORITY_PATHS), 11)
+        self.assertEqual(len(PRIORITY_PATHS), 16)
         for slug in ("search", "community", "ai", "sports", "video",
                      "webtoon", "comics-directory", "korean"):
             self.assertIn("/categories/" + slug, PRIORITY_PATHS)

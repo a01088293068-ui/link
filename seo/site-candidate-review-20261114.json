@@ -1,0 +1,653 @@
+{
+  "checked_on": "2026-11-14",
+  "method": "Public HTTPS GET with Range: bytes=0-12000; recorded final response URL and document title when available. HTTP 206 is a successful partial response, not an error. 403/5xx/timeouts are unconfirmed and were excluded without claiming the destination is offline.",
+  "duplicate_rule": "Compared against current catalog names, exact hostnames, and final URLs; the existing 대한민국 구석구석 entry was not duplicated.",
+  "counts": {
+    "candidate_pages_checked": 64,
+    "new_active_unique_sites_added": 50,
+    "existing_duplicates": 1,
+    "excluded_for_manual_check": 13
+  },
+  "candidates": [
+    {
+      "name": "KB국민은행",
+      "url": "https://www.kbstar.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.kbstar.com/",
+      "title": "KB국민은행",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "신한은행",
+      "url": "https://bank.shinhan.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://bank.shinhan.com/",
+      "title": "Shinhan Bank",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "우리은행",
+      "url": "https://www.wooribank.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.wooribank.com/",
+      "title": "우리은행",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "하나은행",
+      "url": "https://www.kebhana.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.kebhana.com/",
+      "title": "하나은행",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "NH농협은행",
+      "url": "https://banking.nonghyup.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://banking.nonghyup.com/",
+      "title": "",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "IBK기업은행",
+      "url": "https://www.ibk.co.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.ibk.co.kr/",
+      "title": "IBK기업은행",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "카카오뱅크",
+      "url": "https://www.kakaobank.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.kakaobank.com/",
+      "title": "카카오뱅크",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "토스뱅크",
+      "url": "https://www.tossbank.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.tossbank.com/",
+      "title": "토스뱅크",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "케이뱅크",
+      "url": "https://www.kbanknow.com/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.kbanknow.com/web/web-home/home/main",
+      "title": "케이뱅크",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "부산은행",
+      "url": "https://www.busanbank.co.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.busanbank.co.kr/",
+      "title": "",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "iM뱅크",
+      "url": "https://www.imbank.co.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.imbank.co.kr/",
+      "title": "",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "KDB산업은행",
+      "url": "https://www.kdb.co.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.kdb.co.kr/",
+      "title": "인터넷뱅킹 메인화면",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "예금보험공사",
+      "url": "https://www.kdic.or.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.kdic.or.kr/sp/main.do",
+      "title": "제도·정책",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "금융소비자정보포털 파인",
+      "url": "https://fine.fss.or.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://fine.fss.or.kr/fine/main/main.do?menuNo=900000",
+      "title": "금융소비자 포털 파인",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "전자공시시스템 DART",
+      "url": "https://dart.fss.or.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://dart.fss.or.kr/",
+      "title": "전자공시시스템",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국거래소",
+      "url": "https://www.krx.co.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 0,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "금융투자협회",
+      "url": "https://www.kofia.or.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.kofia.or.kr/",
+      "title": "금융투자협회",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국예탁결제원 세이브로",
+      "url": "https://seibro.or.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://seibro.or.kr/",
+      "title": "",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국금융연구원",
+      "url": "https://www.kif.re.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.kif.re.kr/",
+      "title": "KIF - 한국금융연구원",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "자본시장연구원",
+      "url": "https://www.kcmi.re.kr/",
+      "category": "금융·경제",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.kcmi.re.kr/",
+      "title": "KCMI 자본시장연구원",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "큐넷",
+      "url": "https://www.q-net.or.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.q-net.or.kr/",
+      "title": "Q-Net 자격의 모든 것",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국산업인력공단",
+      "url": "https://www.hrdkorea.or.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.hrdkorea.or.kr/",
+      "title": "HRDK �ѱ�����η°���",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "K-MOOC",
+      "url": "https://www.kmooc.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.kmooc.kr/",
+      "title": "| K-MOOC",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국학술지인용색인 KCI",
+      "url": "https://www.kci.go.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.kci.go.kr/",
+      "title": "KCI 국내 학술지 인용색인 정보 포털입니다.",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "DBpia",
+      "url": "https://www.dbpia.co.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.dbpia.co.kr/",
+      "title": "",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "사람인",
+      "url": "https://www.saramin.co.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 0,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "잡코리아",
+      "url": "https://www.jobkorea.co.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.jobkorea.co.kr/",
+      "title": "잡코리아 | 대한민국 대표 구인구직, 취업 정보 & 채용 플랫폼",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "원티드",
+      "url": "https://www.wanted.co.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "인크루트",
+      "url": "https://www.incruit.com/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.incruit.com/",
+      "title": "��ũ��Ʈ - �ǽð� ������� ����Ʈ",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "알바몬",
+      "url": "https://www.albamon.com/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.albamon.com/",
+      "title": "알바몬 | 세상의 모든 알바! 일자리 & 아르바이트 구인 구직 사이트",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "캐치",
+      "url": "https://www.catch.co.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "점핏",
+      "url": "https://www.jumpit.co.kr/",
+      "category": "교육·취업",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://jumpit.saramin.co.kr/",
+      "title": "점핏 | 개발자 커리어 점프",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "연합뉴스",
+      "url": "https://www.yna.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.yna.co.kr/",
+      "title": "연합뉴스",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "뉴시스",
+      "url": "https://www.newsis.com/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.newsis.com/",
+      "title": ":: 공감언론 뉴시스통신사 ::",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "YTN",
+      "url": "https://www.ytn.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.ytn.co.kr/",
+      "title": "YTN | 대한민국 24시간 뉴스채널",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "KBS 뉴스",
+      "url": "https://news.kbs.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://news.kbs.co.kr/",
+      "title": "",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "SBS 뉴스",
+      "url": "https://news.sbs.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://news.sbs.co.kr/",
+      "title": "SBS 뉴스",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한겨레",
+      "url": "https://www.hani.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.hani.co.kr/",
+      "title": "한겨레",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "경향신문",
+      "url": "https://www.khan.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.khan.co.kr/",
+      "title": "경향신문",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국일보",
+      "url": "https://www.hankookilbo.com/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.hankookilbo.com/",
+      "title": "세상을 보는 균형ㅣ한국일보",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "조선일보",
+      "url": "https://www.chosun.com/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.chosun.com/",
+      "title": "조선일보 - 1등 디지털뉴스",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "중앙일보",
+      "url": "https://www.joongang.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.joongang.co.kr/",
+      "title": "중앙일보",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "동아일보",
+      "url": "https://www.donga.com/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 0,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "매일경제",
+      "url": "https://www.mk.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.mk.co.kr/",
+      "title": "매일경제",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국경제",
+      "url": "https://www.hankyung.com/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.hankyung.com/",
+      "title": "한국경제",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "서울경제",
+      "url": "https://www.sedaily.com/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.sedaily.com/",
+      "title": "서울경제",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "전자신문",
+      "url": "https://www.etnews.com/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.etnews.com/",
+      "title": "전자신문",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "ZDNet Korea",
+      "url": "https://zdnet.co.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://zdnet.co.kr/",
+      "title": "IT세상을 바꾸는 힘 지디넷코리아",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "뉴스1",
+      "url": "https://www.news1.kr/",
+      "category": "뉴스·언론",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "쿠팡",
+      "url": "https://www.coupang.com/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "G마켓",
+      "url": "https://www.gmarket.co.kr/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "옥션",
+      "url": "https://www.auction.co.kr/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "11번가",
+      "url": "https://www.11st.co.kr/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 502,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "SSG.COM",
+      "url": "https://www.ssg.com/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "롯데ON",
+      "url": "https://www.lotteon.com/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.lotteon.com/p/display/main/lotteon",
+      "title": "롯데ON",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "다나와",
+      "url": "https://www.danawa.com/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 403,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    },
+    {
+      "name": "에누리 가격비교",
+      "url": "https://www.enuri.com/",
+      "category": "쇼핑·가격비교",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.enuri.com/",
+      "title": "최저가로 산다! 에누리 : 가격비교 사이트",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "코레일",
+      "url": "https://www.korail.com/",
+      "category": "생활·교통·여행",
+      "duplicate": "",
+      "status": 206,
+      "final": "https://www.korail.com/",
+      "title": "코레일 승차권예매",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "SRT",
+      "url": "https://etk.srail.kr/",
+      "category": "생활·교통·여행",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://etk.srail.kr/main.do",
+      "title": "승차권 예약/발매 - 국민철도 SR",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "인천국제공항",
+      "url": "https://www.airport.kr/",
+      "category": "생활·교통·여행",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.airport.kr/",
+      "title": "인천국제공항",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국공항공사",
+      "url": "https://www.airport.co.kr/",
+      "category": "생활·교통·여행",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.airport.co.kr/www/index.do",
+      "title": "KAC한국공항공사(국문) 메인",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국관광공사 대한민국 구석구석",
+      "url": "https://korean.visitkorea.or.kr/",
+      "category": "생활·교통·여행",
+      "duplicate": "domain",
+      "status": 200,
+      "final": "https://korean.visitkorea.or.kr/main/main.do",
+      "title": "대한민국 구석구석",
+      "decision": "existing_catalog_duplicate"
+    },
+    {
+      "name": "티맵",
+      "url": "https://www.tmap.co.kr/",
+      "category": "생활·교통·여행",
+      "duplicate": "",
+      "status": 200,
+      "final": "https://www.tmapmobility.com/",
+      "title": "TMAP MOBILITY",
+      "decision": "added_to_catalog"
+    },
+    {
+      "name": "한국도로공사",
+      "url": "https://www.ex.co.kr/",
+      "category": "생활·교통·여행",
+      "duplicate": "",
+      "status": 0,
+      "final": "",
+      "title": "",
+      "decision": "excluded_pending_manual_check"
+    }
+  ]
+}

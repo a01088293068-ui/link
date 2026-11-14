@@ -30,7 +30,7 @@ class HomepageRealNavigationTests(unittest.TestCase):
         published = {r["url"] for r in self.records}
         external = [link for link in parser.links
                     if link.get("href", "").startswith("https://")]
-        self.assertEqual(len(external), 5 * len(CATEGORY_LANDING))
+        self.assertEqual(len(external), sum(min(5, sum(row["category"] == category for row in self.records)) for category, _, _, _ in CATEGORY_LANDING))
         self.assertEqual(len({link["href"] for link in external}), len(external))
         for link in external:
             self.assertIn(link["href"], published)

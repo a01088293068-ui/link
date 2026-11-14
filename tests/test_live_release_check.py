@@ -379,7 +379,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(any("structured-data" in x for x in problems))
         self.assertTrue(any("category link" in x for x in problems))
 
-    def test_sitemap_requires_real_hubs_and_all_eight_categories(self):
+    def test_sitemap_requires_real_hubs_and_all_thirteen_categories(self):
         locs = [SITE + "/", SITE + "/directory", SITE + "/categories/"]
         locs.extend(SITE + x for x in CATEGORY_PATHS)
         good = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(

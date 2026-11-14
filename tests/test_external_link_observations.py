@@ -35,10 +35,10 @@ class Opener:
 
 
 class LinkObservationsTests(unittest.TestCase):
-    def test_real_catalog_has_229_unique_public_https_targets(self):
+    def test_real_catalog_has_279_unique_public_https_targets(self):
         records = check.catalog_entries()
-        self.assertEqual(len(records), 229)
-        self.assertEqual(len({r["url"] for r in records}), 229)
+        self.assertEqual(len(records), 279)
+        self.assertEqual(len({r["url"] for r in records}), 279)
         self.assertTrue(all(check.safe_target(r["url"]) for r in records))
 
     def test_block_local_private_and_insecure_urls(self):
@@ -52,16 +52,16 @@ class LinkObservationsTests(unittest.TestCase):
             with self.subTest(url=url), self.assertRaises(ValueError):
                 check.safe_target(url)
 
-    def test_rotation_covers_all_entries_in_ten_days_without_repeats(self):
+    def test_rotation_covers_all_entries_in_twelve_days_without_repeats(self):
         entries = check.catalog_entries()
         day = date(2026, 11, 11)
         observed = []
-        for index in range(10):
+        for index in range(12):
             selected = check.select_batch(entries, day + timedelta(days=index))
             self.assertEqual(len(selected), 24)
             self.assertEqual(len({x["url"] for x in selected}), 24)
             observed += [x["url"] for x in selected]
-        self.assertEqual(len(set(observed)), 229)
+        self.assertEqual(len(set(observed)), 279)
 
     def test_head_only_no_request_body_and_no_redirect_following(self):
         opener = Opener(200)
@@ -92,10 +92,10 @@ class LinkObservationsTests(unittest.TestCase):
         result = check.run(date(2026, 11, 11), entries, batch_size=2,
                            observer=lambda url: {"status": "network_uncertain"})
         self.assertEqual(result["checked_count"], 2)
-        self.assertEqual(result["catalog_count"], 229)
+        self.assertEqual(result["catalog_count"], 279)
         self.assertEqual(result["results"][0]["name"], entries[0]["name"])
         self.assertIn("Never automatically delete", result["disclaimer"])
-        self.assertEqual(len(entries), 229)
+        self.assertEqual(len(entries), 279)
 
     def test_json_catalog_validation_rejects_duplicate(self):
         with TemporaryDirectory() as temp:

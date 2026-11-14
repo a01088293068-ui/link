@@ -25,7 +25,7 @@ def module():
 class EvidenceAndFormatTests(unittest.TestCase):
     def test_three_articles_have_distinct_tables_and_checklists(self):
         registered = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(registered), 229)
+        self.assertEqual(len(registered), 279)
         distinct_headers = []
         for slug in SLUGS:
             with self.subTest(slug=slug):

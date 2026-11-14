@@ -20,7 +20,9 @@ CATEGORY_PATHS = (
     "/categories/community", "/categories/korean",
     "/categories/comics-directory", "/categories/webtoon",
     "/categories/ai", "/categories/search",
-    "/categories/sports", "/categories/video",
+    "/categories/sports", "/categories/video", "/categories/finance",
+    "/categories/education", "/categories/news", "/categories/shopping",
+    "/categories/travel",
 )
 
 

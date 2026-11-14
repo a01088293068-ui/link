@@ -98,7 +98,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         from build import category_decision_guide, CATEGORY_DECISION_GUIDES, CATEGORY_LANDING, CATEGORY_SEARCH_EXAMPLES
         root = Path(__file__).resolve().parents[1]
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(CATEGORY_DECISION_GUIDES), 8)
+        self.assertEqual(len(CATEGORY_DECISION_GUIDES), 13)
         seen_headings = set()
         for category, slug, _, _ in CATEGORY_LANDING:
             html = category_decision_guide(slug, records)
@@ -177,7 +177,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("학술자료", html)
         self.assertIn("민원 신청", html)
 
-    def test_all_eight_categories_offer_two_contextual_crawlable_paths(self):
+    def test_all_thirteen_categories_offer_two_contextual_crawlable_paths(self):
         from build import related_category_navigation, RELATED_CATEGORY_PATHS, CATEGORY_LANDING
         from seo.site_audit import internal_inbound_links
         root = Path(__file__).resolve().parents[1]
@@ -538,7 +538,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         for url in links:
             self.assertTrue((root / "dist" / url.lstrip("/") / "index.html").is_file())
 
-    def test_directory_landing_has_all_eight_crawlable_categories_with_counts(self):
+    def test_directory_landing_has_all_thirteen_crawlable_categories_with_counts(self):
         root = Path(__file__).resolve().parents[1]
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
         counts = {}

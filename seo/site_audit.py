@@ -347,7 +347,8 @@ def audit_site(dist):
             if f'href="{expected_path}"' not in listing:
                 errors.append(f"directory guide missing help link: {expected_path}")
         for slug in ("community", "korean", "comics-directory", "webtoon",
-                     "ai", "search", "sports", "video"):
+                     "ai", "search", "sports", "video", "finance",
+                     "education", "news", "shopping", "travel"):
             if f'href="/categories/{slug}"' not in listing:
                 errors.append(f"directory missing category navigation: {slug}")
         errors.extend(card_copy_errors(card_blocks, records, "h3", "directory"))
@@ -357,6 +358,9 @@ def audit_site(dist):
         "community": "커뮤니티", "korean": "한인교민",
         "video": "영상·OTT", "webtoon": "만화·웹툰",
         "comics-directory": "만화",
+        "finance": "금융·경제", "education": "교육·취업",
+        "news": "뉴스·언론", "shopping": "쇼핑·가격비교",
+        "travel": "생활·교통·여행",
     }
     if isinstance(records, list):
         for slug, category in category_pages.items():

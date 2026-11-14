@@ -21,7 +21,8 @@ CORE_URLS = (SITEMAP.removesuffix('/sitemap.xml') + '/',
              'https://linkwiki.info/categories/') + tuple(
     'https://linkwiki.info/categories/' + slug for slug in
     ('community', 'korean', 'comics-directory', 'webtoon',
-     'ai', 'search', 'sports', 'video'))
+     'ai', 'search', 'sports', 'video', 'finance', 'education',
+     'news', 'shopping', 'travel'))
 
 
 def access_token():

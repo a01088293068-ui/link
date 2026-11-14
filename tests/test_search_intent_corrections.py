@@ -46,7 +46,7 @@ class SearchIntentAndCorrectionsTests(unittest.TestCase):
                         html.index('id="v6-results"'))
         self.assertLess(html.index('id="v6-results"'),
                         html.index('id="directory-correction-request"'))
-        self.assertEqual(html.count('<article class="v6-card" id="site-'), 229)
+        self.assertEqual(html.count('<article class="v6-card" id="site-'), 279)
         self.assertIn('href="https://linkwiki.info/directory" rel="canonical"', html)
 
     def test_daily_rotation_survives_legacy_url_quota_pressure(self):

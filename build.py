@@ -29,6 +29,11 @@ CATEGORY_LANDING = (
     ("검색·포털", "search", "검색·포털 링크모음", "검색과 정보 탐색에 필요한 포털 서비스를 골라보세요."),
     ("스포츠", "sports", "스포츠 사이트모음", "일정·기록·뉴스 등 목적에 따라 서비스를 찾고 중계권을 확인하세요."),
     ("영상·OTT", "video", "영상·OTT 링크모음", "영상 서비스의 콘텐츠 제공 방식과 구독 조건을 구분해 살펴보세요."),
+    ("금융·경제", "finance", "금융·은행 사이트모음", "은행 업무, 소비자 보호, 기업 공시와 금융 연구 자료를 구분해 필요한 공식 경로를 찾으세요."),
+    ("교육·취업", "education", "교육·취업 사이트모음", "국가자격, 학술자료와 채용 공고를 목적에 따라 찾아보고 접수 조건은 원문에서 확인하세요."),
+    ("뉴스·언론", "news", "뉴스·언론 사이트모음", "통신사·방송사·신문사와 IT 전문 매체의 보도와 원문을 찾아보세요."),
+    ("쇼핑·가격비교", "shopping", "쇼핑·가격비교 사이트모음", "상품 판매처와 가격 비교 기능을 구분하고 배송·판매 조건은 각 판매 페이지에서 확인하세요."),
+    ("생활·교통·여행", "travel", "생활·교통·여행 사이트모음", "철도·공항·내비게이션·관광 정보를 찾아 이동과 여행 계획을 세우세요."),
 )
 
 
@@ -532,6 +537,16 @@ RELATED_CATEGORY_PATHS = {
                ("video", "영상·OTT 서비스 비교하기")),
     "video": (("sports", "스포츠 일정·결과 확인하기"),
               ("webtoon", "웹툰 콘텐츠 플랫폼 보기")),
+    "finance": (("search", "공공·금융 정보 서비스 찾기"),
+                ("shopping", "상품 가격과 구매처 비교하기")),
+    "education": (("search", "공공 교육·행정 서비스 찾기"),
+                  ("news", "교육·채용 관련 보도 살펴보기")),
+    "news": (("search", "포털·공공 정보 검색하기"),
+             ("community", "이용자 토론과 의견 살펴보기")),
+    "shopping": (("finance", "결제·금융 정보 확인하기"),
+                 ("travel", "여행·교통 서비스 살펴보기")),
+    "travel": (("search", "공공 교통·생활 정보 찾기"),
+               ("shopping", "여행 상품과 판매 조건 비교하기")),
 }
 
 
@@ -596,10 +611,30 @@ CATEGORY_DECISION_GUIDES = {
          "무료 광고형 시청, 개별 대여, 정기 구독을 구분하고 화질·동시 접속·해지 조건을 각 서비스에서 확인하세요."),
         ("가족·어린이와 함께 이용하는 경우",
          "연령 제한, 보호자 설정, 자막·더빙 옵션을 확인하세요. 앱이나 웹사이트에서 가능한 기능이 기기마다 다를 수 있습니다.")),
+    "finance": (
+        ("은행 계좌와 금융상품을 찾는 경우", "은행별 개인·기업 업무 메뉴를 먼저 구분하고 가입 자격·수수료·금리·상환 조건은 상품 설명서와 최신 공시에서 확인하세요."),
+        ("기업 공시와 시장 자료를 확인하는 경우", "기업 공시 원문은 DART에서, 거래소 정보는 한국거래소에서 찾을 수 있습니다. 투자 판단 전 공시 기준일과 정정 공시 여부를 확인하세요."),
+        ("금융 피해와 소비자 보호 정보를 찾는 경우", "금융소비자정보포털과 예금보험공사의 안내를 활용하고 민감 정보는 은행 공식 경로에서 처리하세요.")),
+    "education": (
+        ("국가자격 시험을 준비하는 경우", "자격 종목과 시험 회차를 먼저 선택하고 Q-Net의 시험 일정·접수 안내를 확인하세요. 교육 과정 수료가 자격 취득을 뜻하지는 않습니다."),
+        ("학술 자료를 찾는 경우", "RISS·KCI·DBpia는 자료 유형과 열람 조건이 다릅니다. 논문 제목, 발행기관, 발행연도와 원문 이용 권한을 각각 확인하세요."),
+        ("채용 공고를 비교하는 경우", "채용 사이트에서 근무 형태와 직무를 좁히고, 고용 조건·마감일은 채용 기업의 원문 공고와 대조하세요.")),
+    "news": (
+        ("속보와 통신사 보도를 확인하는 경우", "통신사 기사와 방송 뉴스는 업데이트 시점과 영상·문자 제공 방식이 다릅니다. 후속 보도와 원문 자료도 확인하세요."),
+        ("경제·증권 뉴스를 찾는 경우", "매체별 기사와 분석 의견을 구분하고 기사 작성 시각, 인용된 공시·통계의 기준일을 확인하세요."),
+        ("IT·기술 뉴스를 살펴보는 경우", "전문 매체의 보도와 제품·기관의 공식 발표를 구분하세요. 보도자료는 독립적인 평가와 같지 않습니다.")),
+    "shopping": (
+        ("같은 상품의 판매처를 비교하는 경우", "가격 비교 결과는 옵션·배송비·쿠폰 적용에 따라 달라질 수 있습니다. 최종 결제 화면의 판매자와 총액을 확인하세요."),
+        ("오픈마켓에서 구매하는 경우", "상품명·모델번호·판매자·반품 조건을 비교하세요. 플랫폼 등록이 판매자의 공식 대리점 지위를 뜻하지 않습니다."),
+        ("판매처와 가격 정보를 확인하는 경우", "표시 가격과 실제 주문 가격이 다를 수 있으므로 판매 페이지에서 재고·배송일·환불 조건을 확인하세요.")),
+    "travel": (
+        ("철도 승차권을 찾는 경우", "코레일과 SR의 노선·운행편·예매 경로를 구분하고 운행 변경·취소 공지를 운영사에서 확인하세요."),
+        ("항공편과 공항 정보를 확인하는 경우", "항공사 운항 정보와 공항 시설·교통 정보를 구분하고 출발 전 최신 공지를 대조하세요."),
+        ("국내 여행지를 탐색하는 경우", "관광지 안내의 운영 시간·휴무·예약 조건은 바뀔 수 있습니다. 방문 전 운영 주체의 공지를 확인하세요.")),
 }
 
 
-# Curated Korean-first examples for the eight existing categories, not a popularity ranking.
+# Curated Korean-first examples for each category, not a popularity ranking.
 # Every service must remain present in the registered catalogue.
 CATEGORY_SEARCH_EXAMPLES = {
     "community": ("인벤", "디시인사이드"),
@@ -610,6 +645,11 @@ CATEGORY_SEARCH_EXAMPLES = {
     "search": ("네이버", "정부24"),
     "sports": ("네이버 스포츠", "KBO 공식 홈페이지"),
     "video": ("티빙", "웨이브"),
+    "finance": ("KB국민은행", "전자공시시스템 DART"),
+    "education": ("큐넷", "잡코리아"),
+    "news": ("연합뉴스", "한국경제"),
+    "shopping": ("롯데ON", "에누리 가격비교"),
+    "travel": ("코레일", "인천국제공항"),
 }
 
 
@@ -923,6 +963,13 @@ def directory_card_anchor(record):
     return "site-" + hashlib.sha256(url.encode("utf-8")).hexdigest()[:14]
 
 
+DIRECTORY_EVIDENCE_TYPES = {
+    "service_page": "서비스 페이지와 등록 주소 대조",
+    "agency_guide": "관련 기관 안내의 연결 주소 대조",
+    "education_guide": "교육기관 안내의 연결 주소 확인",
+}
+
+
 def load_directory_evidence(records):
     """Load only explicit, source-backed URL and service-scope checks."""
     path = ROOT / "assets" / "directory-evidence.json"
@@ -937,10 +984,14 @@ def load_directory_evidence(records):
             raise RuntimeError("Directory evidence record must be an object")
         url, name, source = row.get("url"), row.get("name"), row.get("source_url")
         scope, checked_on = row.get("scope"), row.get("checked_on")
+        evidence_type = row.get("evidence_type")
+        freshness_days = row.get("freshness_days", 180)
         if (not isinstance(url, str) or url not in known or known[url].get("name") != name
                 or not isinstance(source, str) or urlparse(source).scheme != "https"
                 or not urlparse(source).hostname or not isinstance(scope, str) or not scope.strip()
-                or not isinstance(checked_on, str)):
+                or not isinstance(checked_on, str)
+                or evidence_type not in DIRECTORY_EVIDENCE_TYPES
+                or not isinstance(freshness_days, int) or not 1 <= freshness_days <= 730):
             raise RuntimeError("Incomplete or mismatched directory evidence: " + str(url))
         try:
             checked_date = date.fromisoformat(checked_on)
@@ -965,12 +1016,14 @@ def load_directory_evidence(records):
     return checked
 
 
-def render_directory_catalog_cards(records, evidence=None):
+def render_directory_catalog_cards(records, evidence=None, today=None):
     """Render crawlable cards directly from the verified catalog."""
     if not isinstance(records, list) or len(records) < 200:
         raise RuntimeError("Verified directory catalog unexpectedly empty")
     cards = []
     evidence = evidence or {}
+    from datetime import date, timedelta
+    today = today or date.today()
     seen = set()
     for item in records:
         if not isinstance(item, dict):
@@ -990,12 +1043,18 @@ def render_directory_catalog_cards(records, evidence=None):
         source = evidence.get(url)
         evidence_markup = ''
         if source:
+            checked_on = date.fromisoformat(source["checked_on"])
+            review_by = checked_on + timedelta(days=source.get("freshness_days", 180))
+            evidence_label = DIRECTORY_EVIDENCE_TYPES[source["evidence_type"]]
+            freshness = (
+                "근거 재확인 필요" if today > review_by else "재확인 권고일 " + review_by.isoformat()
+            )
             evidence_markup = (
-                '<p class="directory-evidence"><span>공식 출처 안내 대조</span> · '
+                '<p class="directory-evidence"><span>' + escape(evidence_label) + '</span> · '
                 '<a class="directory-source" href="' + escape(source["source_url"], quote=True) + '" '
                 'rel="noopener noreferrer external" target="_blank">근거 보기 ↗</a>'
                 '<small>' + escape(source["scope"]) + ' · 확인 '
-                + escape(source["checked_on"]) + '</small>'
+                + escape(source["checked_on"]) + ' · ' + escape(freshness) + '</small>'
                 + ''.join(
                     '<small class="directory-history">변경 기록 (' + escape(change["date"]) + '): '
                     + escape(change["event"]) + ' · '

@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://linkwiki.info"
 KEYWORDS = ("주소모음", "링크모음", "사이트모음")
 CATEGORIES = ("community", "korean", "comics-directory", "webtoon",
-              "ai", "search", "sports", "video")
+              "ai", "search", "sports", "video", "finance", "education",
+              "news", "shopping", "travel")
 
 
 class VisibleDirectoryParser(HTMLParser):
@@ -151,7 +152,7 @@ def main():
             print("FAIL:", issue)
         return 1
     count = len(json.loads((dist / "assets" / "verified-directory.json").read_text(encoding="utf-8")))
-    print(f"PASS: {count} crawlable directory cards, 8 category paths, core intents and canonical sitemap")
+    print(f"PASS: {count} crawlable directory cards, {len(CATEGORIES)} category paths, core intents and canonical sitemap")
     return 0
 
 

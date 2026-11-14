@@ -215,11 +215,17 @@ def related_posts(topic, limit=2):
 
 
 CATEGORY_RELATED = (
+    (("OTT", "영상", "스트리밍"), "영상·OTT 링크모음", "/categories/video"),
     (("커뮤니티", "게시판", "토론"), "커뮤니티 사이트모음", "/categories/community"),
     (("한인", "교민"), "해외 한인 사이트모음", "/categories/korean"),
     (("웹툰",), "웹툰 링크모음", "/categories/webtoon"),
     (("만화", "웹소설"), "만화·웹소설 사이트모음", "/categories/comics-directory"),
     (("AI 도구", "인공지능"), "AI 도구 사이트모음", "/categories/ai"),
+    (("은행", "금융", "금리", "주식", "공시", "투자"), "금융·은행 사이트모음", "/categories/finance"),
+    (("자격증", "시험", "채용", "취업", "학술자료", "논문", "강좌"), "교육·취업 사이트모음", "/categories/education"),
+    (("뉴스", "언론", "신문", "방송", "보도"), "뉴스·언론 사이트모음", "/categories/news"),
+    (("쇼핑", "가격비교", "판매처", "구매"), "쇼핑·가격비교 사이트모음", "/categories/shopping"),
+    (("철도", "항공", "공항", "여행", "교통", "길찾기"), "생활·교통·여행 사이트모음", "/categories/travel"),
     (("포털", "검색엔진", "민원", "공공서비스", "공공기관", "창업", "특허", "통관", "교육", "학습", "학교", "장학", "진로"), "검색·포털 링크모음", "/categories/search"),
     (("스포츠", "경기 일정", "경기 결과"), "스포츠 사이트모음", "/categories/sports"),
     (("OTT", "영상", "스트리밍"), "영상·OTT 링크모음", "/categories/video"),
@@ -347,6 +353,11 @@ CATEGORY_NAME_BY_PATH = {
     "/categories/search": "검색·포털",
     "/categories/sports": "스포츠",
     "/categories/video": "영상·OTT",
+    "/categories/finance": "금융·경제",
+    "/categories/education": "교육·취업",
+    "/categories/news": "뉴스·언론",
+    "/categories/shopping": "쇼핑·가격비교",
+    "/categories/travel": "생활·교통·여행",
 }
 
 

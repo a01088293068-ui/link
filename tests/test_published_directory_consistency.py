@@ -16,6 +16,9 @@ CATEGORY_FILES = {
     "AI 도구": "ai", "스포츠": "sports",
     "영상·OTT": "video", "만화·웹툰": "webtoon",
     "만화": "comics-directory", "한인교민": "korean",
+    "금융·경제": "finance", "교육·취업": "education",
+    "뉴스·언론": "news", "쇼핑·가격비교": "shopping",
+    "생활·교통·여행": "travel",
 }
 
 

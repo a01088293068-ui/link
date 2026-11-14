@@ -15,6 +15,8 @@ PRIORITY_PATHS = (
     "/categories/search", "/categories/community", "/categories/ai",
     "/categories/sports", "/categories/video", "/categories/webtoon",
     "/categories/comics-directory", "/categories/korean",
+    "/categories/finance", "/categories/education", "/categories/news",
+    "/categories/shopping", "/categories/travel",
 )
 
 

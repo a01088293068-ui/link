@@ -231,7 +231,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertEqual(request.get_method(), 'GET')
         self.assertIn('sc-domain%3Alinkwiki.info', request.full_url)
 
-    def test_crawl_edit_report_includes_all_eight_updated_category_urls(self):
+    def test_crawl_edit_report_includes_all_thirteen_updated_category_urls(self):
         report = monitor.crawl_after_significant_change(
             [], {'/': '2026-11-07', '/directory': '2026-11-08',
                  '/categories/ai': '2026-11-08',
@@ -438,7 +438,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertTrue(all(url in targets for url in recent))
         self.assertLessEqual(len(targets), 20)
 
-    def test_inspection_prioritizes_all_eight_categories_and_respects_limit(self):
+    def test_inspection_prioritizes_all_thirteen_categories_and_respects_limit(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / 'content').mkdir()
@@ -451,7 +451,8 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('https://linkwiki.info/directory', targets)
         self.assertIn('https://linkwiki.info/categories/', targets)
         for slug in ('community', 'korean', 'comics-directory', 'webtoon',
-                     'ai', 'search', 'sports', 'video'):
+                     'ai', 'search', 'sports', 'video', 'finance', 'education',
+                     'news', 'shopping', 'travel'):
             self.assertIn('https://linkwiki.info/categories/' + slug, targets)
         self.assertIn('https://linkwiki.info/blog/seo-20261102-example/', targets)
         self.assertEqual(len(targets), len(set(targets)))
