@@ -35,12 +35,14 @@
 ## 가용 GSC 기준선 (변경 전후 아님)
 2026-11-10 저장 보고서에서 확인된 데이터 종료일 2026-11-07: `주소모음` 1 imp/1 click/111.0, `링크모음` 4/1/123.0, `사이트모음` 공개 행 미관측. `/directory` URL Inspection: 2026-11-08 crawled - currently not indexed, fetch successful, canonical self. 이 정보는 최신 7/28/3개월 성과가 아님.
 
-## 백링크 후보 조사 현황
-당일에는 후보 검토를 추가 진행했으나 제출/공개 링크 생성은 하지 않았다.
-- **saaskorea.com**: 국내 SaaS 백과사전, 현재 316개 서비스 공개. 검색 결과에서 LinkWiki listing 또는 공개 submit form을 확인하지 못함. 웹 디렉터리 유형에 직접 적합해 보이지만 LinkWiki는 SaaS가 아니므로 eligibility와 등록 경로 검증 필요. 이번에는 제출하지 않음.
+## 등록 후보 조사 및 판정
+- **URL.KR / site.url.kr** — 라이브 랜딩·카테고리·최근 등록 페이지를 확인. 신규 사이트 등록이 가능하며 33,000원(부가세 포함) 1회 결제로 평생 노출한다고 공개 안내. **유료 등록이며 상업 디렉터리**라 이번 세션에서는 제출/결제하지 않음. URL: https://site.url.kr/ , 등록 안내: https://site.url.kr/pricing.php 또는 https://site.url.kr/order.php . 페이지는 `GO` 버튼을 내부 `/go.php?id=`로 연결하며 대상 URL이 직접 href인지, rel/nofollow가 무엇인지는 개별 공개 상세에 따라 추가 확인 필요.
+- **미주서치 / mijusearch.com** — 공개 무료 등록 및 타인 사이트 추천 등록을 허용하지만, 미국 내 한인 비즈니스·단체·개인 사이트와 미주 한인/유학생 관련 사이트만 대상. 링크위키와 직접 관련 없음. **자격 부적합이라 제출하지 않음.** https://www.mijusearch.com/register.php
+- **한국 SaaS 백과사전 / saaskorea.com** — 현재 316개 서비스를 공개하는 국내 SaaS 카탈로그. 링크위키는 SaaS 제품이 아니며 공개 신청 폼/등록 경로를 확인하지 못함. **분류 적합성과 등록 경로 미확인이라 미제출.** https://www.saaskorea.com/
+- **newslink.org**, **flashbannernow.com** — 직접 fetch 시 각각 HTTP 404, 502로 현재 정상 운영 확인 실패. 등록 후보에서 제외.
 - saaskr, Dreamboat, OpenWebSide: 기존 LinkWiki 등록/공개 페이지가 저장소에 기록돼 있으므로 중복 제출 금지.
 - Daum 검색등록: 기존 검색 등록 결과가 있으나 독립 소개 링크와 분리.
-- 게시판·커뮤니티에서 단순 홍보성 글을 만들거나 등록을 대량 자동화하지 않음.
+- 신규 공개 백링크 및 심사 제출: 이번 세션 0건. 미확인 사이트에 폼을 보내지 않음.
 
 ## 다음 데이터 수집/실행의 선행 조건
 - 정확한 7일/28일/3개월 GSC 비교 및 indexed status 최신화: 현재 세션에서 Google Search Console readonly API 도구 또는 GitHub Actions workflow dispatch + artifact 조회 도구가 없음.
