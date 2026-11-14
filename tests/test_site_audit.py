@@ -64,13 +64,14 @@ class SiteAuditTests(unittest.TestCase):
         self.assertIn("테스트 &lt;AI&gt;", rendered)
         self.assertNotIn("글쓰기 &amp; 검색 도구", rendered)
         self.assertNotIn("등록 도메인: example.org", rendered)
-        self.assertNotIn("ref=directory", rendered)
+        self.assertIn('href="https://example.org/tools?ref=directory"', rendered)
+        self.assertIn('rel="noopener noreferrer external"', rendered)
         two = homepage_directory_examples(records + [{
             "category": "AI 도구", "name": "두 번째 도구",
             "description": "번역 및 문서 검색", "url": "https://second.example/"
         }], categories)
         self.assertIn("두 번째 도구", two)
-        self.assertNotIn("second.example", two)
+        self.assertIn('href="https://second.example/"', two)
         self.assertEqual(two.count('class="v6-card"'), 1)
         self.assertIn('href="/categories/ai"', rendered)
         self.assertIn("인기 순위나 안전 등급이 아닙니다", rendered)
