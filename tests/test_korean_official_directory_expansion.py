@@ -23,7 +23,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
         cls.records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
 
     def test_actual_catalog_is_deduplicated_and_explained(self):
-        self.assertEqual(len(self.records), 279)
+        self.assertEqual(len(self.records), 315)
         self.assertEqual(len({record["name"] for record in self.records}), len(self.records))
         self.assertEqual(len({record["url"] for record in self.records}), len(self.records))
         added = [entry for entry in self.records if entry["name"] in NAMES]
@@ -32,6 +32,17 @@ class VerifiedPublicServiceExpansionTests(TestCase):
             self.assertEqual(entry["category"], "검색·포털")
             self.assertTrue(entry["url"].startswith("https://"))
             self.assertGreaterEqual(len(entry["description"]), 50)
+
+    def test_candidate_probe_records_51_checked_hosts_and_36_published_additions(self):
+        evidence = json.loads(
+            (ROOT / "seo/korean-site-candidate-checks-20261114.json").read_text(encoding="utf-8"))
+        published = {record["url"] for record in self.records}
+        added = [row for row in evidence["candidates"] if row["catalog_added"]]
+        self.assertEqual(evidence["candidate_count"], 51)
+        self.assertEqual(evidence["catalog_additions"], 36)
+        self.assertEqual(len(added), 36)
+        self.assertTrue(all(row["candidate_url"] in published for row in added))
+        self.assertEqual(len({row["candidate_url"] for row in evidence["candidates"]}), 51)
 
     def test_task_paths_offer_real_named_destinations_and_practical_disambiguation(self):
         html = directory_task_paths(self.records)
@@ -46,7 +57,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
     def test_static_page_metadata_counts_match_catalog(self):
         for path in ("index.html", "directory.html"):
             original = (ROOT / path).read_text(encoding="utf-8")
-            self.assertIn("279개", original)
+            self.assertIn("315개", original)
             self.assertNotIn("222개", original)
 
     def test_build_produces_seven_actual_crawlable_public_service_cards(self):
@@ -56,7 +67,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
         html = built.read_text(encoding="utf-8")
         for name in NAMES:
             self.assertIn(name, html)
-        self.assertEqual(html.count('<article class="v6-card" id="site-'), 279)
+        self.assertEqual(html.count('<article class="v6-card" id="site-'), 315)
         self.assertIn("주소정보누리집 도로명주소", html)
         self.assertIn("국민안전24", html)
         self.assertIn("https://www.safekorea.go.kr/", html)
