@@ -20,6 +20,11 @@ TARGETS = (
     "https://linkwiki.info/categories/ai",
     "https://linkwiki.info/categories/sports",
     "https://linkwiki.info/categories/search",
+    "https://linkwiki.info/categories/finance",
+    "https://linkwiki.info/categories/education",
+    "https://linkwiki.info/categories/news",
+    "https://linkwiki.info/categories/shopping",
+    "https://linkwiki.info/categories/travel",
     "https://linkwiki.info/guides/address-check",
 )
 KEYWORDS = ("주소모음", "링크모음", "사이트모음")

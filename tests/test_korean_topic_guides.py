@@ -23,7 +23,8 @@ PUBLIC_SERVICE_COMPARISONS = (
 )
 CATEGORIES = (
     "community", "korean", "comics-directory", "webtoon",
-    "ai", "search", "sports", "video",
+    "ai", "search", "sports", "video", "finance", "education",
+    "news", "shopping", "travel",
 )
 
 class KoreanTopicGuidesTests(unittest.TestCase):

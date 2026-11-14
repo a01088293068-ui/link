@@ -20,6 +20,11 @@ CATEGORY_PATHS = {
     "만화·웹툰": "webtoon",
     "스포츠": "sports",
     "AI 도구": "ai",
+    "금융·경제": "finance",
+    "교육·취업": "education",
+    "뉴스·언론": "news",
+    "쇼핑·가격비교": "shopping",
+    "생활·교통·여행": "travel",
 }
 
 

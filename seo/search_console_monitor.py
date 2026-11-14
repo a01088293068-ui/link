@@ -79,8 +79,11 @@ INSPECT_URLS = (
     'https://linkwiki.info/categories/search',
     'https://linkwiki.info/categories/sports',
     'https://linkwiki.info/categories/video',
-    'https://linkwiki.info/guides/address-check',
-    'https://linkwiki.info/guides/directory-comparison',
+    'https://linkwiki.info/categories/finance',
+    'https://linkwiki.info/categories/education',
+    'https://linkwiki.info/categories/news',
+    'https://linkwiki.info/categories/shopping',
+    'https://linkwiki.info/categories/travel',
 )
 
 
@@ -147,7 +150,11 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None, as_of=None):
     variants when capacity permits.
     """
     from urllib.parse import urlsplit
-    urls = list(INSPECT_URLS[:limit])
+    # Keep the three site-wide targets first; query-specific landing pages and
+    # actual task guides can then claim quota before the category rotation.
+    if limit <= 5:
+        return list(INSPECT_URLS[:limit])
+    urls = list(INSPECT_URLS[:3])
     seen = set(urls)
 
     def append_observed(observed):
@@ -166,49 +173,51 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None, as_of=None):
                 urls.append(candidate)
                 seen.add(candidate)
 
-    # True target-query landing URLs take precedence over unrelated
-    # page-impression rows; the three intended queries may point to
-    # unexpected internal pages even when the homepage ranks poorly.
-    for row in sorted(core_query_pages or [],
-                      key=lambda item: -int(item.get('impressions', 0))):
+    query_rows = core_query_pages or []
+    for row in sorted(query_rows, key=lambda item: -int(item.get('impressions', 0))):
         keys = row.get('keys') or []
-        if len(keys) < 2 or ''.join(str(keys[0]).split()) not in CORE_KEYWORDS:
-            continue
-        append_observed(keys[1])
+        if len(keys) >= 2 and ''.join(str(keys[0]).split()) in CORE_KEYWORDS:
+            append_observed(keys[1])
 
-    # Scheduled reports keep two available slots for older real guides.
-    # The original ordering could exhaust the 20-URL inspection cap before
-    # reaching the rotating section; reserve actual slots after exact-query
-    # landings while retaining those high-priority observed pages.
-    if as_of is not None and limit >= len(INSPECT_URLS) + 2:
-        for url in rotating_inspection_urls(as_of, limit=2):
-            if url not in seen and len(urls) < limit:
-                urls.append(url)
-                seen.add(url)
-
-    # Inspect actually observed legacy .html URLs with their canonical
-    # counterparts before spending the remaining quota on newly published
-    # articles. Otherwise a content batch can evict real Google redirect
-    # evidence from the limited URL Inspection queue.
-    for row in sorted(page_rows, key=lambda item: -int(item.get('impressions', 0))):
-        keys = row.get('keys') or []
-        if keys and urlsplit(str(keys[0])).path.endswith('.html'):
-            append_observed(keys[0])
-
-    # Prioritize three distinct directory-task guides even when same-day
-    # filename ordering would omit them from a generic newest-three sample.
-    # Exact-query landing pages above always take precedence.
+    # These are real, published task guides. Reserve room for them before the
+    # thirteen category hubs when exact-query observations are available.
     for url in directory_intent_inspection_urls():
         if url not in seen and len(urls) < limit:
             urls.append(url)
             seen.add(url)
 
-    # Keep newly published articles represented, independent of traffic.
+    # Actual page rows and legacy forms are observed Google evidence, so keep
+    # them ahead of broad category sampling when the daily inspection quota is tight.
+    if not query_rows:
+        for row in sorted(page_rows, key=lambda item: -int(item.get('impressions', 0))):
+            keys = row.get('keys') or []
+            if keys and not urlsplit(str(keys[0])).path.endswith('.html'):
+                append_observed(keys[0])
+
+    if as_of is not None:
+        for url in rotating_inspection_urls(as_of, limit=2):
+            if url not in seen and len(urls) < limit:
+                urls.append(url)
+                seen.add(url)
+
+    # Check old .html URLs alongside their canonical destinations when they
+    # were actually present in Search Analytics data.
+    for row in sorted(page_rows, key=lambda item: -int(item.get('impressions', 0))):
+        keys = row.get('keys') or []
+        if keys and urlsplit(str(keys[0])).path.endswith('.html'):
+            append_observed(keys[0])
+
+    # Add the full category set, followed by recent editorial pages. The 20 URL
+    # daily allowance includes every category on ordinary runs and rotates
+    # lower-priority observed URLs into remaining slots.
+    for url in INSPECT_URLS[3:]:
+        if url not in seen and len(urls) < limit:
+            urls.append(url)
+            seen.add(url)
     for url in recent_published_post_urls():
         if url not in seen and len(urls) < limit:
             urls.append(url)
             seen.add(url)
-
     for row in sorted(page_rows, key=lambda item: -int(item.get('impressions', 0))):
         keys = row.get('keys') or []
         if keys:
@@ -346,7 +355,8 @@ def technical_index_diagnostic(rows):
              '|---|---|---|---|---|---|']
     priority += tuple('https://linkwiki.info/categories/' + slug for slug in (
         'community', 'korean', 'comics-directory', 'webtoon',
-        'ai', 'search', 'sports', 'video'))
+        'ai', 'search', 'sports', 'video', 'finance', 'education',
+        'news', 'shopping', 'travel'))
     safe = lambda value: str(value or '정보 없음').replace('|', '%7C').replace('\n', ' ')
     for url in priority:
         row = by_url.get(url)
@@ -396,7 +406,8 @@ def crawl_after_significant_change(rows, changes):
     paths = ('/', '/directory', '/categories/') + tuple(
         '/categories/' + slug for slug in (
             'community', 'korean', 'comics-directory', 'webtoon',
-            'ai', 'search', 'sports', 'video'))
+            'ai', 'search', 'sports', 'video', 'finance', 'education',
+            'news', 'shopping', 'travel'))
     for path in paths:
         changed = changes.get(path)
         if not changed:

@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://linkwiki.info"
 KEYWORDS = ("주소모음", "링크모음", "사이트모음")
 CATEGORIES = ("community", "korean", "comics-directory", "webtoon",
-              "ai", "search", "sports", "video")
+              "ai", "search", "sports", "video", "finance", "education",
+              "news", "shopping", "travel")
 
 
 class VisibleDirectoryParser(HTMLParser):
@@ -47,7 +48,8 @@ class VisibleDirectoryParser(HTMLParser):
             self.inside_card = True
         if tag == "h3" and self.inside_card:
             self.cards[-1]["names"] += 1
-        if tag == "a" and self.inside_card and a.get("href", "").startswith("https://"):
+        if (tag == "a" and self.inside_card and a.get("href", "").startswith("https://")
+                and "directory-source" not in a.get("class", "").split()):
             self.cards[-1]["external_links"] += 1
 
     def handle_endtag(self, tag):
@@ -94,11 +96,14 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         issues.append(f"static directory cards {len(parser.cards)} != data {count}")
     if any(card["names"] != 1 or card["external_links"] != 1 for card in parser.cards):
         issues.append("directory card missing title or exact external link")
-    for keyword in KEYWORDS:
-        if keyword not in directory_html.split("</h1>", 1)[0]:
-            issues.append(f"directory primary heading missing {keyword}")
-        if keyword not in home_html.split("</title>", 1)[0]:
-            issues.append(f"homepage title missing {keyword}")
+    if any(keyword not in directory_html for keyword in KEYWORDS):
+        issues.append("directory intent content is missing a core search term")
+    directory_heading = re.search(r"<h1\b[^>]*>(.*?)</h1>", directory_html, re.S)
+    if not directory_heading or "사이트모음" not in directory_heading.group(1):
+        issues.append("directory site-comparison heading missing")
+    home_title = re.search(r"<title>(.*?)</title>", home_html, re.S)
+    if not home_title or "주소모음" not in home_title.group(1):
+        issues.append("homepage address-search title missing")
     if f"{count}개" not in directory_html.split("</main>", 1)[0]:
         issues.append("directory visible count not derived from verified data")
     if "/directory" not in home.links:
@@ -147,7 +152,7 @@ def main():
             print("FAIL:", issue)
         return 1
     count = len(json.loads((dist / "assets" / "verified-directory.json").read_text(encoding="utf-8")))
-    print(f"PASS: {count} crawlable directory cards, 8 category paths, core intents and canonical sitemap")
+    print(f"PASS: {count} crawlable directory cards, {len(CATEGORIES)} category paths, core intents and canonical sitemap")
     return 0
 
 

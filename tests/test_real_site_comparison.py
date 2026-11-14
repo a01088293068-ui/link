@@ -18,7 +18,7 @@ class RealSiteComparisonTests(unittest.TestCase):
 
     def test_panel_uses_the_verified_directory_catalog(self):
         output = directory_two_site_comparison(self.records)
-        self.assertEqual(len(self.records), 228)
+        self.assertEqual(len(self.records), 279)
         self.assertIn('id="directory-two-site-compare"', output)
         for element in ("lw-site-compare-form", "lw-site-compare-first",
                         "lw-site-compare-second", "lw-site-compare-result"):
@@ -33,7 +33,7 @@ class RealSiteComparisonTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     directory_two_site_comparison(records)
 
-    def test_generated_directory_has_one_compare_panel_and_228_original_cards(self):
+    def test_generated_directory_has_one_compare_panel_and_279_original_cards(self):
         path = ROOT / "dist/directory.html"
         if not path.is_file():
             self.skipTest("Build first")

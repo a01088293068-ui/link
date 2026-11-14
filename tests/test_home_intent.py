@@ -76,7 +76,7 @@ class HomeIntentTests(unittest.TestCase):
             first = next(item for item in records if item.get("category") == category)
             self.assertIn(first["name"], output)
             self.assertIn('href="#' + build.directory_card_anchor(first) + '"', output)
-        self.assertEqual(output.count('href="#site-'), 16)
+        self.assertEqual(output.count('href="#site-'), 2 * len(build.CATEGORY_LANDING))
         self.assertNotIn("인기 순위", output.split("</p>", 1)[0])
 
     def test_stable_card_anchors_have_no_duplicate_ids(self):
@@ -112,7 +112,7 @@ class HomeIntentTests(unittest.TestCase):
     def test_expanded_catalog_is_present_in_all_generated_category_pages(self):
         root = Path(__file__).resolve().parents[1]
         records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(records), 228)
+        self.assertEqual(len(records), 279)
         expected = {
             "ai": ("Cursor", "Replit", "GitHub Copilot", "Poe"),
             "sports": ("NBA 공식 홈페이지", "KBL 한국프로농구", "대한체육회", "한국배구연맹 KOVO"),

@@ -303,7 +303,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
 
     def test_live_release_flags_missing_search_help_section(self):
         from seo.live_release_check import release_content_sections
-        expected = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색",
+        expected = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
                         '<section class="lw-safety-note seo-search-help" aria-label="사용법">'
                         '<h2>검색 사용 방법</h2></section>')
         stale = expected.replace("검색 사용 방법", "예전 안내")
@@ -328,8 +328,9 @@ class LiveReleaseCheckTests(unittest.TestCase):
     def test_detects_stale_directory_category_overview(self):
         from seo.live_release_check import release_content_sections
         links = ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS)
-        directory = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색",
+        directory = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
                          '<input id="v6-query"><div id="v6-results"></div>'
+                         '<section>주소모음 링크모음</section>'
                          '<script id="directory-category-schema"></script>' + links +
                          '<section class="seo-directory-category"><h3>AI 도구</h3>'
                          '<p>등록 사이트 4개</p></section>')
@@ -344,8 +345,9 @@ class LiveReleaseCheckTests(unittest.TestCase):
             '<form action="/directory" class="lw-search" method="get" role="search"></form>'
             '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
             '<a href="/directory">전체</a><a href="/categories/">분야별</a></section>'))
-        directory = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색",
+        directory = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
                          '<input id="v6-query"><div id="v6-results"></div>'
+                         '<section>주소모음 링크모음</section>'
                          '<script id="directory-category-schema"></script>' +
                          ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS))
         self.assertEqual(check_page(home, home, "/"), [])
@@ -366,7 +368,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(any("category hub" in item for item in problems))
 
     def test_rejects_robots_noindex_duplicate_canonical_and_missing_categories(self):
-        expected = page("/directory", "검색", "주소모음·링크모음·사이트모음 통합 검색")
+        expected = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교")
         bad = (expected.replace("</head>",
                                 '<meta name="robots" content="index, noindex">'
                                 f'<link href="{SITE}/directory" rel="canonical"></head>')
@@ -377,7 +379,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(any("structured-data" in x for x in problems))
         self.assertTrue(any("category link" in x for x in problems))
 
-    def test_sitemap_requires_real_hubs_and_all_eight_categories(self):
+    def test_sitemap_requires_real_hubs_and_all_thirteen_categories(self):
         locs = [SITE + "/", SITE + "/directory", SITE + "/categories/"]
         locs.extend(SITE + x for x in CATEGORY_PATHS)
         good = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(

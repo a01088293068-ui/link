@@ -1,7 +1,7 @@
 """Check authoritative catalog against the actual production build.
 
 Source .html templates are allowed to contain older placeholder copy; build.py
-regenerates the full 222-card public output from verified-directory.json.
+regenerates the full public output from verified-directory.json.
 """
 import json
 import re
@@ -16,6 +16,9 @@ CATEGORY_FILES = {
     "AI 도구": "ai", "스포츠": "sports",
     "영상·OTT": "video", "만화·웹툰": "webtoon",
     "만화": "comics-directory", "한인교민": "korean",
+    "금융·경제": "finance", "교육·취업": "education",
+    "뉴스·언론": "news", "쇼핑·가격비교": "shopping",
+    "생활·교통·여행": "travel",
 }
 
 
@@ -32,13 +35,14 @@ class Cards(HTMLParser):
             self.current = {"name": "", "category": "", "description": "", "url": ""}
             self.items.append(self.current)
         elif self.current is not None:
-            if tag in ("h3", "strong"):
+            if tag in ("h3", "strong") and not self.current["name"]:
                 self.field = "name"
-            elif tag == "small":
+            elif tag == "small" and not self.current["category"]:
                 self.field = "category"
-            elif tag == "p":
+            elif tag == "p" and not self.current["description"]:
                 self.field = "description"
-            elif tag == "a" and a.get("href", "").startswith("https://"):
+            elif (tag == "a" and not self.current["url"]
+                  and a.get("href", "").startswith("https://")):
                 self.current["url"] = a["href"]
 
     def handle_endtag(self, tag):

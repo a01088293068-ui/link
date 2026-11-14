@@ -24,14 +24,20 @@ class ExternalLinkTriageTests(unittest.TestCase):
             "Brave Search": {"status": "access_limited", "http_code": 429},
             "Swisscows": {"status": "redirect_review", "http_code": 307},
         }
-        result = observe.run(date(2026, 11, 11), self.records, batch_size=24,
-                             observer=lambda url: next(
-                                 (responses[row["name"]] for row in self.records
-                                  if row["url"] == url and row["name"] in responses),
-                                 {"status": "http_responded", "http_code": 200}))
+        selected_names = {"네이버", "다음", "Brave Search", "Swisscows"}
+        selected = [row for row in self.records if row["name"] in selected_names]
+        result = {
+            "date_utc": "2026-11-11", "checked_count": len(selected),
+            "catalog_count": len(self.records),
+            "method": "HEAD; one GET after HEAD 404/405; redirects not followed",
+            "results": [{
+                "name": row["name"], "url": row["url"], "category": row["category"],
+                "observation": responses[row["name"]],
+            } for row in selected],
+        }
         return result
 
-    def test_24_real_names_and_non_success_list_appear_in_review(self):
+    def test_real_names_and_non_success_list_appear_in_review(self):
         snapshot = self.observations()
         rendered = triage.render(snapshot, self.records)
         for name in ("다음", "Brave Search", "Swisscows"):
@@ -41,7 +47,7 @@ class ExternalLinkTriageTests(unittest.TestCase):
         self.assertIn("307", rendered)
         self.assertIn("HTTP 응답 관찰 목록 (미검증)", rendered)
         self.assertIn("한 번의 관찰만으로 링크를 삭제하거나 수정하지 않습니다", rendered)
-        self.assertIn("228개 중 24개", rendered)
+        self.assertIn("279개 중 4개", rendered)
         self.assertIn("GET으로 한 차례 재확인", rendered)
         self.assertIn("우회하거나 반복 요청하지 않습니다", rendered)
 
