@@ -169,6 +169,7 @@ def main():
     # be valid XML yet omit the new article/category URLs and must never be
     # treated as the current release.
     expected = expected_public_urls()
+    print(f"SOURCE_RELEASE_EXPECTS: {len(expected)} category, guide, and article URLs")
     xml_bytes, urls = fetch_deployed_sitemap(expected)
     newest_lastmod = latest_sitemap_lastmod(xml_bytes)
     print(f"PUBLIC_SITEMAP_VALID: {len(urls)} canonical URLs")
