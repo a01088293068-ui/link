@@ -881,14 +881,25 @@ def format_core_landing_page_split(query_page_rows, error=''):
 
 def brand_vs_nonbrand_rows(keyword_rows):
     """Separate observed branded queries without extrapolating anonymized traffic."""
-    result = {"브랜드 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0},
-              "일반 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0}}
+    result = {
+        "링크위키 자사 브랜드 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0},
+        "타사 브랜드명 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0},
+        "일반 검색": {"impressions": 0, "clicks": 0, "weighted": 0.0},
+    }
     for row in keyword_rows:
         keys = row.get("keys") or []
         if not keys:
             continue
         normalized = re.sub(r"[\s\W_]+", "", str(keys[0]).casefold())
-        group = "브랜드 검색" if normalized in ("링크위키", "linkwiki") else "일반 검색"
+        if normalized in ("링크위키", "linkwiki"):
+            group = "링크위키 자사 브랜드 검색"
+        elif (normalized in ("주소위키", "joosowiki")
+              or normalized.startswith(("주소위키", "joosowiki"))):
+            # GSC shows these queries are associated with a separate directory brand.
+            # Keep them out of generic non-brand opportunity calculations.
+            group = "타사 브랜드명 검색"
+        else:
+            group = "일반 검색"
         impressions = int(row.get("impressions", 0))
         result[group]["impressions"] += impressions
         result[group]["clicks"] += int(row.get("clicks", 0))
@@ -940,9 +951,10 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                       f'- 최근 7일: 노출 {recent_impressions:,}회 · 클릭 {recent_clicks:,}회',
                       f'- 직전 7일: 노출 {previous_impressions:,}회 · 클릭 {previous_clicks:,}회',
                       '- 조회 종료일 기준 연속된 7일씩 비교하며, 활동이 없는 날짜는 0회로 계산합니다.', ''])
-    lines.extend(['', '## 브랜드 검색과 일반 검색 (공개된 검색어 기준)', '',
+    lines.extend(['', '## 자사 브랜드·타사 브랜드명·일반 검색 분리 (공개된 검색어 기준)', '',
                   '- 비공개·익명 검색어는 포함되지 않으므로 전체 노출/클릭 합계와 다를 수 있습니다.',
-                  '- 일반 검색에는 주소모음·링크모음·사이트모음 및 브랜드명이 아닌 검색어가 포함됩니다.',
+                  '- 주소위키·joosowiki 등 타사 브랜드명 검색은 일반 키워드 기회와 분리합니다.',
+                  '- 일반 검색은 자사·타사 브랜드명 검색을 제외한 비브랜드 검색어입니다.',
                   '| 구분 | 확인된 노출 | 클릭 | 평균 순위 |',
                   '|---|---:|---:|---:|'])
     for group in brand_vs_nonbrand_rows(keyword_rows):
