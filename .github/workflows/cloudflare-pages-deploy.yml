@@ -16,15 +16,14 @@ concurrency:
 
 jobs:
   publish:
-    # Publish only a successful SEO-gated push to main, or an explicit manual
-    # dispatch. The previous repository-variable gate silently skipped every
-    # production deployment while CLOUDFLARE_DEPLOY_ENABLED was unset/false,
-    # leaving the public site behind the verified source. Required Cloudflare
-    # credentials and exact project/domain checks below remain fail-closed.
+    # This optional Wrangler deploy requires separately configured Cloudflare
+    # credentials. The repository's Cloudflare Git integration is the active
+    # production deployment path; keep this manual fallback explicitly gated.
     if: >-
-      ${{ github.event_name == 'workflow_dispatch' ||
+      ${{ (github.event_name == 'workflow_dispatch' ||
            (github.event.workflow_run.conclusion == 'success' &&
-            github.event.workflow_run.event == 'push') }}
+            github.event.workflow_run.event == 'push')) &&
+          vars.CLOUDFLARE_DEPLOY_ENABLED == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
