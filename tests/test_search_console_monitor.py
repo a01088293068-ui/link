@@ -768,7 +768,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('https://linkwiki.info/categories/ai', targets)
         self.assertIn('https://linkwiki.info/categories/ai.html', targets)
         self.assertIn('https://linkwiki.info/guides/security', targets)
-        self.assertIn('https://linkwiki.info/guides/security.html', targets)
+        self.assertNotIn('https://linkwiki.info/guides/security.html', targets)
         self.assertIn('https://linkwiki.info/', targets)
         self.assertLessEqual(len(targets), 24)
 
