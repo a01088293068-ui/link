@@ -48,6 +48,16 @@ class KoreanKeywordClusterTests(unittest.TestCase):
                         file = ROOT / (clean.strip("/") + ".html")
                     self.assertTrue(file.is_file(), str(file))
 
+    def test_education_category_links_the_exam_registration_guide(self):
+        category = ROOT / "dist/categories/education.html"
+        if not category.exists():
+            self.skipTest("Build first: python3 build.py")
+        html = category.read_text(encoding="utf-8")
+        self.assertIn(
+            'href="/blog/seo-20261116-korean-certification-exam-sites-guide/"',
+            html,
+        )
+
     def test_published_pages_are_canonical_and_in_sitemap(self):
         dist = ROOT / "dist"
         if not (dist / "sitemap.xml").exists():
