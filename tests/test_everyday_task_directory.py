@@ -17,6 +17,8 @@ PAIRS = (
     ("유튜브", "넷플릭스"),
     ("네이버 웹툰", "카카오웹툰"),
     ("빅카인즈", "국가통계포털 KOSIS"),
+    ("잡알리오", "클린아이 잡플러스"),
+    ("나라일터", "잡알리오"),
 )
 
 
@@ -27,10 +29,10 @@ class EverydayTaskDirectoryTests(unittest.TestCase):
             (ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8")
         )
 
-    def test_seven_distinct_tasks_come_from_registered_services(self):
+    def test_nine_distinct_tasks_come_from_registered_services(self):
         html = directory_everyday_task_paths(self.records)
         names = {row["name"] for row in self.records}
-        self.assertEqual(html.count("<li><strong>"), 7)
+        self.assertEqual(html.count("<li><strong>"), 9)
         self.assertEqual(html.count('class="lw-safety-note seo-everyday-tasks"'), 1)
         self.assertIn('id="directory-everyday-tasks"', html)
         self.assertNotIn("실시간 접속 확인 완료", html)
@@ -44,7 +46,7 @@ class EverydayTaskDirectoryTests(unittest.TestCase):
                 from urllib.parse import quote
                 self.assertIn('href="/directory?q=' + quote(first, safe="") + '"', html)
                 self.assertIn('href="/directory?q=' + quote(second, safe="") + '"', html)
-        self.assertEqual(html.count('href="/directory?q='), 14)
+        self.assertEqual(html.count('href="/directory?q='), 18)
 
     def test_missing_registered_entry_fails_closed(self):
         without = [row for row in self.records if row["name"] != "미리캔버스"]
