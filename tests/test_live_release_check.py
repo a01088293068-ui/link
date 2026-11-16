@@ -8,9 +8,13 @@ from seo.live_release_check import (
 
 
 def page(path, title, heading, more=""):
+    directory_intent = (
+        '<p>주소모음 링크모음 사이트모음 검색과 비교 안내</p>'
+        if path == "/directory" else ""
+    )
     return (f'<html lang="ko"><head><title>{title}</title>'
             f'<link rel="canonical" href="{SITE + path}"></head><body>'
-            f'<h1>{heading}</h1>{more}</body></html>')
+            f'<h1>{heading}</h1>{directory_intent}{more}</body></html>')
 
 
 class LiveReleaseCheckTests(unittest.TestCase):
@@ -504,7 +508,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
                 '<form action="/directory" class="lw-search" method="get" role="search"></form>'
             '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
                 '<a href="/directory">목록</a><a href="/categories/">분야</a></section>'))
-            directory = page("/directory", "목록", "주소모음 링크모음 사이트모음",
+            directory = page("/directory", "목록", "344개 사이트 주소 검색: 이름·도메인·분야별 목록",
                              '<input id="v6-query"><div id="v6-results"></div>'
                              '<script id="directory-category-schema"></script>' +
                              ''.join(f'<a href="{x}">바로가기</a>' for x in CATEGORY_PATHS))
