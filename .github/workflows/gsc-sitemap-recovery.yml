@@ -8,6 +8,16 @@ on:
       - 'seo/sitemap_submit.py'
       - 'tests/test_sitemap_submit.py'
       - '.github/workflows/gsc-sitemap-recovery.yml'
+      # Recheck Google discovery after substantive public URL or sitemap changes.
+      - 'build.py'
+      - 'content/**'
+      - 'categories/**'
+      - 'index.html'
+      - 'directory.html'
+      - 'sitemap.xml'
+      - 'sitemap-v2.xml'
+      - 'robots.txt'
+      - 'seo/significant-page-updates.json'
 
 # Submission is limited to the official Sitemap API, only if the public
 # canonical XML is valid and Google has not recorded a download.
