@@ -1053,7 +1053,7 @@
   {
     "url": "https://www.gojobs.go.kr/mainIndex.do",
     "name": "나라일터",
-    "source_url": "https://www.gojobs.go.kr/apmInfo.do?menuNo=610&mngrMenuYn=N&selMenuNo=600",
+    "source_url": "https://www.gojobs.go.kr/",
     "scope": "인사혁신처 나라일터의 운영기관과 국가·지자체·교육청 공직 채용정보 제공 범위를 공식 채용안내에서 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
