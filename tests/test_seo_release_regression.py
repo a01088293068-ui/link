@@ -769,6 +769,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             "https://unipass.customs.go.kr/": "관세청 유니패스",
             "https://www.110.go.kr/": "정부민원안내 110",
             "https://www.klac.or.kr/": "대한법률구조공단",
+            "https://dlibrary.go.kr/": "국가전자도서관",
+            "https://www.korcham.net/nCham/Service/Main/appl/Main.asp": "대한상공회의소 코참넷",
         }
         for url, name in expected.items():
             self.assertIn(url, by_url)
