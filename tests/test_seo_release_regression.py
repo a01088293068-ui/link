@@ -380,8 +380,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
-        self.assertIn('property="og:title" content="' + title + '"', html)
-        self.assertIn('name="twitter:title" content="' + title + '"', html)
+        import re
+        self.assertRegex(html, r'<meta\\b(?=[^>]*property="og:title")(?=[^>]*content="' + re.escape(title) + r'")[^>]*>')
+        self.assertRegex(html, r'<meta\\b(?=[^>]*name="twitter:title")(?=[^>]*content="' + re.escape(title) + r'")[^>]*>')
         self.assertIn("'"+heading+"'", script)
         self.assertIn('href="https://linkwiki.info/directory"', html)
         self.assertIn('name="robots"', html)
