@@ -29,12 +29,12 @@
     }
     return {
       element: card,
+      hasEvidence: card.dataset.sourceEvidence === 'true',
       site: {
         category: cat.textContent.trim(),
         name: name.textContent.trim(),
         description: description.textContent.trim(),
-        url: link.href,
-        hasEvidence: card.dataset.sourceEvidence === 'true'
+        url: link.href
       }
     };
   });
