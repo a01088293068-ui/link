@@ -788,5 +788,41 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://license.korcham.net/",
+    "name": "대한상공회의소 자격평가사업단",
+    "source_url": "https://license.korcham.net/ex/examInfo1.do",
+    "scope": "대한상공회의소 자격평가사업단의 원서접수 안내에서 자격시험 접수 경로와 정기·상시 시험 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.dataq.or.kr/",
+    "name": "데이터자격검정 DataQ",
+    "source_url": "https://www.dataq.or.kr/www/accept/guide.do",
+    "scope": "데이터자격검정의 ADsP·SQLD 등 시험 안내 및 원서접수 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://exam.toeic.co.kr/",
+    "name": "TOEIC 공식 사이트",
+    "source_url": "https://exam.toeic.co.kr/receipt/examSchList.php",
+    "scope": "한국TOEIC위원회 공식 시험 일정과 온라인 접수 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.pqi.or.kr/",
+    "name": "민간자격정보서비스",
+    "source_url": "https://www.pqi.or.kr/inf/qul/infQulSitRegView.do",
+    "scope": "민간자격정보서비스의 등록·공인 민간자격 검색과 등록현황 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
