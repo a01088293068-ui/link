@@ -447,6 +447,10 @@ class SearchConsoleMonitorTests(unittest.TestCase):
             "https://linkwiki.info/blog/seo-20261111-mobile-address-directory-check/",
             urls,
         )
+        self.assertNotIn(
+            "https://linkwiki.info/blog/seo-20261111-address-directory-no-results/",
+            urls,
+        )
 
     def test_inspection_prioritizes_all_thirteen_categories_and_respects_limit(self):
         with TemporaryDirectory() as tmp:
