@@ -356,5 +356,131 @@
     "checked_on": "2026-11-14",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.naver.com/",
+    "name": "네이버",
+    "source_url": "https://www.naver.com/",
+    "scope": "네이버 공식 메인에서 통합 검색과 뉴스·쇼핑 등 주요 서비스 진입 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.daum.net/",
+    "name": "다음",
+    "source_url": "https://www.daum.net/",
+    "scope": "다음 공식 메인에서 검색·뉴스·쇼핑 등 포털 서비스 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nate.com/",
+    "name": "네이트",
+    "source_url": "https://www.nate.com/",
+    "scope": "네이트 공식 메인에서 뉴스와 포털 콘텐츠 서비스 진입 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://zum.com/",
+    "name": "줌",
+    "source_url": "https://zum.com/",
+    "scope": "줌 공식 메인에서 개방형 AI 포털 및 뉴스·콘텐츠 탐색 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://map.kakao.com/",
+    "name": "카카오맵",
+    "source_url": "https://map.kakao.com/",
+    "scope": "카카오맵 공식 서비스에서 장소 검색·대중교통·길찾기·지도 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.weather.go.kr/",
+    "name": "기상청 날씨누리",
+    "source_url": "https://www.weather.go.kr/",
+    "scope": "기상청 날씨누리 공식 페이지에서 예보·특보·관측 정보 제공 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.korea.kr/",
+    "name": "대한민국 정책브리핑",
+    "source_url": "https://www.korea.kr/",
+    "scope": "문화체육관광부 운영 정책브리핑의 정책뉴스·보도자료·브리핑 자료 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://korean.visitkorea.or.kr/",
+    "name": "대한민국 구석구석",
+    "source_url": "https://korean.visitkorea.or.kr/main/main.do",
+    "scope": "한국관광공사 운영 국내여행 정보 및 여행코스·축제·관광 콘텐츠 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.riss.kr/",
+    "name": "학술연구정보서비스 RISS",
+    "source_url": "https://www.riss.kr/index.do",
+    "scope": "한국교육학술정보원 제공 RISS의 학위논문·국내외 학술논문·학술자료 검색 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.epeople.go.kr/",
+    "name": "국민신문고",
+    "source_url": "https://www.epeople.go.kr/index.jsp",
+    "scope": "국민권익위원회 운영 온라인 국민참여포털의 민원신청·국민제안·정책참여 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kosaf.go.kr/ko/main.do",
+    "name": "한국장학재단",
+    "source_url": "https://www.kosaf.go.kr/ko/main.do",
+    "scope": "한국장학재단 공식 페이지의 장학·학자금 관련 서비스 진입 및 전자정부 공식 사이트 표기를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.foodsafetykorea.go.kr/main.do",
+    "name": "식품안전나라",
+    "source_url": "https://www.foodsafetykorea.go.kr/main.do",
+    "scope": "식품안전나라 공식 서비스의 식품 회수·판매중지·업체 및 제품 검색 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://topis.seoul.go.kr/",
+    "name": "서울시 교통정보 TOPIS",
+    "source_url": "https://topis.seoul.go.kr/",
+    "scope": "서울시 교통정보 시스템의 도로 소통·돌발 통제·버스·지하철·교통 통계 및 Open API 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.career.go.kr/",
+    "name": "커리어넷",
+    "source_url": "https://www.career.go.kr/cloud/w/main/home",
+    "scope": "교육부 제공 진로정보망의 직업·학과 정보, 진로검사와 진로상담 서비스 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
