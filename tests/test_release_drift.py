@@ -81,6 +81,16 @@ class ReleaseDriftTests(unittest.TestCase):
         self.assertEqual(problems, [])
         self.assertTrue(any("1 related links" in line for line in observations))
 
+    def test_missing_live_education_guide_link_is_detected(self):
+        target = "/blog/seo-20261116-korean-certification-exam-sites-guide/"
+        source = f'<a href="{target}">시험 접수 가이드</a>'
+        def load(path):
+            if path == "/categories/education":
+                return 200, BASE + path, "<html><body>교육·취업</body></html>", Message()
+            return fixture(path)
+        problems, _ = check(SOURCE, load, category_sources={"/categories/education": source})
+        self.assertIn("/categories/education: missing deployed editorial guide links", problems)
+
     def test_missing_live_related_link_is_detected(self):
         path = "/blog/sample-guide/"
         guide = (f'<link rel="canonical" href="{BASE}{path}">'
