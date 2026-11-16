@@ -79,7 +79,7 @@
       button.setAttribute('aria-pressed', String(button.dataset.cat === category));
     }
     heading.textContent = category === '전체'
-      ? '주소모음·링크모음·사이트모음: 이름과 도메인으로 찾기'
+      ? '344개 사이트 주소 검색: 이름·도메인·분야별 목록'
       : category + ' 분야별 링크 찾기';
   }
 
