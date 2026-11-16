@@ -673,6 +673,24 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             with patch.object(auto_seo, "ROOT", root):
                 self.assertEqual(auto_seo.static_guide_titles(), ["공식 주소 확인 방법"])
 
+    def test_blog_hub_has_search_intent_title_and_useful_navigation(self):
+        root = Path(__file__).resolve().parents[1]
+        hub = (root / "dist/blog/index.html").read_text(encoding="utf-8")
+        self.assertIn("<title>주소모음·링크모음 활용 가이드 | 링크위키</title>", hub)
+        self.assertIn("<h1>주소모음·링크모음 활용 가이드</h1>", hub)
+        for path in ("/directory", "/guides/address-check", "/guides/security",
+                     "/guides/link-troubleshooting", "/categories/"):
+            self.assertIn('href="' + path + '"', hub)
+
+    def test_privacy_notice_is_available_but_not_an_index_target(self):
+        root = Path(__file__).resolve().parents[1]
+        privacy = (root / "dist/privacy.html").read_text(encoding="utf-8")
+        sitemap = (root / "dist/sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn('name="robots" content="noindex,follow"', privacy)
+        self.assertNotIn("https://linkwiki.info/privacy", sitemap)
+        self.assertIn("검색어가 URL의 쿼리 문자열", privacy)
+        self.assertNotIn("실제 배포 시", privacy)
+
 
 if __name__ == "__main__":
     unittest.main()
