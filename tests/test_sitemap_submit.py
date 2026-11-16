@@ -86,7 +86,7 @@ class SitemapSubmitTests(unittest.TestCase):
         expected = submit.SITE + "/blog/new-guide/"
         stale = sitemap(valid_urls())
         deployed = sitemap(valid_urls() + [expected])
-        with patch.object(submit, "fetch_xml", side_effect=[stale, deployed]) as fetch, \\
+        with patch.object(submit, "fetch_xml", side_effect=[stale, deployed]) as fetch, \
              patch.object(submit, "time") as clock:
             xml, urls = submit.fetch_deployed_sitemap(
                 expected_urls=(expected,), attempts=3, delay_seconds=7)
@@ -96,7 +96,7 @@ class SitemapSubmitTests(unittest.TestCase):
 
     def test_deployment_wait_fails_closed_if_current_release_never_appears(self):
         expected = submit.SITE + "/blog/new-guide/"
-        with patch.object(submit, "fetch_xml", return_value=sitemap(valid_urls())), \\
+        with patch.object(submit, "fetch_xml", return_value=sitemap(valid_urls())), \
              patch.object(submit, "time") as clock:
             with self.assertRaisesRegex(RuntimeError, "did not catch up"):
                 submit.fetch_deployed_sitemap(
@@ -156,9 +156,9 @@ class SitemapSubmitTests(unittest.TestCase):
         self.assertNotIn('indexing.googleapis.com', observed[0].full_url)
 
     def test_main_waits_for_deployed_urls_before_authentication_or_mutation(self):
-        with patch.object(submit, "expected_public_urls", return_value=("/required/",)), \\
-             patch.object(submit, "fetch_deployed_sitemap", side_effect=RuntimeError("stale")), \\
-             patch.object(submit, "authorization_token") as credentials, \\
+        with patch.object(submit, "expected_public_urls", return_value=("/required/",)), \
+             patch.object(submit, "fetch_deployed_sitemap", side_effect=RuntimeError("stale")), \
+             patch.object(submit, "authorization_token") as credentials, \
              patch.object(submit, "submit_sitemap") as send:
             with self.assertRaisesRegex(RuntimeError, "stale"):
                 submit.main()
@@ -167,24 +167,24 @@ class SitemapSubmitTests(unittest.TestCase):
 
     def test_main_resubmits_after_newer_published_sitemap_update(self):
         xml = sitemap(valid_urls(), {valid_urls()[1]: "2026-11-16"})
-        with patch.object(submit, "expected_public_urls", return_value=()), \\
-             patch.object(submit, "fetch_deployed_sitemap", return_value=(xml, valid_urls())), \\
-             patch.object(submit, "latest_sitemap_lastmod", return_value="2026-11-16"), \\
-             patch.object(submit, "authorization_token", return_value="fake"), \\
+        with patch.object(submit, "expected_public_urls", return_value=()), \
+             patch.object(submit, "fetch_deployed_sitemap", return_value=(xml, valid_urls())), \
+             patch.object(submit, "latest_sitemap_lastmod", return_value="2026-11-16"), \
+             patch.object(submit, "authorization_token", return_value="fake"), \
              patch.object(submit, "list_registered", return_value=[
-                 {"path": submit.SITEMAP, "lastDownloaded": "2026-11-12T04:27:00Z"}]), \\
+                 {"path": submit.SITEMAP, "lastDownloaded": "2026-11-12T04:27:00Z"}]), \
              patch.object(submit, "submit_sitemap") as send:
             submit.main()
         send.assert_called_once_with("fake")
 
     def test_main_skips_when_google_downloaded_after_latest_published_update(self):
         xml = sitemap(valid_urls(), {valid_urls()[1]: "2026-11-12"})
-        with patch.object(submit, "expected_public_urls", return_value=()), \\
-             patch.object(submit, "fetch_deployed_sitemap", return_value=(xml, valid_urls())), \\
-             patch.object(submit, "latest_sitemap_lastmod", return_value="2026-11-12"), \\
-             patch.object(submit, "authorization_token", return_value="fake"), \\
+        with patch.object(submit, "expected_public_urls", return_value=()), \
+             patch.object(submit, "fetch_deployed_sitemap", return_value=(xml, valid_urls())), \
+             patch.object(submit, "latest_sitemap_lastmod", return_value="2026-11-12"), \
+             patch.object(submit, "authorization_token", return_value="fake"), \
              patch.object(submit, "list_registered", return_value=[
-                 {"path": submit.SITEMAP, "lastDownloaded": "2026-11-12T04:27:00Z"}]), \\
+                 {"path": submit.SITEMAP, "lastDownloaded": "2026-11-12T04:27:00Z"}]), \
              patch.object(submit, "submit_sitemap") as send:
             submit.main()
         send.assert_not_called()
