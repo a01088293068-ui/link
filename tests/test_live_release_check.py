@@ -199,7 +199,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         card = ('<article class="v6-card"><small>AI 도구</small><h3>ChatGPT</h3>'
                 '<p>글쓰기와 요약</p><span class="site-domain">chatgpt.com</span>'
                 '<a href="https://chatgpt.com/">방문</a></article>')
-        expected = page("/directory", "목록", "주소모음·링크모음·사이트모음", card)
+        expected = page("/directory", "목록", "188개 사이트 주소 검색: 이름·도메인·분야별 목록", card)
         self.assertEqual(len(directory_cards(expected)), 1)
         for stale in (card.replace("글쓰기와 요약", "예전 설명"),
                       card.replace("chatgpt.com</span>", "old.example</span>"),
@@ -249,7 +249,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
             '<script id="directory-category-schema" type="application/ld+json">{}</script>'
             + ''.join(f'<a href="{link}">분야</a>' for link in CATEGORY_PATHS)
         )
-        expected = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
+        expected = page("/directory", "검색", "344개 사이트 주소 검색: 이름·도메인·분야별 목록",
                         block + directory_runtime)
         stale = expected.replace("분야별 탐색 안내", "이전 안내")
         self.assertEqual(release_content_sections(expected, "/directory"), [block])
@@ -265,7 +265,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         help_html = ('<section id="site-list-guide" class="lw-safety-note seo-search-help" '
                      'aria-label="사이트모음 검색 및 확인 방법">'
                      '<h2>검색 안내</h2></section>')
-        expected = page("/directory", "검색", "주소모음·링크모음·사이트모음", help_html)
+        expected = page("/directory", "검색", "188개 사이트 주소 검색: 이름·도메인·분야별 목록", help_html)
         stale = expected.replace("검색 안내", "오래된 안내")
         self.assertEqual(release_content_sections(expected, "/directory"), [help_html])
         self.assertTrue(any("directory examples differ" in p
@@ -331,7 +331,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
 
     def test_live_release_flags_missing_search_help_section(self):
         from seo.live_release_check import release_content_sections
-        expected = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
+        expected = page("/directory", "검색", "344개 사이트 주소 검색: 이름·도메인·분야별 목록",
                         '<section class="lw-safety-note seo-search-help" aria-label="사용법">'
                         '<h2>검색 사용 방법</h2></section>')
         stale = expected.replace("검색 사용 방법", "예전 안내")
@@ -356,7 +356,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
     def test_detects_stale_directory_category_overview(self):
         from seo.live_release_check import release_content_sections
         links = ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS)
-        directory = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
+        directory = page("/directory", "검색", "344개 사이트 주소 검색: 이름·도메인·분야별 목록",
                          '<input id="v6-query"><div id="v6-results"></div>'
                          '<section>주소모음 링크모음</section>'
                          '<script id="directory-category-schema"></script>' + links +
@@ -373,7 +373,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
             '<form action="/directory" class="lw-search" method="get" role="search"></form>'
             '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
             '<a href="/directory">전체</a><a href="/categories/">분야별</a></section>'))
-        directory = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
+        directory = page("/directory", "검색", "344개 사이트 주소 검색: 이름·도메인·분야별 목록",
                          '<input id="v6-query"><div id="v6-results"></div>'
                          '<section>주소모음 링크모음</section>'
                          '<script id="directory-category-schema"></script>' +
@@ -396,7 +396,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(any("category hub" in item for item in problems))
 
     def test_rejects_robots_noindex_duplicate_canonical_and_missing_categories(self):
-        expected = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교")
+        expected = page("/directory", "검색", "344개 사이트 주소 검색: 이름·도메인·분야별 목록")
         bad = (expected.replace("</head>",
                                 '<meta name="robots" content="index, noindex">'
                                 f'<link href="{SITE}/directory" rel="canonical"></head>')
