@@ -363,23 +363,27 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         report = monitor.priority_index_checks([row])
         self.assertIn('Google robots.txt 차단 확인', report)
 
-    def test_branded_and_generic_search_are_separated_without_guessing(self):
+    def test_own_brand_other_brand_and_generic_queries_are_separated(self):
         rows = [
             {'keys': ['링크위키'], 'impressions': 14, 'clicks': 8, 'position': 2},
             {'keys': ['링크 - 위키'], 'impressions': 2, 'clicks': 1, 'position': 3},
             {'keys': ['주소 위키'], 'impressions': 8, 'clicks': 1, 'position': 10},
+            {'keys': ['주소위키 주소'], 'impressions': 4, 'clicks': 1, 'position': 20},
             {'keys': ['주소모음'], 'impressions': 1, 'clicks': 1, 'position': 111},
         ]
         groups = monitor.brand_vs_nonbrand_rows(rows)
-        self.assertEqual(groups[0]['name'], '브랜드 검색')
+        self.assertEqual(groups[0]['name'], '링크위키 자사 브랜드 검색')
         self.assertEqual((groups[0]['impressions'], groups[0]['clicks']), (16, 9))
-        self.assertEqual(groups[1]['name'], '일반 검색')
-        self.assertEqual((groups[1]['impressions'], groups[1]['clicks']), (9, 2))
+        self.assertEqual(groups[1]['name'], '타사 브랜드명 검색')
+        self.assertEqual((groups[1]['impressions'], groups[1]['clicks']), (12, 2))
+        self.assertEqual(groups[2]['name'], '일반 검색')
+        self.assertEqual((groups[2]['impressions'], groups[2]['clicks']), (1, 1))
         report = monitor.format_report(rows, [], '2026-10-04', '2026-10-31',
                                        'sc-domain:linkwiki.info')
-        self.assertIn('| 브랜드 검색 | 16 | 9 | 2.1 |', report)
-        self.assertIn('| 일반 검색 | 9 | 2 | 21.2 |', report)
-        self.assertLess(report.index('## 브랜드 검색과 일반 검색'),
+        self.assertIn('| 링크위키 자사 브랜드 검색 | 16 | 9 | 2.1 |', report)
+        self.assertIn('| 타사 브랜드명 검색 | 12 | 2 | 13.3 |', report)
+        self.assertIn('| 일반 검색 | 1 | 1 | 111.0 |', report)
+        self.assertLess(report.index('## 자사 브랜드·타사 브랜드명·일반 검색'),
                         report.index('## 검색어 상위 30개'))
         self.assertIn('비공개·익명 검색어', report)
 
