@@ -228,7 +228,7 @@ class SiteAuditTests(unittest.TestCase):
             (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
             (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
             (root / "robots.txt").write_text(
-                'User-agent: *\\nAllow: /\\nSitemap: https://linkwiki.info/sitemap.xml\\n',
+                'User-agent: *\nAllow: /\nSitemap: https://linkwiki.info/sitemap.xml\n',
                 encoding="utf-8")
             (root / "test.html").write_text(
                 f'<html><head><title>Example</title><link rel="canonical" href="{SITE}/test">'
