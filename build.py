@@ -1328,6 +1328,50 @@ def directory_task_paths(records):
 
 
 
+def directory_source_evidence_section(records, evidence):
+    """Expose a transparent, source-linked subset of directory address checks."""
+    if not isinstance(records, list) or not isinstance(evidence, dict):
+        raise RuntimeError("Source evidence section requires the published catalog and evidence map")
+    by_url = {item.get("url"): item for item in records if isinstance(item, dict)}
+    rows = []
+    for url, source in sorted(
+        evidence.items(),
+        key=lambda pair: (
+            str(by_url.get(pair[0], {}).get("category", "")),
+            str(by_url.get(pair[0], {}).get("name", "")),
+        ),
+    ):
+        item = by_url.get(url)
+        if not item:
+            raise RuntimeError("Source evidence points outside the published directory")
+        rows.append(
+            '<tr class="source-evidence-row"><th scope="row"><a href="#'
+            + escape(directory_card_anchor(item), quote=True) + '">'
+            + escape(item["name"]) + '</a><small>'
+            + escape(item["category"]) + '</small></th><td>'
+            + escape(source["scope"]) + '</td><td><a href="'
+            + escape(source["source_url"], quote=True)
+            + '" rel="noopener noreferrer external" target="_blank">공식 근거 열기 ↗</a></td><td>'
+            + escape(source["checked_on"]) + '</td></tr>'
+        )
+    if not rows:
+        return ""
+    return (
+        '<section id="directory-source-evidence" class="seo-guidance" '
+        'aria-labelledby="directory-source-evidence-heading">'
+        '<h2 id="directory-source-evidence-heading">공식 출처와 대조한 사이트 주소 기록</h2>'
+        '<p>현재 공개 목록 ' + str(len(records)) + '개 중 '
+        + str(len(rows)) + '개 항목은 서비스 페이지 또는 관련 기관 안내를 출처로 삼아 '
+        '표시된 연결 주소와 이용 범위를 대조한 기록이 있습니다. 각 항목의 공식 근거를 직접 확인할 수 있습니다.</p>'
+        '<p>확인일은 출처와 등록 주소를 대조한 날짜이며, 현재 접속 가능 여부·운영 주체의 소유권·보안·서비스 품질을 보증하지 않습니다. '
+        '아래에 표시되지 않은 항목은 이 출처 대조 기록에 포함되지 않았습니다.</p>'
+        '<div class="table-scroll"><table><thead><tr><th>등록 사이트</th><th>대조 범위</th>'
+        '<th>출처</th><th>확인일</th></tr></thead><tbody>'
+        + ''.join(rows) + '</tbody></table></div>'
+        '</section>'
+    )
+
+
 def directory_keyword_intents(records):
     """Answer three distinct tasks on the directory instead of repeating keywords."""
     names = {item.get("name") for item in records if isinstance(item, dict)}
@@ -2054,6 +2098,7 @@ def build():
     directory_html = directory_html.replace(
         overview_marker,
         help_section + directory_keyword_intents(records)
+        + directory_source_evidence_section(records, directory_evidence)
         + directory_address_inspector() + overview
         + directory_purpose_comparison(records, CATEGORY_LANDING)
         + directory_everyday_task_paths(records)
