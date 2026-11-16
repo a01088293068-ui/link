@@ -7,6 +7,7 @@ from urllib.parse import quote
 from seo import search_console_monitor
 from build import (directory_everyday_task_paths, directory_relevant_guides,
                    korean_first_shortcuts, homepage_search_guide_links)
+from seo.auto_seo import related_categories
 
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = "seo-20261116-korean-public-sector-recruitment-sites-guide"
@@ -67,6 +68,10 @@ class KoreanPublicJobSiteTests(unittest.TestCase):
             {"title": "사이트모음 선택 방법", "url": "/blog/selection/"},
         ])
         self.assertIn("/blog/" + SLUG + "/", guides)
+
+    def test_public_recruitment_guide_links_to_education_not_generic_search(self):
+        categories = related_categories("공공기관 채용 사이트 모음: 나라일터·잡알리오")
+        self.assertEqual(categories, [("교육·취업 사이트모음", "/categories/education")])
 
     def test_homepage_links_to_the_new_korean_sites_and_recruitment_guide(self):
         shortcuts = korean_first_shortcuts(self.records)
