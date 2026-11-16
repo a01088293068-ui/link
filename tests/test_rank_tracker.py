@@ -3,6 +3,10 @@ from seo import rank_tracker
 
 
 class RankTrackerTests(unittest.TestCase):
+    def test_competitor_brand_terms_are_not_tracked_as_generic_keywords(self):
+        self.assertNotIn("주소모음 위키", rank_tracker.LONGTAIL_KEYWORDS)
+        self.assertIn("주소 모음 사이트", rank_tracker.LONGTAIL_KEYWORDS)
+
     def test_ranking_workflow_has_missed_schedule_recovery_and_daily_dedup(self):
         from pathlib import Path
         workflow = (Path(__file__).resolve().parents[1] /
