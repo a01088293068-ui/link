@@ -235,7 +235,12 @@ CATEGORY_RELATED = (
 def related_categories(topic, limit=2):
     """Link published articles to genuinely matching existing category pages."""
     matches = []
+    public_recruitment = any(
+        term in topic for term in ("공공기관 채용", "지방공기업 채용", "공직 채용")
+    )
     for terms, label, url in CATEGORY_RELATED:
+        if public_recruitment and url == "/categories/search":
+            continue
         if any(term.lower() in topic.lower() for term in terms):
             matches.append((label, url))
     return matches[:limit]
