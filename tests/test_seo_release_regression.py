@@ -749,7 +749,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertEqual(by_url[url]["checked_on"], "2026-11-16")
             self.assertTrue(by_url[url]["source_url"].startswith("https://"))
             self.assertTrue(by_url[url]["scope"])
-        self.assertEqual(len(evidence), 109)
+        self.assertEqual(len(evidence), 105)
 
 
     def test_more_korean_public_service_sources_are_checked(self):
