@@ -9,6 +9,7 @@ GUIDES = (
     "seo-20261111-address-directory-no-results",
     "seo-20261111-site-directory-selection-by-purpose",
     "seo-20261111-mobile-address-directory-check",
+    "seo-20261116-korean-certification-exam-sites-guide",
 )
 
 
