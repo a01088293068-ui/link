@@ -438,6 +438,16 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertTrue(all(url in targets for url in recent))
         self.assertLessEqual(len(targets), 20)
 
+    def test_new_exam_guide_is_in_priority_url_inspection_set(self):
+        expected = "https://linkwiki.info/blog/seo-20261116-korean-certification-exam-sites-guide/"
+        urls = monitor.directory_intent_inspection_urls()
+        self.assertEqual(len(urls), 3)
+        self.assertIn(expected, urls)
+        self.assertNotIn(
+            "https://linkwiki.info/blog/seo-20261111-mobile-address-directory-check/",
+            urls,
+        )
+
     def test_inspection_prioritizes_all_thirteen_categories_and_respects_limit(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
