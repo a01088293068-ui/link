@@ -749,7 +749,29 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertEqual(by_url[url]["checked_on"], "2026-11-16")
             self.assertTrue(by_url[url]["source_url"].startswith("https://"))
             self.assertTrue(by_url[url]["scope"])
-        self.assertEqual(len(evidence), 100)
+        self.assertEqual(len(evidence), 109)
+
+
+    def test_more_korean_public_service_sources_are_checked(self):
+        root = Path(__file__).resolve().parents[1]
+        evidence = json.loads((root / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        by_url = {row["url"]: row for row in evidence}
+        expected = {
+            "https://www.nps.or.kr/main.do": "국민연금공단",
+            "https://www.weather.go.kr/": "기상청 날씨누리",
+            "https://www.korea.kr/": "대한민국 정책브리핑",
+            "https://www.safekorea.go.kr/": "국민안전24",
+            "https://www.ips.go.kr/": "국민비서",
+            "https://www.mma.go.kr/": "병무청",
+            "https://www.hikorea.go.kr/": "하이코리아",
+            "https://www.index.go.kr/": "e-나라지표",
+            "https://www.moel.go.kr/": "고용노동부",
+        }
+        for url, name in expected.items():
+            self.assertIn(url, by_url)
+            self.assertEqual(by_url[url]["name"], name)
+            self.assertEqual(by_url[url]["checked_on"], "2026-11-16")
+            self.assertTrue(by_url[url]["scope"])
 
 
 if __name__ == "__main__":
