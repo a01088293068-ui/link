@@ -707,6 +707,14 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('href="#directory-source-evidence"', directory)
         self.assertIn('id="directory-source-evidence"', directory)
 
+    def test_two_site_comparison_article_explains_actual_feature(self):
+        root = Path(__file__).resolve().parents[1]
+        article = (root / "content/seo-20261028-2a8841090c.md").read_text(encoding="utf-8")
+        for phrase in ("비교에 담기", "등록 도메인", "이 비교의 링크 열기",
+                       "인기 순위가 아닙니다", "/directory#directory-two-site-compare"):
+            self.assertIn(phrase, article)
+        self.assertIn("공식 주소 확인 방법", article)
+
 
 if __name__ == "__main__":
     unittest.main()
