@@ -380,12 +380,14 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         heading = f"{PUBLISHED_COUNT}개 사이트 주소 검색: 이름·도메인·분야별 목록"
         self.assertIn("<title>" + title + "</title>", html)
         import re
+        meta_tags = re.findall(r'<meta\\b[^>]*>', html)
         for attribute, value in (("name", "description"), ("property", "og:description"),
                                  ("name", "twitter:description")):
-            self.assertRegex(
-                html,
-                r'<meta\\b(?=[^>]*' + attribute + r'="' + re.escape(value) +
-                r'")(?=[^>]*content="' + re.escape(description) + r'")[^>]*>')
+            self.assertTrue(any(
+                attribute + '="' + value + '"' in tag and
+                'content="' + description + '"' in tag
+                for tag in meta_tags
+            ), "Missing or stale directory metadata: " + value)
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
