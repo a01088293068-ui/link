@@ -968,5 +968,68 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do",
+    "name": "국가건강정보포털",
+    "source_url": "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do",
+    "scope": "질병관리청 국가건강정보포털에서 질병·건강정보의 통합 제공 목적과 등록 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hira.or.kr/",
+    "name": "건강보험심사평가원",
+    "source_url": "https://www.hira.or.kr/main.do",
+    "scope": "건강보험심사평가원 공식 누리집에서 의료기관·의약품 정보와 건강보험 제도 안내 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.k-startup.go.kr/web/main/index.do",
+    "name": "K-Startup 창업지원포털",
+    "source_url": "https://www.k-startup.go.kr/web/main/index.do",
+    "scope": "K-Startup 공식 포털의 창업지원사업 공고·교육·시설·멘토링 제공 범위를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.patent.go.kr/",
+    "name": "특허로",
+    "source_url": "https://www.patent.go.kr/smart/portal/Main.do",
+    "scope": "특허로 공식 포털에서 지식재산 전자출원·심판·등록·수수료 업무 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://unipass.customs.go.kr/",
+    "name": "관세청 유니패스",
+    "source_url": "https://unipass.customs.go.kr/csp/index.do",
+    "scope": "관세청 국가관세종합정보시스템에서 통관 진행정보·관세법령·수출입 관련 전자업무 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.110.go.kr/",
+    "name": "정부민원안내 110",
+    "source_url": "https://www.110.go.kr/start.do",
+    "scope": "국민권익위원회 정부민원안내콜센터에서 전화·채팅·온라인 민원상담 제공 범위를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.klac.or.kr/",
+    "name": "대한법률구조공단",
+    "source_url": "https://www.klac.or.kr/",
+    "scope": "대한법률구조공단 공식 누리집에서 법률상담·법률구조 안내와 상담 대표번호를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
