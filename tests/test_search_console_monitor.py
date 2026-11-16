@@ -445,7 +445,11 @@ class SearchConsoleMonitorTests(unittest.TestCase):
     def test_new_exam_guide_is_in_priority_url_inspection_set(self):
         expected = "https://linkwiki.info/blog/seo-20261116-korean-certification-exam-sites-guide/"
         urls = monitor.directory_intent_inspection_urls()
-        self.assertEqual(len(urls), 3)
+        self.assertEqual(len(urls), 4)
+        self.assertIn(
+            "https://linkwiki.info/blog/seo-20261116-korean-public-sector-recruitment-sites-guide/",
+            urls,
+        )
         self.assertIn(expected, urls)
         self.assertNotIn(
             "https://linkwiki.info/blog/seo-20261111-mobile-address-directory-check/",
