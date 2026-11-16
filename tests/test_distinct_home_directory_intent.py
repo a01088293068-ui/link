@@ -41,7 +41,7 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
             self.skipTest("Run build.py first")
         full = path.read_text(encoding="utf-8")
         hub = home.read_text(encoding="utf-8")
-        self.assertEqual(len(re.findall(r'<article class="v6-card" id="site-[a-f0-9]{14}"', full)), len(self.records))
+        self.assertEqual(len(re.findall(r'<article class="v6-card" data-source-evidence="(?:true|false)" id="site-[a-f0-9]{14}"', full)), len(self.records))
         self.assertEqual(hub.count("분야별 사이트 탐색 길잡이"), 1)
         self.assertIn("관심 분야부터 찾기", hub)
         self.assertIn('id="directory-two-site-compare"', full)
