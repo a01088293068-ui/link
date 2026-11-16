@@ -86,6 +86,8 @@ def should_submit(items):
         return False, "canonical sitemap already downloaded by Google"
     if int(current.get("errors") or 0) > 0:
         return True, "Google reported sitemap processing errors"
+    if current.get("isPending") is True:
+        return False, "canonical sitemap is already pending Google processing"
     return True, "canonical sitemap has no recorded download"
 
 
