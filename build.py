@@ -460,7 +460,7 @@ def sync_directory_count(html, total_sites):
     if 'id="directory-heading"' in html:
         heading, changed = re.subn(
             r'(<h1\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)',
-            r'\1사이트모음: 이름·도메인으로 사이트 비교\2', html, count=1, flags=re.S)
+            r'\1주소모음·링크모음·사이트모음: 이름과 도메인으로 찾기\2', html, count=1, flags=re.S)
         if changed != 1:
             raise RuntimeError("Directory intent heading malformed")
         html = heading
