@@ -38,6 +38,21 @@ The private Search Console API snapshot fetched on 2026-11-16 materially changes
 - GSC sitemap state: `sitemap-v2.xml` last downloaded 2026-11-12 with 49 submitted / 0 indexed; `sitemap.xml` was still pending with no download timestamp and no reported errors.
 - The exam-registration guide had no disclosed GSC query rows in the 2026-11-13 data window; it is too new to judge. The next GSC run now prioritizes its URL inspection and also tracks the existing link/site comparison guide.
 
+## Follow-up verification (2026-11-16, after the first strategy change)
+
+- Latest GSC report (data through 2026-11-13): 28-day total 135 impressions / 40 clicks; recent 7 days 62 impressions / 13 clicks versus previous 7 days 47 / 17.
+- Korea-only exact `링크모음`: 13 impressions / 4 clicks / average position 66.1 in the latest 7 days, versus 4 / 1 / 123.0 in the previous 7 days. This is a small-sample positive signal, not a ranking guarantee.
+- Korea-only exact `주소모음`: 1 impression in each period, average position 107.0 in the latest 7 days; `사이트모음` remains unobserved in disclosed query rows.
+- Current independent SERP sample (2026-11-16): LinkWiki was not found in the sampled results for the three core queries. The `사이트모음` sample covered all 30 organic positions; `주소모음` and `링크모음` samples were partial (28/30 and 27/30 observed positions), so those two results are not proof of absence from every unobserved position.
+- The top sampled competitors for `주소모음` / `링크모음` include 주소핫, 여기여 and 호빵넷. This is a point-in-time API sample, not traffic or authority evidence.
+- The live canonical sitemap currently exposes 56 extensionless canonical URLs and includes the new certification guide. The official GSC Sitemap API accepted a resubmission because the canonical sitemap had no recorded Google download. Current status is pending processing; this is not yet a Google download, discovery, indexation, or ranking result.
+- Duplicate submissions while Google reports `isPending=true` are now suppressed. Sitemap recovery runs after substantive content/build/sitemap changes and skips resubmission while the existing submission is pending or has already been downloaded.
+- The daily SERP tracker snapshot was successfully committed after a transient non-fast-forward push rejection was resolved by the existing rebase retry. Its current sample records no LinkWiki hit in the sampled top 30 for the three core keywords, with partial coverage noted above.
+
+## Immediate decision
+
+Do not publish another batch of near-duplicate keyword pages yet. The bottleneck is now the discovery/indexing of the already-published directory and category pages, plus the homepage's weak non-brand positions. Wait for the new sitemap processing and the next GSC crawl evidence before making more superficial title edits. Prioritize unique task utility, consistent canonical links, and measured query/page performance.
+
 ## Revised priority
 
 1. **Homepage intent alignment first**: the measured non-brand opportunity is currently `링크모음`, so the homepage title, H1 and description now pair `주소모음` with `링크모음` while retaining `사이트모음` in supporting copy.
