@@ -471,6 +471,38 @@ class SearchConsoleMonitorTests(unittest.TestCase):
                      "news", "shopping", "travel"):
             self.assertIn("https://linkwiki.info/categories/" + slug, targets)
 
+    def test_default_quota_keeps_every_category_and_priority_guide_even_with_many_gsc_rows(self):
+        page_rows = [
+            {"keys": ["https://linkwiki.info/blog/observed-" + str(index)],
+             "impressions": 1000 - index}
+            for index in range(40)
+        ]
+        query_rows = [
+            {"keys": [keyword, "https://linkwiki.info/guides/query-" + str(index)],
+             "impressions": 100 - index}
+            for index, keyword in enumerate(
+                ("주소모음", "링크모음", "사이트모음") * 4
+            )
+        ]
+        targets = monitor.inspection_targets(
+            page_rows, core_query_pages=query_rows, as_of=date(2026, 11, 16)
+        )
+        self.assertLessEqual(len(targets), 24)
+        self.assertIn("https://linkwiki.info/", targets)
+        self.assertIn("https://linkwiki.info/directory", targets)
+        self.assertIn("https://linkwiki.info/categories/", targets)
+        for slug in (
+            "community", "korean", "comics-directory", "webtoon", "ai",
+            "search", "sports", "video", "finance", "education", "news",
+            "shopping", "travel",
+        ):
+            self.assertIn("https://linkwiki.info/categories/" + slug, targets)
+        for url in monitor.directory_intent_inspection_urls():
+            self.assertIn(url, targets)
+        self.assertIn("https://linkwiki.info/guides/query-0", targets)
+        self.assertIn("https://linkwiki.info/guides/query-1", targets)
+        self.assertNotIn("https://linkwiki.info/blog/observed-0", targets)
+
     def test_inspection_prioritizes_all_thirteen_categories_and_respects_limit(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
