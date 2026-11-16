@@ -4,7 +4,8 @@ import unittest
 from pathlib import Path
 
 from seo import search_console_monitor
-from build import directory_everyday_task_paths, directory_relevant_guides
+from build import (directory_everyday_task_paths, directory_relevant_guides,
+                   korean_first_shortcuts, homepage_search_guide_links)
 
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = "seo-20261116-korean-public-sector-recruitment-sites-guide"
@@ -65,6 +66,14 @@ class KoreanPublicJobSiteTests(unittest.TestCase):
             {"title": "사이트모음 선택 방법", "url": "/blog/selection/"},
         ])
         self.assertIn("/blog/" + SLUG + "/", guides)
+
+    def test_homepage_links_to_the_new_korean_sites_and_recruitment_guide(self):
+        shortcuts = korean_first_shortcuts(self.records)
+        for name in EXPECTED:
+            self.assertIn('/directory?q=' + __import__('urllib.parse').parse.quote(name, safe=""), shortcuts)
+        homepage_guides = homepage_search_guide_links()
+        self.assertIn('/blog/' + SLUG + '/', homepage_guides)
+        self.assertIn("공공기관 채용 사이트 찾기", homepage_guides)
 
     def test_new_guide_is_in_daily_inspection_and_korean_query_reporting(self):
         url = "https://linkwiki.info/blog/" + SLUG + "/"
