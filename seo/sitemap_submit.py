@@ -82,10 +82,11 @@ def latest_sitemap_lastmod(xml_bytes):
 
 
 def fetch_deployed_sitemap(expected_urls=(), fetch=urlopen, attempts=10,
-                           delay_seconds=12, sleep=time.sleep):
+                           delay_seconds=12, sleep=None):
     """Wait for Pages deployment to publish all source-backed URLs before GSC actions."""
     if attempts < 1 or delay_seconds < 0:
         raise ValueError("invalid sitemap deployment wait configuration")
+    sleep = sleep or time.sleep
     last_error = None
     for attempt in range(attempts):
         xml_bytes = fetch_xml(fetch)
