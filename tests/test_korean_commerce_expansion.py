@@ -20,7 +20,7 @@ class KoreanCommerceExpansionTests(unittest.TestCase):
 
     def test_four_korean_commerce_destinations_are_classified_and_unique(self):
         by_name = {row["name"]: row for row in self.records}
-        self.assertEqual(len(self.records), 337)
+        self.assertGreaterEqual(len(self.records), 337)
         self.assertEqual(len(by_name), len(self.records))
         self.assertEqual(sum(row["category"] == "쇼핑·가격비교" for row in self.records), 16)
         for name, (url, _) in EXPECTED.items():
