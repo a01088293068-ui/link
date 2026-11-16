@@ -482,5 +482,149 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.inven.co.kr/",
+    "name": "인벤",
+    "source_url": "https://www.inven.co.kr/",
+    "scope": "인벤 공식 메인에서 게임 뉴스·공략·커뮤니티·e스포츠 정보를 제공하는 게임 미디어 서비스 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://gall.dcinside.com/",
+    "name": "디시인사이드",
+    "source_url": "https://gall.dcinside.com/",
+    "scope": "디시인사이드 공식 메인에서 갤러리·마이너 갤러리·미니 갤러리 기반 커뮤니티 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.clien.net/service/",
+    "name": "클리앙",
+    "source_url": "https://www.clien.net/service/",
+    "scope": "클리앙 공식 서비스 첫 화면의 주제별 게시판과 커뮤니티 콘텐츠 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ppomppu.co.kr/",
+    "name": "뽐뿌",
+    "source_url": "https://www.ppomppu.co.kr/",
+    "scope": "뽐뿌 공식 메인에서 쇼핑 핫딜·쿠폰·이용자 후기와 분야별 게시판 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.teamblind.com/kr/",
+    "name": "블라인드",
+    "source_url": "https://www.teamblind.com/kr/",
+    "scope": "블라인드 한국어 공식 페이지에서 직장인 익명 커뮤니티와 직무·생활 주제별 게시판 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://bbs.ruliweb.com/",
+    "name": "루리웹",
+    "source_url": "https://m.ruliweb.com/",
+    "scope": "루리웹 공식 메인과 모바일 표준 주소에서 게임·취미·생활 관련 커뮤니티와 콘텐츠 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://comic.naver.com/",
+    "name": "네이버 웹툰",
+    "source_url": "https://m.comic.naver.com/index",
+    "scope": "네이버웹툰 공식 서비스에서 연재 작품·요일별 웹툰·신작 탐색 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kleague.com/",
+    "name": "K리그",
+    "source_url": "https://www.kleague.com/index.do",
+    "scope": "한국프로축구연맹 K리그 공식 사이트의 리그 일정·구단·기록·순위·뉴스 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kfa.or.kr/",
+    "name": "대한축구협회",
+    "source_url": "https://www.kfa.or.kr/",
+    "scope": "대한축구협회 공식 사이트의 국가대표팀·경기 일정·협회 뉴스와 공지 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreabaseball.com/",
+    "name": "KBO 공식 홈페이지",
+    "source_url": "https://www.koreabaseball.com/",
+    "scope": "KBO 공식 홈페이지의 프로야구 일정·결과·기록·순위·선수 정보 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbl.or.kr/",
+    "name": "KBL 한국프로농구",
+    "source_url": "https://www.kbl.or.kr/",
+    "scope": "KBL 공식 홈페이지의 프로농구 경기 일정·결과와 팀·선수 관련 정보 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.sports.or.kr/sports/main/main.do",
+    "name": "대한체육회",
+    "source_url": "https://www.sports.or.kr/sports/main/main.do",
+    "scope": "대한체육회 공식 사이트에서 체육인 지원 서비스와 스포츠 정보·올림픽 관련 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kspo.or.kr/",
+    "name": "서울올림픽기념 국민체육진흥공단",
+    "source_url": "https://www.kspo.or.kr/kspo/main/main.do",
+    "scope": "국민체육진흥공단 공식 사이트의 국민체육·스포츠산업·체육재정 관련 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://news.kbs.co.kr/",
+    "name": "KBS 뉴스",
+    "source_url": "https://news.kbs.co.kr/news/pc/main/main.html",
+    "scope": "KBS 뉴스 공식 페이지의 주요 뉴스와 방송사 뉴스 콘텐츠 제공 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.yna.co.kr/",
+    "name": "연합뉴스",
+    "source_url": "https://www.yna.co.kr/",
+    "scope": "연합뉴스 공식 메인에서 국내외 뉴스와 멀티미디어 뉴스 콘텐츠 제공 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://imnews.imbc.com/",
+    "name": "MBC 뉴스",
+    "source_url": "https://imnews.imbc.com/pc_main.html",
+    "scope": "MBC 뉴스 공식 페이지에서 주요 뉴스와 방송사 보도 콘텐츠 탐색 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
