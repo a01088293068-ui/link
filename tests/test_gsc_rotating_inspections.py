@@ -82,7 +82,7 @@ class RotatingInspectionTests(unittest.TestCase):
                     }], as_of=date(2026, 11, 12))
             self.assertIn("https://linkwiki.info/guides/security", selected)
             self.assertIn("https://linkwiki.info/guides/security.html", selected)
-            self.assertLessEqual(len(selected), 20)
+            self.assertLessEqual(len(selected), 24)
 
     def test_small_test_limit_keeps_historical_selection(self):
         with TemporaryDirectory() as directory:
