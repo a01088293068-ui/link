@@ -96,13 +96,13 @@ def recent_published_post_urls(limit=3):
         for path in sorted(posts.glob("seo-*.md"), reverse=True)[:limit]
     ]
 
-# Recent task-specific articles linked directly from the canonical directory.
-# These are checked only when the corresponding published Markdown exists;
-# never send fabricated URLs to Google's URL Inspection API.
+# Priority guides linked from the main directory and focused category hubs.
+# Keep the newest high-intent exam guide in the daily inspection set, replacing
+# the lower-priority mobile guide; all links must exist as published Markdown.
 DIRECTORY_INTENT_ARTICLES = (
     "seo-20261111-address-directory-no-results",
     "seo-20261111-site-directory-selection-by-purpose",
-    "seo-20261111-mobile-address-directory-check",
+    "seo-20261116-korean-certification-exam-sites-guide",
 )
 
 
