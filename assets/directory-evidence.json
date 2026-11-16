@@ -100,8 +100,8 @@
     "url": "https://www.nhis.or.kr/nhis/index.do",
     "name": "국민건강보험공단",
     "source_url": "https://www.nhis.or.kr/nhis/index.do",
-    "scope": "국민건강보험공단 첫 화면의 보험료·자격·건강검진 민원 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
+    "scope": "국민건강보험 공식 홈페이지의 건강검진 대상·환급금·자격·보험료·온라인 제도 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -118,8 +118,8 @@
     "url": "https://www.safedriving.or.kr/",
     "name": "안전운전 통합민원",
     "source_url": "https://www.safedriving.or.kr/",
-    "scope": "한국도로교통공단 안전운전 통합민원 첫 화면의 면허·교통 관련 민원 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
+    "scope": "한국도로교통공단 안전운전 통합민원의 교통안전교육·운전면허시험·면허증 발급 및 민원 메뉴와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -947,6 +947,24 @@
     "name": "고용노동부",
     "source_url": "https://www.moel.go.kr/",
     "scope": "고용노동부 공식 홈페이지의 고용·노동 정책, 법령, 보도자료 및 근로자·사업주 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://bizinfo.go.kr/",
+    "name": "기업마당",
+    "source_url": "https://bizinfo.go.kr/",
+    "scope": "기업마당 공식 홈페이지의 중소기업 지원사업 공고·정책정보·행사정보·정책정보 개방 메뉴와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kipris.or.kr/",
+    "name": "KIPRIS 지식재산정보검색",
+    "source_url": "https://www.kipris.or.kr/khome/main.do",
+    "scope": "KIPRIS 지식재산정보 검색 서비스의 특허·상표·디자인 및 국제특허분류 정보 검색 안내와 연결 주소를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
