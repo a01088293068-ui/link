@@ -2031,12 +2031,6 @@ def build():
         '등록 주소·이용 범위를 대조했습니다. '
         '<a href="#directory-source-evidence">대조한 출처와 확인일 보기</a></p>'
     )
-    lead_end = '</p><nav aria-label="분야별 사이트모음 바로가기"'
-    if directory_html.count(lead_end) != 1:
-        raise RuntimeError("Directory lead insertion point changed; review required")
-    directory_html = directory_html.replace(
-        lead_end, '</p>' + evidence_summary + '<nav aria-label="분야별 사이트모음 바로가기"', 1
-    )
     # Lead with search before the category and editorial shortcuts.
     search_form = re.compile(r'<form class="v6-search" id="v6-form".*?</form>', re.S)
     forms = search_form.findall(directory_html)
@@ -2072,7 +2066,7 @@ def build():
         '<a href="#site-related-guides">관련 이용 가이드</a></nav>'
     )
     directory_html = re.sub(
-        directory_nav_pattern, lambda _: forms[0] + search_navigation + quick_service_searches(records, collapsed=True),
+        directory_nav_pattern, lambda _: forms[0] + search_navigation + quick_service_searches(records, collapsed=True) + evidence_summary,
         directory_html, count=1, flags=re.S,
     )
     recent_changes = (
