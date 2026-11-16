@@ -749,7 +749,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertEqual(by_url[url]["checked_on"], "2026-11-16")
             self.assertTrue(by_url[url]["source_url"].startswith("https://"))
             self.assertTrue(by_url[url]["scope"])
-        self.assertEqual(len(evidence), 105)
+        self.assertEqual(len(evidence), 107)
 
 
     def test_more_korean_public_service_sources_are_checked(self):
@@ -766,6 +766,21 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             "https://www.hikorea.go.kr/": "하이코리아",
             "https://www.index.go.kr/": "e-나라지표",
             "https://www.moel.go.kr/": "고용노동부",
+        }
+        for url, name in expected.items():
+            self.assertIn(url, by_url)
+            self.assertEqual(by_url[url]["name"], name)
+            self.assertEqual(by_url[url]["checked_on"], "2026-11-16")
+            self.assertTrue(by_url[url]["scope"])
+
+
+    def test_korean_business_and_ip_sources_are_verified(self):
+        root = Path(__file__).resolve().parents[1]
+        evidence = json.loads((root / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        by_url = {row["url"]: row for row in evidence}
+        expected = {
+            "https://bizinfo.go.kr/": "기업마당",
+            "https://www.kipris.or.kr/": "KIPRIS 지식재산정보검색",
         }
         for url, name in expected.items():
             self.assertIn(url, by_url)
