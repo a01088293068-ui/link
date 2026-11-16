@@ -175,11 +175,11 @@ def audit_site(dist):
             errors.append(f"stale preview notice on public page: {relative}")
         noindex = has_noindex_meta(content)
         # Search engine ownership proof files are plain text despite .html.
-        if not re.search(r"<html\\b", content, re.I):
+        if not re.search(r"<html\b", content, re.I):
             continue
-        canonical = re.search(r'<link\\b[^>]*\\brel="canonical"[^>]*\\bhref="([^"]+)"', content)
+        canonical = re.search(r'<link\b[^>]*\brel="canonical"[^>]*\bhref="([^"]+)"', content)
         if not canonical:
-            canonical = re.search(r'<link\\b[^>]*\\bhref="([^"]+)"[^>]*\\brel="canonical"', content)
+            canonical = re.search(r'<link\b[^>]*\bhref="([^"]+)"[^>]*\brel="canonical"', content)
         if not canonical or canonical.group(1) != SITE + public_path:
             errors.append(f"noncanonical page URL: {relative}")
         if not noindex and SITE + public_path not in locs:
