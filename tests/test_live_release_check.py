@@ -232,6 +232,29 @@ class LiveReleaseCheckTests(unittest.TestCase):
                                               sitemap("2026-10-29"))
         self.assertIn("sitemap.xml: deployed lastmod for /directory differs", problems[0])
 
+    def test_directory_search_intent_help_is_compared_to_live_release(self):
+        from seo.live_release_check import release_content_sections
+        block = (
+            '<section class="wrap directory-seo-help" '
+            'aria-labelledby="directory-help-heading">'
+            '<h2 id="directory-help-heading">주소모음에서 원하는 사이트를 찾는 방법</h2>'
+            '<p>이름과 도메인 일부로 검색하는 안내</p>'
+            '<h2>분야별 링크모음으로 새로운 사이트 찾기</h2>'
+            '<p>분야별 탐색 안내</p>'
+            '<h2>주소를 열기 전 확인할 사항</h2>'
+            '<p>공식 도메인 확인 안내</p></section>'
+        )
+        expected = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
+                        block)
+        stale = expected.replace("분야별 탐색 안내", "이전 안내")
+        self.assertEqual(release_content_sections(expected, "/directory"), [block])
+        self.assertEqual(check_page(expected, expected, "/directory"), [])
+        self.assertTrue(any("deployed directory examples differ" in issue
+                            for issue in check_page(expected, stale, "/directory")))
+        missing = expected.replace(block, "")
+        self.assertTrue(any("deployed directory examples differ" in issue
+                            for issue in check_page(expected, missing, "/directory")))
+
     def test_directory_help_with_id_before_class_is_checked(self):
         from seo.live_release_check import release_content_sections
         help_html = ('<section id="site-list-guide" class="lw-safety-note seo-search-help" '
