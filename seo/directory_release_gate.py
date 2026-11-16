@@ -151,6 +151,11 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         issues.append("directory visible count not derived from verified data")
     if "/directory" not in home.links:
         issues.append("homepage lacks crawlable canonical /directory link")
+    if "/categories/" not in home.links:
+        issues.append("homepage lacks crawlable category hub link")
+    for slug in CATEGORIES:
+        if "/categories/" + slug not in home.links:
+            issues.append(f"homepage lacks crawlable category link: {slug}")
     for slug in CATEGORIES:
         url = "/categories/" + slug
         if url not in parser.links:
