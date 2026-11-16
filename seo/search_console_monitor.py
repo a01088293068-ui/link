@@ -103,6 +103,7 @@ DIRECTORY_INTENT_ARTICLES = (
     "seo-20261111-links-sites-comparison-checklist",
     "seo-20261111-site-directory-selection-by-purpose",
     "seo-20261116-korean-certification-exam-sites-guide",
+    "seo-20261116-korean-public-sector-recruitment-sites-guide",
 )
 
 
@@ -1159,6 +1160,7 @@ LONG_TAIL_GUIDES = (
     ('링크모음·사이트모음 비교 기준', 'seo-20261111-links-sites-comparison-checklist'),
     ('두 사이트 비교', 'seo-20261028-2a8841090c'),
     ('자격증·공무원·어학시험 접수', 'seo-20261116-korean-certification-exam-sites-guide'),
+    ('공공기관·지방공기업 채용', 'seo-20261116-korean-public-sector-recruitment-sites-guide'),
 )
 
 
