@@ -33,7 +33,8 @@
         category: cat.textContent.trim(),
         name: name.textContent.trim(),
         description: description.textContent.trim(),
-        url: link.href
+        url: link.href,
+        hasEvidence: card.dataset.sourceEvidence === 'true'
       }
     };
   });
@@ -44,11 +45,13 @@
                       '교육·취업', '뉴스·언론', '쇼핑·가격비교', '생활·교통·여행'];
   const elements = new Map(entries.map(entry => [entry.site, entry.element]));
   let category = '전체';
+  let evidenceOnly = false;
 
   function readURL() {
     const params = new URLSearchParams(location.search);
     category = categories.includes(params.get('category'))
       ? params.get('category') : '전체';
+    evidenceOnly = params.get('source') === 'evidence';
     input.value = (params.get('q') || '').slice(0, 100);
   }
 
@@ -58,6 +61,8 @@
     else url.searchParams.set('category', category);
     if (input.value.trim()) url.searchParams.set('q', input.value.trim());
     else url.searchParams.delete('q');
+    if (evidenceOnly) url.searchParams.set('source', 'evidence');
+    else url.searchParams.delete('source');
     history[push ? 'pushState' : 'replaceState'](null, '', url);
   }
 
@@ -66,17 +71,21 @@
     const normalized = search.norm(query).replace(/\s+/g, '');
     const coreIntent = ['주소모음', '링크모음', '사이트모음'].includes(normalized);
     const selected = entries.filter(entry =>
-      category === '전체' || entry.site.category === category);
+      (category === '전체' || entry.site.category === category) &&
+      (!evidenceOnly || entry.hasEvidence));
     const matched = search.sortResults(selected.map(entry => entry.site), query);
     results.replaceChildren(...matched.map(site => elements.get(site)));
-    count.textContent = (
-      coreIntent
+    const resultLabel = evidenceOnly
+      ? (query ? '‘' + query + '’ 출처 대조 검색 결과 ' : '출처 대조 기록이 있는 사이트 ')
+      : coreIntent
         ? '전체 ' + (category === '전체' ? '등록 목록 ' : category + ' 목록 ')
-        : query ? '‘' + query + '’ 검색 결과 ' : '등록 사이트 '
-    ) + matched.length + '개';
+        : query ? '‘' + query + '’ 검색 결과 ' : '등록 사이트 ';
+    count.textContent = resultLabel + matched.length + '개';
     empty.hidden = matched.length !== 0;
     for (const button of tabs.children) {
-      button.setAttribute('aria-pressed', String(button.dataset.cat === category));
+      const pressed = button.dataset.sourceEvidence === 'true'
+        ? evidenceOnly : button.dataset.cat === category;
+      button.setAttribute('aria-pressed', String(pressed));
     }
     heading.textContent = category === '전체'
       ? '344개 사이트 주소 검색: 이름·도메인·분야별 목록'
@@ -97,6 +106,20 @@
     });
     tabs.append(button);
   }
+  const evidenceButton = document.createElement('button');
+  evidenceButton.type = 'button';
+  evidenceButton.className = 'v6-evidence-filter';
+  evidenceButton.dataset.sourceEvidence = 'true';
+  const evidenceCount = entries.filter(entry => entry.hasEvidence).length;
+  evidenceButton.textContent = '출처 대조 기록 ' + evidenceCount + '개';
+  evidenceButton.setAttribute('aria-label',
+    '출처 대조 기록이 있는 사이트만 보기 ' + evidenceCount + '개');
+  evidenceButton.addEventListener('click', () => {
+    evidenceOnly = !evidenceOnly;
+    updateURL(true);
+    render();
+  });
+  tabs.append(evidenceButton);
   input.addEventListener('input', () => { updateURL(); render(); });
   form.addEventListener('submit', event => {
     event.preventDefault();
@@ -106,6 +129,7 @@
   });
   reset.addEventListener('click', () => {
     category = '전체';
+    evidenceOnly = false;
     input.value = '';
     updateURL(true);
     render();
