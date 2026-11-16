@@ -905,5 +905,50 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ips.go.kr/",
+    "name": "국민비서",
+    "source_url": "https://www.ips.go.kr/pot/",
+    "scope": "행정안전부 국민비서의 알림서비스·상담서비스 및 네이버·카카오톡·토스 연계 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mma.go.kr/",
+    "name": "병무청",
+    "source_url": "https://www.mma.go.kr/index.do",
+    "scope": "병무청 공식 홈페이지의 병역판정검사·입영·모집병·병무민원 신청 및 상담 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hikorea.go.kr/",
+    "name": "하이코리아",
+    "source_url": "https://www.hikorea.go.kr/mobile/mMain.pt",
+    "scope": "법무부 운영 하이코리아의 외국인 출입국·체류·국적 민원과 온라인 방문예약·조회 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.index.go.kr/",
+    "name": "e-나라지표",
+    "source_url": "https://www.index.go.kr/",
+    "scope": "지표누리의 e-나라지표·사회지표·국가발전지표·통합 지표목록 및 Open API 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.moel.go.kr/",
+    "name": "고용노동부",
+    "source_url": "https://www.moel.go.kr/",
+    "scope": "고용노동부 공식 홈페이지의 고용·노동 정책, 법령, 보도자료 및 근로자·사업주 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
