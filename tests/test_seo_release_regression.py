@@ -347,7 +347,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         generated = (root / "dist/categories/index.html").read_text(encoding="utf-8")
         self.assertIn("등록 예시: ", generated)
-        self.assertIn("ChatGPT", generated)
+        self.assertIn("뤼튼", generated)
+        self.assertIn("클로바노트", generated)
         self.assertIn("네이버 스포츠", generated)
 
     def test_directory_examples_display_real_domains_without_implying_verification(self):
