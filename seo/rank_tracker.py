@@ -28,7 +28,7 @@ LONGTAIL_KEYWORDS = (
     "자격증 시험 접수 사이트", "국가자격 시험 접수",
     "컴활 시험 접수", "SQLD 시험 접수", "민간자격 조회",
     "공무원 시험 원서접수", "TOPIK 원서접수", "TEPS 시험 접수",
-    "링크모음 웹사이트", "주소모음 위키", "주소 모음 사이트",
+    "링크모음 웹사이트", "주소 모음 사이트",
 )
 KEYWORDS = CORE_KEYWORDS + LONGTAIL_KEYWORDS
 # Core keywords use three SERP pages; discovery terms start with page one.
