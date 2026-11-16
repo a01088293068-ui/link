@@ -91,7 +91,7 @@ def directory_script_versions(html):
     return versions
 
 
-def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None):
+def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None, category_sources=None):
     errors, observations = [], []
     source = Page()
     source.feed(source_html)
@@ -196,6 +196,25 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
         except Exception as exc:
             errors.append(f"{path}: article fetch error ({type(exc).__name__}: {exc})")
 
+    # Category landing pages must expose the matching editorial guide in
+    # deployed HTML, not merely in the build artifact or after JS runs.
+    for path, expected_html in (category_sources or {}).items():
+        try:
+            status, final, body, headers = load(path)
+            observations.append(f"{path}: HTTP {status} -> {final}")
+            expected_links = set(re.findall(
+                r'<a\b[^>]*href="(/blog/[^"]+)"', expected_html, re.I
+            ))
+            deployed_links = set(re.findall(
+                r'<a\b[^>]*href="([^"]+)"', body, re.I
+            ))
+            if status != 200 or final != BASE + path:
+                errors.append(f"{path}: noncanonical status/redirect")
+            if not expected_links.issubset(deployed_links):
+                errors.append(f"{path}: missing deployed editorial guide links")
+        except Exception as exc:
+            errors.append(f"{path}: fetch failed ({type(exc).__name__}: {exc})")
+
     try:
         status, final, body, _ = load("/robots.txt")
         observations.append(f"/robots.txt: HTTP {status} -> {final}")
@@ -268,6 +287,9 @@ def main():
         source, article_sources=samples,
         directory_source=Path("dist/directory.html").read_text(encoding="utf-8"),
         script_source=Path("dist/assets/directory.js").read_text(encoding="utf-8"),
+        category_sources={
+            "/categories/education": Path("dist/categories/education.html").read_text(encoding="utf-8"),
+        },
     )
     print("# Public release consistency (NOT Google indexing or search rankings)")
     for line in observations: print("- " + line)
