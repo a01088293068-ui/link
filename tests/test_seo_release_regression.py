@@ -691,6 +691,11 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("검색어가 URL의 쿼리 문자열", privacy)
         self.assertNotIn("실제 배포 시", privacy)
 
+    def test_noindex_utility_pages_are_allowed_only_outside_sitemap(self):
+        from seo.site_audit import has_noindex_meta
+        self.assertTrue(has_noindex_meta('<meta name="robots" content="noindex,follow">'))
+        self.assertFalse(has_noindex_meta('<meta name="robots" content="index,follow">'))
+
 
 if __name__ == "__main__":
     unittest.main()
