@@ -26,8 +26,8 @@ class HomepageGuideDiscoveryTests(unittest.TestCase):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         expected = "주소모음·링크모음·사이트모음 | 링크위키"
         self.assertIn("<title>" + expected + "</title>", html)
-        self.assertIn('property="og:title" content="' + expected + '"', html)
-        self.assertIn('name="twitter:title" content="' + expected + '"', html)
+        self.assertIn('content="' + expected + '" property="og:title"', html)
+        self.assertIn('content="' + expected + '" name="twitter:title"', html)
 
     def test_missing_guide_refuses_to_publish_fake_link(self):
         with TemporaryDirectory() as directory:
