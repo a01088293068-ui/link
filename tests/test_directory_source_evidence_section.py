@@ -15,7 +15,7 @@ class DirectorySourceEvidenceSectionTests(unittest.TestCase):
         html = directory_source_evidence_section(records, evidence)
 
         self.assertIn("공식 출처와 대조한 사이트 주소 기록", html)
-        self.assertIn(f"공개 목록 {len(records)}개 중 {len(evidence)}개 항목", html)
+        self.assertIn(f"공개 목록 {len(records)}개 중 {len(evidence)}건의 항목", html)
         self.assertEqual(html.count('class="source-evidence-row"'), len(evidence))
         for url, row in evidence.items():
             self.assertIn(row["name"], html)
