@@ -61,6 +61,49 @@ class VisibleDirectoryParser(HTMLParser):
                 self.in_results = False
 
 
+
+class CategoryListingParser(HTMLParser):
+    """Inspect category cards in the initial HTML, not after browser JavaScript."""
+    def __init__(self):
+        super().__init__()
+        self.cards = []
+        self.current = None
+        self.canonicals = []
+        self.robots = []
+        self.links = []
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag == "link" and "canonical" in a.get("rel", "").lower().split():
+            self.canonicals.append(a.get("href"))
+        if tag == "meta" and a.get("name", "").lower() in ("robots", "googlebot"):
+            self.robots.append(a.get("content", "").lower())
+        if tag == "a":
+            self.links.append(a.get("href", ""))
+        if tag == "article" and set(a.get("class", "").split()) & {"item", "v6-card"}:
+            self.current = {"names": 0, "external_links": 0}
+            self.cards.append(self.current)
+        elif self.current and tag in ("strong", "h3"):
+            self.current["names"] += 1
+        elif (self.current and tag == "a"
+              and a.get("href", "").startswith("https://")
+              and "directory-source" not in a.get("class", "").split()):
+            self.current["external_links"] += 1
+
+    def handle_endtag(self, tag):
+        if tag == "article":
+            self.current = None
+
+
+CATEGORY_LABELS = {
+    "community": "커뮤니티", "korean": "한인교민",
+    "comics-directory": "만화", "webtoon": "만화·웹툰",
+    "ai": "AI 도구", "search": "검색·포털", "sports": "스포츠",
+    "video": "영상·OTT", "finance": "금융·경제", "education": "교육·취업",
+    "news": "뉴스·언론", "shopping": "쇼핑·가격비교",
+    "travel": "생활·교통·여행",
+}
+
 def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
     """Return concrete failure reasons, never infer Google's indexed status."""
     issues = []
@@ -116,10 +159,26 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         if not page:
             issues.append(f"missing category file: {slug}")
             continue
-        cat = VisibleDirectoryParser()
+        cat = CategoryListingParser()
         cat.feed(page)
         if cat.canonicals != [ORIGIN + url]:
             issues.append(f"category canonical mismatch: {slug}")
+        if any("noindex" in directive for directive in cat.robots):
+            issues.append(f"category has noindex: {slug}")
+        expected = sum(1 for item in records
+                       if isinstance(item, dict)
+                       and item.get("category") == CATEGORY_LABELS[slug])
+        if len(cat.cards) != expected:
+            issues.append(
+                f"static category cards {slug}: {len(cat.cards)} != data {expected}"
+            )
+        if expected and any(
+            card["names"] != 1 or card["external_links"] != 1
+            for card in cat.cards
+        ):
+            issues.append(f"category card missing title or exact external link: {slug}")
+        if "/directory" not in cat.links or "/categories/" not in cat.links:
+            issues.append(f"category lacks crawlable directory navigation: {slug}")
     # SiteMap must actually include the canonical, not a .html redirect.
     try:
         import xml.etree.ElementTree as ET
@@ -152,7 +211,7 @@ def main():
             print("FAIL:", issue)
         return 1
     count = len(json.loads((dist / "assets" / "verified-directory.json").read_text(encoding="utf-8")))
-    print(f"PASS: {count} crawlable directory cards, {len(CATEGORIES)} category paths, core intents and canonical sitemap")
+    print(f"PASS: {count} crawlable directory cards, {len(CATEGORIES)} statically populated category paths, core intents and canonical sitemap")
     return 0
 
 
