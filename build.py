@@ -1757,6 +1757,7 @@ def category_article_links(posts, slug, limit=5):
             "/blog/seo-20261110-korean-education-sites-guide/",
         ),
         "ai": ("/blog/seo-20261110-korean-ai-tools-by-task-guide/",),
+        "education": ("/blog/seo-20261116-korean-certification-exam-sites-guide/",),
     }
     selected = []
     seen = set()
@@ -1765,7 +1766,9 @@ def category_article_links(posts, slug, limit=5):
         if any(url == f"/categories/{slug}" for _, url in related_categories(post["title"]))
     ]
     for pinned in pins.get(slug, ()):
-        chosen = next((post for post in relevant if post["url"] == pinned), None)
+        # Explicitly pinned guides are deliberate hub destinations even if a
+        # future title edit changes the automatic related-category matcher.
+        chosen = next((post for post in posts if post["url"] == pinned), None)
         if chosen is not None and len(selected) < limit:
             selected.append(chosen)
             seen.add(pinned)
