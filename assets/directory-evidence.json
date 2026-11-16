@@ -982,7 +982,7 @@
     "url": "https://www.hira.or.kr/",
     "name": "건강보험심사평가원",
     "source_url": "https://www.hira.or.kr/main.do",
-    "scope": "건강보험심사평가원 공식 누리집에서 의료기관·의약품 정보와 건강보험 제도 안내 메뉴를 대조",
+    "scope": "건강보험심사평가원 공식 누리집에서 요양기관업무포털·병원평가통합포털·보건의료 빅데이터 서비스 안내를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -1028,6 +1028,24 @@
     "name": "대한법률구조공단",
     "source_url": "https://www.klac.or.kr/",
     "scope": "대한법률구조공단 공식 누리집에서 법률상담·법률구조 안내와 상담 대표번호를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://dlibrary.go.kr/",
+    "name": "국가전자도서관",
+    "source_url": "https://www.nl.go.kr/NL/contents/N11400000000.do",
+    "scope": "국립중앙도서관 공식 지식정보 통합검색 안내에서 국가전자도서관을 연계 대상 시스템으로 명시한 항목과 접속 URL을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.korcham.net/nCham/Service/Main/appl/Main.asp",
+    "name": "대한상공회의소 코참넷",
+    "source_url": "https://www.korcham.net/nCham/Service/Kcci/appl/Member.asp",
+    "scope": "대한상공회의소 공식 기관 소개에서 코참넷의 기업 경제·경영정보 제공 목적, 기업 경영지원·교육·무역인증 메뉴를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
