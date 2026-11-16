@@ -731,5 +731,26 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertEqual(len(records), PUBLISHED_COUNT)
 
 
+    def test_directory_evidence_includes_recently_checked_korean_public_sources(self):
+        root = Path(__file__).resolve().parents[1]
+        evidence = json.loads((root / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        by_url = {row["url"]: row for row in evidence}
+        expected = {
+            "https://www.law.go.kr/": "국가법령정보센터",
+            "https://www.nl.go.kr/": "국립중앙도서관",
+            "https://encykorea.aks.ac.kr/": "한국민족문화대백과",
+            "https://www.kotra.or.kr/": "KOTRA 무역투자24",
+            "https://www.bokjiro.go.kr/": "복지로",
+            "https://stdict.korean.go.kr/main/main.do": "표준국어대사전",
+        }
+        for url, name in expected.items():
+            self.assertIn(url, by_url)
+            self.assertEqual(by_url[url]["name"], name)
+            self.assertEqual(by_url[url]["checked_on"], "2026-11-16")
+            self.assertTrue(by_url[url]["source_url"].startswith("https://"))
+            self.assertTrue(by_url[url]["scope"])
+        self.assertEqual(len(evidence), 100)
+
+
 if __name__ == "__main__":
     unittest.main()
