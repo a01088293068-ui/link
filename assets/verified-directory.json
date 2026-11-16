@@ -6,46 +6,10 @@
     "description": "국내 뉴스·검색·지도·메일 등 여러 생활 서비스를 한곳에서 찾는 포털입니다. 특정 장소를 찾는다면 지도 서비스와 일반 웹 검색을 구분해 이용하세요."
   },
   {
-    "name": "구글",
-    "url": "https://www.google.com/",
-    "category": "검색·포털",
-    "description": "웹 문서 검색과 이미지 검색, 번역·지도 서비스로 이동할 수 있는 검색 포털입니다. 공식 기관 자료를 찾을 때는 출처와 게시 날짜도 확인하세요."
-  },
-  {
     "name": "다음",
     "url": "https://www.daum.net/",
     "category": "검색·포털",
     "description": "뉴스 기사와 웹 검색, 메일 등 정보 탐색 기능을 제공하는 포털입니다. 기사·카페 정보와 공공기관 원문을 구분해 확인하세요."
-  },
-  {
-    "name": "빙",
-    "url": "https://www.bing.com/",
-    "category": "검색·포털",
-    "description": "마이크로소프트의 웹 검색 엔진으로 일반 웹페이지와 이미지 등을 검색할 수 있습니다. 검색 결과의 광고 표기와 원문 출처를 구분하세요."
-  },
-  {
-    "name": "DuckDuckGo",
-    "category": "검색·포털",
-    "url": "https://duckduckgo.com/",
-    "description": "개인정보 보호를 강조하는 웹 검색 서비스입니다. 일반 웹 검색과 이미지·뉴스 검색을 이용할 때 사이트 주소와 광고 표시를 구분해 확인하세요."
-  },
-  {
-    "name": "Brave Search",
-    "category": "검색·포털",
-    "url": "https://search.brave.com/",
-    "description": "브레이브가 제공하는 웹 검색 서비스로 일반 웹페이지와 이미지 등 검색 결과를 살펴볼 수 있습니다. 필요에 따라 결과 출처와 검색 설정을 비교하세요."
-  },
-  {
-    "name": "Ecosia",
-    "category": "검색·포털",
-    "url": "https://www.ecosia.org/",
-    "description": "웹 검색과 환경 프로젝트 지원을 결합한 검색 서비스입니다. 검색 결과에서 실제 운영 사이트와 광고 링크를 구분하고 원문 게시일을 확인하세요."
-  },
-  {
-    "name": "Yahoo",
-    "category": "검색·포털",
-    "url": "https://www.yahoo.com/",
-    "description": "뉴스·메일·웹 검색 등 여러 온라인 서비스를 제공하는 포털입니다. 국가별 서비스 화면과 검색 결과 출처가 다를 수 있으니 확인하세요."
   },
   {
     "name": "네이트",
@@ -58,42 +22,6 @@
     "category": "검색·포털",
     "url": "https://zum.com/",
     "description": "국내 뉴스와 웹 검색을 이용할 수 있는 포털 서비스입니다. 주제별 정보 탐색 시 기사 발행일과 실제 원문 출처를 함께 확인하세요."
-  },
-  {
-    "name": "Startpage",
-    "category": "검색·포털",
-    "url": "https://www.startpage.com/",
-    "description": "검색 과정의 개인정보 보호를 강조하는 웹 검색 서비스입니다. 검색 결과와 광고를 구분하고 방문할 사이트의 실제 도메인을 확인하세요."
-  },
-  {
-    "name": "Qwant",
-    "category": "검색·포털",
-    "url": "https://www.qwant.com/",
-    "description": "개인정보 보호를 강조하는 검색 엔진입니다. 웹 검색 결과의 언어·지역 설정을 확인하고 검색 결과의 출처와 광고를 구분하세요."
-  },
-  {
-    "name": "Mojeek",
-    "category": "검색·포털",
-    "url": "https://www.mojeek.com/",
-    "description": "독자적으로 구축한 검색 색인을 사용하는 웹 검색 서비스입니다. 다른 검색 서비스와 비교할 때 색인 범위와 검색어 표현을 달리해 보세요."
-  },
-  {
-    "name": "Swisscows",
-    "category": "검색·포털",
-    "url": "https://swisscows.com/",
-    "description": "개인정보 보호와 검색 환경을 강조하는 웹 검색 서비스입니다. 원하는 언어로 결과가 보이는지 확인하고 정보 출처를 교차 검증하세요."
-  },
-  {
-    "name": "Yandex",
-    "category": "검색·포털",
-    "url": "https://yandex.com/",
-    "description": "웹 검색과 지역별 온라인 서비스를 제공하는 검색 포털입니다. 지역·언어별로 표시되는 결과가 달라 필요한 원문과 접근 가능 여부를 확인하세요."
-  },
-  {
-    "name": "WolframAlpha",
-    "category": "검색·포털",
-    "url": "https://www.wolframalpha.com/",
-    "description": "수학·과학·통계 등의 질문을 계산 기반으로 탐색하는 서비스입니다. 일반 기사 검색과 달리 식·단위·조건을 명확히 입력해 결과를 해석하세요."
   },
   {
     "name": "카카오맵",
@@ -294,13 +222,6 @@
     "description": "수출입 통관 신고와 관세 납부·화물 조회 등 전자통관 업무를 다루는 시스템입니다. 통관 종류와 신고 주체에 따라 필요한 절차를 확인하세요."
   },
   {
-    "name": "대한상공회의소 코참넷",
-    "url": "https://www.korcham.net/nCham/Service/Main/appl/Main.asp",
-    "anchor_url": "https://www.korcham.net/",
-    "category": "검색·포털",
-    "description": "기업 활동에 참고할 경제·경영 자료와 상공회의소 안내를 제공하는 사이트입니다. 보고서 기준 시점과 실제 지원·민원 담당 기관을 확인하세요."
-  },
-  {
     "name": "EBSi 고교강의",
     "url": "https://www.ebsi.co.kr/",
     "category": "검색·포털",
@@ -353,12 +274,6 @@
     "url": "https://ecfs.scourt.go.kr/",
     "category": "검색·포털",
     "description": "법원 전자소송 사건 관리, 소송서류 제출·송달 확인과 소송 절차 안내를 제공하는 공식 포털입니다. 법령 원문을 찾는 국가법령정보센터나 등기 열람용 인터넷등기소와 용도가 다릅니다."
-  },
-  {
-    "name": "에듀넷 티클리어",
-    "url": "https://www.edunet.net/main",
-    "category": "검색·포털",
-    "description": "교사·학생을 위한 교육과정 관련 학습 자료와 교수학습 지원 정보를 제공하는 교육 서비스입니다. EBSi의 고교 강의 및 학교알리미의 학교 정보 공개 기능과 구분해 이용하세요."
   },
   {
     "name": "국민안전24",
@@ -449,6 +364,91 @@
     "url": "https://www.kisa.or.kr/",
     "category": "검색·포털",
     "description": "인터넷·정보보호 정책과 사이버 위협 대응, 개인정보·스팸·침해사고 관련 국민 안내를 제공하는 한국인터넷진흥원 공식 누리집입니다. 신고·상담 대상과 접수 경로는 안내 페이지에서 확인하세요."
+  },
+  {
+    "name": "구글",
+    "url": "https://www.google.com/",
+    "category": "검색·포털",
+    "description": "웹 문서 검색과 이미지 검색, 번역·지도 서비스로 이동할 수 있는 검색 포털입니다. 공식 기관 자료를 찾을 때는 출처와 게시 날짜도 확인하세요."
+  },
+  {
+    "name": "빙",
+    "url": "https://www.bing.com/",
+    "category": "검색·포털",
+    "description": "마이크로소프트의 웹 검색 엔진으로 일반 웹페이지와 이미지 등을 검색할 수 있습니다. 검색 결과의 광고 표기와 원문 출처를 구분하세요."
+  },
+  {
+    "name": "DuckDuckGo",
+    "category": "검색·포털",
+    "url": "https://duckduckgo.com/",
+    "description": "개인정보 보호를 강조하는 웹 검색 서비스입니다. 일반 웹 검색과 이미지·뉴스 검색을 이용할 때 사이트 주소와 광고 표시를 구분해 확인하세요."
+  },
+  {
+    "name": "Brave Search",
+    "category": "검색·포털",
+    "url": "https://search.brave.com/",
+    "description": "브레이브가 제공하는 웹 검색 서비스로 일반 웹페이지와 이미지 등 검색 결과를 살펴볼 수 있습니다. 필요에 따라 결과 출처와 검색 설정을 비교하세요."
+  },
+  {
+    "name": "Ecosia",
+    "category": "검색·포털",
+    "url": "https://www.ecosia.org/",
+    "description": "웹 검색과 환경 프로젝트 지원을 결합한 검색 서비스입니다. 검색 결과에서 실제 운영 사이트와 광고 링크를 구분하고 원문 게시일을 확인하세요."
+  },
+  {
+    "name": "Yahoo",
+    "category": "검색·포털",
+    "url": "https://www.yahoo.com/",
+    "description": "뉴스·메일·웹 검색 등 여러 온라인 서비스를 제공하는 포털입니다. 국가별 서비스 화면과 검색 결과 출처가 다를 수 있으니 확인하세요."
+  },
+  {
+    "name": "Startpage",
+    "category": "검색·포털",
+    "url": "https://www.startpage.com/",
+    "description": "검색 과정의 개인정보 보호를 강조하는 웹 검색 서비스입니다. 검색 결과와 광고를 구분하고 방문할 사이트의 실제 도메인을 확인하세요."
+  },
+  {
+    "name": "Qwant",
+    "category": "검색·포털",
+    "url": "https://www.qwant.com/",
+    "description": "개인정보 보호를 강조하는 검색 엔진입니다. 웹 검색 결과의 언어·지역 설정을 확인하고 검색 결과의 출처와 광고를 구분하세요."
+  },
+  {
+    "name": "Mojeek",
+    "category": "검색·포털",
+    "url": "https://www.mojeek.com/",
+    "description": "독자적으로 구축한 검색 색인을 사용하는 웹 검색 서비스입니다. 다른 검색 서비스와 비교할 때 색인 범위와 검색어 표현을 달리해 보세요."
+  },
+  {
+    "name": "Swisscows",
+    "category": "검색·포털",
+    "url": "https://swisscows.com/",
+    "description": "개인정보 보호와 검색 환경을 강조하는 웹 검색 서비스입니다. 원하는 언어로 결과가 보이는지 확인하고 정보 출처를 교차 검증하세요."
+  },
+  {
+    "name": "Yandex",
+    "category": "검색·포털",
+    "url": "https://yandex.com/",
+    "description": "웹 검색과 지역별 온라인 서비스를 제공하는 검색 포털입니다. 지역·언어별로 표시되는 결과가 달라 필요한 원문과 접근 가능 여부를 확인하세요."
+  },
+  {
+    "name": "WolframAlpha",
+    "category": "검색·포털",
+    "url": "https://www.wolframalpha.com/",
+    "description": "수학·과학·통계 등의 질문을 계산 기반으로 탐색하는 서비스입니다. 일반 기사 검색과 달리 식·단위·조건을 명확히 입력해 결과를 해석하세요."
+  },
+  {
+    "name": "대한상공회의소 코참넷",
+    "url": "https://www.korcham.net/nCham/Service/Main/appl/Main.asp",
+    "anchor_url": "https://www.korcham.net/",
+    "category": "검색·포털",
+    "description": "기업 활동에 참고할 경제·경영 자료와 상공회의소 안내를 제공하는 사이트입니다. 보고서 기준 시점과 실제 지원·민원 담당 기관을 확인하세요."
+  },
+  {
+    "name": "에듀넷 티클리어",
+    "url": "https://www.edunet.net/main",
+    "category": "검색·포털",
+    "description": "교사·학생을 위한 교육과정 관련 학습 자료와 교수학습 지원 정보를 제공하는 교육 서비스입니다. EBSi의 고교 강의 및 학교알리미의 학교 정보 공개 기능과 구분해 이용하세요."
   },
   {
     "name": "인벤",
@@ -643,6 +643,36 @@
     "description": "게임·취미·콘텐츠 관련 뉴스와 사용자 게시판을 제공하는 온라인 커뮤니티입니다. 게시글과 운영사 공지·공식 발표를 구분해 살펴보세요."
   },
   {
+    "name": "뤼튼",
+    "category": "AI 도구",
+    "url": "https://wrtn.ai/",
+    "description": "한국어로 질문하거나 문장 작성·아이디어 구성을 지원받을 수 있는 AI 서비스입니다. 생성된 결과는 목적에 맞게 수정하고 사실을 검증하세요."
+  },
+  {
+    "name": "클로바노트",
+    "category": "AI 도구",
+    "url": "https://clovanote.naver.com/",
+    "description": "회의·인터뷰 등 음성 기록을 텍스트로 정리하고 메모를 관리하는 서비스입니다. 녹음 동의와 문장 인식 오류, 공유 범위를 확인하세요."
+  },
+  {
+    "name": "타입캐스트",
+    "category": "AI 도구",
+    "url": "https://typecast.ai/",
+    "description": "텍스트를 AI 음성으로 바꿔 영상 내레이션이나 오디오 콘텐츠에 활용할 수 있습니다. 음성 선택과 이용 라이선스·내보내기 조건을 확인하세요."
+  },
+  {
+    "name": "브루(Vrew)",
+    "category": "AI 도구",
+    "url": "https://vrew.ai/",
+    "description": "영상의 자동 자막 생성과 문장 기반 편집 등 제작 작업을 지원하는 도구입니다. 인식된 자막과 컷 편집 결과를 직접 검수하세요."
+  },
+  {
+    "name": "미리캔버스",
+    "category": "AI 도구",
+    "url": "https://www.miricanvas.com/",
+    "description": "한국어 디자인 템플릿을 활용해 안내문·발표 자료·SNS 이미지 등을 구성할 수 있는 편집 서비스입니다. 내보내기와 사용 범위 조건을 확인하세요."
+  },
+  {
     "name": "ChatGPT",
     "url": "https://chatgpt.com/",
     "category": "AI 도구",
@@ -743,36 +773,6 @@
     "category": "AI 도구",
     "url": "https://leonardo.ai/",
     "description": "이미지 시안과 시각 콘텐츠를 생성·편집할 수 있는 AI 도구입니다. 작업 목적에 따라 생성 옵션과 파일 사용 권한을 확인하세요."
-  },
-  {
-    "name": "뤼튼",
-    "category": "AI 도구",
-    "url": "https://wrtn.ai/",
-    "description": "한국어로 질문하거나 문장 작성·아이디어 구성을 지원받을 수 있는 AI 서비스입니다. 생성된 결과는 목적에 맞게 수정하고 사실을 검증하세요."
-  },
-  {
-    "name": "클로바노트",
-    "category": "AI 도구",
-    "url": "https://clovanote.naver.com/",
-    "description": "회의·인터뷰 등 음성 기록을 텍스트로 정리하고 메모를 관리하는 서비스입니다. 녹음 동의와 문장 인식 오류, 공유 범위를 확인하세요."
-  },
-  {
-    "name": "타입캐스트",
-    "category": "AI 도구",
-    "url": "https://typecast.ai/",
-    "description": "텍스트를 AI 음성으로 바꿔 영상 내레이션이나 오디오 콘텐츠에 활용할 수 있습니다. 음성 선택과 이용 라이선스·내보내기 조건을 확인하세요."
-  },
-  {
-    "name": "브루(Vrew)",
-    "category": "AI 도구",
-    "url": "https://vrew.ai/",
-    "description": "영상의 자동 자막 생성과 문장 기반 편집 등 제작 작업을 지원하는 도구입니다. 인식된 자막과 컷 편집 결과를 직접 검수하세요."
-  },
-  {
-    "name": "미리캔버스",
-    "category": "AI 도구",
-    "url": "https://www.miricanvas.com/",
-    "description": "한국어 디자인 템플릿을 활용해 안내문·발표 자료·SNS 이미지 등을 구성할 수 있는 편집 서비스입니다. 내보내기와 사용 범위 조건을 확인하세요."
   },
   {
     "name": "Cursor",
@@ -931,18 +931,6 @@
     "description": "국민체육진흥과 스포츠 산업 관련 사업·시설·정책 정보를 제공하는 공공기관 누리집입니다. 지원사업의 공고와 참여 조건을 확인하세요."
   },
   {
-    "name": "유튜브",
-    "url": "https://www.youtube.com/",
-    "category": "영상·OTT",
-    "description": "영상 검색·시청과 채널 구독, 생방송 등을 이용하는 동영상 플랫폼입니다. 공식 채널 여부와 광고·유료 콘텐츠 조건을 확인하세요."
-  },
-  {
-    "name": "넷플릭스",
-    "url": "https://www.netflix.com/kr/",
-    "category": "영상·OTT",
-    "description": "영화·드라마·다큐멘터리 등 영상 콘텐츠를 구독 방식으로 시청하는 서비스입니다. 작품 제공 여부와 요금제는 국가·시점에 따라 달라집니다."
-  },
-  {
     "name": "티빙",
     "url": "https://www.tving.com/",
     "category": "영상·OTT",
@@ -953,54 +941,6 @@
     "url": "https://www.wavve.com/",
     "category": "영상·OTT",
     "description": "국내 방송 프로그램과 영화 등 영상 콘텐츠를 탐색하는 OTT 서비스입니다. 콘텐츠 제공 기간과 요금제별 이용 조건을 확인하세요."
-  },
-  {
-    "name": "디즈니+",
-    "category": "영상·OTT",
-    "url": "https://www.disneyplus.com/",
-    "description": "영화·드라마·시리즈 등 스트리밍 작품을 탐색하는 구독 서비스입니다. 원하는 작품의 제공 국가·시기와 요금제별 이용 조건을 확인하세요."
-  },
-  {
-    "name": "Vimeo",
-    "category": "영상·OTT",
-    "url": "https://vimeo.com/",
-    "description": "영상 업로드·공유·호스팅과 재생 기능을 제공하는 플랫폼입니다. 업로더의 공개 범위와 동영상 다운로드·공유 권한을 확인하세요."
-  },
-  {
-    "name": "Apple TV",
-    "category": "영상·OTT",
-    "url": "https://tv.apple.com/",
-    "description": "Apple의 영상 콘텐츠를 탐색하고 이용할 수 있는 서비스입니다. 구독 콘텐츠와 별도 대여·구매 작품을 구분하고 기기 지원 여부를 확인하세요."
-  },
-  {
-    "name": "Prime Video",
-    "category": "영상·OTT",
-    "url": "https://www.primevideo.com/",
-    "description": "영화·드라마·시리즈 등 영상 콘텐츠를 제공하는 스트리밍 서비스입니다. 국가별 작품 제공 범위와 구독·대여 조건을 확인하세요."
-  },
-  {
-    "name": "Plex",
-    "category": "영상·OTT",
-    "url": "https://watch.plex.tv/",
-    "description": "개인 미디어 라이브러리 관리와 영상 콘텐츠 탐색 기능을 제공하는 플랫폼입니다. 소유한 미디어와 서비스 제공 콘텐츠의 이용 조건을 구분하세요."
-  },
-  {
-    "name": "Rakuten Viki",
-    "category": "영상·OTT",
-    "url": "https://www.viki.com/",
-    "description": "아시아 드라마와 영상 작품을 찾아볼 수 있는 스트리밍 서비스입니다. 자막 언어·시청 지역·무료 및 구독 이용 범위를 확인하세요."
-  },
-  {
-    "name": "MUBI",
-    "category": "영상·OTT",
-    "url": "https://mubi.com/",
-    "description": "영화 큐레이션과 작품 감상에 초점을 맞춘 스트리밍 서비스입니다. 거주 국가별 제공 작품과 감상 가능 기간·구독 조건을 확인하세요."
-  },
-  {
-    "name": "Pluto TV",
-    "category": "영상·OTT",
-    "url": "https://pluto.tv/",
-    "description": "광고 기반 무료 TV 채널과 주문형 영상 콘텐츠를 제공하는 서비스입니다. 접속 지역과 기기에 따른 채널 제공 여부를 확인하세요."
   },
   {
     "name": "치지직",
@@ -1061,6 +1001,66 @@
     "url": "https://www.millie.co.kr/",
     "category": "영상·OTT",
     "description": "전자책과 오디오북을 검색하고 구독형으로 이용할 수 있는 독서 플랫폼입니다. 구독 조건과 콘텐츠 이용 범위를 확인하세요."
+  },
+  {
+    "name": "유튜브",
+    "url": "https://www.youtube.com/",
+    "category": "영상·OTT",
+    "description": "영상 검색·시청과 채널 구독, 생방송 등을 이용하는 동영상 플랫폼입니다. 공식 채널 여부와 광고·유료 콘텐츠 조건을 확인하세요."
+  },
+  {
+    "name": "넷플릭스",
+    "url": "https://www.netflix.com/kr/",
+    "category": "영상·OTT",
+    "description": "영화·드라마·다큐멘터리 등 영상 콘텐츠를 구독 방식으로 시청하는 서비스입니다. 작품 제공 여부와 요금제는 국가·시점에 따라 달라집니다."
+  },
+  {
+    "name": "디즈니+",
+    "category": "영상·OTT",
+    "url": "https://www.disneyplus.com/",
+    "description": "영화·드라마·시리즈 등 스트리밍 작품을 탐색하는 구독 서비스입니다. 원하는 작품의 제공 국가·시기와 요금제별 이용 조건을 확인하세요."
+  },
+  {
+    "name": "Vimeo",
+    "category": "영상·OTT",
+    "url": "https://vimeo.com/",
+    "description": "영상 업로드·공유·호스팅과 재생 기능을 제공하는 플랫폼입니다. 업로더의 공개 범위와 동영상 다운로드·공유 권한을 확인하세요."
+  },
+  {
+    "name": "Apple TV",
+    "category": "영상·OTT",
+    "url": "https://tv.apple.com/",
+    "description": "Apple의 영상 콘텐츠를 탐색하고 이용할 수 있는 서비스입니다. 구독 콘텐츠와 별도 대여·구매 작품을 구분하고 기기 지원 여부를 확인하세요."
+  },
+  {
+    "name": "Prime Video",
+    "category": "영상·OTT",
+    "url": "https://www.primevideo.com/",
+    "description": "영화·드라마·시리즈 등 영상 콘텐츠를 제공하는 스트리밍 서비스입니다. 국가별 작품 제공 범위와 구독·대여 조건을 확인하세요."
+  },
+  {
+    "name": "Plex",
+    "category": "영상·OTT",
+    "url": "https://watch.plex.tv/",
+    "description": "개인 미디어 라이브러리 관리와 영상 콘텐츠 탐색 기능을 제공하는 플랫폼입니다. 소유한 미디어와 서비스 제공 콘텐츠의 이용 조건을 구분하세요."
+  },
+  {
+    "name": "Rakuten Viki",
+    "category": "영상·OTT",
+    "url": "https://www.viki.com/",
+    "description": "아시아 드라마와 영상 작품을 찾아볼 수 있는 스트리밍 서비스입니다. 자막 언어·시청 지역·무료 및 구독 이용 범위를 확인하세요."
+  },
+  {
+    "name": "MUBI",
+    "category": "영상·OTT",
+    "url": "https://mubi.com/",
+    "description": "영화 큐레이션과 작품 감상에 초점을 맞춘 스트리밍 서비스입니다. 거주 국가별 제공 작품과 감상 가능 기간·구독 조건을 확인하세요."
+  },
+  {
+    "name": "Pluto TV",
+    "category": "영상·OTT",
+    "url": "https://pluto.tv/",
+    "description": "광고 기반 무료 TV 채널과 주문형 영상 콘텐츠를 제공하는 서비스입니다. 접속 지역과 기기에 따른 채널 제공 여부를 확인하세요."
   },
   {
     "name": "네이버 웹툰",
