@@ -80,6 +80,26 @@ class DirectoryReleaseGateTests(unittest.TestCase):
         self.assertIn('directory has noindex', issues)
         self.assertIn('homepage lacks crawlable canonical /directory link', issues)
 
+    def test_empty_category_listing_fails_even_when_directory_is_complete(self):
+        parts = list(fixture())
+        parts[3]["finance"] = parts[3]["finance"].replace(
+            '<article class="item"><strong>Example finance</strong>'
+            '<a href="https://example.org/">사이트 방문</a></article>', ''
+        )
+        self.assertIn(
+            "static category cards finance: 0 != data 1",
+            validate(*parts),
+        )
+
+    def test_category_noindex_or_missing_internal_path_fails(self):
+        parts = list(fixture())
+        parts[3]["shopping"] = parts[3]["shopping"].replace(
+            '</head>', '<meta name="robots" content="noindex"></head>'
+        ).replace('<a href="/directory">전체 목록</a>', '')
+        issues = validate(*parts)
+        self.assertIn("category has noindex: shopping", issues)
+        self.assertIn("category lacks crawlable directory navigation: shopping", issues)
+
     def test_sitemap_requires_canonical_directory(self):
         parts = list(fixture())
         parts[4] = parts[4].replace('<loc>'+ORIGIN+'/directory</loc>',
