@@ -152,6 +152,40 @@ def inspection_targets(page_rows, limit=24, core_query_pages=None, as_of=None):
     variants when capacity permits.
     """
     from urllib.parse import urlsplit
+    # The standard daily quota is deliberately partitioned: core site pages,
+    # all 13 category hubs, and six high-intent Korean directory guides must
+    # never be displaced by noisy impression rows. The final two slots are
+    # reserved for exact core-query landing pages, or rotating guides otherwise.
+    if limit >= 24:
+        urls = list(INSPECT_URLS)
+        seen = set(urls)
+        for url in directory_intent_inspection_urls():
+            if url not in seen and len(urls) < limit:
+                urls.append(url)
+                seen.add(url)
+
+        extras = []
+        for row in sorted(core_query_pages or [],
+                          key=lambda item: -int(item.get('impressions', 0))):
+            keys = row.get('keys') or []
+            if len(keys) >= 2 and ''.join(str(keys[0]).split()) in CORE_KEYWORDS:
+                parts = urlsplit(str(keys[1]).strip())
+                if (parts.scheme == 'https' and parts.netloc == 'linkwiki.info'
+                        and not parts.query and not parts.fragment):
+                    candidates = [str(keys[1]).strip()]
+                    if parts.path.endswith('.html'):
+                        candidates.insert(0, 'https://linkwiki.info' + parts.path[:-5])
+                    for candidate in candidates:
+                        if candidate not in seen and candidate not in extras:
+                            extras.append(candidate)
+        if not extras and as_of is not None:
+            extras = rotating_inspection_urls(as_of, limit=2)
+        for url in extras:
+            if url not in seen and len(urls) < limit:
+                urls.append(url)
+                seen.add(url)
+        return urls[:limit]
+
     # Keep the three site-wide targets first; query-specific landing pages and
     # actual task guides can then claim quota before the category rotation.
     if limit <= 5:
