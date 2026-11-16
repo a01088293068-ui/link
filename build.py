@@ -443,10 +443,9 @@ def core_search_intent_section(total_sites):
 
 
 def sync_directory_count(html, total_sites):
-    """Update SEO copy and visible directory count using actual published records."""
+    """Update visible counts while assigning the directory its own catalog-search intent."""
     if total_sites < 1:
         raise RuntimeError("Directory count requires nonempty verified records")
-    # Do not modify category counts such as '8개 분야'.
     html, inline_count = re.subn(
         r"\b\d+개(?=\s+(?:등록\s+)?사이트(?:의|를|\b))",
         lambda _: f"{total_sites}개", html,
@@ -457,13 +456,51 @@ def sync_directory_count(html, total_sites):
     )
     if inline_count < 5 or status_count != 1:
         raise RuntimeError("Directory SEO count markers changed; review required")
+
+    heading_text = f"{total_sites}개 사이트 주소 검색: 이름·도메인·분야별 목록"
     if 'id="directory-heading"' in html:
-        heading, changed = re.subn(
-            r'(<h1\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)',
-            r'\1주소모음·링크모음·사이트모음: 이름과 도메인으로 찾기\2', html, count=1, flags=re.S)
-        if changed != 1:
+        heading_pattern = re.compile(
+            r'(<h1\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)', re.S)
+        html, count = heading_pattern.subn(
+            lambda m: m.group(1) + escape(heading_text) + m.group(2),
+            html, count=1)
+        if count != 1:
             raise RuntimeError("Directory intent heading malformed")
-        html = heading
+
+    title = f"{total_sites}개 사이트 주소 검색·분야별 전체 목록 | 링크위키"
+    description = (
+        f"국내외 {total_sites}개 사이트를 이름·도메인·분야로 검색하세요. "
+        "국내 포털·공공서비스·커뮤니티·웹툰·스포츠·AI 도구의 등록 설명과 연결 주소를 비교할 수 있습니다."
+    )
+    html, title_count = re.subn(
+        r"<title>.*?</title>",
+        "<title>" + escape(title) + "</title>",
+        html, count=1, flags=re.S)
+    if title_count != 1:
+        raise RuntimeError("Directory title missing")
+
+    def update_meta(tag, key, value):
+        nonlocal html
+        pattern = re.compile(
+            r'<meta\b(?=[^>]*\b' + key + r'="' + re.escape(tag) + r'")[^>]*>',
+            re.I)
+        def replace(match):
+            updated, count = re.subn(
+                r'\bcontent="[^"]*"',
+                'content="' + escape(value, quote=True) + '"',
+                match.group(0), count=1)
+            if count != 1:
+                raise RuntimeError("Directory metadata content missing: " + tag)
+            return updated
+        html, count = pattern.subn(replace, html, count=1)
+        if count != 1:
+            raise RuntimeError("Directory metadata tag missing: " + tag)
+
+    update_meta("og:title", "property", title)
+    update_meta("twitter:title", "name", title)
+    update_meta("description", "name", description)
+    update_meta("og:description", "property", description)
+    update_meta("twitter:description", "name", description)
     return html
 
 
