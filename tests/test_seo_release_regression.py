@@ -374,10 +374,14 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
-        title = f"주소모음·링크모음·사이트모음 전체 목록 | {PUBLISHED_COUNT}개 사이트 검색·비교 - 링크위키"
-        heading = "주소모음·링크모음·사이트모음: 이름과 도메인으로 찾기"
+        title = f"{PUBLISHED_COUNT}개 사이트 주소 검색·분야별 전체 목록 | 링크위키"
+        description = (f"국내외 {PUBLISHED_COUNT}개 사이트를 이름·도메인·분야로 검색하세요. "
+                       "국내 포털·공공서비스·커뮤니티·웹툰·스포츠·AI 도구의 등록 설명과 연결 주소를 비교할 수 있습니다.")
+        heading = f"{PUBLISHED_COUNT}개 사이트 주소 검색: 이름·도메인·분야별 목록"
         self.assertIn("<title>" + title + "</title>", html)
-        self.assertIn(f"주소모음과 링크모음에서 국내외 {PUBLISHED_COUNT}개 사이트의 이름·도메인·이용 목적을 검색하고 비교하세요.", html)
+        self.assertIn('name="description" content="' + description + '"', html)
+        self.assertIn('property="og:description" content="' + description + '"', html)
+        self.assertIn('name="twitter:description" content="' + description + '"', html)
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
@@ -391,7 +395,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('id="v6-results"', html)
         self.assertEqual(html.count('<h1'), 1)
         for keyword in ("주소모음", "링크모음", "사이트모음"):
-            self.assertIn(keyword, html)
+            self.assertNotIn(keyword, title)
+            self.assertNotIn(keyword, heading)
+        self.assertIn("등록된 " + str(PUBLISHED_COUNT) + "개 사이트를 이름·도메인·분야로 검색", html)
         self.assertNotIn("분야별 사이트모음·주소모음 검색", script)
 
     def test_homepage_and_directory_have_distinct_search_intent_titles(self):
@@ -405,7 +411,10 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertNotEqual(home_title, directory_title)
         self.assertIn(f"{PUBLISHED_COUNT}개 사이트", directory_title)
         self.assertIn("전체 목록", directory_title)
-        self.assertIn(f"{PUBLISHED_COUNT}개 사이트", home_title)
+        self.assertNotIn("주소모음", directory_title)
+        self.assertNotIn("링크모음", directory_title)
+        self.assertIn("주소모음", home_title)
+        self.assertIn("링크모음", home_title)
         # The directory remains the indexable target, never the legacy .html URL.
         self.assertIn('href="https://linkwiki.info/directory"', directory)
         self.assertNotIn('href="https://linkwiki.info/directory.html" rel="canonical"', directory)
