@@ -828,11 +828,11 @@
   {
     "url": "https://local.gosi.go.kr/",
     "name": "지방자치단체 인터넷원서접수센터",
-    "source_url": "https://gosi.daebanggosi.com/",
-    "scope": "2026년 지방자치단체 임용시험 시행계획의 원서접수처 표기와 인터넷원서접수센터 도메인을 대조",
+    "source_url": "https://local.gosi.go.kr/",
+    "scope": "공식 인터넷원서접수센터의 사이트 주소와 서비스 안내를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
-    "evidence_type": "official_notice"
+    "evidence_type": "service_page"
   },
   {
     "url": "https://www.topik.go.kr/",
@@ -841,7 +841,7 @@
     "scope": "국립국제교육원 TOPIK 공식 사업 안내와 연결되는 시험 홈페이지 도메인을 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
-    "evidence_type": "official_agency"
+    "evidence_type": "agency_guide"
   },
   {
     "url": "https://www.teps.or.kr/",
@@ -850,6 +850,6 @@
     "scope": "TEPS 공식 시험접수 페이지의 시험 일정·정기 및 추가 접수 안내를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
-    "evidence_type": "official_service"
+    "evidence_type": "service_page"
   }
 ]
