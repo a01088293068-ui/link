@@ -743,5 +743,50 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.q-net.or.kr/",
+    "name": "큐넷",
+    "source_url": "https://www.q-net.or.kr/",
+    "scope": "큐넷 공식 첫 화면에서 국가기술자격·국가전문자격의 시험 안내, 원서접수 및 합격자 발표 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kmooc.kr/",
+    "name": "K-MOOC",
+    "source_url": "https://www.kmooc.kr/intro",
+    "scope": "K-MOOC 공식 소개에서 한국형 온라인 공개강좌의 운영 목적과 강좌 탐색 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kci.go.kr/",
+    "name": "한국학술지인용색인 KCI",
+    "source_url": "https://www.kci.go.kr/kciportal/main.kci",
+    "scope": "한국학술지인용색인 공식 화면의 논문·학술지·기관·인용정보 검색 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.dbpia.co.kr/",
+    "name": "DBpia",
+    "source_url": "https://www.dbpia.co.kr/search",
+    "scope": "DBpia 공식 논문 검색 화면에서 논문명·저널·발행기관·저자 및 주제별 학술자료 검색 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.jobkorea.co.kr/",
+    "name": "잡코리아",
+    "source_url": "https://www.jobkorea.co.kr/recruit/joblist",
+    "scope": "잡코리아 공식 채용공고 화면에서 지역·직무·산업·기업별 채용정보 탐색 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
