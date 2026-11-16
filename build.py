@@ -1961,13 +1961,23 @@ def build():
                        f'<strong>{escape(p["title"])}</strong><span>{escape(p["description"][:95])}</span>'
                        '<span class="blog-card-more">글 읽기 →</span></a>' for p in entries)
 
-    listing = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 사이트 정보</nav>'
-               '<div class="blog-heading"><p class="eyebrow">LINKWIKI · GUIDE JOURNAL</p>'
-               '<h1>사이트 탐색 정보</h1><p>유용한 링크 탐색법과 주소 확인 방법을 정리합니다.</p></div>'
+    listing = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 주소모음·링크모음 가이드</nav>'
+               '<div class="blog-heading"><p class="eyebrow">LINKWIKI · SITE GUIDES</p>'
+               '<h1>주소모음·링크모음 활용 가이드</h1>'
+               '<p>사이트 이름과 도메인으로 찾는 방법, 분야별 사이트를 고르는 기준, 공식 주소 확인과 접속 오류 대응을 정리했습니다. '
+               '각 글은 실제 등록 목록과 공개된 운영기관 안내를 바탕으로 하며, 외부 서비스의 안전성이나 실시간 운영 상태를 보증하지 않습니다.</p></div>'
+               '<section class="blog-index-paths" aria-label="가이드 주제별 바로가기">'
+               '<h2>찾는 목적에 따라 가이드 선택</h2>'
+               '<ul><li><a href="/directory">주소모음에서 사이트 이름·도메인 검색</a></li>'
+               '<li><a href="/guides/address-check">공식 주소와 유사 도메인 구분</a></li>'
+               '<li><a href="/guides/security">로그인·결제 전 접속 안전 점검</a></li>'
+               '<li><a href="/guides/link-troubleshooting">404·403·503 접속 오류 해결</a></li>'
+               '<li><a href="/categories/">국내 중심 분야별 링크모음 탐색</a></li></ul></section>'
                f'<div class="blog-grid">{cards(posts)}</div></div>')
     blog_index = OUT / "blog" / "index.html"
     blog_index.parent.mkdir(parents=True, exist_ok=True)
-    blog_index.write_text(document("사이트 탐색 정보", "링크모음과 주소모음 안전 이용 방법을 안내합니다.",
+    blog_index.write_text(document("주소모음·링크모음 활용 가이드",
+                                   "주소모음 검색, 링크모음 분야 탐색, 공식 주소 확인과 접속 오류 해결 방법을 안내합니다.",
                                    SITE + "/blog/", listing, header, footer), encoding="utf-8")
 
     # A restrained homepage panel between the existing guide list and how-to section.
