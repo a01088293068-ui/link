@@ -27,7 +27,8 @@ def fixture(card_count=13):
                  + '</ul></section></body></html>')
     home = ('<html><head><title>주소모음 검색</title>'
             '<link rel="canonical" href="'+ORIGIN+'/"></head><body>'
-            '<a href="/directory">directory</a></body></html>')
+            '<a href="/directory">directory</a><a href="/categories/">분야</a>'
+            + nav + '</body></html>')
     category = {}
     for slug in CATEGORIES:
         listing = ('<article class="item"><strong>Example '+slug+'</strong>'
@@ -80,6 +81,15 @@ class DirectoryReleaseGateTests(unittest.TestCase):
         issues = validate(*parts)
         self.assertIn('directory has noindex', issues)
         self.assertIn('homepage lacks crawlable canonical /directory link', issues)
+
+    def test_homepage_must_link_to_every_category_and_category_hub(self):
+        parts = list(fixture())
+        parts[1] = parts[1].replace(
+            '<a href="/categories/search">category</a>', ''
+        ).replace('<a href="/categories/">분야</a>', '')
+        issues = validate(*parts)
+        self.assertIn("homepage lacks crawlable category hub link", issues)
+        self.assertIn("homepage lacks crawlable category link: search", issues)
 
     def test_empty_category_listing_fails_even_when_directory_is_complete(self):
         parts = list(fixture())
