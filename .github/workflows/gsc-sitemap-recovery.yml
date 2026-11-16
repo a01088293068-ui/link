@@ -29,7 +29,7 @@ permissions:
 
 concurrency:
   group: linkwiki-gsc-sitemap-recovery
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   submit:
