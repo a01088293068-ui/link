@@ -626,5 +626,122 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbstar.com/",
+    "name": "KB국민은행",
+    "source_url": "https://www.kbstar.com/",
+    "scope": "KB국민은행 공식 홈페이지에서 개인·기업 인터넷뱅킹과 예금·대출·외환 등 금융서비스 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.wooribank.com/",
+    "name": "우리은행",
+    "source_url": "https://www.wooribank.com/",
+    "scope": "우리은행 공식 홈페이지의 개인·기업뱅킹, 이체·공과금·예금·펀드·대출 및 금융상품 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kebhana.com/",
+    "name": "하나은행",
+    "source_url": "https://www.kebhana.com/",
+    "scope": "하나은행 공식 홈페이지의 개인·기업 금융서비스와 공과금·외환·예금·대출 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ibk.co.kr/",
+    "name": "IBK기업은행",
+    "source_url": "https://www.ibk.co.kr/",
+    "scope": "IBK기업은행 공식 홈페이지의 개인·기업 금융상품, 조회·이체·공과금·외환·퇴직연금 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kakaobank.com/",
+    "name": "카카오뱅크",
+    "source_url": "https://www.kakaobank.com/",
+    "scope": "카카오뱅크 공식 홈페이지의 은행 서비스·회사 공시·경영정보 및 고객지원 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.tossbank.com/",
+    "name": "토스뱅크",
+    "source_url": "https://www.tossbank.com/",
+    "scope": "토스뱅크 공식 홈페이지의 통장·예적금·대출·투자·외환·카드 및 고객지원 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbanknow.com/",
+    "name": "케이뱅크",
+    "source_url": "https://www.kbanknow.com/web/web-home/home/main",
+    "scope": "케이뱅크 공식 홈페이지의 예적금·대출·카드·투자·기업뱅킹 서비스 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.busanbank.co.kr/",
+    "name": "부산은행",
+    "source_url": "https://www.busanbank.co.kr/ib20/mnu/BHP00001",
+    "scope": "BNK부산은행 공식 홈페이지의 개인·기업뱅킹, 금융상품, 인증센터 및 고객지원 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://fine.fss.or.kr/",
+    "name": "금융소비자정보포털 파인",
+    "source_url": "https://fine.fss.or.kr/fine/main/main.do?menuNo=900000",
+    "scope": "금융감독원 금융소비자정보포털 파인의 금융정보·소비자 유의사항·금융회사 관련 정보 제공을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://dart.fss.or.kr/",
+    "name": "전자공시시스템 DART",
+    "source_url": "https://dart.fss.or.kr/",
+    "scope": "금융감독원 전자공시시스템의 공시통합검색과 기업 공시자료 열람 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kofia.or.kr/",
+    "name": "금융투자협회",
+    "source_url": "https://www.kofia.or.kr/index.do",
+    "scope": "금융투자협회 공식 홈페이지의 국내외 주식정보와 금융투자업 관련 정보·협회 안내 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.fsc.go.kr/",
+    "name": "금융위원회",
+    "source_url": "https://www.fsc.go.kr/index",
+    "scope": "금융위원회 공식 전자정부 누리집의 보도자료·의결정보·금융시장동향·정책자료 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.krx.co.kr/",
+    "name": "한국거래소",
+    "source_url": "https://www.krx.co.kr/main/main.jsp",
+    "scope": "한국거래소 공식 홈페이지의 시장정보·상장공시·시장감시·금융교육 및 데이터 서비스 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
