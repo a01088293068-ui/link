@@ -275,7 +275,7 @@ def add_nav(source):
     def replace(match):
         if 'href="/blog/"' in match.group(2):
             return match.group()
-        return match.group(1) + match.group(2) + '<a href="/blog/">사이트 정보</a>' + match.group(3)
+        return match.group(1) + match.group(2) + '<a href="/blog/">가이드</a>' + match.group(3)
     return re.sub(pattern, replace, source, count=1, flags=re.S)
 
 
@@ -403,7 +403,7 @@ def add_breadcrumb_data(html, public_path):
         items.append({"@type": "ListItem", "position": 2, "name": "분야별 사이트",
                       "item": SITE + "/categories/"})
     elif segments[0] == "blog" and public_path != "/blog/":
-        items.append({"@type": "ListItem", "position": 2, "name": "사이트 탐색 정보",
+        items.append({"@type": "ListItem", "position": 2, "name": "주소모음·링크모음 가이드",
                       "item": SITE + "/blog/"})
     items.append({"@type": "ListItem", "position": len(items) + 1,
                   "name": page_name, "item": SITE + public_path})
