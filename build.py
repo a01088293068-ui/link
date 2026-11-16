@@ -2166,7 +2166,8 @@ def build():
         marker = '</main>'
         if source.count(marker) != 1:
             raise RuntimeError(f"Category page layout changed: {slug}")
-        matched_posts = category_article_links(posts, slug)
+        matched_posts = [post for post in category_article_links(posts, slug)
+                         if post["url"] not in source]
         related_articles = (
             '<section class="wrap seo-related-links" aria-label="이 분야의 이용 가이드">'
             '<h2>이 분야의 이용 가이드</h2>'
