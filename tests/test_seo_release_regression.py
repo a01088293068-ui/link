@@ -716,5 +716,19 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn("공식 주소 확인 방법", article)
 
 
+    def test_korean_services_are_prioritized_within_mixed_global_categories(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        def first_names(category, limit=10):
+            return [row["name"] for row in records if row["category"] == category][:limit]
+        search = first_names("검색·포털", 10)
+        ai = first_names("AI 도구", 8)
+        video = first_names("영상·OTT", 10)
+        self.assertEqual(search[:4], ["네이버", "다음", "네이트", "줌"])
+        self.assertEqual(ai[:5], ["뤼튼", "클로바노트", "타입캐스트", "브루(Vrew)", "미리캔버스"])
+        self.assertEqual(video[:6], ["티빙", "웨이브", "치지직", "멜론", "FLO", "EBS"])
+        self.assertEqual(len(records), PUBLISHED_COUNT)
+
+
 if __name__ == "__main__":
     unittest.main()
