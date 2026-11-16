@@ -187,6 +187,10 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         for url in (ORIGIN + "/", ORIGIN + "/directory", ORIGIN + "/categories/"):
             if url not in urls:
                 issues.append(f"sitemap missing: {url}")
+        for slug in CATEGORIES:
+            url = ORIGIN + "/categories/" + slug
+            if url not in urls:
+                issues.append(f"sitemap missing category: {url}")
     except Exception:
         issues.append("invalid sitemap XML")
     return issues
