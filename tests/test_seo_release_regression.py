@@ -394,7 +394,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         import re
         self.assertRegex(html, r'<meta\b(?=[^>]*property="og:title")(?=[^>]*content="' + re.escape(title) + r'")[^>]*>')
         self.assertRegex(html, r'<meta\b(?=[^>]*name="twitter:title")(?=[^>]*content="' + re.escape(title) + r'")[^>]*>')
-        self.assertIn("'"+heading+"'", script)
+        self.assertIn("entries.length + '개 사이트 주소 검색: 이름·도메인·분야별 목록'", script)
+        self.assertNotIn("344개 사이트 주소 검색", script)
+        self.assertIn('<meta content="https://linkwiki.info/directory" property="og:url"/>', html)
         self.assertIn('href="https://linkwiki.info/directory"', html)
         self.assertIn('name="robots"', html)
         self.assertIn('id="v6-form"', html)
