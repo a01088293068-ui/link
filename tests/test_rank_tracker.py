@@ -10,7 +10,8 @@ class RankTrackerTests(unittest.TestCase):
         self.assertIn("cron: '05 5 * * *'", workflow)
         self.assertIn("cron: '35 17 * * *'", workflow)
         self.assertIn("'seo/rank_tracker.py'", workflow)
-        self.assertIn("already_measured = any(", workflow)
+        self.assertIn("has_all_queries = sample is not None", workflow)
+        self.assertIn("set(KEYWORDS).issubset(measured_queries)", workflow)
         self.assertIn("git fetch origin main", workflow)
         self.assertIn("git checkout -B rank-measure-current origin/main", workflow)
         self.assertLess(workflow.index("git checkout -B rank-measure-current"),
