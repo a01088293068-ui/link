@@ -28,7 +28,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: linkwiki-gsc-sitemap-recovery
+  group: linkwiki-gsc-sitemap-recovery-v2
   cancel-in-progress: true
 
 jobs:
