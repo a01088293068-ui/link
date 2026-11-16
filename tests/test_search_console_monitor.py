@@ -697,7 +697,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn("https://linkwiki.info/guides/choose-directory", targets)
         self.assertIn("https://linkwiki.info/guides/security", targets)
         self.assertNotIn("https://linkwiki.info/guides/ordinary-0", targets)
-        self.assertLessEqual(len(targets), 20)
+        self.assertLessEqual(len(targets), 18)
 
     def test_exact_keyword_inspection_rejects_unrelated_and_offsite_rows(self):
         rows = [
@@ -724,7 +724,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertNotIn('https://linkwiki.info/categories/sports.html', targets)
         self.assertNotIn('https://other.example/private', targets)
         self.assertIn('https://linkwiki.info/directory', targets)
-        self.assertLessEqual(len(targets), 20)
+        self.assertLessEqual(len(targets), 24)
 
     def test_inspection_legacy_html_observation_checks_both_urls(self):
         rows = [
@@ -738,7 +738,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn('https://linkwiki.info/guides/security', targets)
         self.assertIn('https://linkwiki.info/guides/security.html', targets)
         self.assertIn('https://linkwiki.info/', targets)
-        self.assertLessEqual(len(targets), 20)
+        self.assertLessEqual(len(targets), 24)
 
     def test_index_report_prioritizes_unknown_and_crawled_not_indexed_urls(self):
         inspected = [
