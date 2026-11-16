@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://linkwiki.info/sitemap.xml
+Sitemap: https://linkwiki.info/sitemap-v2.xml
