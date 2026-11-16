@@ -1049,5 +1049,32 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gojobs.go.kr/mainIndex.do",
+    "name": "나라일터",
+    "source_url": "https://www.gojobs.go.kr/apmInfo.do?menuNo=610&mngrMenuYn=N&selMenuNo=600",
+    "scope": "인사혁신처 나라일터의 운영기관과 국가·지자체·교육청 공직 채용정보 제공 범위를 공식 채용안내에서 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://job.alio.go.kr/main.do",
+    "name": "잡알리오",
+    "source_url": "https://job.alio.go.kr/mobile2021/home.do",
+    "scope": "잡알리오의 공공기관 채용정보 검색과 기관 정보 제공 기능을 서비스 화면에서 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://job.cleaneye.go.kr/",
+    "name": "클린아이 잡플러스",
+    "source_url": "https://job.cleaneye.go.kr/siteGuide/ypIntroduce.do",
+    "scope": "클린아이 잡플러스의 지방공기업·지방출자출연기관 통합 채용정보 제공 범위를 공식 소개에서 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
