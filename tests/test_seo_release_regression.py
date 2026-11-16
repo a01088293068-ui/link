@@ -702,7 +702,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         evidence = json.loads((root / "assets/directory-evidence.json").read_text(encoding="utf-8"))
         summary = directory.index('class="directory-evidence-summary"')
         search = directory.index('id="v6-form"')
-        self.assertLess(summary, search)
+        self.assertLess(search, summary)
         self.assertIn(f"출처 대조 기록 {len(evidence)}건", directory)
         self.assertIn('href="#directory-source-evidence"', directory)
         self.assertIn('id="directory-source-evidence"', directory)
