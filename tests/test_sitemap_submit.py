@@ -67,7 +67,7 @@ class SitemapSubmitTests(unittest.TestCase):
     def test_no_resubmission_after_successful_google_download(self):
         cases = [
             ([{'path': submit.SITEMAP, 'lastDownloaded': '2026-11-10T00:00:00Z'}], False),
-            ([{'path': submit.SITEMAP, 'isPending': True}], True),
+            ([{'path': submit.SITEMAP, 'isPending': True}], False),
             ([], True),
             ([{'path': submit.SITEMAP, 'errors': 3}], True),
             ([{'path': submit.SITE + '/sitemap-v2.xml', 'lastDownloaded': '2026-10-24'}], True),
@@ -107,14 +107,14 @@ class SitemapSubmitTests(unittest.TestCase):
             submit.main()
         send.assert_not_called()
 
-    def test_pending_canonical_submits_once(self):
+    def test_pending_canonical_skips_duplicate_submission(self):
         with patch.object(submit, "fetch_xml", return_value=sitemap(valid_urls())), \
              patch.object(submit, "authorization_token", return_value="fake"), \
              patch.object(submit, "list_registered", return_value=[
                  {"path": submit.SITEMAP, "isPending": True}]), \
              patch.object(submit, "submit_sitemap") as send:
             submit.main()
-        send.assert_called_once_with("fake")
+        send.assert_not_called()
 
 
 if __name__ == "__main__":
