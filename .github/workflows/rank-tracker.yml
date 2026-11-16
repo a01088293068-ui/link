@@ -50,11 +50,14 @@ jobs:
           from datetime import datetime, timezone
           from pathlib import Path
           import json
+          from seo.rank_tracker import KEYWORDS
           path = Path("seo/rank-history.json")
           history = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
           today = datetime.now(timezone.utc).date().isoformat()
-          already_measured = any(row.get("date") == today for row in history.get("samples", []))
-          print("needs_measure=" + ("false" if already_measured else "true"))
+          sample = next((row for row in history.get("samples", []) if row.get("date") == today), None)
+          measured_queries = set((sample or {}).get("results", {}).keys())
+          has_all_queries = sample is not None and set(KEYWORDS).issubset(measured_queries)
+          print("needs_measure=" + ("false" if has_all_queries else "true"))
           PY
       - name: Measure Korean core and long-tail keywords (up to 30 results for core)
         if: steps.freshness.outputs.needs_measure == 'true'
