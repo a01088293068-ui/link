@@ -142,8 +142,8 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
     if any(keyword not in directory_html for keyword in KEYWORDS):
         issues.append("directory intent content is missing a core search term")
     directory_heading = re.search(r"<h1\b[^>]*>(.*?)</h1>", directory_html, re.S)
-    if not directory_heading or "사이트모음" not in directory_heading.group(1):
-        issues.append("directory site-comparison heading missing")
+    if not directory_heading or "사이트 주소 검색" not in directory_heading.group(1):
+        issues.append("directory catalog-search heading missing")
     home_title = re.search(r"<title>(.*?)</title>", home_html, re.S)
     if not home_title or "주소모음" not in home_title.group(1):
         issues.append("homepage address-search title missing")
