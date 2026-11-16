@@ -2,6 +2,7 @@ import json
 import re
 import unittest
 from pathlib import Path
+from urllib.parse import quote
 
 from seo import search_console_monitor
 from build import (directory_everyday_task_paths, directory_relevant_guides,
@@ -70,7 +71,7 @@ class KoreanPublicJobSiteTests(unittest.TestCase):
     def test_homepage_links_to_the_new_korean_sites_and_recruitment_guide(self):
         shortcuts = korean_first_shortcuts(self.records)
         for name in EXPECTED:
-            self.assertIn('/directory?q=' + __import__('urllib.parse').parse.quote(name, safe=""), shortcuts)
+            self.assertIn('/directory?q=' + quote(name, safe=""), shortcuts)
         homepage_guides = homepage_search_guide_links()
         self.assertIn('/blog/' + SLUG + '/', homepage_guides)
         self.assertIn("공공기관 채용 사이트 찾기", homepage_guides)
