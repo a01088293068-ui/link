@@ -16,6 +16,15 @@ class HomeIntentTests(unittest.TestCase):
         self.assertIn("실시간 접속 확인을 보증하지 않습니다", modified)
         self.assertEqual(modified.count('class="lw-search-quicklinks"'), 1)
 
+    def test_generated_homepage_metadata_keeps_three_core_keywords(self):
+        source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
+        modified = build.polish_home_intent(source)
+        expected = "주소모음·링크모음·사이트모음 | 링크위키"
+        self.assertIn("<title>" + expected + "</title>", modified)
+        self.assertIn('property="og:title"', modified)
+        self.assertIn('name="twitter:title"', modified)
+        self.assertIn('content="' + expected + '"', modified)
+
     def test_home_primary_keyword_intent_is_visible_and_consistent(self):
         source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
         self.assertIn("<title>주소모음·링크모음·사이트모음 |", source)
