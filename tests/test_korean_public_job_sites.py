@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from seo import search_console_monitor
+from build import directory_everyday_task_paths, directory_relevant_guides
 
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = "seo-20261116-korean-public-sector-recruitment-sites-guide"
@@ -51,6 +52,19 @@ class KoreanPublicJobSiteTests(unittest.TestCase):
             self.assertIn(url, self.article)
         self.assertIn("/categories/education", self.article)
         self.assertIn("/directory", self.article)
+
+    def test_directory_surfaces_recruitment_comparisons_and_new_guide(self):
+        tasks = directory_everyday_task_paths(self.records)
+        self.assertIn("중앙 공공기관과 지방공기업 채용", tasks)
+        self.assertIn("공직 채용과 공공기관 채용", tasks)
+        self.assertIn('/directory?q=%EB%82%98%EB%9D%BC%EC%9D%BC%ED%84%B0', tasks)
+        self.assertIn('/directory?q=%EC%9E%A1%EC%95%8C%EB%A6%AC%EC%98%A4', tasks)
+        guides = directory_relevant_guides([
+            {"title": "공공기관 채용 사이트 모음: 나라일터·잡알리오·클린아이 잡플러스 공식 경로",
+             "url": "/blog/" + SLUG + "/"},
+            {"title": "사이트모음 선택 방법", "url": "/blog/selection/"},
+        ])
+        self.assertIn("/blog/" + SLUG + "/", guides)
 
     def test_new_guide_is_in_daily_inspection_and_korean_query_reporting(self):
         url = "https://linkwiki.info/blog/" + SLUG + "/"
