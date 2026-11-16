@@ -227,13 +227,24 @@ class SiteAuditTests(unittest.TestCase):
                        f'<url><loc>{SITE}/test</loc></url></urlset>')
             (root / "sitemap.xml").write_text(sitemap, encoding="utf-8")
             (root / "sitemap-v2.xml").write_text(sitemap, encoding="utf-8")
+            (root / "robots.txt").write_text(
+                'User-agent: *\\nAllow: /\\nSitemap: https://linkwiki.info/sitemap.xml\\n',
+                encoding="utf-8")
             (root / "test.html").write_text(
                 f'<html><head><title>Example</title><link rel="canonical" href="{SITE}/test">'
+                '<meta name="description" content="Utility page">'
                 '<meta content="noindex,follow" name="robots"></head><body></body></html>',
                 encoding="utf-8")
             issues = audit_site(root)
-            self.assertTrue(any("indexable page blocked by robots noindex: test.html" in issue
-                                for issue in issues), issues)
+            self.assertIn("noindex page must not be in sitemap: test.html", issues)
+            sitemap_without_test = (f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                                    f'<url><loc>{SITE}/blog/</loc></url></urlset>')
+            (root / "sitemap.xml").write_text(sitemap_without_test, encoding="utf-8")
+            (root / "sitemap-v2.xml").write_text(sitemap_without_test, encoding="utf-8")
+            issues = audit_site(root)
+            self.assertFalse(any("noindex page must not be in sitemap: test.html" in issue
+                                 or "indexable page missing from sitemap: test.html" in issue
+                                 for issue in issues), issues)
 
     def test_audit_rejects_missing_empty_or_duplicate_meta_descriptions(self):
         with TemporaryDirectory() as temporary:
