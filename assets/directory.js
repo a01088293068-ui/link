@@ -1,4 +1,4 @@
-/* Reuse all server-rendered directory cards instead of duplicating 211 entries.
+/* Reuse all server-rendered directory cards instead of duplicating catalog data.
  * Source cards remain indexable and usable when JavaScript is disabled.
  * Search only reorganizes already-present DOM elements; never fetches data.
  */
@@ -88,7 +88,7 @@
       button.setAttribute('aria-pressed', String(pressed));
     }
     heading.textContent = category === '전체'
-      ? '344개 사이트 주소 검색: 이름·도메인·분야별 목록'
+      ? entries.length + '개 사이트 주소 검색: 이름·도메인·분야별 목록'
       : category + ' 분야별 링크 찾기';
   }
 
