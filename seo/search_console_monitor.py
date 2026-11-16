@@ -165,19 +165,33 @@ def inspection_targets(page_rows, limit=24, core_query_pages=None, as_of=None):
                 seen.add(url)
 
         extras = []
+
+        def add_extra(observed):
+            parts = urlsplit(str(observed).strip())
+            if (parts.scheme != 'https' or parts.netloc != 'linkwiki.info'
+                    or parts.query or parts.fragment):
+                return
+            value = str(observed).strip()
+            candidates = [value]
+            if parts.path == '/index.html':
+                candidates.insert(0, 'https://linkwiki.info/')
+            elif parts.path.endswith('.html'):
+                candidates.insert(0, 'https://linkwiki.info' + parts.path[:-5])
+            for candidate in candidates:
+                if candidate not in seen and candidate not in extras:
+                    extras.append(candidate)
+
         for row in sorted(core_query_pages or [],
                           key=lambda item: -int(item.get('impressions', 0))):
             keys = row.get('keys') or []
             if len(keys) >= 2 and ''.join(str(keys[0]).split()) in CORE_KEYWORDS:
-                parts = urlsplit(str(keys[1]).strip())
-                if (parts.scheme == 'https' and parts.netloc == 'linkwiki.info'
-                        and not parts.query and not parts.fragment):
-                    candidates = [str(keys[1]).strip()]
-                    if parts.path.endswith('.html'):
-                        candidates.insert(0, 'https://linkwiki.info' + parts.path[:-5])
-                    for candidate in candidates:
-                        if candidate not in seen and candidate not in extras:
-                            extras.append(candidate)
+                add_extra(keys[1])
+        if not extras:
+            for row in sorted(page_rows,
+                              key=lambda item: -int(item.get('impressions', 0))):
+                keys = row.get('keys') or []
+                if keys:
+                    add_extra(keys[0])
         if not extras and as_of is not None:
             extras = rotating_inspection_urls(as_of, limit=2)
         for url in extras:
