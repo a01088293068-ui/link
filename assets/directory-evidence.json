@@ -63,9 +63,9 @@
   {
     "url": "https://www.safekorea.go.kr/",
     "name": "국민안전24",
-    "source_url": "https://www.safekorea.go.kr/",
-    "scope": "국민안전24 공식 첫 화면의 재난 상황 정보·안전 안내 메뉴와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
+    "source_url": "https://www.safekorea.go.kr/safekorea-kor/main/main.do",
+    "scope": "국민안전24의 재난 상황·안전 정보·재난문자·행동요령 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -109,8 +109,8 @@
     "url": "https://www.nps.or.kr/main.do",
     "name": "국민연금공단",
     "source_url": "https://www.nps.or.kr/main.do",
-    "scope": "국민연금공단 첫 화면의 연금·가입·민원 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
+    "scope": "국민연금공단 공식 홈페이지의 가입내역·예상연금·보험료 납부·연금 신청 및 상담 경로를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -405,8 +405,8 @@
   {
     "url": "https://www.weather.go.kr/",
     "name": "기상청 날씨누리",
-    "source_url": "https://www.weather.go.kr/",
-    "scope": "기상청 날씨누리 공식 페이지에서 예보·특보·관측 정보 제공 경로를 대조",
+    "source_url": "https://www.weather.go.kr/w/index.do",
+    "scope": "기상청 날씨누리의 지역별 예보·기상특보·관측 및 관심지역 조회 기능과 연결 주소를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -415,7 +415,7 @@
     "url": "https://www.korea.kr/",
     "name": "대한민국 정책브리핑",
     "source_url": "https://www.korea.kr/",
-    "scope": "문화체육관광부 운영 정책브리핑의 정책뉴스·보도자료·브리핑 자료 안내를 대조",
+    "scope": "문화체육관광부 운영 정책브리핑의 정책뉴스·보도자료·브리핑 및 정부 정책 안내를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
