@@ -1079,6 +1079,7 @@ def render_directory_catalog_cards(records, evidence=None, today=None):
             raise RuntimeError("Duplicate directory URL: " + url)
         seen.add(url)
         source = evidence.get(url)
+        evidence_flag = "true" if source else "false"
         evidence_markup = ''
         if source:
             checked_on = date.fromisoformat(source["checked_on"])
@@ -1102,7 +1103,8 @@ def render_directory_catalog_cards(records, evidence=None, today=None):
                 ) + '</p>'
             )
         cards.append(
-            '<article class="v6-card" id="' + directory_card_anchor(item) + '"><small>' + escape(category) +
+            '<article class="v6-card" data-source-evidence="' + evidence_flag +
+            '" id="' + directory_card_anchor(item) + '"><small>' + escape(category) +
             '</small><h3>' + escape(name) + '</h3><p>' + escape(description) +
             '</p><span class="site-domain">' + escape(parsed.hostname) + '</span>' +
             '<a aria-label="' + escape(name, quote=True) +
