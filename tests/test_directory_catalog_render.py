@@ -28,10 +28,26 @@ class CatalogRenderTests(unittest.TestCase):
 
     def test_all_records_render_as_safe_crawlable_html(self):
         html = render_directory_catalog_cards(self.records)
-        self.assertEqual(len(re.findall(r'<article class="v6-card" id="site-[a-f0-9]{14}">', html)), len(self.records))
+        self.assertEqual(len(re.findall(r'<article class="v6-card" data-source-evidence="false" id="site-[a-f0-9]{14}">', html)), len(self.records))
         self.assertEqual(html.count('rel="noopener noreferrer external"'), len(self.records))
         self.assertEqual(html.count('target="_blank"'), len(self.records))
         self.assertIn("내보내기와 사용 범위 조건", html)
+
+    def test_source_evidence_state_is_exposed_on_each_static_card(self):
+        evidence = {
+            self.records[0]["url"]: {
+                "checked_on": "2026-11-16",
+                "freshness_days": 180,
+                "evidence_type": "service_page",
+                "source_url": "https://example.org/source",
+                "scope": "공식 서비스 안내와 등록 주소를 대조",
+            }
+        }
+        html = render_directory_catalog_cards(self.records, evidence)
+        self.assertEqual(html.count('data-source-evidence="true"'), 1)
+        self.assertEqual(html.count('data-source-evidence="false"'), len(self.records) - 1)
+        self.assertIn('data-source-evidence="true" id="site-', html)
+        self.assertIn('data-source-evidence="false" id="site-', html)
 
     def test_description_edit_changes_html_without_hand_editing_directory(self):
         source = ('<main><div class="v6-grid" id="v6-results">'
