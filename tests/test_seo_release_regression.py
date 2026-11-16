@@ -696,6 +696,17 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertTrue(has_noindex_meta('<meta name="robots" content="noindex,follow">'))
         self.assertFalse(has_noindex_meta('<meta name="robots" content="index,follow">'))
 
+    def test_directory_surfaces_real_source_check_count_before_search(self):
+        root = Path(__file__).resolve().parents[1]
+        directory = (root / "dist/directory.html").read_text(encoding="utf-8")
+        evidence = json.loads((root / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        summary = directory.index('class="directory-evidence-summary"')
+        search = directory.index('id="v6-form"')
+        self.assertLess(summary, search)
+        self.assertIn(f"출처 대조 기록 {len(evidence)}건", directory)
+        self.assertIn('href="#directory-source-evidence"', directory)
+        self.assertIn('id="directory-source-evidence"', directory)
+
 
 if __name__ == "__main__":
     unittest.main()
