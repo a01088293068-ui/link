@@ -824,5 +824,32 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://local.gosi.go.kr/",
+    "name": "지방자치단체 인터넷원서접수센터",
+    "source_url": "https://gosi.daebanggosi.com/",
+    "scope": "2026년 지방자치단체 임용시험 시행계획의 원서접수처 표기와 인터넷원서접수센터 도메인을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "official_notice"
+  },
+  {
+    "url": "https://www.topik.go.kr/",
+    "name": "한국어능력시험 TOPIK",
+    "source_url": "https://www.niied.go.kr/web/niied/contents/niied_topik",
+    "scope": "국립국제교육원 TOPIK 공식 사업 안내와 연결되는 시험 홈페이지 도메인을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "official_agency"
+  },
+  {
+    "url": "https://www.teps.or.kr/",
+    "name": "TEPS 공식 사이트",
+    "source_url": "https://www.teps.or.kr/receiption/examination",
+    "scope": "TEPS 공식 시험접수 페이지의 시험 일정·정기 및 추가 접수 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "official_service"
   }
 ]
