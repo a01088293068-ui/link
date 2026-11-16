@@ -442,23 +442,33 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertTrue(all(url in targets for url in recent))
         self.assertLessEqual(len(targets), 20)
 
-    def test_new_exam_guide_is_in_priority_url_inspection_set(self):
-        expected = "https://linkwiki.info/blog/seo-20261116-korean-certification-exam-sites-guide/"
+    def test_core_address_and_new_korean_guides_are_in_priority_url_inspection_set(self):
         urls = monitor.directory_intent_inspection_urls()
-        self.assertEqual(len(urls), 4)
-        self.assertIn(
-            "https://linkwiki.info/blog/seo-20261116-korean-public-sector-recruitment-sites-guide/",
-            urls,
-        )
-        self.assertIn(expected, urls)
+        self.assertEqual(len(urls), 6)
+        for slug in (
+            "seo-20261111-address-directory-search-examples",
+            "seo-20261111-address-directory-no-results",
+            "seo-20261111-links-sites-comparison-checklist",
+            "seo-20261111-site-directory-selection-by-purpose",
+            "seo-20261116-korean-certification-exam-sites-guide",
+            "seo-20261116-korean-public-sector-recruitment-sites-guide",
+        ):
+            with self.subTest(slug=slug):
+                self.assertIn("https://linkwiki.info/blog/" + slug + "/", urls)
         self.assertNotIn(
             "https://linkwiki.info/blog/seo-20261111-mobile-address-directory-check/",
             urls,
         )
-        self.assertNotIn(
-            "https://linkwiki.info/blog/seo-20261111-address-directory-no-results/",
-            urls,
-        )
+
+    def test_default_daily_inspection_quota_covers_core_pages_categories_and_guides(self):
+        targets = monitor.inspection_targets([], as_of=date(2026, 11, 16))
+        self.assertLessEqual(len(targets), 24)
+        for url in monitor.directory_intent_inspection_urls():
+            self.assertIn(url, targets)
+        for slug in ("community", "korean", "comics-directory", "webtoon",
+                     "ai", "search", "sports", "video", "finance", "education",
+                     "news", "shopping", "travel"):
+            self.assertIn("https://linkwiki.info/categories/" + slug, targets)
 
     def test_inspection_prioritizes_all_thirteen_categories_and_respects_limit(self):
         with TemporaryDirectory() as tmp:
