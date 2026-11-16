@@ -1,4 +1,4 @@
-"""Require real direct homepage discovery paths for five Korean search-intent guides."""
+"""Require real direct homepage discovery paths for six Korean search-intent guides."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
@@ -9,11 +9,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class HomepageGuideDiscoveryTests(unittest.TestCase):
-    def test_five_distinct_real_articles_are_linked_once(self):
-        self.assertEqual(len(HOME_SEARCH_GUIDES), 5)
-        self.assertEqual(len({slug for slug, _, _ in HOME_SEARCH_GUIDES}), 5)
+    def test_six_distinct_real_articles_are_linked_once(self):
+        self.assertEqual(len(HOME_SEARCH_GUIDES), 6)
+        self.assertEqual(len({slug for slug, _, _ in HOME_SEARCH_GUIDES}), 6)
         markup = homepage_search_guide_links()
-        self.assertEqual(markup.count("<li>"), 5)
+        self.assertEqual(markup.count("<li>"), 6)
         self.assertIn('class="wrap seo-related-links seo-home-search-guides"', markup)
         for slug, label, _ in HOME_SEARCH_GUIDES:
             with self.subTest(slug=slug):
