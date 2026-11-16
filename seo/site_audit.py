@@ -173,18 +173,19 @@ def audit_site(dist):
         content = page.read_text(encoding="utf-8")
         if "공개 전 미리보기" in content:
             errors.append(f"stale preview notice on public page: {relative}")
-        if has_noindex_meta(content):
-            errors.append(f"indexable page blocked by robots noindex: {relative}")
+        noindex = has_noindex_meta(content)
         # Search engine ownership proof files are plain text despite .html.
-        if not re.search(r"<html\b", content, re.I):
+        if not re.search(r"<html\\b", content, re.I):
             continue
-        canonical = re.search(r'<link\b[^>]*\brel="canonical"[^>]*\bhref="([^"]+)"', content)
+        canonical = re.search(r'<link\\b[^>]*\\brel="canonical"[^>]*\\bhref="([^"]+)"', content)
         if not canonical:
-            canonical = re.search(r'<link\b[^>]*\bhref="([^"]+)"[^>]*\brel="canonical"', content)
+            canonical = re.search(r'<link\\b[^>]*\\bhref="([^"]+)"[^>]*\\brel="canonical"', content)
         if not canonical or canonical.group(1) != SITE + public_path:
             errors.append(f"noncanonical page URL: {relative}")
-        if SITE + public_path not in locs:
+        if not noindex and SITE + public_path not in locs:
             errors.append(f"indexable page missing from sitemap: {relative}")
+        if noindex and SITE + public_path in locs:
+            errors.append(f"noindex page must not be in sitemap: {relative}")
         title_match = re.search(r"<title[^>]*>(.*?)</title>", content, re.I | re.S)
         title = re.sub(r"\s+", " ", title_match.group(1)).strip() if title_match else ""
         if not title:
