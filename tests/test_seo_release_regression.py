@@ -380,7 +380,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         heading = f"{PUBLISHED_COUNT}개 사이트 주소 검색: 이름·도메인·분야별 목록"
         self.assertIn("<title>" + title + "</title>", html)
         import re
-        meta_tags = re.findall(r'<meta\\b[^>]*>', html)
+        meta_tags = re.findall(r'<meta\b[^>]*>', html)
         for attribute, value in (("name", "description"), ("property", "og:description"),
                                  ("name", "twitter:description")):
             self.assertTrue(any(
