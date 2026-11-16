@@ -100,7 +100,7 @@ def recent_published_post_urls(limit=3):
 # Keep the newest high-intent exam guide in the daily inspection set, replacing
 # the lower-priority mobile guide; all links must exist as published Markdown.
 DIRECTORY_INTENT_ARTICLES = (
-    "seo-20261111-address-directory-no-results",
+    "seo-20261111-links-sites-comparison-checklist",
     "seo-20261111-site-directory-selection-by-purpose",
     "seo-20261116-korean-certification-exam-sites-guide",
 )
@@ -1144,6 +1144,7 @@ LONG_TAIL_GUIDES = (
     ('해외 한인 생활정보', 'seo-20261110-overseas-korean-community-guide'),
     ('국내 웹툰 플랫폼', 'seo-20261110-korean-webtoon-platform-guide'),
     ('주소모음 검색 실전', 'seo-20261111-address-directory-search-examples'),
+    ('링크모음·사이트모음 비교 기준', 'seo-20261111-links-sites-comparison-checklist'),
     ('두 사이트 비교', 'seo-20261028-2a8841090c'),
     ('자격증·공무원·어학시험 접수', 'seo-20261116-korean-certification-exam-sites-guide'),
 )
