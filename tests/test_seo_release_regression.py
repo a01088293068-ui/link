@@ -686,7 +686,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         privacy = (root / "dist/privacy.html").read_text(encoding="utf-8")
         sitemap = (root / "dist/sitemap.xml").read_text(encoding="utf-8")
-        self.assertIn('name="robots" content="noindex,follow"', privacy)
+        self.assertIn('content="noindex,follow" name="robots"', privacy)
         self.assertNotIn("https://linkwiki.info/privacy", sitemap)
         self.assertIn("검색어가 URL의 쿼리 문자열", privacy)
         self.assertNotIn("실제 배포 시", privacy)
