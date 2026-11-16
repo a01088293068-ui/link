@@ -96,10 +96,11 @@ def recent_published_post_urls(limit=3):
         for path in sorted(posts.glob("seo-*.md"), reverse=True)[:limit]
     ]
 
-# Priority guides linked from the main directory and focused category hubs.
-# Keep the newest high-intent exam guide in the daily inspection set, replacing
-# the lower-priority mobile guide; all links must exist as published Markdown.
+# Prioritize the core address/link/site search guides plus newly published
+# Korean public-service guides. All URLs must exist as published Markdown.
 DIRECTORY_INTENT_ARTICLES = (
+    "seo-20261111-address-directory-search-examples",
+    "seo-20261111-address-directory-no-results",
     "seo-20261111-links-sites-comparison-checklist",
     "seo-20261111-site-directory-selection-by-purpose",
     "seo-20261116-korean-certification-exam-sites-guide",
@@ -142,7 +143,7 @@ def rotating_inspection_urls(as_of, limit=3, root=None):
             for index in range(min(limit, len(urls)))]
 
 
-def inspection_targets(page_rows, limit=20, core_query_pages=None, as_of=None):
+def inspection_targets(page_rows, limit=24, core_query_pages=None, as_of=None):
     """Inspect core canonical URLs first, then target-query landing pages.
 
     Preserve a small quota for freshly published articles and for other
@@ -208,8 +209,8 @@ def inspection_targets(page_rows, limit=20, core_query_pages=None, as_of=None):
         if keys and urlsplit(str(keys[0])).path.endswith('.html'):
             append_observed(keys[0])
 
-    # Add the full category set, followed by recent editorial pages. The 20 URL
-    # daily allowance includes every category on ordinary runs and rotates
+    # Add the full category set, followed by recent editorial pages. The 24 URL
+    # daily allowance includes every category and six high-intent guides on ordinary runs.
     # lower-priority observed URLs into remaining slots.
     for url in INSPECT_URLS[3:]:
         if url not in seen and len(urls) < limit:
@@ -1157,6 +1158,7 @@ LONG_TAIL_GUIDES = (
     ('해외 한인 생활정보', 'seo-20261110-overseas-korean-community-guide'),
     ('국내 웹툰 플랫폼', 'seo-20261110-korean-webtoon-platform-guide'),
     ('주소모음 검색 실전', 'seo-20261111-address-directory-search-examples'),
+    ('주소모음 검색 결과가 없을 때', 'seo-20261111-address-directory-no-results'),
     ('링크모음·사이트모음 비교 기준', 'seo-20261111-links-sites-comparison-checklist'),
     ('두 사이트 비교', 'seo-20261028-2a8841090c'),
     ('자격증·공무원·어학시험 접수', 'seo-20261116-korean-certification-exam-sites-guide'),
