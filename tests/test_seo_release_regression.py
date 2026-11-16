@@ -421,12 +421,17 @@ class SEOReleaseRegressionTests(unittest.TestCase):
 
     def test_directory_count_rewrites_korean_object_particle_and_preserves_category_count(self):
         from build import sync_directory_count
-        sample = ('<title>97개 사이트 목록</title><meta content="97개 사이트를 비교" />'
-                  '<meta property="og:title" content="97개 사이트" />'
+        sample = ('<title>97개 사이트 목록</title>'
+                  '<meta name="description" content="97개 사이트를 비교">'
+                  '<meta property="og:title" content="97개 사이트">'
+                  '<meta name="twitter:title" content="97개 사이트">'
+                  '<meta property="og:description" content="97개 사이트의 목록">'
+                  '<meta name="twitter:description" content="97개 사이트의 목록">'
                   '<p>97개 등록 사이트의 설명</p><p>97개 사이트 검색</p>'
                   '<p>등록 사이트 97개</p><p>8개 분야</p>')
         changed = sync_directory_count(sample, 98)
-        self.assertIn("98개 사이트를 비교", changed)
+        self.assertIn("98개 사이트 주소 검색·분야별 전체 목록", changed)
+        self.assertIn("국내외 98개 사이트를 이름·도메인·분야로 검색하세요.", changed)
         self.assertIn("98개 등록 사이트의 설명", changed)
         self.assertIn("등록 사이트 98개", changed)
         self.assertIn("8개 분야", changed)
