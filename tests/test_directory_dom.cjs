@@ -38,7 +38,11 @@ function makeFixture(href = "https://linkwiki.info/directory") {
       p: makeElement({textContent: description}),
       'a[href]': makeElement({href: url})
     };
-    return {querySelector(selector) { return nodes[selector]; }, identity: name};
+    return {
+      dataset: {sourceEvidence: name === '네이버' ? 'true' : 'false'},
+      querySelector(selector) { return nodes[selector]; },
+      identity: name
+    };
   });
   const controls = Object.fromEntries(
     ['v6-query', 'v6-results', 'v6-tabs', 'v6-form', 'v6-count', 'v6-empty',
@@ -78,7 +82,7 @@ test('directory controls are populated using the existing server HTML cards', ()
   assert.equal(controls['v6-results'].children.length, 3);
   assert.strictEqual(controls['v6-results'].children[0], cards[0]);
   assert.equal(controls['v6-count'].textContent, '등록 사이트 3개');
-  assert.equal(controls['v6-tabs'].children.length, 14);
+  assert.equal(controls['v6-tabs'].children.length, 15);
 });
 
 test('category filtering reuses the same cards and updates the URL', () => {
@@ -90,6 +94,40 @@ test('category filtering reuses the same cards and updates the URL', () => {
   assert.strictEqual(controls['v6-results'].children[0], cards[1]);
   assert.equal(new URL(location.href).searchParams.get('category'), '커뮤니티');
   assert.equal(community.attributes['aria-pressed'], 'true');
+});
+
+test('source-evidence filter is shareable, combines with search and can be cleared', () => {
+  const {controls, cards, location} = makeFixture();
+  const evidence = controls['v6-tabs'].children.find(button =>
+    button.dataset.sourceEvidence === 'true');
+  assert.ok(evidence);
+  assert.equal(evidence.textContent, '출처 대조 기록 1개');
+  evidence.listeners.click();
+  assert.equal(controls['v6-results'].children.length, 1);
+  assert.strictEqual(controls['v6-results'].children[0], cards[0]);
+  assert.equal(controls['v6-count'].textContent, '출처 대조 기록이 있는 사이트 1개');
+  assert.equal(new URL(location.href).searchParams.get('source'), 'evidence');
+  assert.equal(evidence.attributes['aria-pressed'], 'true');
+
+  const input = controls['v6-query'];
+  input.value = '네이버';
+  input.listeners.input();
+  assert.equal(controls['v6-results'].children.length, 1);
+  assert.equal(controls['v6-count'].textContent, '‘네이버’ 출처 대조 검색 결과 1개');
+
+  evidence.listeners.click();
+  assert.equal(controls['v6-results'].children.length, 1);
+  assert.equal(new URL(location.href).searchParams.has('source'), false);
+  assert.equal(evidence.attributes['aria-pressed'], 'false');
+});
+
+test('shared evidence-filter URL restores its selected state', () => {
+  const {controls, cards} = makeFixture('https://linkwiki.info/directory?source=evidence');
+  assert.equal(controls['v6-results'].children.length, 1);
+  assert.strictEqual(controls['v6-results'].children[0], cards[0]);
+  const evidence = controls['v6-tabs'].children.find(button =>
+    button.dataset.sourceEvidence === 'true');
+  assert.equal(evidence.attributes['aria-pressed'], 'true');
 });
 
 test('pasted full URL filters source cards without creating replacements', () => {
@@ -157,5 +195,5 @@ test('all published catalog categories are available as directory filters', () =
     assert.ok(catalog.some(site => site.category === category), 'empty category ' + category);
   }
   assert.equal(publishedNames.length, 13);
-  assert.equal(filterNames.length, 14); // includes "전체"
+  assert.equal(filterNames.length, 15); // includes "전체" and evidence filter
 });
