@@ -22,6 +22,13 @@ class HomepageGuideDiscoveryTests(unittest.TestCase):
                 self.assertIn(label, markup)
         self.assertNotIn('href="https://', markup)
 
+    def test_homepage_metadata_covers_all_three_primary_directory_intents(self):
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        expected = "주소모음·링크모음·사이트모음 | 링크위키"
+        self.assertIn("<title>" + expected + "</title>", html)
+        self.assertIn('property="og:title" content="' + expected + '"', html)
+        self.assertIn('name="twitter:title" content="' + expected + '"', html)
+
     def test_missing_guide_refuses_to_publish_fake_link(self):
         with TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, "Missing published homepage search guide"):
