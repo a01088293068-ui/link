@@ -72,7 +72,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
         html = built.read_text(encoding="utf-8")
         for name in NAMES:
             self.assertIn(name, html)
-        self.assertEqual(html.count('<article class="v6-card" id="site-'), len(self.records))
+        self.assertEqual(html.count('<article class="v6-card" data-source-evidence="'), len(self.records))
         self.assertIn("주소정보누리집 도로명주소", html)
         self.assertIn("국민안전24", html)
         self.assertIn("https://www.safekorea.go.kr/", html)
