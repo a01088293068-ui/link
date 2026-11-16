@@ -38,7 +38,8 @@ def fixture(card_count=13):
                           + listing + '</body></html>')
     sitemap = ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
                + ''.join('<url><loc>'+ORIGIN+path+'</loc></url>'
-                         for path in ('/','/directory','/categories/'))
+                         for path in ('/','/directory','/categories/')
+                         + tuple('/categories/' + slug for slug in CATEGORIES))
                + '</urlset>')
     return directory, home, source, category, sitemap
 
@@ -99,6 +100,16 @@ class DirectoryReleaseGateTests(unittest.TestCase):
         issues = validate(*parts)
         self.assertIn("category has noindex: shopping", issues)
         self.assertIn("category lacks crawlable directory navigation: shopping", issues)
+
+    def test_sitemap_requires_every_canonical_category_url(self):
+        parts = list(fixture())
+        parts[4] = parts[4].replace(
+            '<url><loc>'+ORIGIN+'/categories/finance</loc></url>', ''
+        )
+        self.assertIn(
+            'sitemap missing category: '+ORIGIN+'/categories/finance',
+            validate(*parts),
+        )
 
     def test_sitemap_requires_canonical_directory(self):
         parts = list(fixture())
