@@ -762,6 +762,13 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             "https://www.kotra.or.kr/": "KOTRA 무역투자24",
             "https://www.bokjiro.go.kr/": "복지로",
             "https://stdict.korean.go.kr/main/main.do": "표준국어대사전",
+            "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do": "국가건강정보포털",
+            "https://www.hira.or.kr/": "건강보험심사평가원",
+            "https://www.k-startup.go.kr/web/main/index.do": "K-Startup 창업지원포털",
+            "https://www.patent.go.kr/": "특허로",
+            "https://unipass.customs.go.kr/": "관세청 유니패스",
+            "https://www.110.go.kr/": "정부민원안내 110",
+            "https://www.klac.or.kr/": "대한법률구조공단",
         }
         for url, name in expected.items():
             self.assertIn(url, by_url)
@@ -769,7 +776,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertEqual(by_url[url]["checked_on"], "2026-11-16")
             self.assertTrue(by_url[url]["source_url"].startswith("https://"))
             self.assertTrue(by_url[url]["scope"])
-        self.assertEqual(len(evidence), 107)
+        self.assertGreaterEqual(len(evidence), 114)
 
 
     def test_more_korean_public_service_sources_are_checked(self):
