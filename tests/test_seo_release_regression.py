@@ -373,10 +373,10 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
-        title = f"사이트모음 전체 목록 | {PUBLISHED_COUNT}개 사이트 검색·비교 - 링크위키"
-        heading = "사이트모음: 이름·도메인으로 사이트 비교"
+        title = f"주소모음·링크모음·사이트모음 전체 목록 | {PUBLISHED_COUNT}개 사이트 검색·비교 - 링크위키"
+        heading = "주소모음·링크모음·사이트모음: 이름과 도메인으로 찾기"
         self.assertIn("<title>" + title + "</title>", html)
-        self.assertIn(f"{PUBLISHED_COUNT}개 사이트의 이름·주소·설명을 검색", html)
+        self.assertIn(f"주소모음과 링크모음에서 국내외 {PUBLISHED_COUNT}개 사이트의 이름·도메인·이용 목적을 검색하고 비교하세요.", html)
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
