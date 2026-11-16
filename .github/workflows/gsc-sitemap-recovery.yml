@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'seo/sitemap_submit.py'
+      - 'seo/auto_seo.py'
       - 'tests/test_sitemap_submit.py'
       - '.github/workflows/gsc-sitemap-recovery.yml'
       # Recheck Google discovery after substantive public URL or sitemap changes.
@@ -34,7 +35,7 @@ concurrency:
 jobs:
   submit:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
