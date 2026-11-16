@@ -244,8 +244,13 @@ class LiveReleaseCheckTests(unittest.TestCase):
             '<h2>주소를 열기 전 확인할 사항</h2>'
             '<p>공식 도메인 확인 안내</p></section>'
         )
+        directory_runtime = (
+            '<input id="v6-query"><div id="v6-results"></div>'
+            '<script id="directory-category-schema" type="application/ld+json">{}</script>'
+            + ''.join(f'<a href="{link}">분야</a>' for link in CATEGORY_PATHS)
+        )
         expected = page("/directory", "검색", "사이트모음: 이름·도메인으로 사이트 비교",
-                        block)
+                        block + directory_runtime)
         stale = expected.replace("분야별 탐색 안내", "이전 안내")
         self.assertEqual(release_content_sections(expected, "/directory"), [block])
         self.assertEqual(check_page(expected, expected, "/directory"), [])
