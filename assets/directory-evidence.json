@@ -851,5 +851,59 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.law.go.kr/",
+    "name": "국가법령정보센터",
+    "source_url": "https://www.law.go.kr/main.html",
+    "scope": "법제처 국가법령정보센터의 현행·연혁 법령, 행정규칙, 판례 검색 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nl.go.kr/",
+    "name": "국립중앙도서관",
+    "source_url": "https://www.nl.go.kr/",
+    "scope": "국립중앙도서관 공식 누리집의 소장자료 검색과 저자·단체 정보 검색 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://encykorea.aks.ac.kr/",
+    "name": "한국민족문화대백과",
+    "source_url": "https://encykorea.aks.ac.kr/",
+    "scope": "한국학중앙연구원 한국민족문화대백과의 한국 역사·문화 분야별 항목 및 통합검색 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kotra.or.kr/",
+    "name": "KOTRA 무역투자24",
+    "source_url": "https://www.kotra.or.kr/index.do",
+    "scope": "KOTRA 무역투자24의 수출·해외시장 정보, 지원사업·교육·상담 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bokjiro.go.kr/",
+    "name": "복지로",
+    "source_url": "https://www.bokjiro.go.kr/ssis-tbu/index.do",
+    "scope": "보건복지부·한국사회보장정보원 운영 복지로의 복지서비스 검색·신청·복지멤버십 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://stdict.korean.go.kr/main/main.do",
+    "name": "표준국어대사전",
+    "source_url": "https://stdict.korean.go.kr/main/main.do",
+    "scope": "국립국어원 표준국어대사전의 통합검색·상세검색 및 표제어 정보 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
