@@ -379,9 +379,13 @@ class SEOReleaseRegressionTests(unittest.TestCase):
                        "국내 포털·공공서비스·커뮤니티·웹툰·스포츠·AI 도구의 등록 설명과 연결 주소를 비교할 수 있습니다.")
         heading = f"{PUBLISHED_COUNT}개 사이트 주소 검색: 이름·도메인·분야별 목록"
         self.assertIn("<title>" + title + "</title>", html)
-        self.assertIn('name="description" content="' + description + '"', html)
-        self.assertIn('property="og:description" content="' + description + '"', html)
-        self.assertIn('name="twitter:description" content="' + description + '"', html)
+        import re
+        for attribute, value in (("name", "description"), ("property", "og:description"),
+                                 ("name", "twitter:description")):
+            self.assertRegex(
+                html,
+                r'<meta\\b(?=[^>]*' + attribute + r'="' + re.escape(value) +
+                r'")(?=[^>]*content="' + re.escape(description) + r'")[^>]*>')
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
