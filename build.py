@@ -671,6 +671,11 @@ def category_decision_guide(slug, records, categories=CATEGORY_LANDING):
     items = ''.join(
         '<li><h3>' + escape(heading) + '</h3><p>' + escape(advice) + '</p></li>'
         for heading, advice in topics)
+    focused_guide = (
+        '<p><a href="/blog/seo-20261116-korean-certification-exam-sites-guide/">'
+        '자격증 시험 접수 사이트 모음: 큐넷·컴활·한국사·SQLD·토익 공식 경로</a></p>'
+        if slug == "education" else ""
+    )
     return (
         '<section class="wrap seo-related-links seo-category-decision" '
         'aria-label="이 분야의 목적별 선택 방법">'
@@ -682,6 +687,7 @@ def category_decision_guide(slug, records, categories=CATEGORY_LANDING):
         '내가 필요한 기능을 정하고 비교 기준을 확인하세요. '
         '이름이 등록됐다는 사실은 최신 접속 상태나 공식 인증을 보증하지 않습니다.</p>'
         '<ol>' + items + '</ol>'
+        + focused_guide +
         '<p><a href="/guides/address-check">사이트 주소 확인 방법</a> · '
         '<a href="/directory">전체 등록 사이트에서 다시 검색</a></p>'
         '</section>'
