@@ -331,7 +331,7 @@ def polish_home_intent(home):
                 raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
         else:
             raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
-    title = f"주소모음·링크모음 | {total_sites}개 사이트 검색 - 링크위키"
+    title = "주소모음·링크모음·사이트모음 | 링크위키"
     description = (
         f"주소모음·링크모음에서 {total_sites}개 사이트를 이름·도메인·분야별로 찾고, "
         "사이트모음의 설명과 이용 목적을 비교하세요. 외부 주소의 공식성 및 실시간 접속 여부는 "
