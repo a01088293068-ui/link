@@ -45,6 +45,17 @@ def fixture(card_count=13):
     return directory, home, source, category, sitemap
 
 class DirectoryReleaseGateTests(unittest.TestCase):
+    def test_homepage_and_directory_have_distinct_search_intents(self):
+        root = Path(__file__).resolve().parents[1]
+        home = (root / "index.html").read_text(encoding="utf-8")
+        directory = (root / "directory.html").read_text(encoding="utf-8")
+        home_title = home.split("<title>", 1)[1].split("</title>", 1)[0]
+        directory_title = directory.split("<title>", 1)[1].split("</title>", 1)[0]
+        self.assertIn("주소모음·링크모음·사이트모음", home_title)
+        self.assertIn("347개 사이트 주소 검색", directory_title)
+        self.assertNotEqual(home_title, directory_title)
+        self.assertIn("<h1 id=\"directory-heading\">347개 사이트 주소 검색", directory)
+
     def test_complete_static_directory_passes(self):
         self.assertEqual(validate(*fixture()), [])
 
