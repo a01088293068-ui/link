@@ -2024,6 +2024,19 @@ def build():
     directory_html = sync_directory_count(directory_html, len(records))
     directory_evidence = load_directory_evidence(records)
     directory_html = replace_directory_catalog_cards(directory_html, records, directory_evidence)
+    evidence_summary = (
+        '<p class="directory-evidence-summary"><strong>출처 대조 기록 '
+        + str(len(directory_evidence)) + '건</strong> · 공개 목록 '
+        + str(len(records)) + '개 중 이 항목들은 서비스 페이지 또는 관련 기관 안내와 '
+        '등록 주소·이용 범위를 대조했습니다. '
+        '<a href="#directory-source-evidence">대조한 출처와 확인일 보기</a></p>'
+    )
+    lead_end = '</p><nav aria-label="분야별 사이트모음 바로가기"'
+    if directory_html.count(lead_end) != 1:
+        raise RuntimeError("Directory lead insertion point changed; review required")
+    directory_html = directory_html.replace(
+        lead_end, '</p>' + evidence_summary + '<nav aria-label="분야별 사이트모음 바로가기"', 1
+    )
     # Lead with search before the category and editorial shortcuts.
     search_form = re.compile(r'<form class="v6-search" id="v6-form".*?</form>', re.S)
     forms = search_form.findall(directory_html)
