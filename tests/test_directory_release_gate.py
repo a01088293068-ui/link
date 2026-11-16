@@ -3,8 +3,16 @@ import unittest
 from pathlib import Path
 from seo.directory_release_gate import validate, CATEGORIES, ORIGIN
 
-def fixture(card_count=2):
-    source = [{"name": f"Example {i}", "category":"검색·포털"} for i in range(card_count)]
+def fixture(card_count=13):
+    labels = {
+        "community":"커뮤니티", "korean":"한인교민", "comics-directory":"만화",
+        "webtoon":"만화·웹툰", "ai":"AI 도구", "search":"검색·포털",
+        "sports":"스포츠", "video":"영상·OTT", "finance":"금융·경제",
+        "education":"교육·취업", "news":"뉴스·언론", "shopping":"쇼핑·가격비교",
+        "travel":"생활·교통·여행",
+    }
+    source = [{"name": f"Example {slug}", "category": label}
+              for slug, label in labels.items()]
     cards = ''.join('<article class="v6-card" id="site-'+format(i,'014x')+'"><h3>Example</h3>'
                     '<a href="https://example.org/">사이트 방문</a></article>'
                     for i in range(card_count))
@@ -20,9 +28,14 @@ def fixture(card_count=2):
     home = ('<html><head><title>주소모음 검색</title>'
             '<link rel="canonical" href="'+ORIGIN+'/"></head><body>'
             '<a href="/directory">directory</a></body></html>')
-    category = {slug: ('<html><head><link rel="canonical" href="'+ORIGIN+
-                       '/categories/'+slug+'"></head><body></body></html>')
-                for slug in CATEGORIES}
+    category = {}
+    for slug in CATEGORIES:
+        listing = ('<article class="item"><strong>Example '+slug+'</strong>'
+                   '<a href="https://example.org/">사이트 방문</a></article>')
+        category[slug] = ('<html><head><link rel="canonical" href="'+ORIGIN+
+                          '/categories/'+slug+'"></head><body>'
+                          '<a href="/directory">전체 목록</a><a href="/categories/">분야</a>'
+                          + listing + '</body></html>')
     sitemap = ('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
                + ''.join('<url><loc>'+ORIGIN+path+'</loc></url>'
                          for path in ('/','/directory','/categories/'))
