@@ -18,7 +18,7 @@ def fixture(card_count=13):
                     for i in range(card_count))
     nav = ''.join(f'<a href="/categories/{slug}">category</a>' for slug in CATEGORIES)
     directory = ('<html><head><link rel="canonical" href="'+ORIGIN+'/directory">'
-                 '</head><body><h1>주소모음·링크모음·사이트모음</h1>'
+                 '</head><body><h1>' + str(card_count) + '개 사이트 주소 검색: 이름·도메인·분야별 목록</h1>'
                  f'<p>{card_count}개 등록 사이트</p><section>주소모음 링크모음 사이트모음</section><nav>{nav}</nav>'
                  '<form id="v6-form"></form>'
                  f'<div id="v6-results">{cards}</div>'
