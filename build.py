@@ -1361,7 +1361,7 @@ def directory_source_evidence_section(records, evidence):
         'aria-labelledby="directory-source-evidence-heading">'
         '<h2 id="directory-source-evidence-heading">공식 출처와 대조한 사이트 주소 기록</h2>'
         '<p>현재 공개 목록 ' + str(len(records)) + '개 중 '
-        + str(len(rows)) + '개 항목은 서비스 페이지 또는 관련 기관 안내를 출처로 삼아 '
+        + str(len(rows)) + '건의 항목은 서비스 페이지 또는 관련 기관 안내를 출처로 삼아 '
         '표시된 연결 주소와 이용 범위를 대조한 기록이 있습니다. 각 항목의 공식 근거를 직접 확인할 수 있습니다.</p>'
         '<p>확인일은 출처와 등록 주소를 대조한 날짜이며, 현재 접속 가능 여부·운영 주체의 소유권·보안·서비스 품질을 보증하지 않습니다. '
         '아래에 표시되지 않은 항목은 이 출처 대조 기록에 포함되지 않았습니다.</p>'
