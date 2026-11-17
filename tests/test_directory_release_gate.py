@@ -52,9 +52,11 @@ class DirectoryReleaseGateTests(unittest.TestCase):
         home_title = home.split("<title>", 1)[1].split("</title>", 1)[0]
         directory_title = directory.split("<title>", 1)[1].split("</title>", 1)[0]
         self.assertIn("주소모음·링크모음·사이트모음", home_title)
-        self.assertIn("등록 사이트 전체 목록 검색", directory_title)\n        self.assertNotIn("주소모음·링크모음·사이트모음", directory_title)
+        self.assertIn("등록 사이트 전체 목록 검색", directory_title)
+        self.assertNotIn("주소모음·링크모음·사이트모음", directory_title)
         self.assertNotEqual(home_title, directory_title)
-        self.assertIn("<h1 id=\"directory-heading\">주소모음·링크모음·사이트모음 전체 목록", directory)
+        self.assertIn("<h1 id=\"directory-heading\">등록 사이트 전체 목록", directory)
+        self.assertIn("이름·도메인 검색", directory)
 
     def test_complete_static_directory_passes(self):
         self.assertEqual(validate(*fixture()), [])
