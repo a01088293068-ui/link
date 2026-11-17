@@ -33,7 +33,9 @@ class SharedFooterRegressionTests(unittest.TestCase):
         self.assertIn(".footer-cta{", css)
         self.assertIn("@media(max-width:680px)", css)
         self.assertIn(".footer-cta-actions>.footer-primary-action", css)
-        self.assertIn("assets/style.css?v=footer-system-20261117", builder)
+        self.assertIn(".main-site-inline a", css)
+        self.assertIn(".guide-related-links a", css)
+        self.assertIn("assets/style.css?v=footer-system-20261117-v2", builder)
 
 
 if __name__ == "__main__":
