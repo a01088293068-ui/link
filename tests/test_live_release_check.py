@@ -410,6 +410,28 @@ class LiveReleaseCheckTests(unittest.TestCase):
                             for error in check_page(home, stale, "/")))
         self.assertEqual(check_page(home, home, "/"), [])
 
+    def test_homepage_source_evidence_panel_must_match_live_release(self):
+        from seo.live_release_check import release_content_sections
+        block = (
+            '<section class="wrap seo-related-links seo-home-evidence" '
+            'aria-label="등록 주소의 출처 대조 기록">'
+            '<h2>등록 주소의 출처 대조 기록 공개</h2>'
+            '<p>공개 목록 352개 가운데 148건의 출처 대조 기록이 있습니다. '
+            '이 수치는 전체 목록의 실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다.</p>'
+            '<p><a href="/directory#directory-source-evidence">대조한 출처와 확인일 보기</a>'
+            ' · <a href="/guides/directory-maintenance">목록 관리 및 수정 기록</a></p>'
+            '</section>'
+        )
+        expected = page("/", "주소모음·링크모음·사이트모음", "352개 사이트 검색", block)
+        stale = expected.replace("148건의 출처 대조 기록", "이전 출처 안내")
+        self.assertEqual(release_content_sections(expected, "/"), [block])
+        self.assertEqual(check_page(expected, expected, "/"), [])
+        self.assertTrue(any("directory examples differ" in issue
+                            for issue in check_page(expected, stale, "/")))
+        missing = expected.replace(block, "")
+        self.assertTrue(any("directory examples differ" in issue
+                            for issue in check_page(expected, missing, "/")))
+
     def test_detects_stale_directory_category_overview(self):
         from seo.live_release_check import release_content_sections
         links = ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS)
