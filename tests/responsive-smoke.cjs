@@ -61,12 +61,14 @@ const report = [];
             ctaWidth: cta?.getBoundingClientRect().width ?? 0,
             menu: Boolean(menu),
             toggle: Boolean(toggle),
+            gridColumns: document.querySelector('#v6-results') ? getComputedStyle(document.querySelector('#v6-results')).gridTemplateColumns.trim().split(/\\s+/).length : 0,
           };
         });
         if (state.documentWidth > viewport.width + 1 || state.bodyWidth > viewport.width + 1) {
           failures.push(`${viewport.name} ${route.path}: horizontal overflow (document=${state.documentWidth}, viewport=${viewport.width})`);
         }
         if (!state.footer || !state.cta) failures.push(`${viewport.name} ${route.path}: shared footer/CTA missing`);
+        if (viewport.isMobile && route.name === "directory" && state.gridColumns > 1) failures.push(`mobile /directory: result cards still use ${state.gridColumns} columns`);
         if (!state.stylesheetLinks.length) failures.push(`${viewport.name} ${route.path}: style.css link missing`);
         for (const asset of state.stylesheetLinks) {
           if (!/\?v=[a-f0-9]{12}$/.test(asset.href)) failures.push(`${viewport.name} ${route.path}: stylesheet cache fingerprint missing: ${asset.href}`);
