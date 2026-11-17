@@ -378,6 +378,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         from seo.live_release_check import release_content_sections
         links = ''.join(f'<a href="{link}">분야</a>' for link in CATEGORY_PATHS)
         expected = page("/categories/", "분야별", "분야별 사이트모음",
+                        '<a href="/directory">전체 검색</a>'
                         '<article class="v6-card"><p>등록 예시: ChatGPT</p></article>' + links)
         stale = expected.replace("ChatGPT", "오래된 목록")
         self.assertEqual(len(release_content_sections(expected, "/categories/")), 1)
@@ -632,6 +633,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
             (dist / "index.html").write_text(home, encoding="utf-8")
             (dist / "directory.html").write_text(directory, encoding="utf-8")
             hub = page("/categories/", "분야별", "분야별 사이트모음",
+                       '<a href="/directory">전체 검색</a>' +
                        ''.join(f'<a href="{link}">보기</a>' for link in CATEGORY_PATHS))
             (dist / "categories").mkdir()
             (dist / "categories/index.html").write_text(hub, encoding="utf-8")
