@@ -1292,5 +1292,14 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://notebook.google.com/",
+    "name": "Gemini Notebook (구 NotebookLM)",
+    "source_url": "https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/",
+    "scope": "Google 공식 2026-07-16 발표에서 NotebookLM의 Gemini Notebook 개명과 독립형 자료 조사 서비스 유지 내용을 대조하고, 목록 연결 주소를 새 서비스 도메인과 일치시킴",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "official_announcement"
   }
 ]
