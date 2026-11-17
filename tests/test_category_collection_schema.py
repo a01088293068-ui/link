@@ -54,8 +54,10 @@ class CategoryCollectionSchemaTests(unittest.TestCase):
         self.assertEqual(data["@type"], "CollectionPage")
         self.assertEqual(data["url"], "https://linkwiki.info/categories/education")
         items = data["mainEntity"]["itemListElement"]
-        self.assertEqual(data["mainEntity"]["numberOfItems"], 27)
-        self.assertEqual(len(items), 27)
+        records = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
+        expected_count = sum(record.get("category") == "교육·취업" for record in records)
+        self.assertEqual(data["mainEntity"]["numberOfItems"], expected_count)
+        self.assertEqual(len(items), expected_count)
         self.assertTrue(all(item.get("name") and item.get("url") for item in items))
 
 
