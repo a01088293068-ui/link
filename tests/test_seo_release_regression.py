@@ -374,13 +374,12 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         html = (root / "dist/directory.html").read_text(encoding="utf-8")
         script = (root / "dist/assets/directory.js").read_text(encoding="utf-8")
-        title = f"주소모음·링크모음·사이트모음 전체 목록 | {PUBLISHED_COUNT}개 사이트 검색·비교 - 링크위키"
-        description = (f"주소모음·링크모음에서 국내외 {PUBLISHED_COUNT}개 사이트를 이름·도메인·분야별로 찾고, "
-                       "각 사이트의 이용 목적과 연결 주소를 비교하세요. 국내 공공서비스·커뮤니티·웹툰·"
-                       "스포츠·AI 등 한국어 이용자를 위한 사이트모음입니다.")
-        heading = f"주소모음·링크모음·사이트모음 전체 목록 · {PUBLISHED_COUNT}개 사이트 검색"
+        title = f"등록 사이트 전체 목록 검색 | {PUBLISHED_COUNT}개 사이트 이름·도메인·분야별 찾기 - 링크위키"
+        description = (f"한국어 이용자를 위한 {PUBLISHED_COUNT}개 사이트를 이름·도메인·13개 분야로 검색하고, "
+                       "각 서비스의 이용 목적과 연결 주소를 비교하세요. 필요한 사이트를 빠르게 찾고 "
+                       "분야별 목록으로 이동할 수 있습니다.")
+        heading = f"등록 사이트 전체 목록 · {PUBLISHED_COUNT}개 사이트 이름·도메인 검색"
         self.assertIn("<title>" + title + "</title>", html)
-        import re
         meta_tags = re.findall(r'<meta\b[^>]*>', html)
         for attribute, value in (("name", "description"), ("property", "og:description"),
                                  ("name", "twitter:description")):
@@ -392,40 +391,36 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('property="og:title"', html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('<h1 id="directory-heading">' + heading + "</h1>", html)
-        import re
         self.assertRegex(html, r'<meta\b(?=[^>]*property="og:title")(?=[^>]*content="' + re.escape(title) + r'")[^>]*>')
         self.assertRegex(html, r'<meta\b(?=[^>]*name="twitter:title")(?=[^>]*content="' + re.escape(title) + r'")[^>]*>')
-        self.assertIn("'주소모음·링크모음·사이트모음 전체 목록 · ' + entries.length + '개 사이트 검색'", script)
+        self.assertIn("'등록 사이트 전체 목록 · ' + entries.length + '개 사이트 이름·도메인 검색'", script)
         self.assertNotIn("344개 사이트 주소 검색", script)
         self.assertIn('<meta content="https://linkwiki.info/directory" property="og:url"/>', html)
         self.assertIn('href="https://linkwiki.info/directory"', html)
         self.assertIn('name="robots"', html)
         self.assertIn('id="v6-form"', html)
         self.assertIn('id="v6-results"', html)
-        self.assertEqual(html.count('<h1'), 1)
+        self.assertEqual(html.count("<h1"), 1)
         for keyword in ("주소모음", "링크모음", "사이트모음"):
-            self.assertIn(keyword, title)
-            self.assertIn(keyword, heading)
-        self.assertIn("등록된 " + str(PUBLISHED_COUNT) + "개 사이트를 이름·도메인·분야로 찾고", html)
+            self.assertIn(keyword, html)
+            self.assertNotIn(keyword, title)
+            self.assertNotIn(keyword, heading)
+        self.assertIn("등록된 " + str(PUBLISHED_COUNT) + "개 사이트를 이름·도메인·분야로 검색하고", html)
         self.assertNotIn("분야별 사이트모음·주소모음 검색", script)
 
     def test_homepage_and_directory_have_distinct_search_intent_titles(self):
         root = Path(__file__).resolve().parents[1] / "dist"
         home = (root / "index.html").read_text(encoding="utf-8")
         directory = (root / "directory.html").read_text(encoding="utf-8")
-        import re
         get_title = lambda html: re.search(r"<title>(.*?)</title>", html, re.S).group(1)
         home_title = get_title(home)
         directory_title = get_title(directory)
         self.assertNotEqual(home_title, directory_title)
         self.assertIn(f"{PUBLISHED_COUNT}개 사이트", directory_title)
-        self.assertIn("전체 목록", directory_title)
-        self.assertIn("주소모음", directory_title)
-        self.assertIn("링크모음", directory_title)
-        self.assertIn("사이트모음", directory_title)
-        self.assertIn("주소모음", home_title)
-        self.assertIn("링크모음", home_title)
-        # The directory remains the indexable target, never the legacy .html URL.
+        self.assertIn("등록 사이트 전체 목록 검색", directory_title)
+        for keyword in ("주소모음", "링크모음", "사이트모음"):
+            self.assertIn(keyword, home_title)
+            self.assertNotIn(keyword, directory_title)
         self.assertIn('href="https://linkwiki.info/directory"', directory)
         self.assertNotIn('href="https://linkwiki.info/directory.html" rel="canonical"', directory)
 
@@ -440,8 +435,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
                   '<p>97개 등록 사이트의 설명</p><p>97개 사이트 검색</p>'
                   '<p>등록 사이트 97개</p><p>8개 분야</p>')
         changed = sync_directory_count(sample, 98)
-        self.assertIn("주소모음·링크모음·사이트모음 전체 목록 | 98개 사이트 검색·비교", changed)
-        self.assertIn("주소모음·링크모음에서 국내외 98개 사이트를 이름·도메인·분야별로 찾고", changed)
+        self.assertIn("등록 사이트 전체 목록 검색 | 98개 사이트 이름·도메인·분야별 찾기 - 링크위키", changed)
+        self.assertIn("한국어 이용자를 위한 98개 사이트를 이름·도메인·13개 분야로 검색하고", changed)
         self.assertIn("98개 등록 사이트의 설명", changed)
         self.assertIn("등록 사이트 98개", changed)
         self.assertIn("8개 분야", changed)
