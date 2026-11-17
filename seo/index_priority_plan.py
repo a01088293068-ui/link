@@ -134,11 +134,14 @@ def render(snapshot):
     article_rows = sorted(
         (row for row in snapshot.get("inspections") or []
          if isinstance(row, dict)
-         and str(row.get("url") or "").startswith(SITE + "/blog/")
-         and str(row.get("url") or "").endswith("/")),
+         and (
+             (str(row.get("url") or "").startswith(SITE + "/blog/")
+              and str(row.get("url") or "").endswith("/"))
+             or str(row.get("url") or "") == SITE + "/guides/address-check"
+         )),
         key=lambda row: str(row.get("url") or ""),
     )
-    lines.extend(["", "## 핵심 가이드의 Google 저장 색인 상태", "",
+    lines.extend(["", "## 핵심 가이드 및 주소 확인 페이지의 Google 저장 색인 상태", "",
                   "- URL Inspection API로 실제 조회된 글만 표시합니다. "
                   "표의 부재는 색인 실패나 노출 0회를 뜻하지 않습니다."])
     if not article_rows:
@@ -149,7 +152,14 @@ def render(snapshot):
         for row in article_rows:
             url = str(row["url"])
             state, freshness, action = decide(row, "")
-            if state == "색인됨":
+            if url == SITE + "/guides/address-check":
+                if state == "크롤링 후 미색인":
+                    action = "주소 확인 절차의 독립적 가치·최신성·공식 출처 링크 점검"
+                elif state == "Google 발견 기록 없음":
+                    action = "카테고리 허브·디렉터리에서 내부 링크와 사이트맵 발견 경로 확인"
+                else:
+                    action = "주소 확인 관련 검색어의 실제 노출 URL과 색인 상태 추적"
+            elif state == "색인됨":
                 action = "검색어별 실제 노출 URL과 클릭·순위 추적"
             elif state == "크롤링 후 미색인":
                 action = "글의 독립적인 검색 목적과 원문 가치 확인; 중복 글 양산 금지"
