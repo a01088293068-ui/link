@@ -91,7 +91,18 @@ def directory_script_versions(html):
     return versions
 
 
-def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None, category_sources=None):
+def maintenance_signature(html):
+    """Extract the published total and category counts from the maintenance guide."""
+    total = re.search(r'공개 목록에는 현재\s*(\d+)개 사이트', html)
+    rows = re.findall(
+        r'<tr>\s*<th><a href="/categories/([^"]+)">.*?</a></th>'
+        r'\s*<td>(\d+)개</td><td>([^<]*)</td>\s*</tr>',
+        html, re.S,
+    )
+    return (int(total.group(1)) if total else None, tuple(rows))
+
+
+def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None, category_sources=None, maintenance_source=None):
     errors, observations = [], []
     source = Page()
     source.feed(source_html)
@@ -215,6 +226,40 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
         except Exception as exc:
             errors.append(f"{path}: fetch failed ({type(exc).__name__}: {exc})")
 
+    # The maintenance guide must be built from the same live catalogue as
+    # the homepage and directory. A stale count here undermines the public
+    # evidence trail even when the main directory itself is current.
+    if maintenance_source is not None:
+        path = "/guides/directory-maintenance"
+        try:
+            status, final, body, headers = load(path)
+            expected = Page()
+            expected.feed(maintenance_source)
+            actual = Page()
+            actual.feed(body)
+            expected_signature = maintenance_signature(maintenance_source)
+            actual_signature = maintenance_signature(body)
+            observations.append(
+                f"{path}: built {expected_signature[0]} sites / "
+                f"{len(expected_signature[1])} category rows; live "
+                f"{actual_signature[0]} sites / {len(actual_signature[1])} category rows")
+            if status != 200 or final != BASE + path:
+                errors.append(f"{path}: noncanonical status/redirect")
+            if actual.canonical != [BASE + path]:
+                errors.append(f"{path}: canonical mismatch")
+            if expected.value("h1") != actual.value("h1"):
+                errors.append(f"{path}: live heading differs from built output")
+            if expected_signature[0] is None or not expected_signature[1]:
+                errors.append(f"{path}: generated catalogue counts missing")
+            if actual_signature != expected_signature:
+                errors.append(f"{path}: live catalogue totals/category counts differ from build")
+            if any(re.search(r"\\bnoindex\\b", x, re.I) for x in actual.robots):
+                errors.append(f"{path}: HTML noindex")
+            if re.search(r"\\bnoindex\\b", str(headers.get("X-Robots-Tag", "")), re.I):
+                errors.append(f"{path}: HTTP noindex")
+        except Exception as exc:
+            errors.append(f"{path}: fetch error ({type(exc).__name__}: {exc})")
+
     try:
         status, final, body, _ = load("/robots.txt")
         observations.append(f"/robots.txt: HTTP {status} -> {final}")
@@ -290,6 +335,7 @@ def main():
         category_sources={
             "/categories/education": Path("dist/categories/education.html").read_text(encoding="utf-8"),
         },
+        maintenance_source=Path("dist/guides/directory-maintenance.html").read_text(encoding="utf-8"),
     )
     print("# Public release consistency (NOT Google indexing or search rankings)")
     for line in observations: print("- " + line)
