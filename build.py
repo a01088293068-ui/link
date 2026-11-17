@@ -311,7 +311,7 @@ def polish_home_intent(home):
         (
             f'이 사이트의 {total_sites}개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>',
             f'이 사이트의 {total_sites}개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>'
-            '<p class="lw-search-quicklinks"><a href="/directory.html">전체 주소 목록 보기</a>'
+            '<p class="lw-search-quicklinks"><a href="/directory">전체 주소 목록 보기</a>'
             ' · <a href="/categories/">분야별 사이트 찾기</a></p>',
         ),
         (
