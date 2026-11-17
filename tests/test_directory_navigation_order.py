@@ -36,5 +36,17 @@ class DirectoryNavigationOrderTests(unittest.TestCase):
         ])
 
 
+
+    def test_homepage_shortcuts_prioritize_korean_public_utility_services(self):
+        source = (ROOT / "build.py").read_text(encoding="utf-8")
+        match = re.search(r"KOREAN_FIRST_SEARCH_NAMES = \\((.*?)\\n\\)", source, re.S)
+        self.assertIsNotNone(match)
+        names = re.findall(r'"([^"]+)"', match.group(1))
+        self.assertEqual(names[:12], [
+            "정부24", "국민신문고", "국가법령정보센터", "고용24", "복지로",
+            "국민건강보험공단", "국민연금공단", "건강보험심사평가원",
+            "국가건강정보포털", "위택스", "국세청 홈택스", "기상청 날씨누리",
+        ])
+
 if __name__ == "__main__":
     unittest.main()
