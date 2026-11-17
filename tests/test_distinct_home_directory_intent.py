@@ -37,7 +37,7 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
         import build
         summary = build.homepage_evidence_summary(self.records)
         evidence = build.load_directory_evidence(self.records)
-        self.assertIn(f"공개 목록 {len(self.records)}개 중 {len(evidence)}개 항목", summary)
+        self.assertIn(f"공개 목록 {len(self.records)}개 가운데 {len(evidence)}건의 출처 대조 기록", summary)
         self.assertIn('href="/directory#directory-source-evidence"', summary)
         self.assertIn('href="/guides/directory-maintenance"', summary)
         self.assertIn("실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다", summary)
