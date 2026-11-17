@@ -16,26 +16,37 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "assets" / "verified-directory.json"
 OUTPUT = ROOT / "seo" / "directory-reachability.json"
+NETWORK_ATTEMPTS = 2
 
 
 def check(record, timeout=8):
     url = record["url"]
-    request = Request(url, headers={"User-Agent": "LinkWiki-LinkAudit/1.0 (+https://linkwiki.info/)"})
-    try:
-        with urlopen(request, timeout=timeout) as response:
-            status = response.status
-            final_url = response.url
-    except HTTPError as error:
-        status = error.code
+    request = Request(url, headers={"User-Agent": "LinkWiki-LinkAudit/1.1 (+https://linkwiki.info/)"})
+    last_error = None
+    for attempt in range(NETWORK_ATTEMPTS):
         try:
-            final_url = error.geturl()
-        except (KeyError, AttributeError, OSError):
-            # Synthetic HTTPError instances and some macOS Python 3.9 builds
-            # have no response file from which geturl() can read a URL.
-            final_url = url
-    except (URLError, TimeoutError, OSError) as error:
-        return {"name": record["name"], "url": url, "result": "unreachable",
-                "detail": type(error).__name__}
+            with urlopen(request, timeout=timeout) as response:
+                status = response.status
+                final_url = response.url
+            break
+        except HTTPError as error:
+            status = error.code
+            try:
+                final_url = error.geturl()
+            except (KeyError, AttributeError, OSError):
+                # Synthetic HTTPError instances and some macOS Python builds
+                # have no response file from which geturl() can read a URL.
+                final_url = url
+            break
+        except (URLError, TimeoutError, OSError) as error:
+            last_error = error
+            if attempt + 1 == NETWORK_ATTEMPTS:
+                # A timeout/DNS/socket failure does not prove the destination
+                # is dead. Preserve it as a transient connection error.
+                return {"name": record["name"], "url": url,
+                        "result": "connection_error",
+                        "detail": type(last_error).__name__,
+                        "attempts": NETWORK_ATTEMPTS}
     # HTTP 200 alone is not proof the submitted destination still resolves
     # to the same service. Flag cross-host redirects and HTTPS downgrades for
     # human review, but never silently delete the registered directory link.
@@ -43,7 +54,7 @@ def check(record, timeout=8):
     landed = urlsplit(final_url)
     redirected_host = (landed.hostname or "").lower() != (origin.hostname or "").lower()
     downgraded = origin.scheme == "https" and landed.scheme != "https"
-    # 401/403/429 often reflect access control or bot blocking, not dead links.
+    # 401/403/405/429 often reflect access control or bot blocking, not dead links.
     category = ("access_restricted" if status in (401, 403, 405, 429) else
                 "not_found" if status in (404, 410) else
                 "needs_review" if redirected_host or downgraded else
@@ -77,13 +88,13 @@ def main():
         parser.error("--workers must be in 1..16")
     records = json.loads(args.input.read_text(encoding="utf-8"))
     results = run(records, args.workers)
-    payload = {"checked_at": datetime.now(timezone.utc).isoformat(),
-               "total": len(results), "results": results,
-               "note": "An HTTP check is not an endorsement or proof of current official ownership."}
+    payload = { "checked_at": datetime.now(timezone.utc).isoformat(),
+                "total": len(results), "results": results,
+                "note": "HTTP failures, bot restrictions, and transient connection errors are distinct; an HTTP check is not proof of official ownership." }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     counts = {name: sum(item["result"] == name for item in results)
-              for name in ("ok", "access_restricted", "not_found", "needs_review", "unreachable")}
+              for name in ("ok", "access_restricted", "not_found", "needs_review", "connection_error")}
     print("Directory audit:", counts)
 
 
