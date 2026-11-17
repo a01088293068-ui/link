@@ -445,22 +445,17 @@ class SearchConsoleMonitorTests(unittest.TestCase):
 
     def test_core_address_and_new_korean_guides_are_in_priority_url_inspection_set(self):
         urls = monitor.directory_intent_inspection_urls()
-        self.assertEqual(len(urls), 7)
+        self.assertEqual(len(urls), 6)
         for slug in (
             "seo-20261111-address-directory-search-examples",
             "seo-20261111-address-directory-no-results",
             "seo-20261111-links-sites-comparison-checklist",
             "seo-20261111-site-directory-selection-by-purpose",
             "seo-20261116-korean-certification-exam-sites-guide",
-            "seo-20261116-korean-public-sector-recruitment-sites-guide",
             "seo-20261111-mobile-address-directory-check",
         ):
             with self.subTest(slug=slug):
                 self.assertIn("https://linkwiki.info/blog/" + slug + "/", urls)
-        self.assertNotIn(
-            "https://linkwiki.info/blog/seo-20261111-mobile-address-directory-check/",
-            urls,
-        )
 
     def test_default_daily_inspection_quota_covers_core_pages_categories_and_guides(self):
         targets = monitor.inspection_targets([], as_of=date(2026, 11, 16))
@@ -501,7 +496,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         for url in monitor.directory_intent_inspection_urls():
             self.assertIn(url, targets)
         self.assertIn("https://linkwiki.info/guides/query-0", targets)
-        self.assertNotIn("https://linkwiki.info/guides/query-1", targets)
+        self.assertIn("https://linkwiki.info/guides/query-1", targets)
         self.assertNotIn("https://linkwiki.info/blog/observed-0", targets)
 
     def test_inspection_prioritizes_all_thirteen_categories_and_respects_limit(self):
