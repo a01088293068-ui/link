@@ -33,6 +33,16 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
                 self.assertNotIn(entries[0]["description"], overview)
                 self.assertNotIn("등록 도메인: " + entries[0]["url"], overview)
 
+    def test_homepage_exposes_real_source_evidence_with_scope_caveat(self):
+        import build
+        summary = build.homepage_evidence_summary(self.records)
+        evidence = build.load_directory_evidence(self.records)
+        self.assertIn(f"공개 목록 {len(self.records)}개 중 {len(evidence)}개 항목", summary)
+        self.assertIn('href="/directory#directory-source-evidence"', summary)
+        self.assertIn('href="/guides/directory-maintenance"', summary)
+        self.assertIn("실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다", summary)
+        self.assertNotIn("전체 사이트 검증 완료", summary)
+
     def test_full_directory_is_the_sole_all_records_details_page(self):
         self.assertGreaterEqual(len(self.records), 315)
         path = ROOT / "dist" / "directory.html"
