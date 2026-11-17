@@ -495,7 +495,8 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('id="v6-results"', page)
 
     def test_address_check_guide_uses_canonical_main_service_cta(self):
-        source = (ROOT / "guides" / "address-check.html").read_text(encoding="utf-8")
+        root = Path(__file__).resolve().parents[1]
+        source = (root / "guides" / "address-check.html").read_text(encoding="utf-8")
         self.assertIn('href="https://linkwiki01.com/"', source)
         self.assertIn(">링크위키 바로가기</a>", source)
         self.assertNotIn("링크위키 본 사이트 방문", source)
