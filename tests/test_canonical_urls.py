@@ -68,5 +68,17 @@ class CanonicalURLTests(unittest.TestCase):
         self.assertIn('href="/categories/"', (dist / "index.html").read_text(encoding="utf-8"))
 
 
+    def test_source_sitemaps_contain_only_canonical_public_urls(self):
+        for name in ("sitemap.xml", "sitemap-v2.xml"):
+            sitemap = ET.parse(ROOT / name)
+            urls = [node.text for node in sitemap.getroot().iter()
+                    if node.tag.endswith("}loc")]
+            self.assertTrue(urls, f"{name} must contain URLs")
+            self.assertEqual(len(urls), len(set(urls)), f"{name} has duplicate URLs")
+            for url in urls:
+                self.assertTrue(url.startswith("https://linkwiki.info/"), url)
+                self.assertFalse(url.endswith(".html"), url)
+                self.assertNotIn("http://linkwiki.info/", url, url)
+
 if __name__ == "__main__":
     unittest.main()
