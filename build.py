@@ -457,21 +457,21 @@ def sync_directory_count(html, total_sites):
     if inline_count < 5 or status_count != 1:
         raise RuntimeError("Directory SEO count markers changed; review required")
 
-    heading_text = f"등록 사이트 전체 목록 · {total_sites}개 사이트 이름·도메인 검색"
+    heading_text = f"사이트모음 전체 목록 · {total_sites}개 사이트 이름·도메인 검색"
     if 'id="directory-heading"' in html:
         heading_pattern = re.compile(
-            r'(<h1\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)', re.S)
+            r'(<h1\\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)', re.S)
         html, count = heading_pattern.subn(
             lambda m: m.group(1) + escape(heading_text) + m.group(2),
             html, count=1)
         if count != 1:
             raise RuntimeError("Directory intent heading malformed")
 
-    title = f"등록 사이트 전체 목록 검색 | {total_sites}개 사이트 이름·도메인·분야별 찾기 - 링크위키"
+    title = f"사이트모음 전체 목록 | {total_sites}개 사이트 검색·비교 - 링크위키"
     description = (
-        f"한국어 이용자를 위한 {total_sites}개 사이트를 이름·도메인·13개 분야로 검색하고, "
-        "각 서비스의 이용 목적과 연결 주소를 비교하세요. 필요한 사이트를 빠르게 찾고 "
-        "분야별 목록으로 이동할 수 있습니다."
+        f"{total_sites}개 등록 사이트의 이름·도메인·분야별 정보를 검색하고, "
+        "각 서비스의 설명과 연결 주소를 비교하세요. 검색·포털, 공공서비스, 금융, "
+        "커뮤니티, 웹툰, 스포츠, AI 등 분야별 목록에서 필요한 사이트를 찾을 수 있습니다."
     )
     html, title_count = re.subn(
         r"<title>.*?</title>",
