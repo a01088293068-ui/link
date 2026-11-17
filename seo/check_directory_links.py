@@ -55,7 +55,7 @@ def check(record, timeout=8):
     redirected_host = (landed.hostname or "").lower() != (origin.hostname or "").lower()
     downgraded = origin.scheme == "https" and landed.scheme != "https"
     # 401/403/405/429 often reflect access control or bot blocking, not dead links.
-    category = ("access_restricted" if status in (401, 403, 405, 429) else
+    category = ("access_restricted" if status in (401, 403, 405, 429, 430, 451) else
                 "not_found" if status in (404, 410) else
                 "needs_review" if redirected_host or downgraded else
                 "ok" if 200 <= status < 400 else "needs_review")
