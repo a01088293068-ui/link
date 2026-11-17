@@ -10,6 +10,7 @@ import json
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
+from urllib.parse import urlsplit, urlunsplit
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
@@ -32,10 +33,18 @@ def sitemap_urls(xml_bytes):
     urls = []
     for node in root.findall(NS + "url/" + NS + "loc"):
         value = (node.text or "").strip()
-        if not value.startswith(SITE + "/") or "?" in value or "#" in value:
-            raise ValueError("non-canonical URL in sitemap: " + value)
-        if value.endswith(".html"):
-            raise ValueError("redirecting .html URL in sitemap: " + value)
+        parsed = urlsplit(value)
+        if (parsed.scheme != "https" or parsed.netloc != HOST
+                or parsed.query or parsed.fragment or not parsed.path.startswith("/")):
+            raise ValueError("non-site or malformed URL in sitemap: " + value)
+        path = parsed.path
+        # The tracked source sitemap may contain physical .html filenames;
+        # the release builder publishes their clean extensionless canonicals.
+        if path.endswith("/index.html"):
+            path = path[:-len("index.html")]
+        elif path.endswith(".html"):
+            path = path[:-5]
+        value = urlunsplit(("https", HOST, path, "", ""))
         urls.append(value)
     if len(urls) != len(set(urls)):
         raise ValueError("duplicate URL in sitemap")
