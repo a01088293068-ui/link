@@ -1076,5 +1076,50 @@
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hrdkorea.or.kr/",
+    "name": "한국산업인력공단",
+    "source_url": "https://www.hrdkorea.or.kr/1/2/1",
+    "scope": "한국산업인력공단 공식 사업 안내에서 국가기술·전문자격 시험 운영과 직업능력 개발 업무를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.historyexam.go.kr/",
+    "name": "한국사능력검정시험",
+    "source_url": "https://www.historyexam.go.kr/pageLink.do?link=examInfo",
+    "scope": "국사편찬위원회 시험 소개에서 한국사능력검정시험의 목적과 공식 시험 안내 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.cb.or.kr/",
+    "name": "학점은행제",
+    "source_url": "https://www.cb.or.kr/creditbank/eduIntro/nEduIntro1_1_1.do",
+    "scope": "국가평생교육진흥원 학점은행제 소개에서 학습자 등록·학점인정·학위 취득 제도와 공식 접속 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.academyinfo.go.kr/",
+    "name": "대학알리미",
+    "source_url": "https://m.academyinfo.go.kr/intro/intro0300/intro.do",
+    "scope": "대학알리미 소개에서 고등교육기관 정보공시 항목과 운영 주체, 공식 서비스 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.krivet.re.kr/",
+    "name": "한국직업능력연구원 KRIVET",
+    "source_url": "https://krivet.re.kr/kor/sub.do?menuSn=34",
+    "scope": "한국직업능력연구원 기관 소개에서 직업교육훈련·자격제도 연구와 기관 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
   }
 ]
