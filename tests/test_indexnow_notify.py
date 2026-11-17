@@ -22,6 +22,7 @@ class IndexNowNotifyTests(unittest.TestCase):
             SITE + "/categories/community",
             SITE + "/categories/ai",
             SITE + "/guides/security",
+            SITE + "/blog/",
             SITE + "/blog/new-guide/",
         }
 
