@@ -1,5 +1,32 @@
 [
   {
+    "url": "https://www.1365.go.kr/vols/main.do",
+    "name": "1365 자원봉사포털",
+    "source_url": "https://www.1365.go.kr/vols/main.do",
+    "scope": "1365 자원봉사포털의 전국 봉사활동 검색·신청 및 활동 실적 확인 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.29cm.co.kr/",
+    "name": "29CM",
+    "source_url": "https://www.29cm.co.kr/",
+    "scope": "29CM 공식 첫 화면에서 패션·라이프스타일·컬처 상품 큐레이션 서비스와 주소를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hira.or.kr/",
+    "name": "건강보험심사평가원",
+    "source_url": "https://www.hira.or.kr/main.do",
+    "scope": "건강보험심사평가원 공식 누리집에서 요양기관업무포털·병원평가통합포털·보건의료 빅데이터 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://ecrm.police.go.kr/minwon/main",
     "name": "경찰청 사이버범죄 신고시스템 ECRM",
     "source_url": "https://ecrm.police.go.kr/minwon/crs/quick/process",
@@ -9,10 +36,370 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.juso.go.kr/",
-    "name": "주소정보누리집 도로명주소",
-    "source_url": "https://www.juso.go.kr/",
-    "scope": "주소정보누리집의 주소 검색 서비스와 연결 주소를 대조",
+    "url": "https://www.khan.co.kr/",
+    "name": "경향신문",
+    "source_url": "https://www.khan.co.kr/",
+    "scope": "경향신문 공식 홈페이지의 뉴스·기사 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.work24.go.kr/",
+    "name": "고용24",
+    "source_url": "https://www.work24.go.kr/",
+    "scope": "고용24 첫 화면의 구직·실업급여·직업훈련 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.moel.go.kr/",
+    "name": "고용노동부",
+    "source_url": "https://www.moel.go.kr/",
+    "scope": "고용노동부 공식 홈페이지의 고용·노동 정책, 법령, 보도자료 및 근로자·사업주 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.data.go.kr/",
+    "name": "공공데이터포털",
+    "source_url": "https://www.data.go.kr/",
+    "scope": "공공데이터포털 첫 화면의 공공데이터 검색·활용 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kopis.or.kr/",
+    "name": "공연예술통합전산망 KOPIS",
+    "source_url": "https://kopis.or.kr/mob/cs/csInfo.do",
+    "scope": "공연예술통합전산망 소개에서 공연 예매·취소 정보 집계와 공연정보·통계 제공 목적 및 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://unipass.customs.go.kr/",
+    "name": "관세청 유니패스",
+    "source_url": "https://unipass.customs.go.kr/csp/index.do",
+    "scope": "관세청 국가관세종합정보시스템에서 통관 진행정보·관세법령·수출입 관련 전자업무 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do",
+    "name": "국가건강정보포털",
+    "source_url": "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do",
+    "scope": "질병관리청 국가건강정보포털에서 질병·건강정보의 통합 제공 목적과 등록 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.law.go.kr/",
+    "name": "국가법령정보센터",
+    "source_url": "https://www.law.go.kr/main.html",
+    "scope": "법제처 국가법령정보센터의 현행·연혁 법령, 행정규칙, 판례 검색 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.heritage.go.kr/main/",
+    "name": "국가유산포털",
+    "source_url": "https://www.heritage.go.kr/main/",
+    "scope": "국가유산청 공식 국가유산포털의 국가유산 통합검색, 종목·지역별 검색, 기록유산 원문 및 안내판 검색 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.humanrights.go.kr/",
+    "name": "국가인권위원회",
+    "source_url": "https://www.humanrights.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://dlibrary.go.kr/",
+    "name": "국가전자도서관",
+    "source_url": "https://www.nl.go.kr/NL/contents/N11400000000.do",
+    "scope": "국립중앙도서관 공식 지식정보 통합검색 안내에서 국가전자도서관을 연계 대상 시스템으로 명시한 항목과 접속 URL을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://kosis.kr/index/index.do",
+    "name": "국가통계포털 KOSIS",
+    "source_url": "https://kosis.kr/index/index.do",
+    "scope": "국가통계포털 첫 화면의 통계 검색·시각화 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.knps.or.kr/",
+    "name": "국립공원공단",
+    "source_url": "https://www.knps.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.korean.go.kr/",
+    "name": "국립국어원",
+    "source_url": "https://www.korean.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nl.go.kr/",
+    "name": "국립중앙도서관",
+    "source_url": "https://www.nl.go.kr/",
+    "scope": "국립중앙도서관 공식 누리집의 소장자료 검색과 저자·단체 정보 검색 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.museum.go.kr/",
+    "name": "국립중앙박물관",
+    "source_url": "https://www.museum.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nhis.or.kr/nhis/index.do",
+    "name": "국민건강보험공단",
+    "source_url": "https://www.nhis.or.kr/nhis/index.do",
+    "scope": "국민건강보험 공식 홈페이지의 건강검진 대상·환급금·자격·보험료·온라인 제도 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ips.go.kr/",
+    "name": "국민비서",
+    "source_url": "https://www.ips.go.kr/pot/",
+    "scope": "행정안전부 국민비서의 알림서비스·상담서비스 및 네이버·카카오톡·토스 연계 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.epeople.go.kr/",
+    "name": "국민신문고",
+    "source_url": "https://www.epeople.go.kr/index.jsp",
+    "scope": "국민권익위원회 운영 온라인 국민참여포털의 민원신청·국민제안·정책참여 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.safekorea.go.kr/",
+    "name": "국민안전24",
+    "source_url": "https://www.safekorea.go.kr/safekorea-kor/main/main.do",
+    "scope": "국민안전24의 재난 상황·안전 정보·재난문자·행동요령 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nps.or.kr/main.do",
+    "name": "국민연금공단",
+    "source_url": "https://www.nps.or.kr/main.do",
+    "scope": "국민연금공단 공식 홈페이지의 가입내역·예상연금·보험료 납부·연금 신청 및 상담 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hometax.go.kr/",
+    "name": "국세청 홈택스",
+    "source_url": "https://www.hometax.go.kr/",
+    "scope": "국세청 홈택스 첫 화면의 세금 신고·납부 및 민원 서비스 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://rt.molit.go.kr/",
+    "name": "국토교통부 실거래가 공개시스템",
+    "source_url": "https://rt.molit.go.kr/",
+    "scope": "국토교통부 실거래가 공개시스템에서 아파트·연립·단독·오피스텔·토지 등 부동산 거래 유형별 조회 기능을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nanet.go.kr/",
+    "name": "국회도서관",
+    "source_url": "https://www.nanet.go.kr/usermadang/etc/infoUseReqView.do",
+    "scope": "국회도서관 공식 자료 이용 안내에서 도서·학위논문·학술지·전자책 검색 및 열람 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.fss.or.kr/edu/main.jsp",
+    "name": "금융감독원 e-금융교육센터",
+    "source_url": "https://www.fss.or.kr/edu/main/main.do",
+    "scope": "금융감독원 e-금융교육센터의 대상별 금융교육 프로그램·콘텐츠·강사·교육소식 검색 기능과 최종 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
+    "name": "금융상품 한눈에",
+    "source_url": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
+    "scope": "금융감독원 금융상품 통합비교공시 페이지에서 예·적금·대출·연금·보험 상품 비교 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://fine.fss.or.kr/",
+    "name": "금융소비자정보포털 파인",
+    "source_url": "https://fine.fss.or.kr/fine/main/main.do?menuNo=900000",
+    "scope": "금융감독원 금융소비자정보포털 파인의 금융정보·소비자 유의사항·금융회사 관련 정보 제공을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.fsc.go.kr/",
+    "name": "금융위원회",
+    "source_url": "https://www.fsc.go.kr/index",
+    "scope": "금융위원회 공식 전자정부 누리집의 보도자료·의결정보·금융시장동향·정책자료 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kofia.or.kr/",
+    "name": "금융투자협회",
+    "source_url": "https://www.kofia.or.kr/index.do",
+    "scope": "금융투자협회 공식 홈페이지의 국내외 주식정보와 금융투자업 관련 정보·협회 안내 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.weather.go.kr/",
+    "name": "기상청 날씨누리",
+    "source_url": "https://www.weather.go.kr/w/index.do",
+    "scope": "기상청 날씨누리의 지역별 예보·기상특보·관측 및 관심지역 조회 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://bizinfo.go.kr/",
+    "name": "기업마당",
+    "source_url": "https://bizinfo.go.kr/",
+    "scope": "기업마당 공식 홈페이지의 중소기업 지원사업 공고·정책정보·행사정보·정책정보 개방 메뉴와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gojobs.go.kr/mainIndex.do",
+    "name": "나라일터",
+    "source_url": "https://www.gojobs.go.kr/",
+    "scope": "인사혁신처 나라일터의 운영기관과 국가·지자체·교육청 공직 채용정보 제공 범위를 공식 채용안내에서 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.naver.com/",
+    "name": "네이버",
+    "source_url": "https://www.naver.com/",
+    "scope": "네이버 공식 메인에서 통합 검색과 뉴스·쇼핑 등 주요 서비스 진입 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://series.naver.com/",
+    "name": "네이버 시리즈",
+    "source_url": "https://series.naver.com/novel/home.series",
+    "scope": "네이버 시리즈 공식 페이지에서 웹소설 연재·작품 정보와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://comic.naver.com/",
+    "name": "네이버 웹툰",
+    "source_url": "https://m.comic.naver.com/index",
+    "scope": "네이버웹툰 공식 서비스에서 연재 작품·요일별 웹툰·신작 탐색 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nate.com/",
+    "name": "네이트",
+    "source_url": "https://www.nate.com/",
+    "scope": "네이트 공식 메인에서 뉴스와 포털 콘텐츠 서비스 진입 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.newsis.com/",
+    "name": "뉴시스",
+    "source_url": "https://nwww.newsis.com/company/about",
+    "scope": "뉴스통신사 소개와 등록된 뉴스 서비스 도메인의 운영 주체를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "늘배움 국가평생학습포털",
+    "url": "https://www.lifelongedu.go.kr/",
+    "source_url": "https://www.lifelongedu.go.kr/",
+    "scope": "국가평생교육진흥원 늘배움 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.danawa.com/",
+    "name": "다나와",
+    "source_url": "https://www.danawa.com/",
+    "scope": "다나와 공식 첫 화면에서 가전·컴퓨터·생활용품 가격비교 및 판매처 탐색 서비스를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.daum.net/",
+    "name": "다음",
+    "source_url": "https://www.daum.net/",
+    "scope": "다음 공식 메인에서 검색·뉴스·쇼핑 등 포털 서비스 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.daangn.com/kr/",
+    "name": "당근",
+    "source_url": "https://www.daangn.com/kr/",
+    "scope": "당근 한국 공식 첫 화면에서 지역 기반 중고거래·동네 정보 서비스 안내와 canonical 연결 주소를 대조",
     "checked_on": "2026-11-14",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -27,13 +414,22 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://ecos.bok.or.kr/",
-    "name": "한국은행 경제통계시스템 ECOS",
-    "source_url": "https://www.bok.or.kr/portal/main/contents.do?menuNo=200672",
-    "scope": "한국은행 ECOS 소개와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
+    "url": "https://www.academyinfo.go.kr/",
+    "name": "대학알리미",
+    "source_url": "https://m.academyinfo.go.kr/intro/intro0300/intro.do",
+    "scope": "대학알리미 소개에서 고등교육기관 정보공시 항목과 운영 주체, 공식 서비스 경로를 대조",
+    "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://korean.visitkorea.or.kr/",
+    "name": "대한민국 구석구석",
+    "source_url": "https://korean.visitkorea.or.kr/main/main.do",
+    "scope": "한국관광공사 운영 국내여행 정보 및 여행코스·축제·관광 콘텐츠 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   },
   {
     "url": "https://ecfs.scourt.go.kr/",
@@ -52,366 +448,6 @@
     "evidence_type": "agency_guide"
   },
   {
-    "url": "https://www.edunet.net/main",
-    "name": "에듀넷 티클리어",
-    "source_url": "https://school.cbe.go.kr/_cmm/widget/bannerList/kch-h",
-    "scope": "교육기관 안내 페이지가 연결하는 에듀넷 서비스 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "education_guide"
-  },
-  {
-    "url": "https://www.safekorea.go.kr/",
-    "name": "국민안전24",
-    "source_url": "https://www.safekorea.go.kr/safekorea-kor/main/main.do",
-    "scope": "국민안전24의 재난 상황·안전 정보·재난문자·행동요령 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.gov.kr/",
-    "name": "정부24",
-    "source_url": "https://www.gov.kr/portal/main",
-    "scope": "정부24 첫 화면에서 민원 신청·보조금·정책정보 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.hometax.go.kr/",
-    "name": "국세청 홈택스",
-    "source_url": "https://www.hometax.go.kr/",
-    "scope": "국세청 홈택스 첫 화면의 세금 신고·납부 및 민원 서비스 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.work24.go.kr/",
-    "name": "고용24",
-    "source_url": "https://www.work24.go.kr/",
-    "scope": "고용24 첫 화면의 구직·실업급여·직업훈련 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.nhis.or.kr/nhis/index.do",
-    "name": "국민건강보험공단",
-    "source_url": "https://www.nhis.or.kr/nhis/index.do",
-    "scope": "국민건강보험 공식 홈페이지의 건강검진 대상·환급금·자격·보험료·온라인 제도 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.nps.or.kr/main.do",
-    "name": "국민연금공단",
-    "source_url": "https://www.nps.or.kr/main.do",
-    "scope": "국민연금공단 공식 홈페이지의 가입내역·예상연금·보험료 납부·연금 신청 및 상담 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.safedriving.or.kr/",
-    "name": "안전운전 통합민원",
-    "source_url": "https://www.safedriving.or.kr/",
-    "scope": "한국도로교통공단 안전운전 통합민원의 교통안전교육·운전면허시험·면허증 발급 및 민원 메뉴와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.ebsi.co.kr/",
-    "name": "EBSi 고교강의",
-    "source_url": "https://www.ebsi.co.kr/ebs/pot/poti/main.ebs",
-    "scope": "EBSi 국가대표 고교강의 서비스 첫 화면과 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.data.go.kr/",
-    "name": "공공데이터포털",
-    "source_url": "https://www.data.go.kr/",
-    "scope": "공공데이터포털 첫 화면의 공공데이터 검색·활용 서비스와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://kosis.kr/index/index.do",
-    "name": "국가통계포털 KOSIS",
-    "source_url": "https://kosis.kr/index/index.do",
-    "scope": "국가통계포털 첫 화면의 통계 검색·시각화 서비스와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.schoolinfo.go.kr/Main.do",
-    "name": "학교알리미",
-    "source_url": "https://www.schoolinfo.go.kr/Main.do",
-    "scope": "학교알리미 첫 화면의 학교별 공시정보 검색 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.gmarket.co.kr/",
-    "name": "G마켓",
-    "source_url": "https://www.gmarket.co.kr/",
-    "scope": "G마켓 공식 첫 화면에서 종합 온라인 쇼핑 서비스와 상품 탐색 기능을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://zigzag.kr/",
-    "name": "지그재그",
-    "source_url": "https://zigzag.kr/",
-    "scope": "지그재그 공식 첫 화면과 카카오스타일 판매중개 고지에서 쇼핑 플랫폼 및 중개 역할을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kurly.com/main",
-    "name": "컬리",
-    "source_url": "https://www.kurly.com/main",
-    "scope": "컬리 공식 첫 화면에서 식품·뷰티·라이프스타일 상품을 판매하는 쇼핑 서비스와 주소를 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.oliveyoung.co.kr/store/main/main.do",
-    "name": "올리브영 온라인몰",
-    "source_url": "https://www.oliveyoung.co.kr/store/main/main.do",
-    "scope": "올리브영 공식 온라인몰 첫 화면에서 뷰티·헬스·라이프스타일 쇼핑 서비스와 주소를 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.29cm.co.kr/",
-    "name": "29CM",
-    "source_url": "https://www.29cm.co.kr/",
-    "scope": "29CM 공식 첫 화면에서 패션·라이프스타일·컬처 상품 큐레이션 서비스와 주소를 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.danawa.com/",
-    "name": "다나와",
-    "source_url": "https://www.danawa.com/",
-    "scope": "다나와 공식 첫 화면에서 가전·컴퓨터·생활용품 가격비교 및 판매처 탐색 서비스를 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.tmoney.co.kr/",
-    "name": "티머니",
-    "source_url": "https://www.tmoney.co.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.knps.or.kr/",
-    "name": "국립공원공단",
-    "source_url": "https://www.knps.or.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kice.re.kr/",
-    "name": "한국교육과정평가원",
-    "source_url": "https://www.kice.re.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.bok.or.kr/",
-    "name": "한국은행",
-    "source_url": "https://www.bok.or.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.mcst.go.kr/",
-    "name": "문화체육관광부",
-    "source_url": "https://www.mcst.go.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.mois.go.kr/",
-    "name": "행정안전부",
-    "source_url": "https://www.mois.go.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.moleg.go.kr/",
-    "name": "법제처",
-    "source_url": "https://www.moleg.go.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.humanrights.go.kr/",
-    "name": "국가인권위원회",
-    "source_url": "https://www.humanrights.go.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.keco.or.kr/",
-    "name": "한국환경공단",
-    "source_url": "https://www.keco.or.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.museum.go.kr/",
-    "name": "국립중앙박물관",
-    "source_url": "https://www.museum.go.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.korean.go.kr/",
-    "name": "국립국어원",
-    "source_url": "https://www.korean.go.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kisa.or.kr/",
-    "name": "한국인터넷진흥원 KISA",
-    "source_url": "https://www.kisa.or.kr/",
-    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://ohou.se/",
-    "name": "오늘의집",
-    "source_url": "https://ohou.se/",
-    "scope": "오늘의집 공식 첫 화면에서 인테리어 콘텐츠·쇼핑·시공 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.daangn.com/kr/",
-    "name": "당근",
-    "source_url": "https://www.daangn.com/kr/",
-    "scope": "당근 한국 공식 첫 화면에서 지역 기반 중고거래·동네 정보 서비스 안내와 canonical 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://mobile.a-bly.com/",
-    "name": "에이블리",
-    "source_url": "https://mobile.a-bly.com/",
-    "scope": "에이블리 공식 모바일 웹 첫 화면에서 패션·뷰티·라이프 쇼핑 서비스 안내와 최종 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.wconcept.co.kr/",
-    "name": "W컨셉",
-    "source_url": "https://display.wconcept.co.kr/rn/women",
-    "scope": "W컨셉 공식 사이트의 패션·뷰티·라이프 편집숍 첫 화면 및 canonical 연결 주소를 대조",
-    "checked_on": "2026-11-14",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.naver.com/",
-    "name": "네이버",
-    "source_url": "https://www.naver.com/",
-    "scope": "네이버 공식 메인에서 통합 검색과 뉴스·쇼핑 등 주요 서비스 진입 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.daum.net/",
-    "name": "다음",
-    "source_url": "https://www.daum.net/",
-    "scope": "다음 공식 메인에서 검색·뉴스·쇼핑 등 포털 서비스 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.nate.com/",
-    "name": "네이트",
-    "source_url": "https://www.nate.com/",
-    "scope": "네이트 공식 메인에서 뉴스와 포털 콘텐츠 서비스 진입 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://zum.com/",
-    "name": "줌",
-    "source_url": "https://zum.com/",
-    "scope": "줌 공식 메인에서 개방형 AI 포털 및 뉴스·콘텐츠 탐색 서비스 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://map.kakao.com/",
-    "name": "카카오맵",
-    "source_url": "https://map.kakao.com/",
-    "scope": "카카오맵 공식 서비스에서 장소 검색·대중교통·길찾기·지도 기능을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.weather.go.kr/",
-    "name": "기상청 날씨누리",
-    "source_url": "https://www.weather.go.kr/w/index.do",
-    "scope": "기상청 날씨누리의 지역별 예보·기상특보·관측 및 관심지역 조회 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
     "url": "https://www.korea.kr/",
     "name": "대한민국 정책브리핑",
     "source_url": "https://www.korea.kr/",
@@ -421,370 +457,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://korean.visitkorea.or.kr/",
-    "name": "대한민국 구석구석",
-    "source_url": "https://korean.visitkorea.or.kr/main/main.do",
-    "scope": "한국관광공사 운영 국내여행 정보 및 여행코스·축제·관광 콘텐츠 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.riss.kr/",
-    "name": "학술연구정보서비스 RISS",
-    "source_url": "https://www.riss.kr/index.do",
-    "scope": "한국교육학술정보원 제공 RISS의 학위논문·국내외 학술논문·학술자료 검색 기능을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.epeople.go.kr/",
-    "name": "국민신문고",
-    "source_url": "https://www.epeople.go.kr/index.jsp",
-    "scope": "국민권익위원회 운영 온라인 국민참여포털의 민원신청·국민제안·정책참여 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kosaf.go.kr/ko/main.do",
-    "name": "한국장학재단",
-    "source_url": "https://www.kosaf.go.kr/ko/main.do",
-    "scope": "한국장학재단 공식 페이지의 장학·학자금 관련 서비스 진입 및 전자정부 공식 사이트 표기를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.foodsafetykorea.go.kr/main.do",
-    "name": "식품안전나라",
-    "source_url": "https://www.foodsafetykorea.go.kr/main.do",
-    "scope": "식품안전나라 공식 서비스의 식품 회수·판매중지·업체 및 제품 검색 기능을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://topis.seoul.go.kr/",
-    "name": "서울시 교통정보 TOPIS",
-    "source_url": "https://topis.seoul.go.kr/",
-    "scope": "서울시 교통정보 시스템의 도로 소통·돌발 통제·버스·지하철·교통 통계 및 Open API 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.career.go.kr/",
-    "name": "커리어넷",
-    "source_url": "https://www.career.go.kr/cloud/w/main/home",
-    "scope": "교육부 제공 진로정보망의 직업·학과 정보, 진로검사와 진로상담 서비스 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.inven.co.kr/",
-    "name": "인벤",
-    "source_url": "https://www.inven.co.kr/",
-    "scope": "인벤 공식 메인에서 게임 뉴스·공략·커뮤니티·e스포츠 정보를 제공하는 게임 미디어 서비스 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://gall.dcinside.com/",
-    "name": "디시인사이드",
-    "source_url": "https://gall.dcinside.com/",
-    "scope": "디시인사이드 공식 메인에서 갤러리·마이너 갤러리·미니 갤러리 기반 커뮤니티 기능을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.clien.net/service/",
-    "name": "클리앙",
-    "source_url": "https://www.clien.net/service/",
-    "scope": "클리앙 공식 서비스 첫 화면의 주제별 게시판과 커뮤니티 콘텐츠 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.ppomppu.co.kr/",
-    "name": "뽐뿌",
-    "source_url": "https://www.ppomppu.co.kr/",
-    "scope": "뽐뿌 공식 메인에서 쇼핑 핫딜·쿠폰·이용자 후기와 분야별 게시판 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.teamblind.com/kr/",
-    "name": "블라인드",
-    "source_url": "https://www.teamblind.com/kr/",
-    "scope": "블라인드 한국어 공식 페이지에서 직장인 익명 커뮤니티와 직무·생활 주제별 게시판 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://bbs.ruliweb.com/",
-    "name": "루리웹",
-    "source_url": "https://m.ruliweb.com/",
-    "scope": "루리웹 공식 메인과 모바일 표준 주소에서 게임·취미·생활 관련 커뮤니티와 콘텐츠 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://comic.naver.com/",
-    "name": "네이버 웹툰",
-    "source_url": "https://m.comic.naver.com/index",
-    "scope": "네이버웹툰 공식 서비스에서 연재 작품·요일별 웹툰·신작 탐색 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kleague.com/",
-    "name": "K리그",
-    "source_url": "https://www.kleague.com/index.do",
-    "scope": "한국프로축구연맹 K리그 공식 사이트의 리그 일정·구단·기록·순위·뉴스 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kfa.or.kr/",
-    "name": "대한축구협회",
-    "source_url": "https://www.kfa.or.kr/",
-    "scope": "대한축구협회 공식 사이트의 국가대표팀·경기 일정·협회 뉴스와 공지 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.koreabaseball.com/",
-    "name": "KBO 공식 홈페이지",
-    "source_url": "https://www.koreabaseball.com/",
-    "scope": "KBO 공식 홈페이지의 프로야구 일정·결과·기록·순위·선수 정보 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kbl.or.kr/",
-    "name": "KBL 한국프로농구",
-    "source_url": "https://www.kbl.or.kr/",
-    "scope": "KBL 공식 홈페이지의 프로농구 경기 일정·결과와 팀·선수 관련 정보 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.sports.or.kr/sports/main/main.do",
-    "name": "대한체육회",
-    "source_url": "https://www.sports.or.kr/sports/main/main.do",
-    "scope": "대한체육회 공식 사이트에서 체육인 지원 서비스와 스포츠 정보·올림픽 관련 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kspo.or.kr/",
-    "name": "서울올림픽기념 국민체육진흥공단",
-    "source_url": "https://www.kspo.or.kr/kspo/main/main.do",
-    "scope": "국민체육진흥공단 공식 사이트의 국민체육·스포츠산업·체육재정 관련 서비스 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://news.kbs.co.kr/",
-    "name": "KBS 뉴스",
-    "source_url": "https://news.kbs.co.kr/news/pc/main/main.html",
-    "scope": "KBS 뉴스 공식 페이지의 주요 뉴스와 방송사 뉴스 콘텐츠 제공 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.yna.co.kr/",
-    "name": "연합뉴스",
-    "source_url": "https://www.yna.co.kr/",
-    "scope": "연합뉴스 공식 메인에서 국내외 뉴스와 멀티미디어 뉴스 콘텐츠 제공 구성을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://imnews.imbc.com/",
-    "name": "MBC 뉴스",
-    "source_url": "https://imnews.imbc.com/pc_main.html",
-    "scope": "MBC 뉴스 공식 페이지에서 주요 뉴스와 방송사 보도 콘텐츠 탐색 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kbstar.com/",
-    "name": "KB국민은행",
-    "source_url": "https://www.kbstar.com/",
-    "scope": "KB국민은행 공식 홈페이지에서 개인·기업 인터넷뱅킹과 예금·대출·외환 등 금융서비스 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.wooribank.com/",
-    "name": "우리은행",
-    "source_url": "https://www.wooribank.com/",
-    "scope": "우리은행 공식 홈페이지의 개인·기업뱅킹, 이체·공과금·예금·펀드·대출 및 금융상품 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kebhana.com/",
-    "name": "하나은행",
-    "source_url": "https://www.kebhana.com/",
-    "scope": "하나은행 공식 홈페이지의 개인·기업 금융서비스와 공과금·외환·예금·대출 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.ibk.co.kr/",
-    "name": "IBK기업은행",
-    "source_url": "https://www.ibk.co.kr/",
-    "scope": "IBK기업은행 공식 홈페이지의 개인·기업 금융상품, 조회·이체·공과금·외환·퇴직연금 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kakaobank.com/",
-    "name": "카카오뱅크",
-    "source_url": "https://www.kakaobank.com/",
-    "scope": "카카오뱅크 공식 홈페이지의 은행 서비스·회사 공시·경영정보 및 고객지원 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.tossbank.com/",
-    "name": "토스뱅크",
-    "source_url": "https://www.tossbank.com/",
-    "scope": "토스뱅크 공식 홈페이지의 통장·예적금·대출·투자·외환·카드 및 고객지원 서비스 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kbanknow.com/",
-    "name": "케이뱅크",
-    "source_url": "https://www.kbanknow.com/web/web-home/home/main",
-    "scope": "케이뱅크 공식 홈페이지의 예적금·대출·카드·투자·기업뱅킹 서비스 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.busanbank.co.kr/",
-    "name": "부산은행",
-    "source_url": "https://www.busanbank.co.kr/ib20/mnu/BHP00001",
-    "scope": "BNK부산은행 공식 홈페이지의 개인·기업뱅킹, 금융상품, 인증센터 및 고객지원 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://fine.fss.or.kr/",
-    "name": "금융소비자정보포털 파인",
-    "source_url": "https://fine.fss.or.kr/fine/main/main.do?menuNo=900000",
-    "scope": "금융감독원 금융소비자정보포털 파인의 금융정보·소비자 유의사항·금융회사 관련 정보 제공을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://dart.fss.or.kr/",
-    "name": "전자공시시스템 DART",
-    "source_url": "https://dart.fss.or.kr/",
-    "scope": "금융감독원 전자공시시스템의 공시통합검색과 기업 공시자료 열람 기능을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kofia.or.kr/",
-    "name": "금융투자협회",
-    "source_url": "https://www.kofia.or.kr/index.do",
-    "scope": "금융투자협회 공식 홈페이지의 국내외 주식정보와 금융투자업 관련 정보·협회 안내 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.fsc.go.kr/",
-    "name": "금융위원회",
-    "source_url": "https://www.fsc.go.kr/index",
-    "scope": "금융위원회 공식 전자정부 누리집의 보도자료·의결정보·금융시장동향·정책자료 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.krx.co.kr/",
-    "name": "한국거래소",
-    "source_url": "https://www.krx.co.kr/main/main.jsp",
-    "scope": "한국거래소 공식 홈페이지의 시장정보·상장공시·시장감시·금융교육 및 데이터 서비스 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.q-net.or.kr/",
-    "name": "큐넷",
-    "source_url": "https://www.q-net.or.kr/",
-    "scope": "큐넷 공식 첫 화면에서 국가기술자격·국가전문자격의 시험 안내, 원서접수 및 합격자 발표 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kmooc.kr/",
-    "name": "K-MOOC",
-    "source_url": "https://www.kmooc.kr/intro",
-    "scope": "K-MOOC 공식 소개에서 한국형 온라인 공개강좌의 운영 목적과 강좌 탐색 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kci.go.kr/",
-    "name": "한국학술지인용색인 KCI",
-    "source_url": "https://www.kci.go.kr/kciportal/main.kci",
-    "scope": "한국학술지인용색인 공식 화면의 논문·학술지·기관·인용정보 검색 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.dbpia.co.kr/",
-    "name": "DBpia",
-    "source_url": "https://www.dbpia.co.kr/search",
-    "scope": "DBpia 공식 논문 검색 화면에서 논문명·저널·발행기관·저자 및 주제별 학술자료 검색 기능을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.jobkorea.co.kr/",
-    "name": "잡코리아",
-    "source_url": "https://www.jobkorea.co.kr/recruit/joblist",
-    "scope": "잡코리아 공식 채용공고 화면에서 지역·직무·산업·기업별 채용정보 탐색 메뉴를 대조",
+    "url": "https://www.klac.or.kr/",
+    "name": "대한법률구조공단",
+    "source_url": "https://www.klac.or.kr/",
+    "scope": "대한법률구조공단 공식 누리집에서 법률상담·법률구조 안내와 상담 대표번호를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -799,249 +475,6 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.dataq.or.kr/",
-    "name": "데이터자격검정 DataQ",
-    "source_url": "https://www.dataq.or.kr/www/accept/guide.do",
-    "scope": "데이터자격검정의 ADsP·SQLD 등 시험 안내 및 원서접수 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://exam.toeic.co.kr/",
-    "name": "TOEIC 공식 사이트",
-    "source_url": "https://exam.toeic.co.kr/receipt/examSchList.php",
-    "scope": "한국TOEIC위원회 공식 시험 일정과 온라인 접수 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.pqi.or.kr/",
-    "name": "민간자격정보서비스",
-    "source_url": "https://www.pqi.or.kr/inf/qul/infQulSitRegView.do",
-    "scope": "민간자격정보서비스의 등록·공인 민간자격 검색과 등록현황 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://local.gosi.go.kr/",
-    "name": "지방자치단체 인터넷원서접수센터",
-    "source_url": "https://local.gosi.go.kr/",
-    "scope": "공식 인터넷원서접수센터의 사이트 주소와 서비스 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.topik.go.kr/",
-    "name": "한국어능력시험 TOPIK",
-    "source_url": "https://www.niied.go.kr/web/niied/contents/niied_topik",
-    "scope": "국립국제교육원 TOPIK 공식 사업 안내와 연결되는 시험 홈페이지 도메인을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.teps.or.kr/",
-    "name": "TEPS 공식 사이트",
-    "source_url": "https://www.teps.or.kr/receiption/examination",
-    "scope": "TEPS 공식 시험접수 페이지의 시험 일정·정기 및 추가 접수 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.law.go.kr/",
-    "name": "국가법령정보센터",
-    "source_url": "https://www.law.go.kr/main.html",
-    "scope": "법제처 국가법령정보센터의 현행·연혁 법령, 행정규칙, 판례 검색 서비스와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.nl.go.kr/",
-    "name": "국립중앙도서관",
-    "source_url": "https://www.nl.go.kr/",
-    "scope": "국립중앙도서관 공식 누리집의 소장자료 검색과 저자·단체 정보 검색 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://encykorea.aks.ac.kr/",
-    "name": "한국민족문화대백과",
-    "source_url": "https://encykorea.aks.ac.kr/",
-    "scope": "한국학중앙연구원 한국민족문화대백과의 한국 역사·문화 분야별 항목 및 통합검색 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kotra.or.kr/",
-    "name": "KOTRA 무역투자24",
-    "source_url": "https://www.kotra.or.kr/index.do",
-    "scope": "KOTRA 무역투자24의 수출·해외시장 정보, 지원사업·교육·상담 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.bokjiro.go.kr/",
-    "name": "복지로",
-    "source_url": "https://www.bokjiro.go.kr/ssis-tbu/index.do",
-    "scope": "보건복지부·한국사회보장정보원 운영 복지로의 복지서비스 검색·신청·복지멤버십 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://stdict.korean.go.kr/main/main.do",
-    "name": "표준국어대사전",
-    "source_url": "https://stdict.korean.go.kr/main/main.do",
-    "scope": "국립국어원 표준국어대사전의 통합검색·상세검색 및 표제어 정보 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.ips.go.kr/",
-    "name": "국민비서",
-    "source_url": "https://www.ips.go.kr/pot/",
-    "scope": "행정안전부 국민비서의 알림서비스·상담서비스 및 네이버·카카오톡·토스 연계 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.mma.go.kr/",
-    "name": "병무청",
-    "source_url": "https://www.mma.go.kr/index.do",
-    "scope": "병무청 공식 홈페이지의 병역판정검사·입영·모집병·병무민원 신청 및 상담 경로를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.hikorea.go.kr/",
-    "name": "하이코리아",
-    "source_url": "https://www.hikorea.go.kr/mobile/mMain.pt",
-    "scope": "법무부 운영 하이코리아의 외국인 출입국·체류·국적 민원과 온라인 방문예약·조회 서비스 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.index.go.kr/",
-    "name": "e-나라지표",
-    "source_url": "https://www.index.go.kr/",
-    "scope": "지표누리의 e-나라지표·사회지표·국가발전지표·통합 지표목록 및 Open API 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.moel.go.kr/",
-    "name": "고용노동부",
-    "source_url": "https://www.moel.go.kr/",
-    "scope": "고용노동부 공식 홈페이지의 고용·노동 정책, 법령, 보도자료 및 근로자·사업주 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://bizinfo.go.kr/",
-    "name": "기업마당",
-    "source_url": "https://bizinfo.go.kr/",
-    "scope": "기업마당 공식 홈페이지의 중소기업 지원사업 공고·정책정보·행사정보·정책정보 개방 메뉴와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kipris.or.kr/",
-    "name": "KIPRIS 지식재산정보검색",
-    "source_url": "https://www.kipris.or.kr/khome/main.do",
-    "scope": "KIPRIS 지식재산정보 검색 서비스의 특허·상표·디자인 및 국제특허분류 정보 검색 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do",
-    "name": "국가건강정보포털",
-    "source_url": "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do",
-    "scope": "질병관리청 국가건강정보포털에서 질병·건강정보의 통합 제공 목적과 등록 주소를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.hira.or.kr/",
-    "name": "건강보험심사평가원",
-    "source_url": "https://www.hira.or.kr/main.do",
-    "scope": "건강보험심사평가원 공식 누리집에서 요양기관업무포털·병원평가통합포털·보건의료 빅데이터 서비스 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.k-startup.go.kr/web/main/index.do",
-    "name": "K-Startup 창업지원포털",
-    "source_url": "https://www.k-startup.go.kr/web/main/index.do",
-    "scope": "K-Startup 공식 포털의 창업지원사업 공고·교육·시설·멘토링 제공 범위를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.patent.go.kr/",
-    "name": "특허로",
-    "source_url": "https://www.patent.go.kr/smart/portal/Main.do",
-    "scope": "특허로 공식 포털에서 지식재산 전자출원·심판·등록·수수료 업무 안내를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://unipass.customs.go.kr/",
-    "name": "관세청 유니패스",
-    "source_url": "https://unipass.customs.go.kr/csp/index.do",
-    "scope": "관세청 국가관세종합정보시스템에서 통관 진행정보·관세법령·수출입 관련 전자업무 메뉴를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.110.go.kr/",
-    "name": "정부민원안내 110",
-    "source_url": "https://www.110.go.kr/start.do",
-    "scope": "국민권익위원회 정부민원안내콜센터에서 전화·채팅·온라인 민원상담 제공 범위를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.klac.or.kr/",
-    "name": "대한법률구조공단",
-    "source_url": "https://www.klac.or.kr/",
-    "scope": "대한법률구조공단 공식 누리집에서 법률상담·법률구조 안내와 상담 대표번호를 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://dlibrary.go.kr/",
-    "name": "국가전자도서관",
-    "source_url": "https://www.nl.go.kr/NL/contents/N11400000000.do",
-    "scope": "국립중앙도서관 공식 지식정보 통합검색 안내에서 국가전자도서관을 연계 대상 시스템으로 명시한 항목과 접속 URL을 대조",
-    "checked_on": "2026-11-16",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
     "url": "https://www.korcham.net/nCham/Service/Main/appl/Main.asp",
     "name": "대한상공회의소 코참넷",
     "source_url": "https://www.korcham.net/nCham/Service/Kcci/appl/Member.asp",
@@ -1051,362 +484,56 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.gojobs.go.kr/mainIndex.do",
-    "name": "나라일터",
-    "source_url": "https://www.gojobs.go.kr/",
-    "scope": "인사혁신처 나라일터의 운영기관과 국가·지자체·교육청 공직 채용정보 제공 범위를 공식 채용안내에서 대조",
+    "url": "https://www.sports.or.kr/sports/main/main.do",
+    "name": "대한체육회",
+    "source_url": "https://www.sports.or.kr/sports/main/main.do",
+    "scope": "대한체육회 공식 사이트에서 체육인 지원 서비스와 스포츠 정보·올림픽 관련 안내를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://job.alio.go.kr/main.do",
-    "name": "잡알리오",
-    "source_url": "https://job.alio.go.kr/mobile2021/home.do",
-    "scope": "잡알리오의 공공기관 채용정보 검색과 기관 정보 제공 기능을 서비스 화면에서 대조",
+    "url": "https://www.kfa.or.kr/",
+    "name": "대한축구협회",
+    "source_url": "https://www.kfa.or.kr/",
+    "scope": "대한축구협회 공식 사이트의 국가대표팀·경기 일정·협회 뉴스와 공지 경로를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://job.cleaneye.go.kr/",
-    "name": "클린아이 잡플러스",
-    "source_url": "https://job.cleaneye.go.kr/siteGuide/ypIntroduce.do",
-    "scope": "클린아이 잡플러스의 지방공기업·지방출자출연기관 통합 채용정보 제공 범위를 공식 소개에서 대조",
+    "url": "https://www.dataq.or.kr/",
+    "name": "데이터자격검정 DataQ",
+    "source_url": "https://www.dataq.or.kr/www/accept/guide.do",
+    "scope": "데이터자격검정의 ADsP·SQLD 등 시험 안내 및 원서접수 경로를 대조",
     "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.hrdkorea.or.kr/",
-    "name": "한국산업인력공단",
-    "source_url": "https://www.hrdkorea.or.kr/1/2/1",
-    "scope": "한국산업인력공단 공식 사업 안내에서 국가기술·전문자격 시험 운영과 직업능력 개발 업무를 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://gall.dcinside.com/",
+    "name": "디시인사이드",
+    "source_url": "https://gall.dcinside.com/",
+    "scope": "디시인사이드 공식 메인에서 갤러리·마이너 갤러리·미니 갤러리 기반 커뮤니티 기능을 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
-    "evidence_type": "agency_guide"
+    "evidence_type": "service_page"
   },
   {
-    "url": "https://www.historyexam.go.kr/",
-    "name": "한국사능력검정시험",
-    "source_url": "https://www.historyexam.go.kr/pageLink.do?link=examInfo",
-    "scope": "국사편찬위원회 시험 소개에서 한국사능력검정시험의 목적과 공식 시험 안내 경로를 대조",
+    "url": "https://www.lezhin.com/ko",
+    "name": "레진코믹스",
+    "source_url": "https://www.lezhin.com/ko",
+    "scope": "레진코믹스 공식 한국어 페이지에서 웹툰 콘텐츠와 운영사 정보를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.cb.or.kr/",
-    "name": "학점은행제",
-    "source_url": "https://www.cb.or.kr/creditbank/eduIntro/nEduIntro1_1_1.do",
-    "scope": "국가평생교육진흥원 학점은행제 소개에서 학습자 등록·학점인정·학위 취득 제도와 공식 접속 경로를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.academyinfo.go.kr/",
-    "name": "대학알리미",
-    "source_url": "https://m.academyinfo.go.kr/intro/intro0300/intro.do",
-    "scope": "대학알리미 소개에서 고등교육기관 정보공시 항목과 운영 주체, 공식 서비스 경로를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.krivet.re.kr/",
-    "name": "한국직업능력연구원 KRIVET",
-    "source_url": "https://krivet.re.kr/kor/sub.do?menuSn=34",
-    "scope": "한국직업능력연구원 기관 소개에서 직업교육훈련·자격제도 연구와 기관 공식 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.hf.go.kr/",
-    "name": "한국주택금융공사",
-    "source_url": "https://www.hf.go.kr/ko/sub05/sub05_01_01.do",
-    "scope": "한국주택금융공사 기관 소개에서 보금자리론·주택보증·주택연금 등 주택금융 업무와 공식 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.kca.go.kr/",
-    "name": "한국소비자원",
-    "source_url": "https://www.kca.go.kr/odr/pg/ma/pgProcssInfo.do",
-    "scope": "한국소비자원 공식 피해구제 안내에서 소비자상담·피해구제 신청 절차와 공식 서비스 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.bigkinds.or.kr/",
-    "name": "빅카인즈",
-    "source_url": "https://www.bigkinds.or.kr/",
-    "scope": "한국언론진흥재단 뉴스빅데이터 분석서비스의 뉴스 검색·분석 메뉴와 공식 접속 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.nanet.go.kr/",
-    "name": "국회도서관",
-    "source_url": "https://www.nanet.go.kr/usermadang/etc/infoUseReqView.do",
-    "scope": "국회도서관 공식 자료 이용 안내에서 도서·학위논문·학술지·전자책 검색 및 열람 경로를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.0404.go.kr/",
-    "name": "외교부 해외안전여행",
-    "source_url": "https://www.0404.go.kr/bbs/travelAlertAjmt/list",
-    "scope": "외교부 해외안전여행 공식 사이트의 국가별 여행경보와 최신 안전공지 메뉴 및 접속 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://rt.molit.go.kr/",
-    "name": "국토교통부 실거래가 공개시스템",
-    "source_url": "https://rt.molit.go.kr/",
-    "scope": "국토교통부 실거래가 공개시스템에서 아파트·연립·단독·오피스텔·토지 등 부동산 거래 유형별 조회 기능을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.car365.go.kr/",
-    "name": "자동차365",
-    "source_url": "https://www.car365.go.kr/",
-    "scope": "국토교통부·한국교통안전공단 자동차365의 등록원부·이전등록·중고차시세·통합이력조회 메뉴와 공식 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.culture.go.kr/",
-    "name": "문화포털",
-    "source_url": "https://www.culture.go.kr/portal/main/contents.do?menuNo=200095",
-    "scope": "문화포털 소개에서 공연·전시·행사·문화혜택·문화지식 통합정보 제공 범위와 공식 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kopis.or.kr/",
-    "name": "공연예술통합전산망 KOPIS",
-    "source_url": "https://kopis.or.kr/mob/cs/csInfo.do",
-    "scope": "공연예술통합전산망 소개에서 공연 예매·취소 정보 집계와 공연정보·통계 제공 목적 및 공식 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kinfa.or.kr/",
-    "name": "서민금융진흥원",
-    "source_url": "https://www.kinfa.or.kr/counselingSupport/centerIntroduction.do",
-    "scope": "서민금융진흥원 공식 안내에서 정책서민금융 상담·채무조정·자금지원·고용복지 연계 서비스와 접속 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kdic.or.kr/",
-    "name": "예금보험공사",
-    "source_url": "https://www.kdic.or.kr/sp/main.do",
-    "scope": "예금보험공사 공식 홈페이지의 예금자보호제도·보호대상 금융회사·금융상품·예금보험금 신청 안내를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://seibro.or.kr/",
-    "name": "한국예탁결제원 세이브로",
-    "source_url": "https://www.ksd.or.kr/ko/",
-    "scope": "한국예탁결제원 공식 홈페이지의 패밀리 사이트에서 세이브로 증권정보포털 운영 주체와 주식·채권·펀드 정보 제공 설명 및 연결 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.fss.or.kr/edu/main.jsp",
-    "name": "금융감독원 e-금융교육센터",
-    "source_url": "https://www.fss.or.kr/edu/main/main.do",
-    "scope": "금융감독원 e-금융교육센터의 대상별 금융교육 프로그램·콘텐츠·강사·교육소식 검색 기능과 최종 접속 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://banking.nonghyup.com/",
-    "name": "NH농협은행",
-    "source_url": "https://banking.nonghyup.com/nhbank.html",
-    "scope": "NH농협은행 공식 인터넷뱅킹에서 즉시이체·계좌조회·예금·적금·펀드·대출 및 고객지원 메뉴를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.imbank.co.kr/",
-    "name": "iM뱅크",
-    "source_url": "https://www.imbank.co.kr/dgb_ebz_main.jsp",
-    "scope": "iM뱅크 공식 홈페이지에서 대구은행의 새 브랜드명과 모바일 금융·은행 서비스 진입 경로를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kcmi.re.kr/",
-    "name": "자본시장연구원",
-    "source_url": "https://www.kcmi.re.kr/",
-    "scope": "자본시장연구원 공식 홈페이지의 자본시장·금융투자 관련 최신 연구보고서와 정책자료 제공 메뉴를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://data.krx.co.kr/",
-    "name": "KRX 정보데이터시스템",
-    "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
-    "scope": "한국거래소 KRX Data Marketplace의 시장별 매매동향·상장종목 현황·시장운영 정보 제공 기능과 최종 접속 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.1365.go.kr/vols/main.do",
-    "name": "1365 자원봉사포털",
-    "source_url": "https://www.1365.go.kr/vols/main.do",
-    "scope": "1365 자원봉사포털의 전국 봉사활동 검색·신청 및 활동 실적 확인 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://yeyak.seoul.go.kr/web/main.do",
-    "name": "서울시 공공서비스예약",
-    "source_url": "https://yeyak.seoul.go.kr/web/main.do",
-    "scope": "서울시 공식 예약시스템의 체육시설·공간시설·문화체험·교육강좌·진료복지 예약 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://notebook.google.com/",
-    "name": "Gemini Notebook (구 NotebookLM)",
-    "source_url": "https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/",
-    "scope": "Google 공식 2026-07-16 발표에서 NotebookLM의 Gemini Notebook 개명과 독립형 자료 조사 서비스 유지 내용을 대조하고, 목록 연결 주소를 새 서비스 도메인과 일치시킴",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "official_announcement"
-  },
-  {
-    "url": "https://www.safetyreport.go.kr/",
-    "name": "안전신문고",
-    "source_url": "https://www.mois.go.kr/frt/sub/a06/b10/safetyReport/screen.do",
-    "scope": "행정안전부 공식 안내에서 안전신문고 운영 주체, 생활 속 안전 위험요소 신고, 불법 주정차·자동차 교통위반 신고 범위를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.safemap.go.kr/",
-    "name": "생활안전지도",
-    "source_url": "https://www.mois.go.kr/frt/sub/a06/b10/safemap/screen.do",
-    "scope": "행정안전부 공식 안내에서 생활안전지도 운영 주체, 지도형 안전정보 및 재난·치안·교통·보건·시설 분야 제공 범위를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.heritage.go.kr/main/",
-    "name": "국가유산포털",
-    "source_url": "https://www.heritage.go.kr/main/",
-    "scope": "국가유산청 공식 국가유산포털의 국가유산 통합검색, 종목·지역별 검색, 기록유산 원문 및 안내판 검색 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://etk.srail.kr/",
-    "name": "SRT",
-    "source_url": "https://etk.srail.kr/cms/article/view.do?pageId=TK0502000000&pageIndex=31&postNo=922",
-    "scope": "SR 공식 공지에서 2026년 9월 1일 이후 기존 SRT 운행 노선의 통합열차 승차권은 코레일+ 앱 또는 코레일 홈페이지에서 예매하고 기존 SRT 홈페이지 예매 서비스는 종료되는 전환 내용을 확인",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "official_announcement"
-  },
-  {
-    "name": "인프런",
-    "url": "https://www.inflearn.com/",
-    "source_url": "https://www.inflearn.com/",
-    "scope": "인프런 공식 서비스 첫 화면의 온라인 강의·학습 플랫폼 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "name": "클래스101",
-    "url": "https://class101.net/",
-    "source_url": "https://class101.net/",
-    "scope": "클래스101 공식 서비스 첫 화면의 온라인 클래스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "name": "패스트캠퍼스",
-    "url": "https://fastcampus.co.kr/",
-    "source_url": "https://fastcampus.co.kr/",
-    "scope": "패스트캠퍼스 공식 서비스 첫 화면의 직무 교육 과정 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "name": "KOCW 대학공개강의",
-    "url": "https://www.kocw.net/",
-    "source_url": "https://www.kocw.net/",
-    "scope": "KOCW 공식 서비스 첫 화면의 대학 공개강의 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "name": "늘배움 국가평생학습포털",
-    "url": "https://www.lifelongedu.go.kr/",
-    "source_url": "https://www.lifelongedu.go.kr/",
-    "scope": "국가평생교육진흥원 늘배움 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
-    "name": "금융상품 한눈에",
-    "source_url": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
-    "scope": "금융감독원 금융상품 통합비교공시 페이지에서 예·적금·대출·연금·보험 상품 비교 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.eum.go.kr/",
-    "name": "토지이음",
-    "source_url": "https://www.eum.go.kr/web/am/visit.jsp",
-    "scope": "토지이음 공식 서비스 안내에서 토지이용계획·도시계획·규제안내서·고시정보 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.koreapost.go.kr/kpost/index.do",
-    "name": "우정사업본부",
-    "source_url": "https://www.koreapost.go.kr/kpost/subIndex/4303.do?pSiteIdx=125",
-    "scope": "우정사업본부 공식 우편사업 소개에서 국내·국제 우편 및 소포 서비스 안내와 연결 주소를 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://bbs.ruliweb.com/",
+    "name": "루리웹",
+    "source_url": "https://m.ruliweb.com/",
+    "scope": "루리웹 공식 메인과 모바일 표준 주소에서 게임·취미·생활 관련 커뮤니티와 콘텐츠 구성을 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1420,91 +547,19 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://clovanote.naver.com/",
-    "name": "클로바노트",
-    "source_url": "https://clovanote.naver.com/",
-    "scope": "네이버 클로바노트 공식 페이지에서 음성 기록·북마크·메모·AI 요약 기능과 등록 도메인을 대조",
+    "url": "https://ridibooks.com/",
+    "name": "리디",
+    "source_url": "https://ridibooks.com/",
+    "scope": "리디 공식 페이지에서 만화·웹툰·웹소설·도서 서비스와 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://typecast.ai/",
-    "name": "타입캐스트",
-    "source_url": "https://typecast.ai/",
-    "scope": "타입캐스트 공식 서비스 페이지에서 AI 음성 생성 기능과 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://vrew.ai/",
-    "name": "브루(Vrew)",
-    "source_url": "https://vrew.ai/en/",
-    "scope": "Vrew 공식 페이지에서 AI 영상 편집·자막·음성 기능과 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.miricanvas.com/",
-    "name": "미리캔버스",
-    "source_url": "https://www.miricanvas.com/en",
-    "scope": "미리캔버스 공식 페이지에서 디자인 템플릿·AI 프레젠테이션·이미지 기능과 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://chatgpt.com/",
-    "name": "ChatGPT",
-    "source_url": "https://chatgpt.com/",
-    "scope": "ChatGPT 공식 서비스 페이지에서 AI 대화·파일·이미지 활용 서비스와 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://gemini.google.com/",
-    "name": "Gemini",
-    "source_url": "https://gemini.google.com/",
-    "scope": "Google Gemini 공식 서비스 페이지에서 글쓰기·계획·브레인스토밍 지원과 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.perplexity.ai/",
-    "name": "Perplexity",
-    "source_url": "https://www.perplexity.ai/",
-    "scope": "Perplexity 공식 서비스 페이지에서 출처 기반 검색형 AI 서비스와 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://copilot.com/",
-    "name": "Microsoft Copilot",
-    "source_url": "https://copilot.com/",
-    "scope": "Microsoft Copilot 공식 페이지에서 AI 대화·콘텐츠 작성 지원과 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.tving.com/",
-    "name": "티빙",
-    "source_url": "https://www.tving.com/6001",
-    "scope": "TVING 공식 페이지에서 드라마·예능·영화·스포츠 등 영상 서비스와 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://chzzk.naver.com/",
-    "name": "치지직",
-    "source_url": "https://chzzk.naver.com/",
-    "scope": "치지직 공식 페이지에서 게임·e스포츠·스포츠 라이브 스트리밍 서비스와 등록 도메인을 대조",
+    "url": "https://www.mk.co.kr/",
+    "name": "매일경제",
+    "source_url": "https://www.mk.co.kr/",
+    "scope": "매일경제 공식 홈페이지의 경제·금융·산업 뉴스 서비스와 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -1519,47 +574,479 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.music-flo.com/",
-    "name": "FLO",
-    "source_url": "https://www.music-flo.com/",
-    "scope": "FLO 공식 홈페이지에서 음악 탐색·재생 서비스와 등록 도메인을 대조",
+    "url": "https://www.mcst.go.kr/",
+    "name": "문화체육관광부",
+    "source_url": "https://www.mcst.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.culture.go.kr/",
+    "name": "문화포털",
+    "source_url": "https://www.culture.go.kr/portal/main/contents.do?menuNo=200095",
+    "scope": "문화포털 소개에서 공연·전시·행사·문화혜택·문화지식 통합정보 제공 범위와 공식 주소를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.ebs.co.kr/",
-    "name": "EBS",
-    "source_url": "https://www.ebs.co.kr/",
-    "scope": "EBS 공식 홈페이지에서 교육방송 콘텐츠와 한국교육방송공사 운영 정보를 대조",
+    "url": "https://www.miricanvas.com/",
+    "name": "미리캔버스",
+    "source_url": "https://www.miricanvas.com/en",
+    "scope": "미리캔버스 공식 페이지에서 디자인 템플릿·AI 프레젠테이션·이미지 기능과 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.sbs.co.kr/",
-    "name": "SBS",
-    "source_url": "https://www.sbs.co.kr/",
-    "scope": "SBS 공식 홈페이지에서 방송 프로그램·뉴스·라이브·VOD 서비스와 등록 도메인을 대조",
+    "url": "https://www.pqi.or.kr/",
+    "name": "민간자격정보서비스",
+    "source_url": "https://www.pqi.or.kr/inf/qul/infQulSitRegView.do",
+    "scope": "민간자격정보서비스의 등록·공인 민간자격 검색과 등록현황 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.moleg.go.kr/",
+    "name": "법제처",
+    "source_url": "https://www.moleg.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mma.go.kr/",
+    "name": "병무청",
+    "source_url": "https://www.mma.go.kr/index.do",
+    "scope": "병무청 공식 홈페이지의 병역판정검사·입영·모집병·병무민원 신청 및 상담 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bokjiro.go.kr/",
+    "name": "복지로",
+    "source_url": "https://www.bokjiro.go.kr/ssis-tbu/index.do",
+    "scope": "보건복지부·한국사회보장정보원 운영 복지로의 복지서비스 검색·신청·복지멤버십 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bomtoon.com/",
+    "name": "봄툰",
+    "source_url": "https://www.bomtoon.com/bom/comic/main",
+    "scope": "봄툰 공식 페이지에서 로맨스·순정·BL 웹툰 서비스와 운영사 정보를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.mbc.co.kr/",
-    "name": "MBC",
-    "source_url": "https://www.imbc.com/",
-    "scope": "MBC 공식 홈페이지로 이동하는 최종 도메인과 방송·뉴스·스포츠 콘텐츠 제공 정보를 대조",
+    "url": "https://www.busanbank.co.kr/",
+    "name": "부산은행",
+    "source_url": "https://www.busanbank.co.kr/ib20/mnu/BHP00001",
+    "scope": "BNK부산은행 공식 홈페이지의 개인·기업뱅킹, 금융상품, 인증센터 및 고객지원 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://vrew.ai/",
+    "name": "브루(Vrew)",
+    "source_url": "https://vrew.ai/en/",
+    "scope": "Vrew 공식 페이지에서 AI 영상 편집·자막·음성 기능과 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.kbs.co.kr/",
-    "name": "KBS",
-    "source_url": "https://www.kbs.co.kr/",
-    "scope": "KBS 공식 홈페이지에서 공영방송 프로그램·영상 콘텐츠 제공 정보를 대조",
+    "url": "https://www.teamblind.com/kr/",
+    "name": "블라인드",
+    "source_url": "https://www.teamblind.com/kr/",
+    "scope": "블라인드 한국어 공식 페이지에서 직장인 익명 커뮤니티와 직무·생활 주제별 게시판 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bigkinds.or.kr/",
+    "name": "빅카인즈",
+    "source_url": "https://www.bigkinds.or.kr/",
+    "scope": "한국언론진흥재단 뉴스빅데이터 분석서비스의 뉴스 검색·분석 메뉴와 공식 접속 주소를 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ppomppu.co.kr/",
+    "name": "뽐뿌",
+    "source_url": "https://www.ppomppu.co.kr/",
+    "scope": "뽐뿌 공식 메인에서 쇼핑 핫딜·쿠폰·이용자 후기와 분야별 게시판 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.saramin.co.kr/",
+    "name": "사람인",
+    "source_url": "https://www.saramin.co.kr/zf_user/jobs/public/list",
+    "scope": "사람인 공식 채용 페이지의 채용정보 제공과 등록 서비스 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.safemap.go.kr/",
+    "name": "생활안전지도",
+    "source_url": "https://www.mois.go.kr/frt/sub/a06/b10/safemap/screen.do",
+    "scope": "행정안전부 공식 안내에서 생활안전지도 운영 주체, 지도형 안전정보 및 재난·치안·교통·보건·시설 분야 제공 범위를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kinfa.or.kr/",
+    "name": "서민금융진흥원",
+    "source_url": "https://www.kinfa.or.kr/counselingSupport/centerIntroduction.do",
+    "scope": "서민금융진흥원 공식 안내에서 정책서민금융 상담·채무조정·자금지원·고용복지 연계 서비스와 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://yeyak.seoul.go.kr/web/main.do",
+    "name": "서울시 공공서비스예약",
+    "source_url": "https://yeyak.seoul.go.kr/web/main.do",
+    "scope": "서울시 공식 예약시스템의 체육시설·공간시설·문화체험·교육강좌·진료복지 예약 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://topis.seoul.go.kr/",
+    "name": "서울시 교통정보 TOPIS",
+    "source_url": "https://topis.seoul.go.kr/",
+    "scope": "서울시 교통정보 시스템의 도로 소통·돌발 통제·버스·지하철·교통 통계 및 Open API 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kspo.or.kr/",
+    "name": "서울올림픽기념 국민체육진흥공단",
+    "source_url": "https://www.kspo.or.kr/kspo/main/main.do",
+    "scope": "국민체육진흥공단 공식 사이트의 국민체육·스포츠산업·체육재정 관련 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.foodsafetykorea.go.kr/main.do",
+    "name": "식품안전나라",
+    "source_url": "https://www.foodsafetykorea.go.kr/main.do",
+    "scope": "식품안전나라 공식 서비스의 식품 회수·판매중지·업체 및 제품 검색 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.safetyreport.go.kr/",
+    "name": "안전신문고",
+    "source_url": "https://www.mois.go.kr/frt/sub/a06/b10/safetyReport/screen.do",
+    "scope": "행정안전부 공식 안내에서 안전신문고 운영 주체, 생활 속 안전 위험요소 신고, 불법 주정차·자동차 교통위반 신고 범위를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.safedriving.or.kr/",
+    "name": "안전운전 통합민원",
+    "source_url": "https://www.safedriving.or.kr/",
+    "scope": "한국도로교통공단 안전운전 통합민원의 교통안전교육·운전면허시험·면허증 발급 및 민원 메뉴와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.albamon.com/",
+    "name": "알바몬",
+    "source_url": "https://www.albamon.com/jobs/full-time",
+    "scope": "알바몬 공식 채용 페이지의 구인 정보 제공과 등록 서비스 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.edunet.net/main",
+    "name": "에듀넷 티클리어",
+    "source_url": "https://school.cbe.go.kr/_cmm/widget/bannerList/kch-h",
+    "scope": "교육기관 안내 페이지가 연결하는 에듀넷 서비스 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "education_guide"
+  },
+  {
+    "url": "https://mobile.a-bly.com/",
+    "name": "에이블리",
+    "source_url": "https://mobile.a-bly.com/",
+    "scope": "에이블리 공식 모바일 웹 첫 화면에서 패션·뷰티·라이프 쇼핑 서비스 안내와 최종 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.yna.co.kr/",
+    "name": "연합뉴스",
+    "source_url": "https://www.yna.co.kr/",
+    "scope": "연합뉴스 공식 메인에서 국내외 뉴스와 멀티미디어 뉴스 콘텐츠 제공 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kdic.or.kr/",
+    "name": "예금보험공사",
+    "source_url": "https://www.kdic.or.kr/sp/main.do",
+    "scope": "예금보험공사 공식 홈페이지의 예금자보호제도·보호대상 금융회사·금융상품·예금보험금 신청 안내를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://ohou.se/",
+    "name": "오늘의집",
+    "source_url": "https://ohou.se/",
+    "scope": "오늘의집 공식 첫 화면에서 인테리어 콘텐츠·쇼핑·시공 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.oliveyoung.co.kr/store/main/main.do",
+    "name": "올리브영 온라인몰",
+    "source_url": "https://www.oliveyoung.co.kr/store/main/main.do",
+    "scope": "올리브영 공식 온라인몰 첫 화면에서 뷰티·헬스·라이프스타일 쇼핑 서비스와 주소를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.0404.go.kr/",
+    "name": "외교부 해외안전여행",
+    "source_url": "https://www.0404.go.kr/bbs/travelAlertAjmt/list",
+    "scope": "외교부 해외안전여행 공식 사이트의 국가별 여행경보와 최신 안전공지 메뉴 및 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.wooribank.com/",
+    "name": "우리은행",
+    "source_url": "https://www.wooribank.com/",
+    "scope": "우리은행 공식 홈페이지의 개인·기업뱅킹, 이체·공과금·예금·펀드·대출 및 금융상품 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreapost.go.kr/kpost/index.do",
+    "name": "우정사업본부",
+    "source_url": "https://www.koreapost.go.kr/kpost/subIndex/4303.do?pSiteIdx=125",
+    "scope": "우정사업본부 공식 우편사업 소개에서 국내·국제 우편 및 소포 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.inven.co.kr/",
+    "name": "인벤",
+    "source_url": "https://www.inven.co.kr/",
+    "scope": "인벤 공식 메인에서 게임 뉴스·공략·커뮤니티·e스포츠 정보를 제공하는 게임 미디어 서비스 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.incruit.com/",
+    "name": "인크루트",
+    "source_url": "https://info.incruit.com/",
+    "scope": "인크루트 회사 소개에서 온라인 취업포털 운영과 등록 서비스 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "인프런",
+    "url": "https://www.inflearn.com/",
+    "source_url": "https://www.inflearn.com/",
+    "scope": "인프런 공식 서비스 첫 화면의 온라인 강의·학습 플랫폼 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.car365.go.kr/",
+    "name": "자동차365",
+    "source_url": "https://www.car365.go.kr/",
+    "scope": "국토교통부·한국교통안전공단 자동차365의 등록원부·이전등록·중고차시세·통합이력조회 메뉴와 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kcmi.re.kr/",
+    "name": "자본시장연구원",
+    "source_url": "https://www.kcmi.re.kr/",
+    "scope": "자본시장연구원 공식 홈페이지의 자본시장·금융투자 관련 최신 연구보고서와 정책자료 제공 메뉴를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://job.alio.go.kr/main.do",
+    "name": "잡알리오",
+    "source_url": "https://job.alio.go.kr/mobile2021/home.do",
+    "scope": "잡알리오의 공공기관 채용정보 검색과 기관 정보 제공 기능을 서비스 화면에서 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.jobkorea.co.kr/",
+    "name": "잡코리아",
+    "source_url": "https://www.jobkorea.co.kr/recruit/joblist",
+    "scope": "잡코리아 공식 채용공고 화면에서 지역·직무·산업·기업별 채용정보 탐색 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://dart.fss.or.kr/",
+    "name": "전자공시시스템 DART",
+    "source_url": "https://dart.fss.or.kr/",
+    "scope": "금융감독원 전자공시시스템의 공시통합검색과 기업 공시자료 열람 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.etnews.com/",
+    "name": "전자신문",
+    "source_url": "https://www.etnews.com/index.html",
+    "scope": "전자신문 공식 홈페이지의 IT·산업 뉴스 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gov.kr/",
+    "name": "정부24",
+    "source_url": "https://www.gov.kr/portal/main",
+    "scope": "정부24 첫 화면에서 민원 신청·보조금·정책정보 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.110.go.kr/",
+    "name": "정부민원안내 110",
+    "source_url": "https://www.110.go.kr/start.do",
+    "scope": "국민권익위원회 정부민원안내콜센터에서 전화·채팅·온라인 민원상담 제공 범위를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "name": "조선일보",
+    "url": "https://www.chosun.com/",
+    "source_url": "https://www.chosun.com/",
+    "scope": "조선일보 공식 홈페이지에서 정치·경제·사회·국제·문화 분야의 기사와 디지털 콘텐츠 제공을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.joara.com/",
+    "name": "조아라",
+    "source_url": "https://www.joara.com/",
+    "scope": "조아라 공식 페이지에서 무료 웹소설·웹툰 서비스와 지원 브라우저 안내를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.juso.go.kr/",
+    "name": "주소정보누리집 도로명주소",
+    "source_url": "https://www.juso.go.kr/",
+    "scope": "주소정보누리집의 주소 검색 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://zum.com/",
+    "name": "줌",
+    "source_url": "https://zum.com/",
+    "scope": "줌 공식 메인에서 개방형 AI 포털 및 뉴스·콘텐츠 탐색 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.joongang.co.kr/",
+    "name": "중앙일보",
+    "source_url": "https://www.joongang.co.kr/",
+    "scope": "중앙일보 공식 홈페이지의 뉴스·기사 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://zigzag.kr/",
+    "name": "지그재그",
+    "source_url": "https://zigzag.kr/",
+    "scope": "지그재그 공식 첫 화면과 카카오스타일 판매중개 고지에서 쇼핑 플랫폼 및 중개 역할을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://local.gosi.go.kr/",
+    "name": "지방자치단체 인터넷원서접수센터",
+    "source_url": "https://local.gosi.go.kr/",
+    "scope": "공식 인터넷원서접수센터의 사이트 주소와 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://chzzk.naver.com/",
+    "name": "치지직",
+    "source_url": "https://chzzk.naver.com/",
+    "scope": "치지직 공식 페이지에서 게임·e스포츠·스포츠 라이브 스트리밍 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://map.kakao.com/",
+    "name": "카카오맵",
+    "source_url": "https://map.kakao.com/",
+    "scope": "카카오맵 공식 서비스에서 장소 검색·대중교통·길찾기·지도 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kakaobank.com/",
+    "name": "카카오뱅크",
+    "source_url": "https://www.kakaobank.com/",
+    "scope": "카카오뱅크 공식 홈페이지의 은행 서비스·회사 공시·경영정보 및 고객지원 메뉴를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1582,46 +1069,91 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://ridibooks.com/",
-    "name": "리디",
-    "source_url": "https://ridibooks.com/",
-    "scope": "리디 공식 페이지에서 만화·웹툰·웹소설·도서 서비스와 등록 도메인을 대조",
+    "url": "https://www.career.go.kr/",
+    "name": "커리어넷",
+    "source_url": "https://www.career.go.kr/cloud/w/main/home",
+    "scope": "교육부 제공 진로정보망의 직업·학과 정보, 진로검사와 진로상담 서비스 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kurly.com/main",
+    "name": "컬리",
+    "source_url": "https://www.kurly.com/main",
+    "scope": "컬리 공식 첫 화면에서 식품·뷰티·라이프스타일 상품을 판매하는 쇼핑 서비스와 주소를 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbanknow.com/",
+    "name": "케이뱅크",
+    "source_url": "https://www.kbanknow.com/web/web-home/home/main",
+    "scope": "케이뱅크 공식 홈페이지의 예적금·대출·카드·투자·기업뱅킹 서비스 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.korail.com/",
+    "name": "코레일",
+    "source_url": "https://www.korail.com/ticket/reserve/guide/faq",
+    "scope": "코레일 공식 승차권 안내에서 통합 홈페이지와 예매 서비스 운영 정보를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.lezhin.com/ko",
-    "name": "레진코믹스",
-    "source_url": "https://www.lezhin.com/ko",
-    "scope": "레진코믹스 공식 한국어 페이지에서 웹툰 콘텐츠와 운영사 정보를 대조",
+    "url": "https://www.q-net.or.kr/",
+    "name": "큐넷",
+    "source_url": "https://www.q-net.or.kr/",
+    "scope": "큐넷 공식 첫 화면에서 국가기술자격·국가전문자격의 시험 안내, 원서접수 및 합격자 발표 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "클래스101",
+    "url": "https://class101.net/",
+    "source_url": "https://class101.net/",
+    "scope": "클래스101 공식 서비스 첫 화면의 온라인 클래스 안내와 연결 주소를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.toomics.com/",
-    "name": "투믹스",
-    "source_url": "https://global.toomics.com/en",
-    "scope": "투믹스 공식 글로벌 페이지에서 한국·일본 만화 및 장르별 웹툰 서비스와 등록 도메인을 대조",
+    "url": "https://clovanote.naver.com/",
+    "name": "클로바노트",
+    "source_url": "https://clovanote.naver.com/",
+    "scope": "네이버 클로바노트 공식 페이지에서 음성 기록·북마크·메모·AI 요약 기능과 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://series.naver.com/",
-    "name": "네이버 시리즈",
-    "source_url": "https://series.naver.com/novel/home.series",
-    "scope": "네이버 시리즈 공식 페이지에서 웹소설 연재·작품 정보와 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://www.clien.net/service/",
+    "name": "클리앙",
+    "source_url": "https://www.clien.net/service/",
+    "scope": "클리앙 공식 서비스 첫 화면의 주제별 게시판과 커뮤니티 콘텐츠 구성을 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.bomtoon.com/",
-    "name": "봄툰",
-    "source_url": "https://www.bomtoon.com/bom/comic/main",
-    "scope": "봄툰 공식 페이지에서 로맨스·순정·BL 웹툰 서비스와 운영사 정보를 대조",
+    "url": "https://job.cleaneye.go.kr/",
+    "name": "클린아이 잡플러스",
+    "source_url": "https://job.cleaneye.go.kr/siteGuide/ypIntroduce.do",
+    "scope": "클린아이 잡플러스의 지방공기업·지방출자출연기관 통합 채용정보 제공 범위를 공식 소개에서 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://typecast.ai/",
+    "name": "타입캐스트",
+    "source_url": "https://typecast.ai/",
+    "scope": "타입캐스트 공식 서비스 페이지에서 AI 음성 생성 기능과 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -1636,118 +1168,136 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.joara.com/",
-    "name": "조아라",
-    "source_url": "https://www.joara.com/",
-    "scope": "조아라 공식 페이지에서 무료 웹소설·웹툰 서비스와 지원 브라우저 안내를 대조",
+    "url": "https://www.tossbank.com/",
+    "name": "토스뱅크",
+    "source_url": "https://www.tossbank.com/",
+    "scope": "토스뱅크 공식 홈페이지의 통장·예적금·대출·투자·외환·카드 및 고객지원 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.eum.go.kr/",
+    "name": "토지이음",
+    "source_url": "https://www.eum.go.kr/web/am/visit.jsp",
+    "scope": "토지이음 공식 서비스 안내에서 토지이용계획·도시계획·규제안내서·고시정보 기능과 연결 주소를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.newsis.com/",
-    "name": "뉴시스",
-    "source_url": "https://nwww.newsis.com/company/about",
-    "scope": "뉴스통신사 소개와 등록된 뉴스 서비스 도메인의 운영 주체를 대조",
+    "url": "https://www.toomics.com/",
+    "name": "투믹스",
+    "source_url": "https://global.toomics.com/en",
+    "scope": "투믹스 공식 글로벌 페이지에서 한국·일본 만화 및 장르별 웹툰 서비스와 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.ytn.co.kr/",
-    "name": "YTN",
-    "source_url": "https://infor.ytn.co.kr/ytn/about.php",
-    "scope": "YTN 공식 회사 소개에서 뉴스 전문 채널과 온라인 콘텐츠 운영 정보를 대조",
+    "url": "https://www.patent.go.kr/",
+    "name": "특허로",
+    "source_url": "https://www.patent.go.kr/smart/portal/Main.do",
+    "scope": "특허로 공식 포털에서 지식재산 전자출원·심판·등록·수수료 업무 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.tmoney.co.kr/",
+    "name": "티머니",
+    "source_url": "https://www.tmoney.co.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.tving.com/",
+    "name": "티빙",
+    "source_url": "https://www.tving.com/6001",
+    "scope": "TVING 공식 페이지에서 드라마·예능·영화·스포츠 등 영상 서비스와 등록 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.joongang.co.kr/",
-    "name": "중앙일보",
-    "source_url": "https://www.joongang.co.kr/",
-    "scope": "중앙일보 공식 홈페이지의 뉴스·기사 서비스와 등록 도메인을 대조",
+    "name": "패스트캠퍼스",
+    "url": "https://fastcampus.co.kr/",
+    "source_url": "https://fastcampus.co.kr/",
+    "scope": "패스트캠퍼스 공식 서비스 첫 화면의 직무 교육 과정 안내와 연결 주소를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.mk.co.kr/",
-    "name": "매일경제",
-    "source_url": "https://www.mk.co.kr/",
-    "scope": "매일경제 공식 홈페이지의 경제·금융·산업 뉴스 서비스와 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://stdict.korean.go.kr/main/main.do",
+    "name": "표준국어대사전",
+    "source_url": "https://stdict.korean.go.kr/main/main.do",
+    "scope": "국립국어원 표준국어대사전의 통합검색·상세검색 및 표제어 정보 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.etnews.com/",
-    "name": "전자신문",
-    "source_url": "https://www.etnews.com/index.html",
-    "scope": "전자신문 공식 홈페이지의 IT·산업 뉴스 서비스와 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://www.kebhana.com/",
+    "name": "하나은행",
+    "source_url": "https://www.kebhana.com/",
+    "scope": "하나은행 공식 홈페이지의 개인·기업 금융서비스와 공과금·외환·예금·대출 메뉴를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.khan.co.kr/",
-    "name": "경향신문",
-    "source_url": "https://www.khan.co.kr/",
-    "scope": "경향신문 공식 홈페이지의 뉴스·기사 서비스와 등록 도메인을 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://www.hikorea.go.kr/",
+    "name": "하이코리아",
+    "source_url": "https://www.hikorea.go.kr/mobile/mMain.pt",
+    "scope": "법무부 운영 하이코리아의 외국인 출입국·체류·국적 민원과 온라인 방문예약·조회 서비스 안내를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.incruit.com/",
-    "name": "인크루트",
-    "source_url": "https://info.incruit.com/",
-    "scope": "인크루트 회사 소개에서 온라인 취업포털 운영과 등록 서비스 도메인을 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://www.schoolinfo.go.kr/Main.do",
+    "name": "학교알리미",
+    "source_url": "https://www.schoolinfo.go.kr/Main.do",
+    "scope": "학교알리미 첫 화면의 학교별 공시정보 검색 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-14",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.saramin.co.kr/",
-    "name": "사람인",
-    "source_url": "https://www.saramin.co.kr/zf_user/jobs/public/list",
-    "scope": "사람인 공식 채용 페이지의 채용정보 제공과 등록 서비스 도메인을 대조",
-    "checked_on": "2026-11-17",
+    "url": "https://www.riss.kr/",
+    "name": "학술연구정보서비스 RISS",
+    "source_url": "https://www.riss.kr/index.do",
+    "scope": "한국교육학술정보원 제공 RISS의 학위논문·국내외 학술논문·학술자료 검색 기능을 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.albamon.com/",
-    "name": "알바몬",
-    "source_url": "https://www.albamon.com/jobs/full-time",
-    "scope": "알바몬 공식 채용 페이지의 구인 정보 제공과 등록 서비스 도메인을 대조",
+    "url": "https://www.cb.or.kr/",
+    "name": "학점은행제",
+    "source_url": "https://www.cb.or.kr/creditbank/eduIntro/nEduIntro1_1_1.do",
+    "scope": "국가평생교육진흥원 학점은행제 소개에서 학습자 등록·학점인정·학위 취득 제도와 공식 접속 경로를 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.krx.co.kr/",
+    "name": "한국거래소",
+    "source_url": "https://www.krx.co.kr/main/main.jsp",
+    "scope": "한국거래소 공식 홈페이지의 시장정보·상장공시·시장감시·금융교육 및 데이터 서비스 메뉴를 대조",
+    "checked_on": "2026-11-16",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.kedi.re.kr/",
-    "name": "한국교육개발원 KEDI",
-    "source_url": "https://www.kedi.re.kr/",
-    "scope": "한국교육개발원 공식 홈페이지의 교육정책 연구·자료·운영 사이트 정보를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kif.re.kr/",
-    "name": "한국금융연구원",
-    "source_url": "https://www.kif.re.kr/kif4/about/about?mid=61",
-    "scope": "한국금융연구원 소개에서 금융산업·금융정책 연구 및 금융경제 정보 제공 범위를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kdb.co.kr/",
-    "name": "KDB산업은행",
-    "source_url": "https://www.kdb.co.kr/wcmscontents/pdf/External_Review_2025.pdf",
-    "scope": "한국산업은행 공식 자료에서 정책금융기관 역할과 대표 홈페이지 도메인을 대조",
+    "name": "한국경제",
+    "url": "https://www.hankyung.com/",
+    "source_url": "https://www.hankyung.com/index.html",
+    "scope": "한국경제 공식 홈페이지에서 경제·산업·금융·사회 뉴스와 분야별 기사 제공을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -1762,10 +1312,496 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.korail.com/",
-    "name": "코레일",
-    "source_url": "https://www.korail.com/ticket/reserve/guide/faq",
-    "scope": "코레일 공식 승차권 안내에서 통합 홈페이지와 예매 서비스 운영 정보를 대조",
+    "url": "https://www.kedi.re.kr/",
+    "name": "한국교육개발원 KEDI",
+    "source_url": "https://www.kedi.re.kr/",
+    "scope": "한국교육개발원 공식 홈페이지의 교육정책 연구·자료·운영 사이트 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kice.re.kr/",
+    "name": "한국교육과정평가원",
+    "source_url": "https://www.kice.re.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kif.re.kr/",
+    "name": "한국금융연구원",
+    "source_url": "https://www.kif.re.kr/kif4/about/about?mid=61",
+    "scope": "한국금융연구원 소개에서 금융산업·금융정책 연구 및 금융경제 정보 제공 범위를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://encykorea.aks.ac.kr/",
+    "name": "한국민족문화대백과",
+    "source_url": "https://encykorea.aks.ac.kr/",
+    "scope": "한국학중앙연구원 한국민족문화대백과의 한국 역사·문화 분야별 항목 및 통합검색 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.historyexam.go.kr/",
+    "name": "한국사능력검정시험",
+    "source_url": "https://www.historyexam.go.kr/pageLink.do?link=examInfo",
+    "scope": "국사편찬위원회 시험 소개에서 한국사능력검정시험의 목적과 공식 시험 안내 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hrdkorea.or.kr/",
+    "name": "한국산업인력공단",
+    "source_url": "https://www.hrdkorea.or.kr/1/2/1",
+    "scope": "한국산업인력공단 공식 사업 안내에서 국가기술·전문자격 시험 운영과 직업능력 개발 업무를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.kca.go.kr/",
+    "name": "한국소비자원",
+    "source_url": "https://www.kca.go.kr/odr/pg/ma/pgProcssInfo.do",
+    "scope": "한국소비자원 공식 피해구제 안내에서 소비자상담·피해구제 신청 절차와 공식 서비스 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.topik.go.kr/",
+    "name": "한국어능력시험 TOPIK",
+    "source_url": "https://www.niied.go.kr/web/niied/contents/niied_topik",
+    "scope": "국립국제교육원 TOPIK 공식 사업 안내와 연결되는 시험 홈페이지 도메인을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://seibro.or.kr/",
+    "name": "한국예탁결제원 세이브로",
+    "source_url": "https://www.ksd.or.kr/ko/",
+    "scope": "한국예탁결제원 공식 홈페이지의 패밀리 사이트에서 세이브로 증권정보포털 운영 주체와 주식·채권·펀드 정보 제공 설명 및 연결 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.bok.or.kr/",
+    "name": "한국은행",
+    "source_url": "https://www.bok.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://ecos.bok.or.kr/",
+    "name": "한국은행 경제통계시스템 ECOS",
+    "source_url": "https://www.bok.or.kr/portal/main/contents.do?menuNo=200672",
+    "scope": "한국은행 ECOS 소개와 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.kisa.or.kr/",
+    "name": "한국인터넷진흥원 KISA",
+    "source_url": "https://www.kisa.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kosaf.go.kr/ko/main.do",
+    "name": "한국장학재단",
+    "source_url": "https://www.kosaf.go.kr/ko/main.do",
+    "scope": "한국장학재단 공식 페이지의 장학·학자금 관련 서비스 진입 및 전자정부 공식 사이트 표기를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hf.go.kr/",
+    "name": "한국주택금융공사",
+    "source_url": "https://www.hf.go.kr/ko/sub05/sub05_01_01.do",
+    "scope": "한국주택금융공사 기관 소개에서 보금자리론·주택보증·주택연금 등 주택금융 업무와 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.krivet.re.kr/",
+    "name": "한국직업능력연구원 KRIVET",
+    "source_url": "https://krivet.re.kr/kor/sub.do?menuSn=34",
+    "scope": "한국직업능력연구원 기관 소개에서 직업교육훈련·자격제도 연구와 기관 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.kci.go.kr/",
+    "name": "한국학술지인용색인 KCI",
+    "source_url": "https://www.kci.go.kr/kciportal/main.kci",
+    "scope": "한국학술지인용색인 공식 화면의 논문·학술지·기관·인용정보 검색 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.keco.or.kr/",
+    "name": "한국환경공단",
+    "source_url": "https://www.keco.or.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mois.go.kr/",
+    "name": "행정안전부",
+    "source_url": "https://www.mois.go.kr/",
+    "scope": "공식 누리집의 서비스·기관 소개와 주요 안내를 대조해 등록 주소 및 이용 목적을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://chatgpt.com/",
+    "name": "ChatGPT",
+    "source_url": "https://chatgpt.com/",
+    "scope": "ChatGPT 공식 서비스 페이지에서 AI 대화·파일·이미지 활용 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.dbpia.co.kr/",
+    "name": "DBpia",
+    "source_url": "https://www.dbpia.co.kr/search",
+    "scope": "DBpia 공식 논문 검색 화면에서 논문명·저널·발행기관·저자 및 주제별 학술자료 검색 기능을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.index.go.kr/",
+    "name": "e-나라지표",
+    "source_url": "https://www.index.go.kr/",
+    "scope": "지표누리의 e-나라지표·사회지표·국가발전지표·통합 지표목록 및 Open API 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ebs.co.kr/",
+    "name": "EBS",
+    "source_url": "https://www.ebs.co.kr/",
+    "scope": "EBS 공식 홈페이지에서 교육방송 콘텐츠와 한국교육방송공사 운영 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ebsi.co.kr/",
+    "name": "EBSi 고교강의",
+    "source_url": "https://www.ebsi.co.kr/ebs/pot/poti/main.ebs",
+    "scope": "EBSi 국가대표 고교강의 서비스 첫 화면과 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.music-flo.com/",
+    "name": "FLO",
+    "source_url": "https://www.music-flo.com/",
+    "scope": "FLO 공식 홈페이지에서 음악 탐색·재생 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gmarket.co.kr/",
+    "name": "G마켓",
+    "source_url": "https://www.gmarket.co.kr/",
+    "scope": "G마켓 공식 첫 화면에서 종합 온라인 쇼핑 서비스와 상품 탐색 기능을 확인",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://gemini.google.com/",
+    "name": "Gemini",
+    "source_url": "https://gemini.google.com/",
+    "scope": "Google Gemini 공식 서비스 페이지에서 글쓰기·계획·브레인스토밍 지원과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://notebook.google.com/",
+    "name": "Gemini Notebook (구 NotebookLM)",
+    "source_url": "https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/",
+    "scope": "Google 공식 2026-07-16 발표에서 NotebookLM의 Gemini Notebook 개명과 독립형 자료 조사 서비스 유지 내용을 대조하고, 목록 연결 주소를 새 서비스 도메인과 일치시킴",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "official_announcement"
+  },
+  {
+    "url": "https://www.ibk.co.kr/",
+    "name": "IBK기업은행",
+    "source_url": "https://www.ibk.co.kr/",
+    "scope": "IBK기업은행 공식 홈페이지의 개인·기업 금융상품, 조회·이체·공과금·외환·퇴직연금 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.imbank.co.kr/",
+    "name": "iM뱅크",
+    "source_url": "https://www.imbank.co.kr/dgb_ebz_main.jsp",
+    "scope": "iM뱅크 공식 홈페이지에서 대구은행의 새 브랜드명과 모바일 금융·은행 서비스 진입 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "JTBC 뉴스",
+    "url": "https://news.jtbc.co.kr/",
+    "source_url": "https://news.jtbc.co.kr/",
+    "scope": "JTBC 뉴스 공식 홈페이지에서 뉴스 기사·영상 보도·편성 및 분야별 뉴스 제공을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kmooc.kr/",
+    "name": "K-MOOC",
+    "source_url": "https://www.kmooc.kr/intro",
+    "scope": "K-MOOC 공식 소개에서 한국형 온라인 공개강좌의 운영 목적과 강좌 탐색 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.k-startup.go.kr/web/main/index.do",
+    "name": "K-Startup 창업지원포털",
+    "source_url": "https://www.k-startup.go.kr/web/main/index.do",
+    "scope": "K-Startup 공식 포털의 창업지원사업 공고·교육·시설·멘토링 제공 범위를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kleague.com/",
+    "name": "K리그",
+    "source_url": "https://www.kleague.com/index.do",
+    "scope": "한국프로축구연맹 K리그 공식 사이트의 리그 일정·구단·기록·순위·뉴스 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbstar.com/",
+    "name": "KB국민은행",
+    "source_url": "https://www.kbstar.com/",
+    "scope": "KB국민은행 공식 홈페이지에서 개인·기업 인터넷뱅킹과 예금·대출·외환 등 금융서비스 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbl.or.kr/",
+    "name": "KBL 한국프로농구",
+    "source_url": "https://www.kbl.or.kr/",
+    "scope": "KBL 공식 홈페이지의 프로농구 경기 일정·결과와 팀·선수 관련 정보 구성을 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreabaseball.com/",
+    "name": "KBO 공식 홈페이지",
+    "source_url": "https://www.koreabaseball.com/",
+    "scope": "KBO 공식 홈페이지의 프로야구 일정·결과·기록·순위·선수 정보 메뉴를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbs.co.kr/",
+    "name": "KBS",
+    "source_url": "https://www.kbs.co.kr/",
+    "scope": "KBS 공식 홈페이지에서 공영방송 프로그램·영상 콘텐츠 제공 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://news.kbs.co.kr/",
+    "name": "KBS 뉴스",
+    "source_url": "https://news.kbs.co.kr/news/pc/main/main.html",
+    "scope": "KBS 뉴스 공식 페이지의 주요 뉴스와 방송사 뉴스 콘텐츠 제공 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kdb.co.kr/",
+    "name": "KDB산업은행",
+    "source_url": "https://www.kdb.co.kr/wcmscontents/pdf/External_Review_2025.pdf",
+    "scope": "한국산업은행 공식 자료에서 정책금융기관 역할과 대표 홈페이지 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kipris.or.kr/",
+    "name": "KIPRIS 지식재산정보검색",
+    "source_url": "https://www.kipris.or.kr/khome/main.do",
+    "scope": "KIPRIS 지식재산정보 검색 서비스의 특허·상표·디자인 및 국제특허분류 정보 검색 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "KOCW 대학공개강의",
+    "url": "https://www.kocw.net/",
+    "source_url": "https://www.kocw.net/",
+    "scope": "KOCW 공식 서비스 첫 화면의 대학 공개강의 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kotra.or.kr/",
+    "name": "KOTRA 무역투자24",
+    "source_url": "https://www.kotra.or.kr/index.do",
+    "scope": "KOTRA 무역투자24의 수출·해외시장 정보, 지원사업·교육·상담 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://data.krx.co.kr/",
+    "name": "KRX 정보데이터시스템",
+    "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+    "scope": "한국거래소 KRX Data Marketplace의 시장별 매매동향·상장종목 현황·시장운영 정보 제공 기능과 최종 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mbc.co.kr/",
+    "name": "MBC",
+    "source_url": "https://www.imbc.com/",
+    "scope": "MBC 공식 홈페이지로 이동하는 최종 도메인과 방송·뉴스·스포츠 콘텐츠 제공 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://imnews.imbc.com/",
+    "name": "MBC 뉴스",
+    "source_url": "https://imnews.imbc.com/pc_main.html",
+    "scope": "MBC 뉴스 공식 페이지에서 주요 뉴스와 방송사 보도 콘텐츠 탐색 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://copilot.com/",
+    "name": "Microsoft Copilot",
+    "source_url": "https://copilot.com/",
+    "scope": "Microsoft Copilot 공식 페이지에서 AI 대화·콘텐츠 작성 지원과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://banking.nonghyup.com/",
+    "name": "NH농협은행",
+    "source_url": "https://banking.nonghyup.com/nhbank.html",
+    "scope": "NH농협은행 공식 인터넷뱅킹에서 즉시이체·계좌조회·예금·적금·펀드·대출 및 고객지원 메뉴를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.perplexity.ai/",
+    "name": "Perplexity",
+    "source_url": "https://www.perplexity.ai/",
+    "scope": "Perplexity 공식 서비스 페이지에서 출처 기반 검색형 AI 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.sbs.co.kr/",
+    "name": "SBS",
+    "source_url": "https://www.sbs.co.kr/",
+    "scope": "SBS 공식 홈페이지에서 방송 프로그램·뉴스·라이브·VOD 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "SBS 뉴스",
+    "url": "https://news.sbs.co.kr/",
+    "source_url": "https://news.sbs.co.kr/news/newsMain.do",
+    "scope": "SBS 뉴스 공식 메인에서 정치·경제·사회·국제·생활·문화·스포츠 분야의 기사와 영상 보도 제공을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://etk.srail.kr/",
+    "name": "SRT",
+    "source_url": "https://etk.srail.kr/cms/article/view.do?pageId=TK0502000000&pageIndex=31&postNo=922",
+    "scope": "SR 공식 공지에서 2026년 9월 1일 이후 기존 SRT 운행 노선의 통합열차 승차권은 코레일+ 앱 또는 코레일 홈페이지에서 예매하고 기존 SRT 홈페이지 예매 서비스는 종료되는 전환 내용을 확인",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "official_announcement"
+  },
+  {
+    "url": "https://www.teps.or.kr/",
+    "name": "TEPS 공식 사이트",
+    "source_url": "https://www.teps.or.kr/receiption/examination",
+    "scope": "TEPS 공식 시험접수 페이지의 시험 일정·정기 및 추가 접수 안내를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://exam.toeic.co.kr/",
+    "name": "TOEIC 공식 사이트",
+    "source_url": "https://exam.toeic.co.kr/receipt/examSchList.php",
+    "scope": "한국TOEIC위원회 공식 시험 일정과 온라인 접수 경로를 대조",
+    "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.wconcept.co.kr/",
+    "name": "W컨셉",
+    "source_url": "https://display.wconcept.co.kr/rn/women",
+    "scope": "W컨셉 공식 사이트의 패션·뷰티·라이프 편집숍 첫 화면 및 canonical 연결 주소를 대조",
+    "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ytn.co.kr/",
+    "name": "YTN",
+    "source_url": "https://infor.ytn.co.kr/ytn/about.php",
+    "scope": "YTN 공식 회사 소개에서 뉴스 전문 채널과 온라인 콘텐츠 운영 정보를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
