@@ -1382,5 +1382,32 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
+    "name": "금융상품 한눈에",
+    "source_url": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
+    "scope": "금융감독원 금융상품 통합비교공시 페이지에서 예·적금·대출·연금·보험 상품 비교 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.eum.go.kr/",
+    "name": "토지이음",
+    "source_url": "https://www.eum.go.kr/web/am/visit.jsp",
+    "scope": "토지이음 공식 서비스 안내에서 토지이용계획·도시계획·규제안내서·고시정보 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreapost.go.kr/kpost/index.do",
+    "name": "우정사업본부",
+    "source_url": "https://www.koreapost.go.kr/kpost/subIndex/4303.do?pSiteIdx=125",
+    "scope": "우정사업본부 공식 우편사업 소개에서 국내·국제 우편 및 소포 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]

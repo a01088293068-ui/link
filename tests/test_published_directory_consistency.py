@@ -173,6 +173,36 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
         self.assertEqual(record["source_url"], row["url"])
         self.assertIn("지역별 검색", record["scope"])
 
+    def test_korean_public_utility_services_have_official_evidence(self):
+        expected = {
+            "금융상품 한눈에": {
+                "url": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
+                "category": "금융·경제",
+                "source": "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000",
+            },
+            "토지이음": {
+                "url": "https://www.eum.go.kr/",
+                "category": "생활·교통·여행",
+                "source": "https://www.eum.go.kr/web/am/visit.jsp",
+            },
+            "우정사업본부": {
+                "url": "https://www.koreapost.go.kr/kpost/index.do",
+                "category": "생활·교통·여행",
+                "source": "https://www.koreapost.go.kr/kpost/subIndex/4303.do?pSiteIdx=125",
+            },
+        }
+        evidence = json.loads((ROOT / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        evidence_by_url = {row["url"]: row for row in evidence}
+        for name, details in expected.items():
+            with self.subTest(name=name):
+                row = next(item for item in self.records if item["name"] == name)
+                self.assertEqual(row["url"], details["url"])
+                self.assertEqual(row["category"], details["category"])
+                source = evidence_by_url[row["url"]]
+                self.assertEqual(source["source_url"], details["source"])
+                self.assertEqual(source["evidence_type"], "service_page")
+                self.assertEqual(source["checked_on"], "2026-11-17")
+
     def test_korcham_secure_destination_keeps_existing_comparison_anchor(self):
         from build import directory_card_anchor
 
