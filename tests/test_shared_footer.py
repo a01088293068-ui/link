@@ -2,6 +2,8 @@ from pathlib import Path
 import re
 import unittest
 
+from build import synchronize_shared_footer
+
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_MAIN_SERVICE = 'href="https://linkwiki01.com/"'
@@ -36,6 +38,36 @@ class SharedFooterRegressionTests(unittest.TestCase):
         self.assertIn(".main-site-inline a", css)
         self.assertIn(".guide-related-links a", css)
         self.assertIn("assets/style.css?v=footer-system-20261117-v2", builder)
+
+
+    def test_build_helper_replaces_every_page_footer_with_shared_markup(self):
+        source = (
+            '<html><body><main>Page content</main>'
+            '<footer class="footer"><p>Old footer</p></footer></body></html>'
+        )
+        shared = '<footer class="footer"><nav><a href="/guides/link-faq">FAQ</a></nav></footer>'
+        result = synchronize_shared_footer(source, shared)
+        self.assertIn('href="/guides/link-faq"', result)
+        self.assertNotIn("Old footer", result)
+        self.assertIn("<main>Page content</main>", result)
+
+    def test_build_helper_rejects_missing_or_duplicate_footers(self):
+        shared = '<footer class="footer"></footer>'
+        with self.assertRaisesRegex(RuntimeError, "found 0"):
+            synchronize_shared_footer("<html><body>No footer</body></html>", shared)
+        duplicate = (
+            '<html><body><footer class="footer"></footer>'
+            '<footer class="footer"></footer></body></html>'
+        )
+        with self.assertRaisesRegex(RuntimeError, "found 2"):
+            synchronize_shared_footer(duplicate, shared)
+
+    def test_build_helper_skips_non_html_verification_content(self):
+        source = "google-site-verification: token"
+        self.assertEqual(
+            synchronize_shared_footer(source, '<footer class="footer"></footer>'),
+            source,
+        )
 
 
 if __name__ == "__main__":
