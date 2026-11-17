@@ -1238,5 +1238,41 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://banking.nonghyup.com/",
+    "name": "NH농협은행",
+    "source_url": "https://banking.nonghyup.com/nhbank.html",
+    "scope": "NH농협은행 공식 인터넷뱅킹에서 즉시이체·계좌조회·예금·적금·펀드·대출 및 고객지원 메뉴를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.imbank.co.kr/",
+    "name": "iM뱅크",
+    "source_url": "https://www.imbank.co.kr/dgb_ebz_main.jsp",
+    "scope": "iM뱅크 공식 홈페이지에서 대구은행의 새 브랜드명과 모바일 금융·은행 서비스 진입 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kcmi.re.kr/",
+    "name": "자본시장연구원",
+    "source_url": "https://www.kcmi.re.kr/",
+    "scope": "자본시장연구원 공식 홈페이지의 자본시장·금융투자 관련 최신 연구보고서와 정책자료 제공 메뉴를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://data.krx.co.kr/",
+    "name": "KRX 정보데이터시스템",
+    "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+    "scope": "한국거래소 KRX Data Marketplace의 시장별 매매동향·상장종목 현황·시장운영 정보 제공 기능과 최종 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
