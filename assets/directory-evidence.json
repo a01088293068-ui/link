@@ -1274,5 +1274,23 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.1365.go.kr/vols/main.do",
+    "name": "1365 자원봉사포털",
+    "source_url": "https://www.1365.go.kr/vols/main.do",
+    "scope": "1365 자원봉사포털의 전국 봉사활동 검색·신청 및 활동 실적 확인 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://yeyak.seoul.go.kr/web/main.do",
+    "name": "서울시 공공서비스예약",
+    "source_url": "https://yeyak.seoul.go.kr/web/main.do",
+    "scope": "서울시 공식 예약시스템의 체육시설·공간시설·문화체험·교육강좌·진료복지 예약 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
