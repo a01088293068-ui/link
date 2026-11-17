@@ -1643,5 +1643,95 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.newsis.com/",
+    "name": "뉴시스",
+    "source_url": "https://nwww.newsis.com/company/about",
+    "scope": "뉴스통신사 소개와 등록된 뉴스 서비스 도메인의 운영 주체를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ytn.co.kr/",
+    "name": "YTN",
+    "source_url": "https://infor.ytn.co.kr/ytn/about.php",
+    "scope": "YTN 공식 회사 소개에서 뉴스 전문 채널과 온라인 콘텐츠 운영 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.joongang.co.kr/",
+    "name": "중앙일보",
+    "source_url": "https://www.joongang.co.kr/",
+    "scope": "중앙일보 공식 홈페이지의 뉴스·기사 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mk.co.kr/",
+    "name": "매일경제",
+    "source_url": "https://www.mk.co.kr/",
+    "scope": "매일경제 공식 홈페이지의 경제·금융·산업 뉴스 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.etnews.com/",
+    "name": "전자신문",
+    "source_url": "https://www.etnews.com/index.html",
+    "scope": "전자신문 공식 홈페이지의 IT·산업 뉴스 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.khan.co.kr/",
+    "name": "경향신문",
+    "source_url": "https://www.khan.co.kr/",
+    "scope": "경향신문 공식 홈페이지의 뉴스·기사 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.incruit.com/",
+    "name": "인크루트",
+    "source_url": "https://info.incruit.com/",
+    "scope": "인크루트 회사 소개에서 온라인 취업포털 운영과 등록 서비스 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.saramin.co.kr/",
+    "name": "사람인",
+    "source_url": "https://www.saramin.co.kr/zf_user/jobs/public/list",
+    "scope": "사람인 공식 채용 페이지의 채용정보 제공과 등록 서비스 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.albamon.com/",
+    "name": "알바몬",
+    "source_url": "https://www.albamon.com/jobs/full-time",
+    "scope": "알바몬 공식 채용 페이지의 구인 정보 제공과 등록 서비스 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kedi.re.kr/",
+    "name": "한국교육개발원 KEDI",
+    "source_url": "https://www.kedi.re.kr/",
+    "scope": "한국교육개발원 공식 홈페이지의 교육정책 연구·자료·운영 사이트 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
