@@ -1,0 +1,44 @@
+name: LinkWiki responsive browser QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'build.py'
+      - 'assets/style.css'
+      - 'assets/blog.css'
+      - 'index.html'
+      - 'directory.html'
+      - 'categories/**'
+      - 'guides/**'
+      - 'content/**'
+      - 'tests/responsive-smoke.cjs'
+      - '.github/workflows/responsive-browser-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  responsive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium browser test dependency
+        run: |
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Render production pages at desktop and mobile viewports
+        run: node tests/responsive-smoke.cjs
+      - name: Preserve desktop/mobile screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linkwiki-responsive-browser-report
+          path: artifacts/responsive/
+          if-no-files-found: warn
+          retention-days: 14
