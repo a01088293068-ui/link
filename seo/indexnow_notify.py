@@ -71,7 +71,7 @@ def changed_page_urls(changed_paths, available_urls):
     paths = {str(path).replace("\\", "/").lstrip("./") for path in changed_paths}
     urls = set()
     if "build.py" in paths:
-        return set(available_urls)
+        return sorted(set(available_urls))
     if paths & CATALOG_FILES:
         urls.update(url for url in available_urls if (
             url == SITE + "/" or url == SITE + "/directory"
