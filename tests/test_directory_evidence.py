@@ -62,6 +62,12 @@ class DirectoryEvidenceTests(unittest.TestCase):
                 )
                 self.assertTrue(self.evidence[url]["source_url"].startswith("https://"))
 
+    def test_housing_finance_agency_source_is_first_party(self):
+        row = self.evidence["https://www.hf.go.kr/"]
+        self.assertEqual(row["name"], "한국주택금융공사")
+        self.assertEqual(row["evidence_type"], "agency_guide")
+        self.assertEqual(row["source_url"], "https://www.hf.go.kr/ko/sub05/sub05_01_01.do")
+
     def test_old_source_evidence_expires_instead_of_appearing_current(self):
         html = build.render_directory_catalog_cards(
             self.records, self.evidence, today=date(2027, 6, 1))
