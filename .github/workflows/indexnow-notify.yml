@@ -1,51 +1,43 @@
-name: LinkWiki IndexNow Naver/Bing updated homepage submission
+name: LinkWiki Naver IndexNow changed-page notification
 
 on:
   push:
     branches: [main]
     paths:
-      - '53f284d85bb5eed6bab927f5a93d8da8.txt'
-  workflow_dispatch:
+      - 'build.py'
+      - 'index.html'
+      - 'directory.html'
+      - 'categories/**'
+      - 'guides/**'
+      - 'content/**'
+      - 'assets/verified-directory.json'
+      - 'assets/directory-evidence.json'
+      - 'sitemap.xml'
+      - 'seo/indexnow_notify.py'
+      - 'tests/test_indexnow_notify.py'
 
 permissions:
   contents: read
 
 concurrency:
-  group: linkwiki-indexnow-home
+  group: linkwiki-indexnow-content
   cancel-in-progress: false
 
 jobs:
-  submit:
+  notify:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 5
     steps:
-      - name: Confirm domain verification key is actually live on Cloudflare
-        shell: bash
-        run: |
-          set -euo pipefail
-          for attempt in $(seq 1 30); do
-            hosted="$(curl --silent --show-error --fail --max-time 12 'https://linkwiki.info/53f284d85bb5eed6bab927f5a93d8da8.txt' || true)"
-            if [[ "$hosted" == '53f284d85bb5eed6bab927f5a93d8da8' ]]; then
-              echo "IndexNow ownership key is live and matches expected value."
-              exit 0
-            fi
-            if [[ "$attempt" -eq 30 ]]; then
-              echo "::error::Key not publicly deployed; refusing unverified submission."
-              exit 1
-            fi
-            sleep 15
-          done
-      - name: Notify Naver and other IndexNow participants of recently updated homepage
-        shell: bash
-        run: |
-          set -euo pipefail
-          status="$(curl --silent --show-error --max-time 35 -o /tmp/indexnow-response -w '%{http_code}' --get \
-            --data-urlencode 'url=https://linkwiki.info/' \
-            --data-urlencode 'key=53f284d85bb5eed6bab927f5a93d8da8' \
-            'https://searchadvisor.naver.com/indexnow')"
-          echo "Naver IndexNow HTTP status: $status"
-          case "$status" in
-            200) echo "PASS: URL update notification accepted." ;;
-            202) echo "PASS: URL notification received; ownership verification pending." ;;
-            *) cat /tmp/indexnow-response; echo "::error::IndexNow notification was not accepted."; exit 1 ;;
-          esac
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test changed-page URL selection
+        run: python3 -B -m unittest discover -s tests -p 'test_indexnow_notify.py' -v
+      - name: Notify Naver of only changed canonical pages
+        env:
+          BASE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: python3 -B seo/indexnow_notify.py --base "$BASE_SHA" --head "$HEAD_SHA"
