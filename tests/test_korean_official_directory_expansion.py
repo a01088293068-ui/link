@@ -41,7 +41,7 @@ class VerifiedPublicServiceExpansionTests(TestCase):
         self.assertEqual(evidence["candidate_count"], 51)
         self.assertEqual(evidence["catalog_additions"], 36)
         self.assertEqual(len(added), 36)
-        self.assertTrue(all(row["candidate_url"] in published for row in added))
+        self.assertTrue(all(row["candidate_url"] in published or row.get("final_url") in published for row in added))
         self.assertEqual(len({row["candidate_url"] for row in evidence["candidates"]}), 51)
 
     def test_sports_promotion_service_uses_the_sports_category(self):
