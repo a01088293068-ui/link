@@ -50,7 +50,7 @@ class CategoryCollectionSchemaTests(unittest.TestCase):
             with self.subTest(category=category, slug=slug):
                 html = (dist / f"{slug}.html").read_text(encoding="utf-8")
                 match = re.search(
-                    r'<script type="application/ld\\+json">(.*?)</script>', html, re.S
+                    r'<script type="application/ld\+json">(.*?)</script>', html, re.S
                 )
                 self.assertIsNotNone(match)
                 data = json.loads(match.group(1))
