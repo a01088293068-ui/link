@@ -96,25 +96,30 @@ def recent_published_post_urls(limit=3):
         for path in sorted(posts.glob("seo-*.md"), reverse=True)[:limit]
     ]
 
-# Prioritize the core address/link/site search guides plus newly published
-# Korean public-service guides. All URLs must exist as published Markdown.
+# Prioritize the standalone address-verification guide and five
+# published Korean directory-intent articles. Keep the six-URL inspection
+# budget, but do not substitute a tangential certification guide for the
+# dedicated /guides/address-check landing page.
 DIRECTORY_INTENT_ARTICLES = (
     "seo-20261111-address-directory-search-examples",
     "seo-20261111-address-directory-no-results",
     "seo-20261111-links-sites-comparison-checklist",
     "seo-20261111-site-directory-selection-by-purpose",
-    "seo-20261116-korean-certification-exam-sites-guide",
     "seo-20261111-mobile-address-directory-check",
 )
 
 
 def directory_intent_inspection_urls():
     posts = ROOT / "content"
-    return [
+    urls = [
+        "https://linkwiki.info/guides/address-check",
+    ]
+    urls.extend(
         "https://linkwiki.info/blog/" + slug + "/"
         for slug in DIRECTORY_INTENT_ARTICLES
         if (posts / (slug + ".md")).is_file()
-    ]
+    )
+    return urls
 
 
 
