@@ -35,6 +35,12 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertNotIn("workflows: ['" + live_name + "']", gsc)
         self.assertIn("github.event.workflow_run.conclusion == 'success'", live)
         self.assertIn("GSC_MONITOR_ENABLED", gsc)
+        self.assertIn("github.event_name == 'push'", gsc)
+        for changed_path in (
+            "index.html", "directory.html", "categories/**", "guides/**",
+            "content/**", "seo/significant-page-updates.json",
+        ):
+            self.assertIn("      - '" + changed_path + "'", gsc)
         self.assertNotIn("workflows: ['LinkWiki SEO build QA']", live)
 
     def test_live_release_log_identifies_checked_out_source_sha(self):
