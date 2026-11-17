@@ -83,6 +83,24 @@ class LiveReleaseCheckTests(unittest.TestCase):
                   '<p>등록 <strong>사이트</strong> 188개</p></body></html>')
         self.assertEqual(visible_site_counts(markup), [188, 188])
 
+    def test_maintenance_guide_count_must_match_current_directory_build(self):
+        path = "/guides/directory-maintenance"
+        expected = page(
+            path, "사이트모음 관리 기록과 주소 점검 범위",
+            "사이트모음 관리 기록",
+            "<p>링크위키 공개 목록에는 현재 352개 사이트가 등록되어 있습니다.</p>"
+            "<p>편집 기록일은 외부 사이트 352곳의 접속 확인일이 아닙니다.</p>"
+        )
+        stale = expected.replace("352개", "337개")
+        from seo.live_release_check import visible_site_counts
+        self.assertEqual(visible_site_counts(expected), [352, 352])
+        self.assertEqual(visible_site_counts(stale), [337, 337])
+        self.assertEqual(check_page(expected, expected, path), [])
+        self.assertTrue(any(
+            "deployed visible site counts differ" in issue
+            for issue in check_page(expected, stale, path)
+        ))
+
     def test_live_release_rejects_google_noindex_http_response_headers(self):
         from email.message import Message
         from unittest.mock import patch
