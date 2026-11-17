@@ -143,19 +143,22 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         issues.append("directory intent content is missing a core search term")
     directory_heading = re.search(r"<h1\b[^>]*>(.*?)</h1>", directory_html, re.S)
     if (not directory_heading
-            or "전체 목록" not in directory_heading.group(1)
+            or "사이트모음 전체 목록" not in directory_heading.group(1)
             or "이름·도메인 검색" not in directory_heading.group(1)
             or "이름·도메인" not in directory_heading.group(1)
-            or any(keyword in directory_heading.group(1) for keyword in KEYWORDS)):
-        issues.append("directory catalog-search heading must use distinct name/domain intent")
+            or any(keyword in directory_heading.group(1)
+                   for keyword in ("주소모음", "링크모음"))):
+        issues.append("directory catalog-search heading must use distinct site-list intent")
     home_title = re.search(r"<title>(.*?)</title>", home_html, re.S)
     if not home_title or any(keyword not in home_title.group(1) for keyword in KEYWORDS):
         issues.append("homepage core-keyword title missing")
     directory_title = re.search(r"<title>(.*?)</title>", directory_html, re.S)
     if (not directory_title
-            or "등록 사이트 전체 목록 검색" not in directory_title.group(1)
-            or any(keyword in directory_title.group(1) for keyword in KEYWORDS)):
-        issues.append("directory title must use distinct catalog-search intent")
+            or "사이트모음 전체 목록" not in directory_title.group(1)
+            or "검색·비교" not in directory_title.group(1)
+            or any(keyword in directory_title.group(1)
+                   for keyword in ("주소모음", "링크모음"))):
+        issues.append("directory title must use distinct site-list search intent")
     if f"{count}개" not in directory_html.split("</main>", 1)[0]:
         issues.append("directory visible count not derived from verified data")
     if "/directory" not in home.links:

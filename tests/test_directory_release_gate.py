@@ -17,8 +17,8 @@ def fixture(card_count=13):
                     '<a href="https://example.org/">사이트 방문</a></article>'
                     for i in range(card_count))
     nav = ''.join(f'<a href="/categories/{slug}">category</a>' for slug in CATEGORIES)
-    directory = ('<html><head><title>등록 사이트 전체 목록 검색</title><link rel="canonical" href="'+ORIGIN+'/directory">'
-                 '</head><body><h1>등록 사이트 전체 목록 · ' + str(card_count) + '개 사이트 이름·도메인 검색</h1>'
+    directory = ('<html><head><title>사이트모음 전체 목록 | 360개 사이트 검색·비교 - 링크위키</title><link rel="canonical" href="'+ORIGIN+'/directory">'
+                 '</head><body><h1>사이트모음 전체 목록 · ' + str(card_count) + '개 사이트 이름·도메인 검색</h1>'
                  f'<p>{card_count}개 등록 사이트</p><section>주소모음 링크모음 사이트모음</section><nav>{nav}</nav>'
                  '<form id="v6-form"></form>'
                  f'<div id="v6-results">{cards}</div>'
@@ -52,10 +52,11 @@ class DirectoryReleaseGateTests(unittest.TestCase):
         home_title = home.split("<title>", 1)[1].split("</title>", 1)[0]
         directory_title = directory.split("<title>", 1)[1].split("</title>", 1)[0]
         self.assertIn("주소모음·링크모음·사이트모음", home_title)
-        self.assertIn("등록 사이트 전체 목록 검색", directory_title)
+        self.assertIn("사이트모음 전체 목록", directory_title)
+        self.assertIn("검색·비교", directory_title)
         self.assertNotIn("주소모음·링크모음·사이트모음", directory_title)
         self.assertNotEqual(home_title, directory_title)
-        self.assertIn("<h1 id=\"directory-heading\">등록 사이트 전체 목록", directory)
+        self.assertIn("<h1>사이트모음 전체 목록", directory)
         self.assertIn("이름·도메인 검색", directory)
 
     def test_complete_static_directory_passes(self):
