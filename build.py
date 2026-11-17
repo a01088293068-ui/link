@@ -2002,17 +2002,36 @@ def fingerprint_stylesheets(html, asset_root):
         html = pattern.sub(lambda match: match.group(1) + "?v=" + digest + match.group(2), html)
     return html
 
+def synchronize_shared_footer(html, footer):
+    """Apply the homepage's single shared footer to every public HTML page."""
+    if not re.search(r"<html\\b", html, re.I):
+        return html
+    pattern = re.compile(
+        r'<footer\\b[^>]*\\bclass="footer"[^>]*>.*?</footer>',
+        re.I | re.S,
+    )
+    matches = list(pattern.finditer(html))
+    if len(matches) != 1:
+        raise RuntimeError(
+            f"Expected exactly one shared footer in HTML page; found {len(matches)}"
+        )
+    return pattern.sub(lambda _: footer, html, count=1)
+
+
 def build():
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
     copy_public_sources(ROOT, OUT)
+    header, footer = chrome()
     for existing_page in OUT.rglob('*.html'):
         existing_html = existing_page.read_text(encoding='utf-8')
+        if not re.search(r"<html\\b", existing_html, re.I):
+            continue
         improved_html = add_nav(existing_html)
+        improved_html = synchronize_shared_footer(improved_html, footer)
         if improved_html != existing_html:
             existing_page.write_text(improved_html, encoding='utf-8')
-    header, footer = chrome()
     significant_updates = json.loads(
         (ROOT / "seo" / "significant-page-updates.json").read_text(encoding="utf-8"))
     posts = []
