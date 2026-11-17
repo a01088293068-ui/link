@@ -15,6 +15,21 @@ class IndexPriorityPlanTests(unittest.TestCase):
         self.assertIn("검사 기록 없음", report)
         self.assertNotIn("색인 성공 확정", report)
 
+    def test_standalone_address_check_guide_appears_in_priority_report(self):
+        record = {
+            "schema": 1,
+            "inspections": [{
+                "url": "https://linkwiki.info/guides/address-check",
+                "verdict": "NEUTRAL",
+                "coverage": "Crawled - currently not indexed",
+                "last_crawl": "2026-10-19T06:04:57Z",
+            }],
+        }
+        output = render(record)
+        self.assertIn("핵심 가이드 및 주소 확인 페이지", output)
+        self.assertIn("https://linkwiki.info/guides/address-check", output)
+        self.assertIn("주소 확인 절차의 독립적 가치", output)
+
     def test_historic_html_canonical_mismatch_is_not_live_failure(self):
         records = [{"url": "https://linkwiki.info/categories/ai",
                     "user_canonical": "https://linkwiki.info/categories/ai.html",
