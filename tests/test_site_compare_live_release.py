@@ -41,6 +41,8 @@ class SiteCompareReleaseTests(unittest.TestCase):
                 return (dist / "categories/index.html").read_text(encoding="utf-8")
             if path == "/about":
                 return (dist / "about.html").read_text(encoding="utf-8")
+            if path == "/guides/directory-maintenance":
+                return (dist / "guides/directory-maintenance.html").read_text(encoding="utf-8")
             if path in CATEGORY_PATHS:
                 return (dist / "categories" / (path.rsplit("/", 1)[-1] + ".html")).read_text(encoding="utf-8")
             if path.startswith("/blog/"):
