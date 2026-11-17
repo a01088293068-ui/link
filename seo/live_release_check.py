@@ -181,6 +181,16 @@ def release_content_sections(html, path):
             r'<section class="wrap" aria-label="국내 생활 민원과 공공자료 찾기">.*?</section>',
             r'<section class="wrap" aria-label="창업·특허·기업지원 공식 사이트 비교">.*?</section>',
         )
+    # Verify the five recently expanded Korean category guides in production.
+    # Matching the entire editorial section catches stale Pages deployments
+    # even when title, description, canonical and category cards are unchanged.
+    if path in (
+        "/categories/finance", "/categories/education", "/categories/news",
+        "/categories/shopping", "/categories/travel",
+    ):
+        patterns[path] += (
+            r'<section class="lw-safety-note category-guide-extra"[^>]*>.*?</section>',
+        )
     blocks = []
     for expression in patterns.get(path, ()):
         blocks.extend(re.findall(expression, html, flags=re.S))

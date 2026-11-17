@@ -189,6 +189,41 @@ class LiveReleaseCheckTests(unittest.TestCase):
                 self.assertTrue(any("directory examples differ" in issue
                                     for issue in check_page(expected, stale, path)))
 
+    def test_five_expanded_korean_category_guides_must_match_live_release(self):
+        from seo.live_release_check import release_content_sections
+        headings = {
+            "/categories/finance": "금융 사이트는 이용 목적에 따라 구분하세요",
+            "/categories/education": "시험·학습·채용 사이트를 목적별로 찾기",
+            "/categories/news": "속보·해설·공식 발표를 구분해서 읽기",
+            "/categories/shopping": "쇼핑몰과 가격비교 서비스는 역할이 다릅니다",
+            "/categories/travel": "교통·길찾기·관광 정보의 차이를 확인하세요",
+        }
+        for path, heading in headings.items():
+            with self.subTest(path=path):
+                block = (
+                    '<section class="lw-safety-note category-guide-extra" '
+                    'aria-labelledby="category-guide-heading">'
+                    f'<h2 id="category-guide-heading">{heading}</h2>'
+                    '<p>목적에 맞는 공식 정보와 이용 조건을 확인합니다.</p>'
+                    '</section>'
+                )
+                expected = page(path, "분야별 사이트모음", "분야별 사이트", block)
+                stale = expected.replace(
+                    "목적에 맞는 공식 정보와 이용 조건을 확인합니다.",
+                    "이전 안내 문구"
+                )
+                self.assertEqual(release_content_sections(expected, path), [block])
+                self.assertEqual(check_page(expected, expected, path), [])
+                self.assertTrue(any(
+                    "directory examples differ" in issue
+                    for issue in check_page(expected, stale, path)
+                ))
+                missing = expected.replace(block, "")
+                self.assertTrue(any(
+                    "directory examples differ" in issue
+                    for issue in check_page(expected, missing, path)
+                ))
+
     def test_category_sitemap_lastmod_mismatch_detected(self):
         from seo.live_release_check import check_core_sitemap_lastmod
         path = "/categories/ai"
