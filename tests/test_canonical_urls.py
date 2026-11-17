@@ -75,6 +75,7 @@ class CanonicalURLTests(unittest.TestCase):
                     if node.tag.endswith("}loc")]
             self.assertTrue(urls, f"{name} must contain URLs")
             self.assertEqual(len(urls), len(set(urls)), f"{name} has duplicate URLs")
+            self.assertNotIn("https://linkwiki.info/privacy", urls)
             for url in urls:
                 self.assertTrue(url.startswith("https://linkwiki.info/"), url)
                 self.assertFalse(url.endswith(".html"), url)
