@@ -338,7 +338,7 @@ def check_page(expected_html, live_html, path):
         if not any(
             "사이트모음 전체 목록" in heading
             and "이름·도메인 검색" in heading
-            and not any(keyword in heading for keyword in CORE)
+            and not any(keyword in heading for keyword in ("주소모음", "링크모음"))
             for heading in live.headings
         ):
             errors.append("/directory: distinct name/domain catalog-search H1 missing")
