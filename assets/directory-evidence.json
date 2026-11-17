@@ -1211,5 +1211,32 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kdic.or.kr/",
+    "name": "예금보험공사",
+    "source_url": "https://www.kdic.or.kr/sp/main.do",
+    "scope": "예금보험공사 공식 홈페이지의 예금자보호제도·보호대상 금융회사·금융상품·예금보험금 신청 안내를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://seibro.or.kr/",
+    "name": "한국예탁결제원 세이브로",
+    "source_url": "https://www.ksd.or.kr/ko/",
+    "scope": "한국예탁결제원 공식 홈페이지의 패밀리 사이트에서 세이브로 증권정보포털 운영 주체와 주식·채권·펀드 정보 제공 설명 및 연결 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.fss.or.kr/edu/main.jsp",
+    "name": "금융감독원 e-금융교육센터",
+    "source_url": "https://www.fss.or.kr/edu/main/main.do",
+    "scope": "금융감독원 e-금융교육센터의 대상별 금융교육 프로그램·콘텐츠·강사·교육소식 검색 기능과 최종 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
