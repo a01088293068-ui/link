@@ -42,23 +42,31 @@ class CategoryCollectionSchemaTests(unittest.TestCase):
             build.category_collection_schema([], "없는 분야", "missing", "없는 분야")
 
     def test_built_category_pages_include_visible_item_list_schema(self):
-        dist = ROOT / "dist" / "categories" / "education.html"
+        dist = ROOT / "dist" / "categories"
         if not dist.exists():
             self.skipTest("Release build has not been generated")
-        html = dist.read_text(encoding="utf-8")
-        match = re.search(
-            r'<script type="application/ld\+json">(.*?)</script>', html, re.S
-        )
-        self.assertIsNotNone(match)
-        data = json.loads(match.group(1))
-        self.assertEqual(data["@type"], "CollectionPage")
-        self.assertEqual(data["url"], "https://linkwiki.info/categories/education")
-        items = data["mainEntity"]["itemListElement"]
         records = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
-        expected_count = sum(record.get("category") == "교육·취업" for record in records)
-        self.assertEqual(data["mainEntity"]["numberOfItems"], expected_count)
-        self.assertEqual(len(items), expected_count)
-        self.assertTrue(all(item.get("name") and item.get("url") for item in items))
+        for category, slug, heading, _purpose in build.CATEGORY_LANDING:
+            with self.subTest(category=category, slug=slug):
+                html = (dist / f"{slug}.html").read_text(encoding="utf-8")
+                match = re.search(
+                    r'<script type="application/ld\\+json">(.*?)</script>', html, re.S
+                )
+                self.assertIsNotNone(match)
+                data = json.loads(match.group(1))
+                self.assertEqual(data["@type"], "CollectionPage")
+                self.assertEqual(data["url"], f"https://linkwiki.info/categories/{slug}")
+                self.assertEqual(data["name"], f"{heading} 사이트모음")
+                self.assertEqual(data["mainEntity"]["name"], f"{heading} 등록 사이트")
+                items = data["mainEntity"]["itemListElement"]
+                expected_records = [record for record in records if record.get("category") == category]
+                self.assertEqual(data["mainEntity"]["numberOfItems"], len(expected_records))
+                self.assertEqual(len(items), len(expected_records))
+                self.assertEqual(
+                    [item["name"] for item in items],
+                    [record["name"] for record in expected_records],
+                )
+
 
 
 if __name__ == "__main__":
