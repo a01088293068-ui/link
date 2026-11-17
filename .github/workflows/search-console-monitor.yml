@@ -12,6 +12,15 @@ on:
       - 'seo/index_priority_plan.py'
       - 'tests/test_index_priority_plan.py'
       - 'tests/test_search_console_monitor.py'
+      # Reinspect Google-stored URLs after substantive public-page or catalogue changes.
+      - 'index.html'
+      - 'directory.html'
+      - 'categories/**'
+      - 'guides/**'
+      - 'content/**'
+      - 'assets/verified-directory.json'
+      - 'assets/directory-evidence.json'
+      - 'seo/significant-page-updates.json'
   schedule:
     - cron: '25 3 * * *'
 
@@ -27,7 +36,7 @@ permissions:
 
 jobs:
   performance:
-    if: ${{ vars.GSC_MONITOR_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ vars.GSC_MONITOR_ENABLED == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
