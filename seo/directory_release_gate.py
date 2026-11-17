@@ -144,7 +144,7 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
     directory_heading = re.search(r"<h1\b[^>]*>(.*?)</h1>", directory_html, re.S)
     if (not directory_heading
             or "전체 목록" not in directory_heading.group(1)
-            or "사이트 검색" not in directory_heading.group(1)
+            or "이름·도메인 검색" not in directory_heading.group(1)
             or "이름·도메인" not in directory_heading.group(1)
             or any(keyword in directory_heading.group(1) for keyword in KEYWORDS)):
         issues.append("directory catalog-search heading must use distinct name/domain intent")
