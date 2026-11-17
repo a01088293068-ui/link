@@ -19,12 +19,14 @@ class DirectoryReachabilityTests(TestCase):
         self.assertEqual(row["result"], "ok")
         self.assertEqual(row["final_url"], "https://example.com/new")
 
-    def test_blocked_bot_is_not_called_dead(self):
-        error = HTTPError(self.record["url"], 403, "Forbidden", {}, None)
-        with patch("seo.check_directory_links.urlopen", side_effect=error):
-            row = check(self.record)
-        self.assertEqual(row["result"], "access_restricted")
-        self.assertEqual(row["final_url"], self.record["url"])
+    def test_access_restrictions_are_not_called_dead(self):
+        for status in (403, 429, 430, 451):
+            with self.subTest(status=status):
+                error = HTTPError(self.record["url"], status, "Restricted", {}, None)
+                with patch("seo.check_directory_links.urlopen", side_effect=error):
+                    row = check(self.record)
+                self.assertEqual(row["result"], "access_restricted")
+                self.assertEqual(row["final_url"], self.record["url"])
 
     def test_404_is_reviewable_not_deleted(self):
         error = HTTPError(self.record["url"], 404, "Not found", {}, None)
