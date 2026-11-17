@@ -422,7 +422,14 @@ class LiveReleaseCheckTests(unittest.TestCase):
             ' · <a href="/guides/directory-maintenance">목록 관리 및 수정 기록</a></p>'
             '</section>'
         )
-        expected = page("/", "주소모음·링크모음·사이트모음", "352개 사이트 검색", block)
+        required_home = (
+            '<form action="/directory" class="lw-search" method="get" role="search"></form>'
+            '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
+            '<a href="/directory">전체 목록</a><a href="/categories/">분야별 목록</a>'
+            '</section>'
+        )
+        expected = page("/", "주소모음·링크모음·사이트모음", "352개 사이트 검색",
+                        required_home + block)
         stale = expected.replace("148건의 출처 대조 기록", "이전 출처 안내")
         self.assertEqual(release_content_sections(expected, "/"), [block])
         self.assertEqual(check_page(expected, expected, "/"), [])
