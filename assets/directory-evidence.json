@@ -72,10 +72,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.kopis.or.kr/",
+    "url": "https://kopis.or.kr/por/main/main.do",
     "name": "공연예술통합전산망 KOPIS",
-    "source_url": "https://kopis.or.kr/mob/cs/csInfo.do",
-    "scope": "공연예술통합전산망 소개에서 공연 예매·취소 정보 집계와 공연정보·통계 제공 목적 및 공식 주소를 대조",
+    "source_url": "https://kopis.or.kr/por/main/main.do",
+    "scope": "KOPIS 공식 첫 화면에서 공연정보·공연통계·예매통계 제공 기능과 현재 접속 주소를 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -1802,6 +1802,24 @@
     "name": "YTN",
     "source_url": "https://infor.ytn.co.kr/ytn/about.php",
     "scope": "YTN 공식 회사 소개에서 뉴스 전문 채널과 온라인 콘텐츠 운영 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://jumpit.saramin.co.kr/",
+    "name": "점핏",
+    "source_url": "https://team.jumpit.co.kr/0f6906ab-330e-48e7-afa9-fe7c7d2cca98",
+    "scope": "점핏 공식 약관 변경 공지에서 2024년 9월 26일 서비스 주소가 jumpit.saramin.co.kr로 변경됐음을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://klpga.co.kr/",
+    "name": "KLPGA",
+    "source_url": "https://klpga.co.kr/about/guide/FAQ?menu2=0002",
+    "scope": "KLPGA 공식 FAQ에서 투어 일정·기록·대회 참가 신청 및 관람 안내와 공식 홈페이지 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
