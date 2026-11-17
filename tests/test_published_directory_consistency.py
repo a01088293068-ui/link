@@ -12,13 +12,13 @@ from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]
 CATEGORY_FILES = {
-    "검색·포털": "search", "커뮤니티": "community",
-    "AI 도구": "ai", "스포츠": "sports",
-    "영상·OTT": "video", "만화·웹툰": "webtoon",
-    "만화": "comics-directory", "한인교민": "korean",
-    "금융·경제": "finance", "교육·취업": "education",
-    "뉴스·언론": "news", "쇼핑·가격비교": "shopping",
-    "생활·교통·여행": "travel",
+    "검색·포털": "search", "금융·경제": "finance",
+    "교육·취업": "education", "생활·교통·여행": "travel",
+    "쇼핑·가격비교": "shopping", "뉴스·언론": "news",
+    "커뮤니티": "community", "AI 도구": "ai",
+    "스포츠": "sports", "영상·OTT": "video",
+    "만화·웹툰": "webtoon", "만화": "comics-directory",
+    "한인교민": "korean",
 }
 
 
