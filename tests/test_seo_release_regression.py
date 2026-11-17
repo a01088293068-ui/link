@@ -501,6 +501,13 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn(">링크위키 바로가기</a>", source)
         self.assertNotIn("링크위키 본 사이트 방문", source)
 
+    def test_security_guide_uses_canonical_main_service_cta(self):
+        root = Path(__file__).resolve().parents[1]
+        source = (root / "guides" / "security.html").read_text(encoding="utf-8")
+        self.assertIn('href="https://linkwiki01.com/"', source)
+        self.assertIn(">링크위키 바로가기</a>", source)
+        self.assertNotIn("링크위키 본 사이트 방문", source)
+
     def test_latest_published_article_is_in_built_sitemap_with_matching_canonical(self):
         root = Path(__file__).resolve().parents[1]
         posts = sorted((root / "content").glob("seo-*.md"))
