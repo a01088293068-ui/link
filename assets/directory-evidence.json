@@ -1328,5 +1328,14 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://etk.srail.kr/",
+    "name": "SRT",
+    "source_url": "https://etk.srail.kr/cms/article/view.do?pageId=TK0502000000&pageIndex=31&postNo=922",
+    "scope": "SR 공식 공지에서 2026년 9월 1일 이후 기존 SRT 운행 노선의 통합열차 승차권은 코레일+ 앱 또는 코레일 홈페이지에서 예매하고 기존 SRT 홈페이지 예매 서비스는 종료되는 전환 내용을 확인",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "official_announcement"
   }
 ]
