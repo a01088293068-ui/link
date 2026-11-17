@@ -59,10 +59,10 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
         self.assertIn("이름·도메인 검색", directory_heading)
         self.assertTrue(all(term not in directory_heading for term in ("주소모음", "링크모음")))
         self.assertIn(f"{len(self.records)}개", directory_heading)
-        description = re.search(r'<meta\b[^>]*name="description"[^>]*content="([^"]*)"', rendered, re.S).group(1)
+        description = re.search(r'<meta\b(?=[^>]*\bname="description")(?=[^>]*\bcontent="([^"]*)")[^>]*>', rendered, re.S).group(1)
         self.assertIn(f"{len(self.records)}개 등록 사이트", description)
         self.assertIn("연결 주소를 비교", description)
-        self.assertIn("사이트모음 전체 목록", re.search(r'<meta\b[^>]*property="og:title"[^>]*content="([^"]*)"', rendered, re.S).group(1))
+        self.assertIn("사이트모음 전체 목록", re.search(r'<meta\b(?=[^>]*\bproperty="og:title")(?=[^>]*\bcontent="([^"]*)")[^>]*>', rendered, re.S).group(1))
 
     def test_full_directory_is_the_sole_all_records_details_page(self):
         self.assertGreaterEqual(len(self.records), 315)
