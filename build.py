@@ -468,7 +468,12 @@ def sync_directory_count(html, total_sites):
             raise RuntimeError("Directory intent heading malformed")
 
     title = f"등록 사이트 전체 목록 검색 | {total_sites}개 사이트 이름·도메인·분야별 찾기 - 링크위키"
-    description = (\n        f"한국어 이용자를 위한 {total_sites}개 사이트를 이름·도메인·13개 분야로 검색하고, "\n        "각 서비스의 이용 목적과 연결 주소를 비교하세요. 필요한 사이트를 빠르게 찾고 "\n        "분야별 목록으로 이동할 수 있습니다."\n    )\n    html, title_count = re.subn(
+    description = (
+        f"한국어 이용자를 위한 {total_sites}개 사이트를 이름·도메인·13개 분야로 검색하고, "
+        "각 서비스의 이용 목적과 연결 주소를 비교하세요. 필요한 사이트를 빠르게 찾고 "
+        "분야별 목록으로 이동할 수 있습니다."
+    )
+    html, title_count = re.subn(
         r"<title>.*?</title>",
         "<title>" + escape(title) + "</title>",
         html, count=1, flags=re.S)
