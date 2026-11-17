@@ -105,6 +105,7 @@ DIRECTORY_INTENT_ARTICLES = (
     "seo-20261111-site-directory-selection-by-purpose",
     "seo-20261116-korean-certification-exam-sites-guide",
     "seo-20261116-korean-public-sector-recruitment-sites-guide",
+    "seo-20261111-mobile-address-directory-check",
 )
 
 
@@ -153,9 +154,9 @@ def inspection_targets(page_rows, limit=24, core_query_pages=None, as_of=None):
     """
     from urllib.parse import urlsplit
     # The standard daily quota is deliberately partitioned: core site pages,
-    # all 13 category hubs, and six high-intent Korean directory guides must
-    # never be displaced by noisy impression rows. The final two slots are
-    # reserved for exact core-query landing pages, or rotating guides otherwise.
+    # all 13 category hubs, and seven high-intent Korean directory guides must
+    # never be displaced by noisy impression rows. The final slot is reserved
+    # for one exact core-query landing page, or a rotating guide otherwise.
     if limit >= 24:
         urls = list(INSPECT_URLS)
         seen = set(urls)
