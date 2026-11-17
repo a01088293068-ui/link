@@ -1409,5 +1409,239 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://wrtn.ai/",
+    "name": "뤼튼",
+    "source_url": "https://wrtn.ai/",
+    "scope": "뤼튼 공식 서비스 페이지에서 AI 채팅·글쓰기·이미지 생성 기능과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://clovanote.naver.com/",
+    "name": "클로바노트",
+    "source_url": "https://clovanote.naver.com/",
+    "scope": "네이버 클로바노트 공식 페이지에서 음성 기록·북마크·메모·AI 요약 기능과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://typecast.ai/",
+    "name": "타입캐스트",
+    "source_url": "https://typecast.ai/",
+    "scope": "타입캐스트 공식 서비스 페이지에서 AI 음성 생성 기능과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://vrew.ai/",
+    "name": "브루(Vrew)",
+    "source_url": "https://vrew.ai/en/",
+    "scope": "Vrew 공식 페이지에서 AI 영상 편집·자막·음성 기능과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.miricanvas.com/",
+    "name": "미리캔버스",
+    "source_url": "https://www.miricanvas.com/en",
+    "scope": "미리캔버스 공식 페이지에서 디자인 템플릿·AI 프레젠테이션·이미지 기능과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://chatgpt.com/",
+    "name": "ChatGPT",
+    "source_url": "https://chatgpt.com/",
+    "scope": "ChatGPT 공식 서비스 페이지에서 AI 대화·파일·이미지 활용 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://gemini.google.com/",
+    "name": "Gemini",
+    "source_url": "https://gemini.google.com/",
+    "scope": "Google Gemini 공식 서비스 페이지에서 글쓰기·계획·브레인스토밍 지원과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.perplexity.ai/",
+    "name": "Perplexity",
+    "source_url": "https://www.perplexity.ai/",
+    "scope": "Perplexity 공식 서비스 페이지에서 출처 기반 검색형 AI 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://copilot.com/",
+    "name": "Microsoft Copilot",
+    "source_url": "https://copilot.com/",
+    "scope": "Microsoft Copilot 공식 페이지에서 AI 대화·콘텐츠 작성 지원과 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.tving.com/",
+    "name": "티빙",
+    "source_url": "https://www.tving.com/6001",
+    "scope": "TVING 공식 페이지에서 드라마·예능·영화·스포츠 등 영상 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://chzzk.naver.com/",
+    "name": "치지직",
+    "source_url": "https://chzzk.naver.com/",
+    "scope": "치지직 공식 페이지에서 게임·e스포츠·스포츠 라이브 스트리밍 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.melon.com/",
+    "name": "멜론",
+    "source_url": "https://www.melon.com/",
+    "scope": "멜론 공식 홈페이지에서 음악 검색·앨범·음원 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.music-flo.com/",
+    "name": "FLO",
+    "source_url": "https://www.music-flo.com/",
+    "scope": "FLO 공식 홈페이지에서 음악 탐색·재생 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ebs.co.kr/",
+    "name": "EBS",
+    "source_url": "https://www.ebs.co.kr/",
+    "scope": "EBS 공식 홈페이지에서 교육방송 콘텐츠와 한국교육방송공사 운영 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.sbs.co.kr/",
+    "name": "SBS",
+    "source_url": "https://www.sbs.co.kr/",
+    "scope": "SBS 공식 홈페이지에서 방송 프로그램·뉴스·라이브·VOD 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mbc.co.kr/",
+    "name": "MBC",
+    "source_url": "https://www.imbc.com/",
+    "scope": "MBC 공식 홈페이지로 이동하는 최종 도메인과 방송·뉴스·스포츠 콘텐츠 제공 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kbs.co.kr/",
+    "name": "KBS",
+    "source_url": "https://www.kbs.co.kr/",
+    "scope": "KBS 공식 홈페이지에서 공영방송 프로그램·영상 콘텐츠 제공 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://webtoon.kakao.com/",
+    "name": "카카오웹툰",
+    "source_url": "https://webtoon.kakao.com/",
+    "scope": "카카오웹툰 공식 페이지에서 요일별 연재·완결 웹툰 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://page.kakao.com/",
+    "name": "카카오페이지",
+    "source_url": "https://page.kakao.com/",
+    "scope": "카카오페이지 공식 페이지에서 웹툰·웹소설·도서 콘텐츠 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://ridibooks.com/",
+    "name": "리디",
+    "source_url": "https://ridibooks.com/",
+    "scope": "리디 공식 페이지에서 만화·웹툰·웹소설·도서 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.lezhin.com/ko",
+    "name": "레진코믹스",
+    "source_url": "https://www.lezhin.com/ko",
+    "scope": "레진코믹스 공식 한국어 페이지에서 웹툰 콘텐츠와 운영사 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.toomics.com/",
+    "name": "투믹스",
+    "source_url": "https://global.toomics.com/en",
+    "scope": "투믹스 공식 글로벌 페이지에서 한국·일본 만화 및 장르별 웹툰 서비스와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://series.naver.com/",
+    "name": "네이버 시리즈",
+    "source_url": "https://series.naver.com/novel/home.series",
+    "scope": "네이버 시리즈 공식 페이지에서 웹소설 연재·작품 정보와 등록 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bomtoon.com/",
+    "name": "봄툰",
+    "source_url": "https://www.bomtoon.com/bom/comic/main",
+    "scope": "봄툰 공식 페이지에서 로맨스·순정·BL 웹툰 서비스와 운영사 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://toptoon.com/",
+    "name": "탑툰",
+    "source_url": "https://toptoon.com/",
+    "scope": "탑툰 공식 페이지에서 프리미엄 웹툰 플랫폼 및 고객센터 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.joara.com/",
+    "name": "조아라",
+    "source_url": "https://www.joara.com/",
+    "scope": "조아라 공식 페이지에서 무료 웹소설·웹툰 서비스와 지원 브라우저 안내를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
