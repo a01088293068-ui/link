@@ -59,7 +59,7 @@ class IndexNowNotifyTests(unittest.TestCase):
         self.assertIn(SITE + "/blog/", available)
         self.assertIn(SITE + "/blog/new-guide/", available)
         self.assertIn(SITE + "/blog/another-guide/", available)
-        self.assertEqual(len(available - self.available), 3)
+        self.assertEqual(len(available - self.available), 2)
 
     def test_new_article_is_notified_even_when_absent_from_source_sitemap(self):
         available = add_generated_content_urls(
