@@ -93,8 +93,8 @@ class LiveReleaseCheckTests(unittest.TestCase):
         )
         stale = expected.replace("352개", "337개")
         from seo.live_release_check import visible_site_counts
-        self.assertEqual(visible_site_counts(expected), [352, 352])
-        self.assertEqual(visible_site_counts(stale), [337, 337])
+        self.assertEqual(visible_site_counts(expected), [352])
+        self.assertEqual(visible_site_counts(stale), [337])
         self.assertEqual(check_page(expected, expected, path), [])
         self.assertTrue(any(
             "deployed visible site counts differ" in issue
