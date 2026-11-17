@@ -2285,7 +2285,8 @@ def build():
            '<section class="seo-guidance"><h2>사이트를 선택할 때</h2>'
            '<p>사이트 수가 많다고 더 신뢰할 수 있는 것은 아닙니다. 각 서비스의 운영 주체, 정확한 도메인, 로그인·결제 조건을 확인하세요.</p>'
            '<p>이 목록은 접속 가능 여부나 최신 주소를 실시간으로 검증한 순위표가 아닙니다.</p>'
-           '<p><a href="/directory">전체 등록 사이트 검색</a> · <a href="/guides/address-check">주소 확인 방법</a></p>'
+           f'<p><a href="/directory">{len(records)}개 사이트 이름·도메인 전체 검색</a> · '
+           '<a href="/guides/address-check">주소 확인 방법</a></p>'
            '</section></div>')
     hub_path = OUT / "categories" / "index.html"
     hub_path.write_text(document("분야별 링크모음", "분야와 이용 목적에 맞는 사이트를 찾아보고, 서비스별 운영 안내와 이용 조건을 확인하세요.",

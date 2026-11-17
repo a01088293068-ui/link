@@ -42,6 +42,18 @@ class CanonicalURLTests(unittest.TestCase):
         html = (dist / "categories" / "ai.html").read_text(encoding="utf-8")
         self.assertIn('href="https://linkwiki.info/categories/ai" rel="canonical"', html)
 
+    def test_category_hub_links_to_full_directory_with_dynamic_site_count(self):
+        dist = ROOT / "dist"
+        if not (dist / "categories" / "index.html").exists():
+            self.skipTest("Run build.py before release verification")
+        hub = (dist / "categories" / "index.html").read_text(encoding="utf-8")
+        count = len(__import__("json").loads(
+            (ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8")))
+        self.assertIn(
+            f'href="/directory">{count}개 사이트 이름·도메인 전체 검색</a>',
+            hub,
+        )
+
     def test_category_hub_and_existing_pages_link_each_other(self):
         dist = ROOT / "dist"
         if not (dist / "categories" / "index.html").exists():

@@ -385,6 +385,21 @@ class LiveReleaseCheckTests(unittest.TestCase):
                             for p in check_page(expected, stale, "/categories/")))
         self.assertEqual(check_page(expected, expected, "/categories/"), [])
 
+    def test_category_hub_requires_canonical_full_directory_search_link(self):
+        links = ''.join(f'<a href="{link}">분야</a>' for link in CATEGORY_PATHS)
+        complete = page(
+            "/categories/", "분야별 링크모음", "분야별 링크모음",
+            '<a href="/directory">360개 사이트 이름·도메인 전체 검색</a>' + links
+        )
+        self.assertEqual(check_page(complete, complete, "/categories/"), [])
+        missing = complete.replace(
+            '<a href="/directory">360개 사이트 이름·도메인 전체 검색</a>', ""
+        )
+        self.assertIn(
+            "/categories/: missing canonical full-directory search link",
+            check_page(complete, missing, "/categories/"),
+        )
+
     def test_category_hub_missing_direct_category_link_is_detected(self):
         complete = page("/categories/", "분야별", "분야별", ''.join(
             f'<a href="{link}">보기</a>' for link in CATEGORY_PATHS))

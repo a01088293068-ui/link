@@ -324,6 +324,8 @@ def check_page(expected_html, live_html, path):
         if "글 작성과 정보 확인 범위" not in live_html:
             errors.append("/about: editorial methodology not deployed")
     if path == "/categories/":
+        if "/directory" not in live.links:
+            errors.append("/categories/: missing canonical full-directory search link")
         for link in CATEGORY_PATHS:
             if link not in live.links:
                 errors.append(f"/categories/: missing category link {link}")
