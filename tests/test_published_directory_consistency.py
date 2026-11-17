@@ -133,6 +133,17 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
         self.assertEqual(result.returncode, 0, result.stderr)
 
 
+    def test_current_count_in_search_guide_matches_catalog(self):
+        guide = (ROOT / "content/seo-20261111-address-directory-no-results.md").read_text(encoding="utf-8")
+        self.assertIn(f"2026년 11월 17일 현재 공개 전체 목록에는 {len(self.records)}개 사이트가 등록되어 있습니다.", guide)
+
+    def test_gemini_notebook_rebrand_is_consistent(self):
+        row = next(item for item in self.records if item["url"] == "https://notebook.google.com/")
+        self.assertEqual(row["name"], "Gemini Notebook (구 NotebookLM)")
+        guide = (ROOT / "content/seo-20261110-korean-ai-tools-by-task-guide.md").read_text(encoding="utf-8")
+        self.assertNotIn("[NotebookLM]", guide)
+        self.assertIn("Gemini Notebook (구 NotebookLM)", guide)
+
     def test_korcham_secure_destination_keeps_existing_comparison_anchor(self):
         from build import directory_card_anchor
 
