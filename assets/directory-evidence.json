@@ -1733,5 +1733,41 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kif.re.kr/",
+    "name": "한국금융연구원",
+    "source_url": "https://www.kif.re.kr/kif4/about/about?mid=61",
+    "scope": "한국금융연구원 소개에서 금융산업·금융정책 연구 및 금융경제 정보 제공 범위를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kdb.co.kr/",
+    "name": "KDB산업은행",
+    "source_url": "https://www.kdb.co.kr/wcmscontents/pdf/External_Review_2025.pdf",
+    "scope": "한국산업은행 공식 자료에서 정책금융기관 역할과 대표 홈페이지 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.airport.co.kr/",
+    "name": "한국공항공사",
+    "source_url": "https://www.airport.co.kr/www/index.do",
+    "scope": "한국공항공사 공식 홈페이지에서 국내 공항 운영·운항 정보·예약 서비스를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.korail.com/",
+    "name": "코레일",
+    "source_url": "https://www.korail.com/ticket/reserve/guide/faq",
+    "scope": "코레일 공식 승차권 안내에서 통합 홈페이지와 예매 서비스 운영 정보를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
