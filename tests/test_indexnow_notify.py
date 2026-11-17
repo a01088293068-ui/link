@@ -1,7 +1,7 @@
 import unittest
 
 from seo.indexnow_notify import (
-    SITE, changed_page_urls, public_path_for_source, sitemap_urls,
+    SITE, add_generated_content_urls, changed_page_urls, public_path_for_source, sitemap_urls,
 )
 
 NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -46,6 +46,26 @@ class IndexNowNotifyTests(unittest.TestCase):
 
     def test_article_change_notifies_article_and_discovery_hubs(self):
         urls = changed_page_urls(["content/new-guide.md"], self.available)
+        self.assertEqual(urls, sorted([
+            SITE + "/", SITE + "/blog/", SITE + "/blog/new-guide/",
+        ]))
+
+    def test_generated_markdown_posts_are_added_to_available_urls(self):
+        available = add_generated_content_urls(
+            self.available,
+            ["content/new-guide.md", "content/another-guide.md",
+             "content/too-short.md", "README.md"],
+        )
+        self.assertIn(SITE + "/blog/", available)
+        self.assertIn(SITE + "/blog/new-guide/", available)
+        self.assertIn(SITE + "/blog/another-guide/", available)
+        self.assertEqual(len(available - self.available), 3)
+
+    def test_new_article_is_notified_even_when_absent_from_source_sitemap(self):
+        available = add_generated_content_urls(
+            self.available, ["content/new-guide.md"]
+        )
+        urls = changed_page_urls(["content/new-guide.md"], available)
         self.assertEqual(urls, sorted([
             SITE + "/", SITE + "/blog/", SITE + "/blog/new-guide/",
         ]))
