@@ -50,7 +50,7 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
         rendered = build.sync_directory_count(directory, len(self.records))
         home_title = re.search(r"<title>(.*?)</title>", home, re.S).group(1)
         directory_title = re.search(r"<title>(.*?)</title>", rendered, re.S).group(1)
-        directory_heading = re.search(r"<h1\\b[^>]*>(.*?)</h1>", rendered, re.S).group(1)
+        directory_heading = re.search(r"<h1\b[^>]*>(.*?)</h1>", rendered, re.S).group(1)
         self.assertTrue(all(term in home_title for term in ("주소모음", "링크모음", "사이트모음")))
         self.assertIn("등록 사이트 전체 목록 검색", directory_title)
         self.assertTrue(all(term not in directory_title for term in ("주소모음", "링크모음", "사이트모음")))
