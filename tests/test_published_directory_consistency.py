@@ -148,6 +148,21 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
         self.assertNotIn("[NotebookLM]", guide)
         self.assertIn("Gemini Notebook (구 NotebookLM)", guide)
 
+    def test_korean_public_safety_services_have_official_evidence(self):
+        expected = {
+            "안전신문고": "https://www.safetyreport.go.kr/",
+            "생활안전지도": "https://www.safemap.go.kr/",
+        }
+        evidence = json.loads((ROOT / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        evidence_by_url = {row["url"]: row for row in evidence}
+        for name, url in expected.items():
+            with self.subTest(name=name):
+                row = next(item for item in self.records if item["name"] == name)
+                self.assertEqual(row["url"], url)
+                self.assertEqual(row["category"], "검색·포털")
+                self.assertEqual(evidence_by_url[url]["evidence_type"], "service_page")
+                self.assertTrue(evidence_by_url[url]["source_url"].startswith("https://www.mois.go.kr/"))
+
     def test_korcham_secure_destination_keeps_existing_comparison_anchor(self):
         from build import directory_card_anchor
 
