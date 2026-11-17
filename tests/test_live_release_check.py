@@ -469,6 +469,20 @@ class LiveReleaseCheckTests(unittest.TestCase):
         parsed = parse_page(directory)
         self.assertEqual(parsed.canonicals, [SITE + "/directory"])
 
+    def test_directory_release_requires_distinct_name_domain_h1(self):
+        base = page("/directory", "등록 사이트 전체 목록 검색",
+                    "등록 사이트 전체 목록 · 357개 사이트 이름·도메인 검색",
+                    '<input id="v6-query"><div id="v6-results"></div>'
+                    '<script id="directory-category-schema"></script>' +
+                    ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS))
+        self.assertFalse(any("distinct name/domain catalog-search H1" in issue
+                             for issue in check_page(base, base, "/directory")))
+        legacy = base.replace(
+            "등록 사이트 전체 목록 · 357개 사이트 이름·도메인 검색",
+            "주소모음·링크모음·사이트모음 전체 목록 · 357개 사이트 검색")
+        self.assertTrue(any("distinct name/domain catalog-search H1" in issue
+                            for issue in check_page(base, legacy, "/directory")))
+
     def test_finds_live_drift_even_when_http_200(self):
         home = page("/", "링크위키", "키워드", (
             '<form action="/directory" class="lw-search" method="get" role="search"></form>'
