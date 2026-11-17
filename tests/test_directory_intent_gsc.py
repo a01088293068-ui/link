@@ -7,6 +7,8 @@ import unittest
 from seo import search_console_monitor as monitor
 from seo import index_priority_plan
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 class DirectoryIntentGoogleEvidenceTests(unittest.TestCase):
     def test_monitor_reinspects_after_page_generator_changes(self):
