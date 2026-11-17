@@ -39,7 +39,7 @@ class DirectoryNavigationOrderTests(unittest.TestCase):
 
     def test_homepage_shortcuts_prioritize_korean_public_utility_services(self):
         source = (ROOT / "build.py").read_text(encoding="utf-8")
-        match = re.search(r"KOREAN_FIRST_SEARCH_NAMES = \\((.*?)\\n\\)", source, re.S)
+        match = re.search(r"KOREAN_FIRST_SEARCH_NAMES = \((.*?)\n\)", source, re.S)
         self.assertIsNotNone(match)
         names = re.findall(r'"([^"]+)"', match.group(1))
         self.assertEqual(names[:12], [
