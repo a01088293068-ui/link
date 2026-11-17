@@ -163,6 +163,16 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
                 self.assertEqual(evidence_by_url[url]["evidence_type"], "service_page")
                 self.assertTrue(evidence_by_url[url]["source_url"].startswith("https://www.mois.go.kr/"))
 
+    def test_national_heritage_portal_has_official_evidence(self):
+        row = next(item for item in self.records if item["name"] == "국가유산포털")
+        self.assertEqual(row["url"], "https://www.heritage.go.kr/main/")
+        self.assertEqual(row["category"], "생활·교통·여행")
+        evidence = json.loads((ROOT / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        record = next(item for item in evidence if item["url"] == row["url"])
+        self.assertEqual(record["evidence_type"], "service_page")
+        self.assertEqual(record["source_url"], row["url"])
+        self.assertIn("지역별 검색", record["scope"])
+
     def test_korcham_secure_destination_keeps_existing_comparison_anchor(self):
         from build import directory_card_anchor
 
