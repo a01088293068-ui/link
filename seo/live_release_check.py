@@ -336,11 +336,12 @@ def check_page(expected_html, live_html, path):
         if not all(keyword in live_html for keyword in CORE):
             errors.append("/directory: a primary search intent is missing from visible content")
         if not any(
-            "전체 목록" in heading and "사이트 검색" in heading
-            and all(keyword in heading for keyword in CORE)
+            "등록 사이트 전체 목록" in heading
+            and "이름·도메인 검색" in heading
+            and not any(keyword in heading for keyword in CORE)
             for heading in live.headings
         ):
-            errors.append("/directory: Korean address/link/site catalog purpose missing from visible H1")
+            errors.append("/directory: distinct name/domain catalog-search H1 missing")
         if "v6-results" not in live.ids or "v6-query" not in live.ids:
             errors.append("/directory: working search UI anchors missing")
         if "directory-category-schema" not in live.ids:
