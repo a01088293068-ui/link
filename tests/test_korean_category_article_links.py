@@ -10,6 +10,7 @@ NEW_ARTICLES = (
     "seo-20261110-korean-public-services-guide.md",
     "seo-20261110-korean-business-portals-guide.md",
 )
+FINANCE_ARTICLE = "seo-20261111-tax-hometax-wetax-difference.md"
 
 
 class KoreanCategoryArticleLinksTests(unittest.TestCase):
@@ -21,6 +22,17 @@ class KoreanCategoryArticleLinksTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertIn("/categories/search",
                               [path for _, path in related_categories(title)])
+
+    def test_finance_category_links_to_relevant_tax_guide(self):
+        spec = importlib.util.spec_from_file_location("linkwiki_build_finance", ROOT / "build.py")
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+        title = next(line[2:].strip() for line in
+                     (ROOT / "content" / FINANCE_ARTICLE).read_text(encoding="utf-8").splitlines()
+                     if line.startswith("# "))
+        post = {"title": title, "url": "/blog/" + Path(FINANCE_ARTICLE).stem + "/"}
+        selected = builder.category_article_links([post], "finance")
+        self.assertEqual([item["url"] for item in selected], [post["url"]])
 
     def test_build_links_to_real_articles_from_category_page(self):
         # Build's category-article selector chooses from titles in real posts.
