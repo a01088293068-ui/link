@@ -1985,6 +1985,22 @@ def article_provenance(title, canonical, published_date, modified_date=None):
     return markup, script
 
 
+
+def fingerprint_stylesheets(html, asset_root):
+    """Refresh CSS cache keys from actual stylesheet bytes on every public page."""
+    for name in ("style.css", "blog.css"):
+        asset = asset_root / name
+        if not asset.is_file():
+            raise RuntimeError(f"Missing public stylesheet: {name}")
+        digest = hashlib.sha256(asset.read_bytes()).hexdigest()[:12]
+        pattern = re.compile(
+            r'((?:href|src)=["'][^"']*assets/' + re.escape(name)
+            + r')(?:\\?[^"']*)?(["'])'
+        )
+        html = pattern.sub(lambda match: match.group(1) + "?v=" + digest + match.group(2), html)
+    return html
+
+
 def build():
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -2316,6 +2332,7 @@ def build():
     for page in OUT.rglob("*.html"):
         original = page.read_text(encoding="utf-8")
         normalized = normalize_page_links(original)
+        normalized = fingerprint_stylesheets(normalized, OUT / "assets")
         relative = page.relative_to(OUT).as_posix()
         public_path = ("/" + relative.removesuffix("index.html")
                        if page.name == "index.html" else "/" + relative.removesuffix(".html"))
