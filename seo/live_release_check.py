@@ -336,7 +336,7 @@ def check_page(expected_html, live_html, path):
         if not all(keyword in live_html for keyword in CORE):
             errors.append("/directory: a primary search intent is missing from visible content")
         if not any(
-            "등록 사이트 전체 목록" in heading
+            "사이트모음 전체 목록" in heading
             and "이름·도메인 검색" in heading
             and not any(keyword in heading for keyword in CORE)
             for heading in live.headings

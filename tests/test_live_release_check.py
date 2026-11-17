@@ -256,7 +256,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         card = ('<article class="v6-card"><small>AI 도구</small><h3>ChatGPT</h3>'
                 '<p>글쓰기와 요약</p><span class="site-domain">chatgpt.com</span>'
                 '<a href="https://chatgpt.com/">방문</a></article>')
-        expected = page("/directory", "목록", "등록 사이트 전체 목록 · 188개 사이트 이름·도메인 검색", card)
+        expected = page("/directory", "목록", "사이트모음 전체 목록 · 188개 사이트 이름·도메인 검색", card)
         self.assertEqual(len(directory_cards(expected)), 1)
         for stale in (card.replace("글쓰기와 요약", "예전 설명"),
                       card.replace("chatgpt.com</span>", "old.example</span>"),
@@ -306,7 +306,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
             '<script id="directory-category-schema" type="application/ld+json">{}</script>'
             + ''.join(f'<a href="{link}">분야</a>' for link in CATEGORY_PATHS)
         )
-        expected = page("/directory", "검색", "등록 사이트 전체 목록 · 344개 사이트 이름·도메인 검색",
+        expected = page("/directory", "검색", "사이트모음 전체 목록 · 344개 사이트 이름·도메인 검색",
                         block + directory_runtime)
         stale = expected.replace("분야별 탐색 안내", "이전 안내")
         self.assertEqual(release_content_sections(expected, "/directory"), [block])
@@ -322,7 +322,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         help_html = ('<section id="site-list-guide" class="lw-safety-note seo-search-help" '
                      'aria-label="사이트모음 검색 및 확인 방법">'
                      '<h2>검색 안내</h2></section>')
-        expected = page("/directory", "검색", "등록 사이트 전체 목록 · 188개 사이트 이름·도메인 검색", help_html)
+        expected = page("/directory", "검색", "사이트모음 전체 목록 · 188개 사이트 이름·도메인 검색", help_html)
         stale = expected.replace("검색 안내", "오래된 안내")
         self.assertEqual(release_content_sections(expected, "/directory"), [help_html])
         self.assertTrue(any("directory examples differ" in p
@@ -388,7 +388,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
 
     def test_live_release_flags_missing_search_help_section(self):
         from seo.live_release_check import release_content_sections
-        expected = page("/directory", "검색", "등록 사이트 전체 목록 · 344개 사이트 이름·도메인 검색",
+        expected = page("/directory", "검색", "사이트모음 전체 목록 · 344개 사이트 이름·도메인 검색",
                         '<section class="lw-safety-note seo-search-help" aria-label="사용법">'
                         '<h2>검색 사용 방법</h2></section>')
         stale = expected.replace("검색 사용 방법", "예전 안내")
@@ -442,7 +442,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
     def test_detects_stale_directory_category_overview(self):
         from seo.live_release_check import release_content_sections
         links = ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS)
-        directory = page("/directory", "검색", "등록 사이트 전체 목록 · 344개 사이트 이름·도메인 검색",
+        directory = page("/directory", "검색", "사이트모음 전체 목록 · 344개 사이트 이름·도메인 검색",
                          '<input id="v6-query"><div id="v6-results"></div>'
                          '<section>주소모음 링크모음</section>'
                          '<script id="directory-category-schema"></script>' + links +
@@ -459,7 +459,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
             '<form action="/directory" class="lw-search" method="get" role="search"></form>'
             '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
             '<a href="/directory">전체</a><a href="/categories/">분야별</a></section>'))
-        directory = page("/directory", "검색", "등록 사이트 전체 목록 · 344개 사이트 이름·도메인 검색",
+        directory = page("/directory", "검색", "사이트모음 전체 목록 · 344개 사이트 이름·도메인 검색",
                          '<input id="v6-query"><div id="v6-results"></div>'
                          '<section>주소모음 링크모음</section>'
                          '<script id="directory-category-schema"></script>' +
@@ -470,15 +470,15 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertEqual(parsed.canonicals, [SITE + "/directory"])
 
     def test_directory_release_requires_distinct_name_domain_h1(self):
-        base = page("/directory", "등록 사이트 전체 목록 검색",
-                    "등록 사이트 전체 목록 · 357개 사이트 이름·도메인 검색",
+        base = page("/directory", "사이트모음 전체 목록 검색",
+                    "사이트모음 전체 목록 · 357개 사이트 이름·도메인 검색",
                     '<input id="v6-query"><div id="v6-results"></div>'
                     '<script id="directory-category-schema"></script>' +
                     ''.join(f'<a href="{url}">분야</a>' for url in CATEGORY_PATHS))
         self.assertFalse(any("distinct name/domain catalog-search H1" in issue
                              for issue in check_page(base, base, "/directory")))
         legacy = base.replace(
-            "등록 사이트 전체 목록 · 357개 사이트 이름·도메인 검색",
+            "사이트모음 전체 목록 · 357개 사이트 이름·도메인 검색",
             "주소모음·링크모음·사이트모음 전체 목록 · 357개 사이트 검색")
         self.assertTrue(any("distinct name/domain catalog-search H1" in issue
                             for issue in check_page(base, legacy, "/directory")))
@@ -496,7 +496,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
         self.assertTrue(any("category hub" in item for item in problems))
 
     def test_rejects_robots_noindex_duplicate_canonical_and_missing_categories(self):
-        expected = page("/directory", "검색", "등록 사이트 전체 목록 · 344개 사이트 이름·도메인 검색")
+        expected = page("/directory", "검색", "사이트모음 전체 목록 · 344개 사이트 이름·도메인 검색")
         bad = (expected.replace("</head>",
                                 '<meta name="robots" content="index, noindex">'
                                 f'<link href="{SITE}/directory" rel="canonical"></head>')
@@ -604,7 +604,7 @@ class LiveReleaseCheckTests(unittest.TestCase):
                 '<form action="/directory" class="lw-search" method="get" role="search"></form>'
             '<section aria-label="주소모음 링크모음 사이트모음 이용 안내">'
                 '<a href="/directory">목록</a><a href="/categories/">분야</a></section>'))
-            directory = page("/directory", "목록", "등록 사이트 전체 목록 · 344개 사이트 이름·도메인 검색",
+            directory = page("/directory", "목록", "사이트모음 전체 목록 · 344개 사이트 이름·도메인 검색",
                              '<input id="v6-query"><div id="v6-results"></div>'
                              '<script id="directory-category-schema"></script>' +
                              ''.join(f'<a href="{x}">바로가기</a>' for x in CATEGORY_PATHS))
