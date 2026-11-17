@@ -1319,5 +1319,14 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.heritage.go.kr/main/",
+    "name": "국가유산포털",
+    "source_url": "https://www.heritage.go.kr/main/",
+    "scope": "국가유산청 공식 국가유산포털의 국가유산 통합검색, 종목·지역별 검색, 기록유산 원문 및 안내판 검색 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
