@@ -279,7 +279,7 @@ def check_page(expected_html, live_html, path):
         errors.append(f"{path}: deployed title differs from generated build")
     if expected.descriptions != live.descriptions:
         errors.append(f"{path}: deployed meta description differs from generated build")
-    if path in ("/", "/directory"):
+    if path in ("/", "/directory", "/guides/directory-maintenance"):
         expected_counts = visible_site_counts(expected_html)
         live_counts = visible_site_counts(live_html)
         if expected_counts and expected_counts != live_counts:
@@ -421,13 +421,15 @@ def fetch_public(path):
         # A 200 response reached through /directory.html or another URL is
         # not proof the extensionless canonical was served directly. Such
         # redirects can leave Google inspecting a different URL variant.
-        if path in ("/", "/directory", "/categories/", "/about") + CATEGORY_PATHS or path.startswith("/blog/"):
+        if path in ("/", "/directory", "/categories/", "/about",
+                    "/guides/directory-maintenance") + CATEGORY_PATHS or path.startswith("/blog/"):
             if final.path != path or final.query or final.fragment:
                 raise RuntimeError("Canonical URL redirected or gained query parameters: "
                                    + url + " -> " + response.geturl())
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}: {url}")
-        if path in ("/", "/directory", "/categories/", "/about") + CATEGORY_PATHS or path.startswith("/blog/"):
+        if path in ("/", "/directory", "/categories/", "/about",
+                    "/guides/directory-maintenance") + CATEGORY_PATHS or path.startswith("/blog/"):
             tags = response.headers.get_all("X-Robots-Tag", [])
             if google_index_blocked_by_header(tags):
                 raise RuntimeError("HTTP X-Robots-Tag prohibits Google indexing: " + url)
@@ -456,6 +458,9 @@ def run(dist, fetch=fetch_public):
     expected_map.update(priority_guide_pages(dist))
     if (dist / "about.html").is_file():
         expected_map["/about"] = dist / "about.html"
+    maintenance_page = dist / "guides" / "directory-maintenance.html"
+    if maintenance_page.is_file():
+        expected_map["/guides/directory-maintenance"] = maintenance_page
     problems = []
     for slug in PRIORITY_GUIDE_SLUGS:
         if (dist / "blog").is_dir() and not (dist / "blog" / slug / "index.html").is_file():
