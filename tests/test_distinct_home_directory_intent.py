@@ -43,6 +43,21 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
         self.assertIn("실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다", summary)
         self.assertNotIn("전체 사이트 검증 완료", summary)
 
+    def test_homepage_owns_head_terms_while_directory_owns_name_domain_search(self):
+        import build
+        home = (ROOT / "index.html").read_text(encoding="utf-8")
+        directory = (ROOT / "directory.html").read_text(encoding="utf-8")
+        rendered = build.sync_directory_count(directory, len(self.records))
+        home_title = re.search(r"<title>(.*?)</title>", home, re.S).group(1)
+        directory_title = re.search(r"<title>(.*?)</title>", rendered, re.S).group(1)
+        directory_heading = re.search(r"<h1\\b[^>]*>(.*?)</h1>", rendered, re.S).group(1)
+        self.assertTrue(all(term in home_title for term in ("주소모음", "링크모음", "사이트모음")))
+        self.assertIn("등록 사이트 전체 목록 검색", directory_title)
+        self.assertTrue(all(term not in directory_title for term in ("주소모음", "링크모음", "사이트모음")))
+        self.assertIn("이름·도메인 검색", directory_heading)
+        self.assertTrue(all(term not in directory_heading for term in ("주소모음", "링크모음", "사이트모음")))
+        self.assertIn(f"{len(self.records)}개", directory_heading)
+
     def test_full_directory_is_the_sole_all_records_details_page(self):
         self.assertGreaterEqual(len(self.records), 315)
         path = ROOT / "dist" / "directory.html"
