@@ -460,7 +460,7 @@ def sync_directory_count(html, total_sites):
     heading_text = f"사이트모음 전체 목록 · {total_sites}개 사이트 이름·도메인 검색"
     if 'id="directory-heading"' in html:
         heading_pattern = re.compile(
-            r'(<h1\\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)', re.S)
+            r'(<h1\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)', re.S)
         html, count = heading_pattern.subn(
             lambda m: m.group(1) + escape(heading_text) + m.group(2),
             html, count=1)
