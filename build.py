@@ -1010,6 +1010,7 @@ DIRECTORY_EVIDENCE_TYPES = {
     "service_page": "서비스 페이지와 등록 주소 대조",
     "agency_guide": "관련 기관 안내의 연결 주소 대조",
     "education_guide": "교육기관 안내의 연결 주소 확인",
+    "official_announcement": "운영사의 공식 제품 변경 발표 대조",
 }
 
 
