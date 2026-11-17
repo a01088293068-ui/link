@@ -88,7 +88,7 @@
       button.setAttribute('aria-pressed', String(pressed));
     }
     heading.textContent = category === '전체'
-      ? entries.length + '개 사이트 주소 검색: 이름·도메인·분야별 목록'
+      ? '주소모음·링크모음·사이트모음 전체 목록 · ' + entries.length + '개 사이트 검색'
       : category + ' 분야별 링크 찾기';
   }
 
