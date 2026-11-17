@@ -918,6 +918,26 @@ HOME_SEARCH_GUIDES = (
 )
 
 
+def homepage_evidence_summary(records):
+    """Expose the directory's real source-check evidence without overstating coverage."""
+    evidence = load_directory_evidence(records)
+    total = len(records)
+    checked = len(evidence)
+    if total < 1 or checked > total:
+        raise RuntimeError("Directory source-evidence counts are inconsistent")
+    return (
+        '<section class="wrap seo-related-links seo-home-evidence" '
+        'aria-label="등록 주소의 출처 대조 기록">'
+        '<h2>등록 주소의 출처 대조 기록 공개</h2>'
+        f'<p>공개 목록 {total}개 중 {checked}개 항목은 서비스 페이지 또는 관련 기관 안내를 '
+        '바탕으로 등록 주소와 이용 범위를 대조한 기록이 있습니다. '
+        '이 수치는 전체 목록의 실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다.</p>'
+        '<p><a href="/directory#directory-source-evidence">대조한 출처와 확인일 보기</a>'
+        ' · <a href="/guides/directory-maintenance">목록 관리 및 수정 기록</a></p>'
+        '</section>'
+    )
+
+
 def homepage_search_guide_links(posts_root=POSTS):
     """Give Google's already-indexed homepage direct links to real useful guides.
 
@@ -2092,7 +2112,7 @@ def build():
     home = home[:search_form_end] + quick_service_searches(first_party_records) + home[search_form_end:]
     homepage_intents = core_search_intent_section(actual_count)
     real_directory_examples = homepage_directory_examples(first_party_records, CATEGORY_LANDING)
-    home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_intents + homepage_search_guide_links() + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
+    home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_evidence_summary(first_party_records) + homepage_intents + homepage_search_guide_links() + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
