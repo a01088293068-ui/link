@@ -137,6 +137,10 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
         guide = (ROOT / "content/seo-20261111-address-directory-no-results.md").read_text(encoding="utf-8")
         self.assertIn(f"2026년 11월 17일 현재 공개 전체 목록에는 {len(self.records)}개 사이트가 등록되어 있습니다.", guide)
 
+    def test_official_announcement_evidence_type_is_supported(self):
+        from build import DIRECTORY_EVIDENCE_TYPES
+        self.assertIn("official_announcement", DIRECTORY_EVIDENCE_TYPES)
+
     def test_gemini_notebook_rebrand_is_consistent(self):
         row = next(item for item in self.records if item["url"] == "https://notebook.google.com/")
         self.assertEqual(row["name"], "Gemini Notebook (구 NotebookLM)")
