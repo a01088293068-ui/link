@@ -1,5 +1,6 @@
 import json
 import unittest
+from html import escape
 from pathlib import Path
 
 from build import directory_source_evidence_section, load_directory_evidence
@@ -19,7 +20,7 @@ class DirectorySourceEvidenceSectionTests(unittest.TestCase):
         self.assertEqual(html.count('class="source-evidence-row"'), len(evidence))
         for url, row in evidence.items():
             self.assertIn(row["name"], html)
-            self.assertIn(row["source_url"], html)
+            self.assertIn(escape(row["source_url"], quote=True), html)
             self.assertIn(row["checked_on"], html)
         self.assertIn("현재 접속 가능 여부", html)
         self.assertIn("아래에 표시되지 않은 항목은 이 출처 대조 기록에 포함되지 않았습니다.", html)
