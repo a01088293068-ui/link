@@ -446,12 +446,16 @@ class SearchConsoleMonitorTests(unittest.TestCase):
     def test_core_address_and_new_korean_guides_are_in_priority_url_inspection_set(self):
         urls = monitor.directory_intent_inspection_urls()
         self.assertEqual(len(urls), 6)
+        self.assertIn("https://linkwiki.info/guides/address-check", urls)
+        self.assertNotIn(
+            "https://linkwiki.info/blog/seo-20261116-korean-certification-exam-sites-guide/",
+            urls,
+        )
         for slug in (
             "seo-20261111-address-directory-search-examples",
             "seo-20261111-address-directory-no-results",
             "seo-20261111-links-sites-comparison-checklist",
             "seo-20261111-site-directory-selection-by-purpose",
-            "seo-20261116-korean-certification-exam-sites-guide",
             "seo-20261111-mobile-address-directory-check",
         ):
             with self.subTest(slug=slug):
