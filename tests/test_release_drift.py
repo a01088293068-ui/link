@@ -209,5 +209,46 @@ class ReleaseDriftTests(unittest.TestCase):
         self.assertTrue(any("fetch error" in p for p in problems))
         self.assertFalse(any("not indexed" in p for p in problems))
 
+    def test_directory_maintenance_counts_match_live_catalogue(self):
+        from seo.check_release_drift import maintenance_signature
+        rows = (
+            '<tr><th><a href="/categories/search">검색·포털</a></th>'
+            '<td>77개</td><td>2026-11-17</td></tr>'
+            '<tr><th><a href="/categories/ai">AI 도구</a></th>'
+            '<td>26개</td><td>2026-11-17</td></tr>'
+        )
+        path = "/guides/directory-maintenance"
+        guide = (f'<title>사이트모음 관리 기록</title>'
+                 f'<link rel="canonical" href="{BASE}{path}">'
+                 '<h1>사이트모음 관리 기록과 주소 점검 범위</h1>'
+                 '<p>링크위키 공개 목록에는 현재 360개 사이트가 등록되어 있습니다.</p>'
+                 '<table>' + rows + '</table>')
+        self.assertEqual(maintenance_signature(guide), (360, (
+            ("search", "77", "2026-11-17"), ("ai", "26", "2026-11-17"))))
+        def load(url):
+            if url == path:
+                return 200, BASE + path, guide, Message()
+            return fixture(url)
+        errors, observations = check(SOURCE, load, maintenance_source=guide)
+        self.assertEqual(errors, [])
+        self.assertTrue(any("built 360 sites / 2 category rows; live 360 sites / 2 category rows" in x
+                            for x in observations))
+
+    def test_stale_directory_maintenance_total_and_category_counts_are_detected(self):
+        path = "/guides/directory-maintenance"
+        rows = ('<tr><th><a href="/categories/search">검색·포털</a></th>'
+                '<td>77개</td><td>2026-11-17</td></tr>')
+        source = (f'<link rel="canonical" href="{BASE}{path}">'
+                  '<h1>사이트모음 관리 기록과 주소 점검 범위</h1>'
+                  '<p>링크위키 공개 목록에는 현재 360개 사이트가 등록되어 있습니다.</p>'
+                  '<table>' + rows + '</table>')
+        stale = source.replace("현재 360개", "현재 337개").replace("77개", "75개")
+        def load(url):
+            if url == path:
+                return 200, BASE + path, stale, Message()
+            return fixture(url)
+        errors, _ = check(SOURCE, load, maintenance_source=source)
+        self.assertIn(path + ": live catalogue totals/category counts differ from build", errors)
+
 if __name__ == "__main__":
     unittest.main()
