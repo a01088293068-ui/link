@@ -40,9 +40,10 @@
   });
   if (!entries.length) return;
 
-  const categories = ['전체', '검색·포털', '영상·OTT', '커뮤니티', '만화',
-                      '스포츠', 'AI 도구', '한인교민', '만화·웹툰', '금융·경제',
-                      '교육·취업', '뉴스·언론', '쇼핑·가격비교', '생활·교통·여행'];
+  // Keep interactive filters in the same Korea-first order as the homepage and category hub.
+  const categories = ['전체', '검색·포털', '금융·경제', '교육·취업',
+                      '생활·교통·여행', '쇼핑·가격비교', '뉴스·언론', '커뮤니티',
+                      'AI 도구', '스포츠', '영상·OTT', '만화·웹툰', '만화', '한인교민'];
   const elements = new Map(entries.map(entry => [entry.site, entry.element]));
   let category = '전체';
   let evidenceOnly = false;
