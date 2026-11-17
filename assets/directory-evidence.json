@@ -1130,5 +1130,86 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.kca.go.kr/",
+    "name": "한국소비자원",
+    "source_url": "https://www.kca.go.kr/odr/pg/ma/pgProcssInfo.do",
+    "scope": "한국소비자원 공식 피해구제 안내에서 소비자상담·피해구제 신청 절차와 공식 서비스 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bigkinds.or.kr/",
+    "name": "빅카인즈",
+    "source_url": "https://www.bigkinds.or.kr/",
+    "scope": "한국언론진흥재단 뉴스빅데이터 분석서비스의 뉴스 검색·분석 메뉴와 공식 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nanet.go.kr/",
+    "name": "국회도서관",
+    "source_url": "https://www.nanet.go.kr/usermadang/etc/infoUseReqView.do",
+    "scope": "국회도서관 공식 자료 이용 안내에서 도서·학위논문·학술지·전자책 검색 및 열람 경로를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.0404.go.kr/",
+    "name": "외교부 해외안전여행",
+    "source_url": "https://www.0404.go.kr/bbs/travelAlertAjmt/list",
+    "scope": "외교부 해외안전여행 공식 사이트의 국가별 여행경보와 최신 안전공지 메뉴 및 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://rt.molit.go.kr/",
+    "name": "국토교통부 실거래가 공개시스템",
+    "source_url": "https://rt.molit.go.kr/",
+    "scope": "국토교통부 실거래가 공개시스템에서 아파트·연립·단독·오피스텔·토지 등 부동산 거래 유형별 조회 기능을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.car365.go.kr/",
+    "name": "자동차365",
+    "source_url": "https://www.car365.go.kr/",
+    "scope": "국토교통부·한국교통안전공단 자동차365의 등록원부·이전등록·중고차시세·통합이력조회 메뉴와 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.culture.go.kr/",
+    "name": "문화포털",
+    "source_url": "https://www.culture.go.kr/portal/main/contents.do?menuNo=200095",
+    "scope": "문화포털 소개에서 공연·전시·행사·문화혜택·문화지식 통합정보 제공 범위와 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kopis.or.kr/",
+    "name": "공연예술통합전산망 KOPIS",
+    "source_url": "https://kopis.or.kr/mob/cs/csInfo.do",
+    "scope": "공연예술통합전산망 소개에서 공연 예매·취소 정보 집계와 공연정보·통계 제공 목적 및 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kinfa.or.kr/",
+    "name": "서민금융진흥원",
+    "source_url": "https://www.kinfa.or.kr/counselingSupport/centerIntroduction.do",
+    "scope": "서민금융진흥원 공식 안내에서 정책서민금융 상담·채무조정·자금지원·고용복지 연계 서비스와 접속 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
