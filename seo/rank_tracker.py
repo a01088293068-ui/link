@@ -29,6 +29,11 @@ LONGTAIL_KEYWORDS = (
     "컴활 시험 접수", "SQLD 시험 접수", "민간자격 조회",
     "공무원 시험 원서접수", "TOPIK 원서접수", "TEPS 시험 접수",
     "링크모음 웹사이트", "주소 모음 사이트",
+    # Korea-first category intent: each query maps to an existing, populated
+    # Korean directory landing page rather than a newly generated doorway URL.
+    "국내 커뮤니티 사이트모음", "한국 웹툰 사이트모음",
+    "국내 AI 사이트모음", "한국 스포츠 사이트모음",
+    "국내 쇼핑 사이트모음",
 )
 KEYWORDS = CORE_KEYWORDS + LONGTAIL_KEYWORDS
 # Core keywords use three SERP pages; discovery terms start with page one.
