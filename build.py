@@ -1994,12 +1994,11 @@ def fingerprint_stylesheets(html, asset_root):
             raise RuntimeError(f"Missing public stylesheet: {name}")
         digest = hashlib.sha256(asset.read_bytes()).hexdigest()[:12]
         pattern = re.compile(
-            r'((?:href|src)=["'][^"']*assets/' + re.escape(name)
-            + r')(?:\\?[^"']*)?(["'])'
+            r"""((?:href|src)=["'][^"']*assets/""" + re.escape(name)
+            + r""")(?:\?[^"']*)?(["'])"""
         )
         html = pattern.sub(lambda match: match.group(1) + "?v=" + digest + match.group(2), html)
     return html
-
 
 def build():
     if OUT.exists():
