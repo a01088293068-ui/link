@@ -44,6 +44,24 @@ class DirectoryEvidenceTests(unittest.TestCase):
         self.assertTrue(expected.issubset(self.evidence))
         self.assertTrue(all(self.evidence[url]["evidence_type"] == "service_page" for url in expected))
 
+    def test_additional_education_and_qualification_sites_have_first_party_sources(self):
+        expected = {
+            "https://www.hrdkorea.or.kr/": "agency_guide",
+            "https://www.historyexam.go.kr/": "service_page",
+            "https://www.cb.or.kr/": "agency_guide",
+            "https://www.academyinfo.go.kr/": "agency_guide",
+            "https://www.krivet.re.kr/": "agency_guide",
+            "https://www.q-net.or.kr/": "service_page",
+        }
+        for url, evidence_type in expected.items():
+            with self.subTest(url=url):
+                self.assertIn(url, self.evidence)
+                self.assertEqual(self.evidence[url]["evidence_type"], evidence_type)
+                self.assertLessEqual(
+                    date.fromisoformat(self.evidence[url]["checked_on"]), date.today()
+                )
+                self.assertTrue(self.evidence[url]["source_url"].startswith("https://"))
+
     def test_old_source_evidence_expires_instead_of_appearing_current(self):
         html = build.render_directory_catalog_cards(
             self.records, self.evidence, today=date(2027, 6, 1))
