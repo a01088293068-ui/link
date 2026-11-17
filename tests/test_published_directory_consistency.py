@@ -183,5 +183,16 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
                          directory_card_anchor({"url": "https://www.korcham.net/"}))
 
 
+    def test_srt_listing_reflects_2026_rail_integration(self):
+        row = next(item for item in self.records if item["name"] == "SRT")
+        self.assertEqual(row["url"], "https://etk.srail.kr/")
+        self.assertIn("2026년 9월 1일 이후 통합열차 승차권은 코레일+ 앱 또는 코레일 홈페이지", row["description"])
+        evidence = json.loads((ROOT / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        record = next(item for item in evidence if item["url"] == row["url"])
+        self.assertEqual(record["evidence_type"], "official_announcement")
+        self.assertEqual(record["source_url"], "https://etk.srail.kr/cms/article/view.do?pageId=TK0502000000&pageIndex=31&postNo=922")
+        self.assertIn("기존 SRT 홈페이지 예매 서비스는 종료", record["scope"])
+
+
 if __name__ == "__main__":
     unittest.main()
