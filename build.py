@@ -2321,7 +2321,7 @@ def build():
                  "링크위키 등록 사이트 수와 분야별 페이지 변경 기록, 외부 주소 확인 범위를 안내합니다.",
                  SITE + "/guides/directory-maintenance",
                  maintenance_body, header, footer), encoding="utf-8")
-    for category, slug, _, _ in CATEGORY_LANDING:
+    for category, slug, heading, _purpose in CATEGORY_LANDING:
         path = OUT / "categories" / f"{slug}.html"
         source = path.read_text(encoding="utf-8")
         source = sync_category_card_copy(source, records, category)
