@@ -1121,5 +1121,14 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.hf.go.kr/",
+    "name": "한국주택금융공사",
+    "source_url": "https://www.hf.go.kr/ko/sub05/sub05_01_01.do",
+    "scope": "한국주택금융공사 기관 소개에서 보금자리론·주택보증·주택연금 등 주택금융 업무와 공식 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
   }
 ]
