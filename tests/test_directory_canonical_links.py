@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class DirectoryCanonicalLinkTests(unittest.TestCase):
     def test_homepage_and_directory_do_not_link_to_redirecting_html_alias(self):
-        for relative in ("index.html", "directory.html"):
+        for relative in ("index.html", "directory.html", "about.html"):
             source = (ROOT / relative).read_text(encoding="utf-8")
             with self.subTest(page=relative):
                 self.assertNotRegex(
@@ -19,7 +19,7 @@ class DirectoryCanonicalLinkTests(unittest.TestCase):
                 )
 
     def test_primary_navigation_links_directly_to_canonical_directory(self):
-        for relative in ("index.html", "directory.html"):
+        for relative in ("index.html", "directory.html", "about.html"):
             source = (ROOT / relative).read_text(encoding="utf-8")
             with self.subTest(page=relative):
                 self.assertIn('href="/directory"', source)
