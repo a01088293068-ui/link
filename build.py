@@ -378,7 +378,7 @@ def document(title, description, canonical, main_content, header, footer):
 <meta property="og:description" content="{escape(description, quote=True)}">
 <meta property="og:url" content="{escape(canonical, quote=True)}">
 <link rel="icon" href="/favicon.png" type="image/png">
-<link rel="stylesheet" href="/assets/style.css?v=final-cta"><link rel="stylesheet" href="/assets/blog.css">
+<link rel="stylesheet" href="/assets/style.css?v=footer-system-20261117"><link rel="stylesheet" href="/assets/blog.css">
 </head><body><a class="skip" href="#main">본문으로 이동</a>{header}
 <main id="main">{main_content}</main>{footer}
 <script defer src="/assets/site.js"></script><script defer src="/assets/mobile-menu.js"></script>
