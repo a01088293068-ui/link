@@ -21,6 +21,7 @@ class DirectoryIntentGoogleEvidenceTests(unittest.TestCase):
                 urls = monitor.directory_intent_inspection_urls()
                 targets = monitor.inspection_targets([], limit=20)
             self.assertEqual(urls, [
+                "https://linkwiki.info/guides/address-check",
                 "https://linkwiki.info/blog/" + slugs[0] + "/",
                 "https://linkwiki.info/blog/" + slugs[2] + "/",
             ])
@@ -53,7 +54,7 @@ class DirectoryIntentGoogleEvidenceTests(unittest.TestCase):
                                      "coverage": "Crawled - currently not indexed",
                                      "last_crawl": "2026-11-07T08:00:00Z"}]}
         report = index_priority_plan.render(snapshot)
-        article = report.split("## 핵심 가이드의 Google 저장 색인 상태")[1].split(
+        article = report.split("## 핵심 가이드 및 주소 확인 페이지의 Google 저장 색인 상태")[1].split(
             "## Google 저장본 Canonical 차이")[0]
         self.assertIn(url, article)
         self.assertIn("크롤링 후 미색인", article)
@@ -69,7 +70,7 @@ class DirectoryIntentGoogleEvidenceTests(unittest.TestCase):
                 {"url": "https://linkwiki.info/blog/other/", "verdict": "PASS"},
             ],
         })
-        section = result.split("## 핵심 가이드의 Google 저장 색인 상태")[1].split(
+        section = result.split("## 핵심 가이드 및 주소 확인 페이지의 Google 저장 색인 상태")[1].split(
             "## Google 저장본 Canonical 차이")[0]
         self.assertIn("https://linkwiki.info/blog/other/", section)
         self.assertNotIn("outside.example", section)
