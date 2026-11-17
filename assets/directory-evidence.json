@@ -1699,10 +1699,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.mbc.co.kr/",
+    "url": "https://www.imbc.com/",
     "name": "MBC",
     "source_url": "https://www.imbc.com/",
-    "scope": "MBC 공식 홈페이지로 이동하는 최종 도메인과 방송·뉴스·스포츠 콘텐츠 제공 정보를 대조",
+    "scope": "MBC 공식 홈페이지의 프로그램·뉴스·스포츠·온에어 서비스와 현재 공식 도메인을 대조",
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
