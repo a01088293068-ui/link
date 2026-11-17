@@ -2,6 +2,13 @@ name: LinkWiki directory link freshness audit
 
 on:
   workflow_dispatch:
+  # Re-audit immediately when the canonical directory or audit logic changes.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/directory-link-audit.yml'
+      - 'assets/verified-directory.json'
+      - 'seo/check_directory_links.py'
   schedule:
     - cron: '15 4 * * 2,5'
 
