@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 DESTINATIONS = {
     "Microsoft Copilot": ("https://copilot.com/", "AI 도구"),
-    "NotebookLM": ("https://notebook.google.com/", "AI 도구"),
+    "Gemini Notebook (구 NotebookLM)": ("https://notebook.google.com/", "AI 도구"),
     "Runway": ("https://runway.com/", "AI 도구"),
     "Plex": ("https://watch.plex.tv/", "영상·OTT"),
 }
