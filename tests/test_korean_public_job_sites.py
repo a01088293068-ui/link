@@ -83,7 +83,14 @@ class KoreanPublicJobSiteTests(unittest.TestCase):
 
     def test_new_guide_is_in_daily_inspection_and_korean_query_reporting(self):
         url = "https://linkwiki.info/blog/" + SLUG + "/"
-        self.assertIn(url, search_console_monitor.directory_intent_inspection_urls())
+        # This is a relevant Korean long-tail guide, but not one of the six
+        # address-directory inspection targets; it remains eligible for rotation.
+        from datetime import date, timedelta
+        rotated = set()
+        for offset in range(40):
+            rotated.update(search_console_monitor.rotating_inspection_urls(
+                date(2026, 11, 17) + timedelta(days=offset), limit=3))
+        self.assertIn(url, rotated)
         self.assertIn(("공공기관·지방공기업 채용", SLUG),
                       search_console_monitor.LONG_TAIL_GUIDES)
         expression = search_console_monitor.korea_guide_query_filters()[0]["filters"][1]["expression"]
