@@ -33,6 +33,16 @@ class DistinctHomeDirectoryIntentTests(unittest.TestCase):
                 self.assertNotIn(entries[0]["description"], overview)
                 self.assertNotIn("등록 도메인: " + entries[0]["url"], overview)
 
+    def test_category_landing_prioritizes_korean_domestic_services(self):
+        slugs = [slug for _, slug, _, _ in CATEGORY_LANDING]
+        self.assertEqual(
+            slugs[:6],
+            ["search", "finance", "education", "travel", "shopping", "news"],
+        )
+        self.assertEqual(slugs[-1], "korean")
+        self.assertIn("국내 포털과 공공정보", CATEGORY_LANDING[0][3])
+        self.assertIn("해외 지역별 교민 정보", CATEGORY_LANDING[-1][3])
+
     def test_homepage_exposes_real_source_evidence_with_scope_caveat(self):
         import build
         summary = build.homepage_evidence_summary(self.records)
