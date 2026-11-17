@@ -3,7 +3,7 @@ import importlib.util
 from pathlib import Path
 import unittest
 from unittest.mock import patch
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 
 SCRIPT = Path(__file__).resolve().parents[1] / "seo" / "check_directory_links.py"
 spec = importlib.util.spec_from_file_location("directory_link_audit", SCRIPT)
@@ -58,6 +58,19 @@ class DirectoryLinkAuditTests(unittest.TestCase):
             result = audit.check(self.record)
         self.assertEqual(result["result"], "not_found")
         self.assertEqual(result["final_url"], self.record["url"])
+
+    def test_transient_timeout_retries_before_success(self):
+        with patch.object(audit, "urlopen", side_effect=[TimeoutError("slow"), Response(self.record["url"])] ) as mocked:
+            result = audit.check(self.record)
+        self.assertEqual(result["result"], "ok")
+        self.assertEqual(mocked.call_count, 2)
+
+    def test_repeated_network_errors_are_not_mislabeled_dead(self):
+        with patch.object(audit, "urlopen", side_effect=URLError("temporary DNS failure")) as mocked:
+            result = audit.check(self.record)
+        self.assertEqual(result["result"], "connection_error")
+        self.assertEqual(result["attempts"], audit.NETWORK_ATTEMPTS)
+        self.assertEqual(mocked.call_count, audit.NETWORK_ATTEMPTS)
 
 
 if __name__ == "__main__":
