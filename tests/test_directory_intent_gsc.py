@@ -9,6 +9,12 @@ from seo import index_priority_plan
 
 
 class DirectoryIntentGoogleEvidenceTests(unittest.TestCase):
+    def test_monitor_reinspects_after_page_generator_changes(self):
+        workflow = ROOT / ".github" / "workflows" / "search-console-monitor.yml"
+        source = workflow.read_text(encoding="utf-8")
+        self.assertIn("      - 'build.py'", source)
+        self.assertIn("      - 'seo/directory_maintenance.py'", source)
+
     def test_only_existing_published_guides_are_inspection_targets(self):
         with TemporaryDirectory() as directory:
             root = Path(directory)
