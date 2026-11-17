@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from urllib.error import HTTPError, URLError
-from seo.check_directory_links import check, run
+from seo.check_directory_links import check, run, NETWORK_ATTEMPTS
 
 
 class DirectoryReachabilityTests(TestCase):
@@ -33,10 +33,12 @@ class DirectoryReachabilityTests(TestCase):
         self.assertEqual(row["result"], "not_found")
         self.assertEqual(row["final_url"], self.record["url"])
 
-    def test_network_error_is_classified(self):
-        with patch("seo.check_directory_links.urlopen", side_effect=URLError("offline")):
+    def test_network_error_is_retried_and_not_called_dead(self):
+        with patch("seo.check_directory_links.urlopen", side_effect=URLError("offline")) as mocked:
             row = check(self.record)
-        self.assertEqual(row["result"], "unreachable")
+        self.assertEqual(row["result"], "connection_error")
+        self.assertEqual(row["attempts"], NETWORK_ATTEMPTS)
+        self.assertEqual(mocked.call_count, NETWORK_ATTEMPTS)
 
     def test_run_preserves_input_order(self):
         records = [self.record, {"name": "둘째", "url": "https://example.org/"}]
