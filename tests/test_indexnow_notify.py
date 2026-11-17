@@ -58,15 +58,20 @@ class IndexNowNotifyTests(unittest.TestCase):
         self.assertEqual(changed_page_urls(["README.md", "seo/rank-history.json"],
                                            self.available), [])
 
-    def test_sitemap_rejects_redirecting_or_external_urls(self):
-        with self.assertRaises(ValueError):
-            sitemap_urls(sitemap(SITE + "/directory.html"))
+    def test_sitemap_source_html_paths_normalize_to_clean_canonicals(self):
+        self.assertEqual(sitemap_urls(sitemap(SITE + "/directory.html",
+                                              SITE + "/categories/index.html")),
+                         {SITE + "/directory", SITE + "/categories/"})
+
+    def test_sitemap_rejects_external_and_query_urls(self):
         with self.assertRaises(ValueError):
             sitemap_urls(sitemap("https://example.com/"))
-
-    def test_sitemap_rejects_duplicates(self):
         with self.assertRaises(ValueError):
-            sitemap_urls(sitemap(SITE + "/", SITE + "/"))
+            sitemap_urls(sitemap(SITE + "/directory?preview=1"))
+
+    def test_sitemap_rejects_duplicates_after_normalization(self):
+        with self.assertRaises(ValueError):
+            sitemap_urls(sitemap(SITE + "/directory.html", SITE + "/directory"))
 
     def test_sitemap_accepts_canonical_urls(self):
         self.assertEqual(sitemap_urls(sitemap(SITE + "/", SITE + "/directory")),
