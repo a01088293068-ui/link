@@ -100,6 +100,20 @@ class DirectoryEvidenceTests(unittest.TestCase):
                 self.assertEqual(self.evidence[url]["evidence_type"], evidence_type)
                 self.assertEqual(self.evidence[url]["checked_on"], "2026-11-17")
 
+    def test_korean_finance_and_market_research_services_have_first_party_evidence(self):
+        expected = {
+            "https://banking.nonghyup.com/": "https://banking.nonghyup.com/nhbank.html",
+            "https://www.imbank.co.kr/": "https://www.imbank.co.kr/dgb_ebz_main.jsp",
+            "https://www.kcmi.re.kr/": "https://www.kcmi.re.kr/",
+            "https://data.krx.co.kr/": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+        }
+        for url, source_url in expected.items():
+            with self.subTest(url=url):
+                self.assertIn(url, self.evidence)
+                self.assertEqual(self.evidence[url]["source_url"], source_url)
+                self.assertEqual(self.evidence[url]["evidence_type"], "service_page")
+                self.assertEqual(self.evidence[url]["checked_on"], "2026-11-17")
+
     def test_old_source_evidence_expires_instead_of_appearing_current(self):
         html = build.render_directory_catalog_cards(
             self.records, self.evidence, today=date(2027, 6, 1))
