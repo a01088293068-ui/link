@@ -77,7 +77,7 @@ class DirectoryEvidenceTests(unittest.TestCase):
             "https://rt.molit.go.kr/": "https://rt.molit.go.kr/",
             "https://www.car365.go.kr/": "https://www.car365.go.kr/",
             "https://www.culture.go.kr/": "https://www.culture.go.kr/portal/main/contents.do?menuNo=200095",
-            "https://www.kopis.or.kr/": "https://kopis.or.kr/mob/cs/csInfo.do",
+            "https://kopis.or.kr/por/main/main.do": "https://kopis.or.kr/por/main/main.do",
             "https://www.kinfa.or.kr/": "https://www.kinfa.or.kr/counselingSupport/centerIntroduction.do",
         }
         for url, source_url in expected.items():
