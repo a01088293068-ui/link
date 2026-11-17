@@ -15,6 +15,7 @@ on:
       - 'sitemap.xml'
       - 'seo/indexnow_notify.py'
       - 'tests/test_indexnow_notify.py'
+      - '.github/workflows/indexnow-notify.yml'
 
 permissions:
   contents: read
