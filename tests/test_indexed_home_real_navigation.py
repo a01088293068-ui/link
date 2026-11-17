@@ -63,7 +63,8 @@ class HomepageRealNavigationTests(unittest.TestCase):
             with self.subTest(slug=slug):
                 self.assertIn(f"categories/{slug}.html", hrefs)
         self.assertIn("categories/", hrefs)
-        self.assertIn("directory.html", hrefs)
+        self.assertIn("/directory", hrefs)
+        self.assertNotIn("directory.html", hrefs)
 
     def test_unsafe_data_does_not_enter_indexed_homepage(self):
         records = [dict(r) for r in self.records]
