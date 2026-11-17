@@ -1,0 +1,49 @@
+name: LinkWiki live Cloudflare release parity
+
+on:
+  workflow_run:
+    workflows: ['LinkWiki SEO build and consistency gate']
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linkwiki-live-release-parity
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild the exact commit that passed the SEO gate
+        run: python3 -B build.py
+      - name: Compare the public Cloudflare release with the exact build
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5; do
+            if python3 -B seo/live_release_check.py --dist dist; then
+              echo "PASS: live Cloudflare release matches ${{ github.event.workflow_run.head_sha }}"
+              exit 0
+            fi
+            if [[ "${attempt}" == "5" ]]; then
+              echo "::error::Public Cloudflare output still differs from the verified main commit"
+              exit 1
+            fi
+            echo "Deployment may still be propagating; retrying in 30 seconds."
+            sleep 30
+          done
