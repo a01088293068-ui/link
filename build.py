@@ -1866,6 +1866,7 @@ def category_article_links(posts, slug, limit=5):
             "/blog/seo-20261110-korean-education-sites-guide/",
         ),
         "ai": ("/blog/seo-20261110-korean-ai-tools-by-task-guide/",),
+        "finance": ("/blog/seo-20261111-tax-hometax-wetax-difference/",),
     }
     selected = []
     seen = set()
