@@ -68,6 +68,25 @@ class DirectoryEvidenceTests(unittest.TestCase):
         self.assertEqual(row["evidence_type"], "agency_guide")
         self.assertEqual(row["source_url"], "https://www.hf.go.kr/ko/sub05/sub05_01_01.do")
 
+    def test_additional_korean_public_services_have_first_party_evidence(self):
+        expected = {
+            "https://www.kca.go.kr/": "https://www.kca.go.kr/odr/pg/ma/pgProcssInfo.do",
+            "https://www.bigkinds.or.kr/": "https://www.bigkinds.or.kr/",
+            "https://www.nanet.go.kr/": "https://www.nanet.go.kr/usermadang/etc/infoUseReqView.do",
+            "https://www.0404.go.kr/": "https://www.0404.go.kr/bbs/travelAlertAjmt/list",
+            "https://rt.molit.go.kr/": "https://rt.molit.go.kr/",
+            "https://www.car365.go.kr/": "https://www.car365.go.kr/",
+            "https://www.culture.go.kr/": "https://www.culture.go.kr/portal/main/contents.do?menuNo=200095",
+            "https://www.kopis.or.kr/": "https://kopis.or.kr/mob/cs/csInfo.do",
+            "https://www.kinfa.or.kr/": "https://www.kinfa.or.kr/counselingSupport/centerIntroduction.do",
+        }
+        for url, source_url in expected.items():
+            with self.subTest(url=url):
+                self.assertIn(url, self.evidence)
+                self.assertEqual(self.evidence[url]["source_url"], source_url)
+                self.assertEqual(self.evidence[url]["evidence_type"], "service_page")
+                self.assertEqual(self.evidence[url]["checked_on"], "2026-11-17")
+
     def test_old_source_evidence_expires_instead_of_appearing_current(self):
         html = build.render_directory_catalog_cards(
             self.records, self.evidence, today=date(2027, 6, 1))
