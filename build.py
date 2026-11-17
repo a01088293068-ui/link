@@ -1734,6 +1734,43 @@ def directory_collection_schema(records, categories):
     return '<script type="application/ld+json">' + payload.replace("</", "<\\/") + '</script>'
 
 
+def category_collection_schema(records, category, slug, heading):
+    """Describe the visible category listing as a crawlable CollectionPage/ItemList."""
+    entries = [
+        record for record in records
+        if isinstance(record, dict) and record.get("category") == category
+        and isinstance(record.get("name"), str) and record["name"].strip()
+        and isinstance(record.get("url"), str) and record["url"].startswith("https://")
+    ]
+    if not entries:
+        raise RuntimeError("Cannot build empty category collection schema: " + slug)
+    items = [
+        {
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": record["name"].strip(),
+            "url": record["url"],
+        }
+        for index, record in enumerate(entries)
+    ]
+    data = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": SITE + "/categories/" + slug + "#collection",
+        "url": SITE + "/categories/" + slug,
+        "name": heading + " 사이트모음",
+        "inLanguage": "ko",
+        "mainEntity": {
+            "@type": "ItemList",
+            "name": heading + " 등록 사이트",
+            "numberOfItems": len(items),
+            "itemListElement": items,
+        },
+    }
+    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    return '<script type="application/ld+json">' + payload.replace("</", "<\\/") + '</script>'
+
+
 def directory_category_overview(records, categories, per_category=3):
     """Make practical comparisons from exact published listing metadata.
 
@@ -2228,6 +2265,10 @@ def build():
         path = OUT / "categories" / f"{slug}.html"
         source = path.read_text(encoding="utf-8")
         source = sync_category_card_copy(source, records, category)
+        schema = category_collection_schema(records, category, slug, heading)
+        if source.count('</head>') != 1:
+            raise RuntimeError(f"Category head layout changed: {slug}")
+        source = source.replace('</head>', schema + '</head>', 1)
         marker = '</main>'
         if source.count(marker) != 1:
             raise RuntimeError(f"Category page layout changed: {slug}")
