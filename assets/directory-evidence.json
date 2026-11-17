@@ -1301,5 +1301,23 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "official_announcement"
+  },
+  {
+    "url": "https://www.safetyreport.go.kr/",
+    "name": "안전신문고",
+    "source_url": "https://www.mois.go.kr/frt/sub/a06/b10/safetyReport/screen.do",
+    "scope": "행정안전부 공식 안내에서 안전신문고 운영 주체, 생활 속 안전 위험요소 신고, 불법 주정차·자동차 교통위반 신고 범위를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.safemap.go.kr/",
+    "name": "생활안전지도",
+    "source_url": "https://www.mois.go.kr/frt/sub/a06/b10/safemap/screen.do",
+    "scope": "행정안전부 공식 안내에서 생활안전지도 운영 주체, 지도형 안전정보 및 재난·치안·교통·보건·시설 분야 제공 범위를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
