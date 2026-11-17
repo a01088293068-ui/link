@@ -831,5 +831,35 @@ class SEOReleaseRegressionTests(unittest.TestCase):
             self.assertTrue(by_url[url]["scope"])
 
 
+    def test_all_static_pages_share_the_same_bottom_service_actions(self):
+        root = Path(__file__).resolve().parents[1]
+        pages = [
+            path for path in root.rglob("*.html")
+            if path.name != "naver8cd598bf6fee0ad116a386a3d915bb9f.html"
+        ]
+        self.assertGreaterEqual(len(pages), 20)
+        for path in pages:
+            source = path.read_text(encoding="utf-8")
+            match = re.search(r'<footer class="footer">[\\s\\S]*?</footer>', source)
+            with self.subTest(page=str(path.relative_to(root))):
+                self.assertIsNotNone(match, "page must use the shared footer")
+                footer = match.group(0)
+                self.assertIn('class="footer-cta"', footer)
+                self.assertIn('href="https://linkwiki01.com/"', footer)
+                self.assertIn(">링크위키 바로가기 <span", footer)
+                self.assertIn('href="/directory"', footer)
+                self.assertIn('class="footer-nav"', footer)
+                self.assertNotIn("링크위키 본 사이트 방문", footer)
+
+    def test_bottom_action_links_use_shared_responsive_styles(self):
+        root = Path(__file__).resolve().parents[1]
+        css = (root / "assets" / "style.css").read_text(encoding="utf-8")
+        builder = (root / "build.py").read_text(encoding="utf-8")
+        self.assertIn(".footer-cta{", css)
+        self.assertIn(".main-site-inline a", css)
+        self.assertIn(".guide-related-links a", css)
+        self.assertIn("assets/style.css?v=footer-system-20261117-v2", builder)
+
+
 if __name__ == "__main__":
     unittest.main()
