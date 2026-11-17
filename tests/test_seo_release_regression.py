@@ -840,7 +840,7 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertGreaterEqual(len(pages), 20)
         for path in pages:
             source = path.read_text(encoding="utf-8")
-            match = re.search(r'<footer class="footer">[\\s\\S]*?</footer>', source)
+            match = re.search(r'<footer class="footer">[\s\S]*?</footer>', source)
             with self.subTest(page=str(path.relative_to(root))):
                 self.assertIsNotNone(match, "page must use the shared footer")
                 footer = match.group(0)
