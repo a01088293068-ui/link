@@ -13,3 +13,6 @@
 /sitemap-v2.xml
   Content-Type: application/xml; charset=UTF-8
   Cache-Control: public, max-age=300
+
+/guides/directory-maintenance
+  Cache-Control: public, max-age=0, must-revalidate
