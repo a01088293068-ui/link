@@ -1337,5 +1337,50 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "official_announcement"
+  },
+  {
+    "name": "인프런",
+    "url": "https://www.inflearn.com/",
+    "source_url": "https://www.inflearn.com/",
+    "scope": "인프런 공식 서비스 첫 화면의 온라인 강의·학습 플랫폼 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "클래스101",
+    "url": "https://class101.net/",
+    "source_url": "https://class101.net/",
+    "scope": "클래스101 공식 서비스 첫 화면의 온라인 클래스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "패스트캠퍼스",
+    "url": "https://fastcampus.co.kr/",
+    "source_url": "https://fastcampus.co.kr/",
+    "scope": "패스트캠퍼스 공식 서비스 첫 화면의 직무 교육 과정 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "KOCW 대학공개강의",
+    "url": "https://www.kocw.net/",
+    "source_url": "https://www.kocw.net/",
+    "scope": "KOCW 공식 서비스 첫 화면의 대학 공개강의 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "name": "늘배움 국가평생학습포털",
+    "url": "https://www.lifelongedu.go.kr/",
+    "source_url": "https://www.lifelongedu.go.kr/",
+    "scope": "국가평생교육진흥원 늘배움 서비스 안내와 연결 주소를 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
