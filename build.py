@@ -305,7 +305,7 @@ def polish_home_intent(home):
             '링크위키 주소모음·링크모음에서 분야별 사이트를 찾고, 실제 이동 주소와 이용 조건을 확인해 보세요.',
         ),
         ('<label for="lw-home-query">사이트 이름으로 찾기</label>',
-         '<label for="lw-home-query">사이트 이름·주소 검색</label>'),
+         '<label for="lw-home-query">주소모음에서 사이트 이름·도메인 찾기</label>'),
         (
             f'이 사이트의 {total_sites}개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>',
             f'이 사이트의 {total_sites}개 등록 항목을 이름·분야·도메인으로 검색합니다.</p>'
