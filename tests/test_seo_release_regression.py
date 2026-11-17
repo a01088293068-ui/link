@@ -420,8 +420,9 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertNotEqual(home_title, directory_title)
         self.assertIn(f"{PUBLISHED_COUNT}개 사이트", directory_title)
         self.assertIn("전체 목록", directory_title)
-        self.assertNotIn("주소모음", directory_title)
-        self.assertNotIn("링크모음", directory_title)
+        self.assertIn("주소모음", directory_title)
+        self.assertIn("링크모음", directory_title)
+        self.assertIn("사이트모음", directory_title)
         self.assertIn("주소모음", home_title)
         self.assertIn("링크모음", home_title)
         # The directory remains the indexable target, never the legacy .html URL.
