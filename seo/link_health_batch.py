@@ -69,40 +69,59 @@ def observe(url, checker=safe_public_host, opener=None):
     if not checker(url):
         return {"status": "skipped_invalid_or_nonpublic", "http": None}
     client = opener or build_opener(NoRedirect(), HTTPSHandler(context=ssl.create_default_context()))
-    req = Request(url, method="HEAD", headers={
-        "User-Agent": "LinkWikiLinkHealth/1.0 (public directory maintenance)"
-    })
+    def probe(method):
+        req = Request(url, method=method, headers={
+            "User-Agent": "LinkWikiLinkHealth/1.0 (public directory maintenance)",
+            "Accept": "text/html,*/*;q=0.1",
+        })
+        try:
+            # Read headers only. Closing the response prevents downloading the page body.
+            with client.open(req, timeout=TIMEOUT) as response:
+                return response.status
+        except HTTPError as err:
+            code = err.code  # Redirects are not followed.
+            try:
+                err.close()
+            except (AttributeError, OSError):
+                pass
+            return code
+
+    method = "HEAD"
     try:
-        with client.open(req, timeout=TIMEOUT) as r:
-            code = r.status
-    except HTTPError as err:
-        code = err.code  # redirect 3xx is *not followed*, no private network pivot
+        code = probe(method)
+        # Some sites return false negatives for HEAD even though normal page
+        # navigation works. Retry only method/route-style responses with GET.
+        if code in (400, 404, 405, 410, 501):
+            method = "GET"
+            code = probe(method)
     except (URLError, OSError, TimeoutError):
-        return {"status": "network_unverified", "http": None}
+        return {"status": "network_unverified", "http": None, "method": method}
     if 200 <= code < 300:
-        return {"status": "head_responded", "http": code}
+        return {"status": "head_responded" if method == "HEAD" else "get_responded",
+                "http": code, "method": method}
     if 300 <= code < 400:
-        return {"status": "redirect_manual_review", "http": code}
-    if code in (401, 403, 405, 429):
-        return {"status": "head_blocked_or_unsupported", "http": code}
-    return {"status": "http_manual_review", "http": code}
+        return {"status": "redirect_manual_review", "http": code, "method": method}
+    if code in (401, 403, 405, 429, 451):
+        return {"status": "head_blocked_or_unsupported", "http": code, "method": method}
+    return {"status": "http_manual_review", "http": code, "method": method}
 
 
 def render(rows, observed, day):
     lines = ["# 링크위키 링크 접속 응답 표본 조사", "",
              "- 관측일(UTC): " + day.isoformat(),
              "- 확인 대상: " + str(len(observed)) + " / " + str(len(rows)) + " 등록 항목",
-             "- HTTP HEAD 요청만 실시하고 리디렉션을 따라가지 않습니다.",
+             "- HEAD 우선 검사 후 400/404/405/410/501 응답은 GET으로 헤더만 재확인합니다.",
+             "- 응답 본문은 다운로드하지 않으며 리디렉션도 따라가지 않습니다.",
              "- 응답 확인은 공식 주소·안전성·서비스 정상 작동 여부를 보증하지 않습니다.",
              "- 403/405/429 및 타임아웃은 죽은 링크로 단정하지 않습니다.",
              "- 결과는 검토 전 사이트 공개 문구나 등급에 반영하지 않습니다.", "",
-             "| 등록명 | 도메인 | HEAD 판정 | 코드 |",
-             "|---|---|---|---|"]
+             "| 등록명 | 도메인 | 요청 | 판정 | 코드 |",
+             "|---|---|---|---|---|"]
     for item, result in observed:
         parts = urlsplit(item["url"])
         name = re.sub(r"[\r\n|]", " ", item["name"])[:80]
         lines.append("| " + name + " | " + (parts.hostname or "-") +
-                     " | " + result["status"] + " | " +
+                     " | " + result.get("method", "HEAD") + " | " + result["status"] + " | " +
                      str(result["http"] if result["http"] is not None else "-") + " |")
     return "\n".join(lines) + "\n"
 
