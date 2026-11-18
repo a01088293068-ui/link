@@ -2039,5 +2039,50 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.yes24.com/",
+    "name": "예스24",
+    "source_url": "https://www.yes24.com/Main/default.aspx",
+    "scope": "예스24 공식 홈페이지에서 국내·외 도서, 전자책, 음반·DVD, 공연 티켓 등 문화상품의 검색·판매 카테고리와 고객 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.10000recipe.com/index.html",
+    "name": "만개의레시피",
+    "source_url": "https://www.10000recipe.com/index.html",
+    "scope": "만개의레시피 공식 홈페이지에서 레시피 검색, 인기 레시피, 이용자 요리 후기와 식품 관련 콘텐츠 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.instiz.net/",
+    "name": "인스티즈",
+    "source_url": "https://www.instiz.net/",
+    "scope": "인스티즈 공식 홈페이지에서 이슈·일상·연예·드라마·뷰티·스터디 등 주제별 이용자 커뮤니티 게시판과 인기글 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gasengi.com/",
+    "name": "가생이닷컴",
+    "source_url": "https://www.gasengi.com/",
+    "scope": "가생이닷컴 공식 홈페이지에서 해외 네티즌 반응 번역, 한류·일본·중국 반응과 주제별 커뮤니티 게시판을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://pann.nate.com/",
+    "name": "네이트판",
+    "source_url": "https://pann.nate.com/",
+    "scope": "네이트판 공식 페이지에서 오늘의 판·톡커의 선택·명예의 전당·팬톡 등 주제별 이용자 이야기와 게시판 콘텐츠를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
