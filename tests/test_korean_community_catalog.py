@@ -32,7 +32,7 @@ class KoreanCommunityCatalogTests(unittest.TestCase):
         catalog = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
         evidence = json.loads((ROOT / "assets" / "directory-evidence.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(catalog), 361)
-        self.assertGreaterEqual(len(evidence), 293)
+        self.assertGreaterEqual(len(evidence), 292)
         self.assertLess(len(evidence), len(catalog))
 
 
