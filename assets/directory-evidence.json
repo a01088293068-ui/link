@@ -2633,5 +2633,23 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.cardpoint.or.kr/",
+    "name": "여신금융협회 카드포인트 통합조회",
+    "source_url": "https://www.cardpoint.or.kr/",
+    "scope": "여신금융협회 공식 서비스 첫 화면에서 카드포인트 통합조회·계좌입금·기부 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.payinfo.or.kr/",
+    "name": "계좌정보통합관리서비스",
+    "source_url": "https://www.payinfo.or.kr/",
+    "scope": "계좌정보통합관리서비스 공식 홈페이지와 FAQ에서 본인 명의 계좌 통합조회 및 비활동성 계좌 잔고이전·해지 기능을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
