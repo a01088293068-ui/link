@@ -7,6 +7,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CategoryMetadataIntentTests(unittest.TestCase):
+    def test_finance_page_targets_korean_finance_link_collection_intent(self):
+        source = (ROOT / "categories" / "finance.html").read_text(encoding="utf-8")
+        self.assertIn("<title>금융 링크모음·사이트모음 | 은행·금융 정보 - 링크위키</title>", source)
+        self.assertIn("<h1>금융 링크모음·사이트모음</h1>", source)
+        self.assertIn("금융 링크모음에서 국내 은행 업무", source)
+        self.assertIn('href="https://linkwiki.info/categories/finance" rel="canonical"', source)
+        self.assertIn('property="og:title"', source)
+        self.assertIn('property="og:description"', source)
+
     def test_community_page_has_specific_korean_search_intent(self):
         source = (ROOT / "categories" / "community.html").read_text(encoding="utf-8")
         self.assertIn("<title>국내 커뮤니티 사이트모음 | 게임·IT·취미·생활 - 링크위키</title>", source)
