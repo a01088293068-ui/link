@@ -10,12 +10,16 @@ DESTINATIONS = {
     "Gemini Notebook (구 NotebookLM)": ("https://notebook.google.com/", "AI 도구"),
     "Runway": ("https://runway.com/", "AI 도구"),
     "Plex": ("https://watch.plex.tv/", "영상·OTT"),
+    "티맵": ("https://www.tmapmobility.com/", "생활·교통·여행"),
+    "네이버 밴드": ("https://www.band.us/about/intro", "커뮤니티"),
 }
 LEGACY_URLS = (
     "https://copilot.microsoft.com/",
     "https://notebooklm.google.com/",
     "https://runwayml.com/",
     "https://www.plex.tv/",
+    "https://www.tmap.co.kr/",
+    "https://band.us/",
 )
 
 class UpdatedDestinationsTests(unittest.TestCase):
@@ -36,12 +40,16 @@ class UpdatedDestinationsTests(unittest.TestCase):
         self.assertFalse(any(item["url"] in LEGACY_URLS for item in self.records))
 
     def test_all_static_user_visible_sites_link_directly_to_updated_urls(self):
-        for page in ("directory.html", "categories/ai.html", "categories/video.html"):
+        for page in ("directory.html", "categories/ai.html", "categories/video.html", "categories/community.html", "categories/travel.html"):
             source = (ROOT / page).read_text(encoding="utf-8")
             for name, (url, category) in DESTINATIONS.items():
                 if page == "categories/ai.html" and category != "AI 도구":
                     continue
                 if page == "categories/video.html" and category != "영상·OTT":
+                    continue
+                if page == "categories/community.html" and category != "커뮤니티":
+                    continue
+                if page == "categories/travel.html" and category != "생활·교통·여행":
                     continue
                 with self.subTest(page=page, name=name):
                     self.assertIn('href="' + url + '"', source)
