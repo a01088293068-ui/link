@@ -2399,5 +2399,59 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ssg.com/",
+    "name": "SSG.COM",
+    "source_url": "https://company.ssg.com/intrd/keybsns.ssg",
+    "scope": "SSG.COM 공식 기업 소개에서 신세계백화점·이마트 상품을 온라인으로 제공하는 통합 쇼핑 플랫폼과 주요 사업 영역을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://quasarzone.com/",
+    "name": "퀘이사존",
+    "source_url": "https://quasarzone.com/",
+    "scope": "퀘이사존 공식 첫 화면의 하드웨어·게임·모바일 뉴스와 PC 하드웨어 커뮤니티 게시판 구성을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.munpia.com/",
+    "name": "문피아",
+    "source_url": "https://munpiacorp.com/",
+    "scope": "문피아 운영사 공식 소개에서 웹소설 전문 플랫폼의 서비스 분야와 운영 주체를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://m.mrblue.com/",
+    "name": "미스터블루",
+    "source_url": "https://www.mrbluecorp.com/",
+    "scope": "미스터블루 운영사 공식 홈페이지에서 웹툰·만화·소설 종합 플랫폼 및 콘텐츠 사업 안내를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.webtoonguide.com/ko/",
+    "name": "웹툰가이드",
+    "source_url": "https://www.webtoonguide.com/ko/",
+    "scope": "웹툰가이드 공식 페이지의 작품 추천·리뷰·뉴스·작가 인터뷰 및 웹툰 플랫폼 정보 메뉴를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://novelpia.com/",
+    "name": "노벨피아",
+    "source_url": "https://novelpia.com/page/terms_of_use",
+    "scope": "노벨피아 공식 이용약관에서 운영사 메타크래프트와 웹소설 등 디지털 콘텐츠 제공 플랫폼의 서비스 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]

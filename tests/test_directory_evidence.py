@@ -114,6 +114,22 @@ class DirectoryEvidenceTests(unittest.TestCase):
                 self.assertEqual(self.evidence[url]["evidence_type"], "service_page")
                 self.assertEqual(self.evidence[url]["checked_on"], "2026-11-17")
 
+    def test_additional_korean_commerce_community_and_story_services_have_first_party_evidence(self):
+        expected = {
+            "https://www.ssg.com/": "https://company.ssg.com/intrd/keybsns.ssg",
+            "https://quasarzone.com/": "https://quasarzone.com/",
+            "https://www.munpia.com/": "https://munpiacorp.com/",
+            "https://m.mrblue.com/": "https://www.mrbluecorp.com/",
+            "https://www.webtoonguide.com/ko/": "https://www.webtoonguide.com/ko/",
+            "https://novelpia.com/": "https://novelpia.com/page/terms_of_use",
+        }
+        for url, source_url in expected.items():
+            with self.subTest(url=url):
+                self.assertIn(url, self.evidence)
+                self.assertEqual(self.evidence[url]["source_url"], source_url)
+                self.assertEqual(self.evidence[url]["evidence_type"], "service_page")
+                self.assertEqual(self.evidence[url]["checked_on"], "2026-11-18")
+
     def test_old_source_evidence_expires_instead_of_appearing_current(self):
         html = build.render_directory_catalog_cards(
             self.records, self.evidence, today=date(2027, 6, 1))
