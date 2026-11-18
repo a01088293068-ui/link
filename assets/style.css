@@ -152,6 +152,11 @@
  .main-site-inline a{width:100%}
 }
 
+/* TEMPORARY: hide the unavailable main-service shortcut while its hosting is renewed.
+   Keep the SEO directory, search pages, and all internal navigation available. */
+.direct-action:has(.main-site-button){display:none!important}
+.footer-primary-action{display:none!important}
+
 /* Category-page related guides use the same clear, touch-friendly link cards. */
 .section[aria-label="함께 확인할 이용 가이드"] ul{
  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
