@@ -34,6 +34,8 @@ LONGTAIL_KEYWORDS = (
     "국내 커뮤니티 사이트모음", "한국 웹툰 사이트모음",
     "국내 AI 사이트모음", "한국 스포츠 사이트모음",
     "국내 쇼핑 사이트모음",
+    "금융 사이트모음", "금융 링크모음",
+    "카드포인트 통합조회", "계좌정보통합관리서비스",
 )
 KEYWORDS = CORE_KEYWORDS + LONGTAIL_KEYWORDS
 # Core keywords use three SERP pages; discovery terms start with page one.
