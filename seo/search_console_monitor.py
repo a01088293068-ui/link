@@ -362,7 +362,10 @@ def inspect_index(token, property_url, inspection_url):
                     'languageCode': 'ko-KR'}).encode('utf-8'),
         {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'},
         method='POST')
-    with urlopen(request, timeout=20) as response:
+    # Keep the 24-URL sequential daily inspection batch inside the 8-minute CI job budget.
+    # Search Analytics and sitemap calls have separate timeouts; a slow inspection
+    # endpoint must not stall the entire daily evidence report for 8+ minutes.
+    with urlopen(request, timeout=8) as response:
         data = json.load(response)
     state = data.get('inspectionResult', {}).get('indexStatusResult', {})
     return {'url': inspection_url, 'verdict': state.get('verdict', 'UNKNOWN'),
