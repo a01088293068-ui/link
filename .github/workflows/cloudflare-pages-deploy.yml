@@ -2,7 +2,7 @@ name: LinkWiki Cloudflare Pages production deployment
 
 on:
   workflow_run:
-    workflows: ['LinkWiki SEO build and consistency gate']
+    workflows: ['LinkWiki SEO build and consistency gate', 'LinkWiki SEO research and publish']
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -22,13 +22,14 @@ jobs:
     if: >-
       ${{ github.event_name == 'workflow_dispatch' ||
            (github.event.workflow_run.conclusion == 'success' &&
-            github.event.workflow_run.event == 'push') }}
+            (github.event.workflow_run.name == 'LinkWiki SEO research and publish' ||
+             github.event.workflow_run.event == 'push')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.name == 'LinkWiki SEO research and publish' && 'main' || github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
