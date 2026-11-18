@@ -26,6 +26,11 @@ on:
       - 'seo/significant-page-updates.json'
   schedule:
     - cron: '25 3 * * *'
+  # Verify Google sitemap processing after the exact release has reached Pages.
+  workflow_run:
+    workflows: ['LinkWiki Cloudflare Pages production deployment']
+    types: [completed]
+    branches: [main]
 
 # Keep a single read-only GSC scan at a time. A daily snapshot and a
 # manually requested scan should not race or exhaust URL Inspection quota.
@@ -39,7 +44,12 @@ permissions:
 
 jobs:
   performance:
-    if: ${{ vars.GSC_MONITOR_ENABLED == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
+    if: >-
+      ${{ vars.GSC_MONITOR_ENABLED == 'true' ||
+          github.event_name == 'workflow_dispatch' ||
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_run' &&
+           github.event.workflow_run.conclusion == 'success') }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
