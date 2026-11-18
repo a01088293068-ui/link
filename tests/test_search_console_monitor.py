@@ -544,6 +544,20 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn("Google에 알려지지 않음: 2개", report)
         self.assertIn("크롤링 후 미색인: 2개", report)
 
+    def test_url_inspection_uses_bounded_request_timeout(self):
+        class Response:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return None
+            def read(self):
+                return b'{"inspectionResult":{"indexStatusResult":{"verdict":"PASS"}}}'
+        with patch.object(monitor, 'urlopen', return_value=Response()) as mocked:
+            result = monitor.inspect_index(
+                "token", "sc-domain:linkwiki.info", "https://linkwiki.info/")
+        self.assertEqual(result["verdict"], "PASS")
+        self.assertEqual(mocked.call_args.kwargs["timeout"], 8)
+
     def test_inspection_continues_after_single_url_not_found(self):
         from urllib.error import HTTPError
         calls = []
