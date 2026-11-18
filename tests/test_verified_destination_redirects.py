@@ -49,6 +49,31 @@ class UpdatedDestinationsTests(unittest.TestCase):
             for old in LEGACY_URLS:
                 self.assertNotIn('href="' + old + '"', source)
 
+
+    def test_redirected_korean_services_render_from_current_catalog_destinations(self):
+        import build
+        evidence = build.load_directory_evidence(self.records)
+        cards = build.render_directory_catalog_cards(self.records, evidence)
+        expected = {
+            "티맵": ("https://www.tmapmobility.com/", "생활·교통·여행"),
+            "네이버 밴드": ("https://www.band.us/about/intro", "커뮤니티"),
+        }
+        for name, (url, category) in expected.items():
+            with self.subTest(name=name):
+                self.assertEqual(self.by_name[name]["url"], url)
+                self.assertEqual(self.by_name[name]["category"], category)
+                self.assertIn('href="' + url + '"', cards)
+                self.assertIn(url, evidence)
+                self.assertEqual(evidence[url]["name"], name)
+                self.assertEqual(evidence[url]["checked_on"], "2026-11-18")
+        for category, path in (
+            ("커뮤니티", ROOT / "categories" / "community.html"),
+            ("생활·교통·여행", ROOT / "categories" / "travel.html"),
+        ):
+            rendered = build.sync_category_card_copy(path.read_text(encoding="utf-8"), self.records, category)
+            url = expected["네이버 밴드"][0] if category == "커뮤니티" else expected["티맵"][0]
+            self.assertIn('href="' + url + '"', rendered)
+
     def test_directory_javascript_uses_single_dom_backed_catalog(self):
         js = (ROOT / "assets/directory.js").read_text(encoding="utf-8")
         self.assertIn("querySelectorAll('article.v6-card')", js)
