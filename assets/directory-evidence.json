@@ -1823,5 +1823,77 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.airport.kr/",
+    "name": "인천국제공항",
+    "source_url": "https://www.airport.kr/ap_en/1579/subview.do",
+    "scope": "인천국제공항 공식 홈페이지의 공항 이용 안내와 터미널·교통·시설 정보 제공 경로를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.applyhome.co.kr/",
+    "name": "청약Home",
+    "source_url": "https://www.applyhome.co.kr/",
+    "scope": "한국부동산원 주택청약 공식 서비스 첫 화면에서 청약 일정·모집공고·신청 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://txbus.t-money.co.kr/",
+    "name": "시외버스 통합예매",
+    "source_url": "https://txbus.t-money.co.kr/",
+    "scope": "시외버스 통합예매시스템의 승차권 예매·조회·취소 및 운행정보 제공 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.aladin.co.kr/",
+    "name": "알라딘",
+    "source_url": "https://www.aladin.co.kr/home/welcome.aspx",
+    "scope": "알라딘 공식 홈페이지에서 국내도서·전자책·중고상품·음반 등 온라인 서점 서비스와 대표 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hani.co.kr/",
+    "name": "한겨레",
+    "source_url": "https://www.hani.co.kr/",
+    "scope": "한겨레 공식 홈페이지에서 정치·사회·경제·문화 분야의 뉴스와 심층 보도 제공 및 대표 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://zdnet.co.kr/",
+    "name": "ZDNet Korea",
+    "source_url": "https://zdnet.co.kr/",
+    "scope": "지디넷코리아 공식 홈페이지에서 IT·기술·인터넷 산업 뉴스와 분석 콘텐츠 제공 및 대표 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bobaedream.co.kr/",
+    "name": "보배드림",
+    "source_url": "https://www.bobaedream.co.kr/",
+    "scope": "보배드림 공식 홈페이지에서 자동차 정보·중고차 매물·자동차 커뮤니티 서비스와 대표 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://comento.kr/job-questions",
+    "name": "코멘토",
+    "source_url": "https://comento.kr/job-questions",
+    "scope": "코멘토 공식 취업 Q&A 페이지에서 직무별 질문·현직자 답변 등 취업 커뮤니티 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
