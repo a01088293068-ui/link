@@ -135,7 +135,7 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
 
     def test_current_count_in_search_guide_matches_catalog(self):
         guide = (ROOT / "content/seo-20261111-address-directory-no-results.md").read_text(encoding="utf-8")
-        self.assertIn(f"2026년 11월 17일 현재 공개 전체 목록에는 {len(self.records)}개 사이트가 등록되어 있습니다.", guide)
+        self.assertIn(f"2026년 11월 18일 현재 공개 전체 목록에는 {len(self.records)}개 사이트가 등록되어 있습니다.", guide)
 
     def test_official_announcement_evidence_type_is_supported(self):
         from build import DIRECTORY_EVIDENCE_TYPES
