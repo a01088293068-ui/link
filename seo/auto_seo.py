@@ -428,7 +428,9 @@ def generic_directory_example_missing(topic, article):
         "주소모음", "주소 모음", "링크모음", "링크 모음",
         "사이트모음", "사이트 모음", "링크 디렉터리", "링크 디렉토리",
     )
-    if not any(term in str(topic).casefold() for term in broad_terms):
+    normalized_topic = str(topic).casefold()
+    if (not any(term in normalized_topic for term in broad_terms)
+            or any(term in normalized_topic for term in ("접속 오류", "오류 해결", "접속 해결", "열리지 않을"))):
         return False
     records = json.loads(
         (ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8")
