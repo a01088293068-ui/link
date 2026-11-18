@@ -102,6 +102,21 @@ def maintenance_signature(html):
     return (int(total.group(1)) if total else None, tuple(rows))
 
 
+
+def homepage_evidence_signature(html):
+    """Read the homepage's public source-evidence disclosure and destination."""
+    section = re.search(
+        r'<section\\b(?=[^>]*\\bclass="[^"]*\\bseo-home-evidence\\b)[^>]*>(.*?)</section>',
+        html, re.S | re.I,
+    )
+    if not section:
+        return None
+    count = re.search(r'(\\d+)건의 출처 대조 기록', section.group(1))
+    target = re.search(r'<a\\b[^>]*href="([^"]+)"[^>]*>대조한 출처와 확인일 보기</a>', section.group(1))
+    if not count or not target:
+        return None
+    return int(count.group(1)), target.group(1)
+
 def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None, category_sources=None, maintenance_source=None):
     errors, observations = [], []
     source = Page()
@@ -154,6 +169,14 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
                 for keyword in ("주소모음",):
                     if keyword not in page.value("title"):
                         errors.append(f"/: title missing {keyword}")
+                expected_evidence = homepage_evidence_signature(source_html)
+                if expected_evidence is not None:
+                    live_evidence = homepage_evidence_signature(body)
+                    observations.append(
+                        f"/: built homepage source-evidence {expected_evidence[0]} records; "
+                        f"live {live_evidence[0] if live_evidence else 'missing'}")
+                    if live_evidence != expected_evidence:
+                        errors.append("/: live homepage source-evidence disclosure differs from build")
         except Exception as exc:
             errors.append(f"{path}: fetch error ({type(exc).__name__}: {exc})")
     if script_source is not None:
