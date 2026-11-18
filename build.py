@@ -690,7 +690,7 @@ CATEGORY_SEARCH_EXAMPLES = {
     "education": ("큐넷", "잡코리아"),
     "news": ("연합뉴스", "한국경제"),
     "shopping": ("롯데ON", "에누리 가격비교"),
-    "travel": ("코레일", "인천국제공항"),
+    "travel": ("코레일 승차권", "인천국제공항"),
 }
 
 
