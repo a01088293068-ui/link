@@ -1874,6 +1874,7 @@ def category_article_links(posts, slug, limit=5):
             "/blog/seo-20261030-26325b73af/",
             "/blog/seo-20261110-korean-education-sites-guide/",
             "/blog/seo-20261111-gov24-epeople-complaint-certificate/",
+            "/blog/seo-20261111-public-data-vs-kosis-usage/",
         ),
         "ai": ("/blog/seo-20261110-korean-ai-tools-by-task-guide/",),
         "finance": ("/blog/seo-20261111-tax-hometax-wetax-difference/",),
