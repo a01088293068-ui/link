@@ -12,7 +12,7 @@ class CategoryMetadataIntentTests(unittest.TestCase):
         self.assertIn("<title>금융 링크모음·사이트모음 | 은행·금융 정보 - 링크위키</title>", source)
         self.assertIn("<h1>금융 링크모음·사이트모음</h1>", source)
         self.assertIn("금융 링크모음에서 국내 은행 업무", source)
-        self.assertIn('href="https://linkwiki.info/categories/finance" rel="canonical"', source)
+        self.assertIn('rel="canonical" href="https://linkwiki.info/categories/finance"', source)
         self.assertIn('property="og:title"', source)
         self.assertIn('property="og:description"', source)
 
