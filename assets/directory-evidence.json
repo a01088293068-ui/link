@@ -2219,5 +2219,50 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.diningcode.com/",
+    "name": "다이닝코드",
+    "source_url": "https://www.diningcode.com/",
+    "scope": "다이닝코드 공식 홈페이지에서 빅데이터 맛집 검색과 음식 종류별 추천·지역별 식당 탐색 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.heydealer.com/",
+    "name": "헤이딜러",
+    "source_url": "https://www.heydealer.com/",
+    "scope": "헤이딜러 공식 홈페이지에서 내 차 팔기 경매, 인증중고차 구매, 차량 시세·사고 이력 조회 등 자동차 거래 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.deepl.com/translator",
+    "name": "DeepL",
+    "source_url": "https://www.deepl.com/translator",
+    "scope": "DeepL 공식 번역 페이지에서 텍스트·문서 번역과 언어별 번역 기능을 확인. 한국어 URL이 영어 경로로 리디렉션되는 점도 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://aistudio.google.com/",
+    "name": "Google AI Studio",
+    "source_url": "https://aistudio.google.com/",
+    "scope": "Google AI Studio 공식 시작 페이지에서 Gemini 프롬프트 실험, API 키 관리, SDK 및 도구 연동 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.canva.com/",
+    "name": "Canva",
+    "source_url": "https://www.canva.com/",
+    "scope": "Canva 공식 홈페이지에서 소셜 콘텐츠·프레젠테이션·포스터·영상·로고 제작과 AI 디자인 도구 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
