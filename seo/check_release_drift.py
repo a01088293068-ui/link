@@ -106,13 +106,13 @@ def maintenance_signature(html):
 def homepage_evidence_signature(html):
     """Read the homepage's public source-evidence disclosure and destination."""
     section = re.search(
-        r'<section\\b(?=[^>]*\\bclass="[^"]*\\bseo-home-evidence\\b)[^>]*>(.*?)</section>',
+        r'<section\b(?=[^>]*\bclass="[^"]*\bseo-home-evidence\b)[^>]*>(.*?)</section>',
         html, re.S | re.I,
     )
     if not section:
         return None
-    count = re.search(r'(\\d+)건의 출처 대조 기록', section.group(1))
-    target = re.search(r'<a\\b[^>]*href="([^"]+)"[^>]*>대조한 출처와 확인일 보기</a>', section.group(1))
+    count = re.search(r'(\d+)건의 출처 대조 기록', section.group(1))
+    target = re.search(r'<a\b[^>]*href="([^"]+)"[^>]*>대조한 출처와 확인일 보기</a>', section.group(1))
     if not count or not target:
         return None
     return int(count.group(1)), target.group(1)
