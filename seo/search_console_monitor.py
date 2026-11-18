@@ -362,11 +362,20 @@ def inspect_index(token, property_url, inspection_url):
                     'languageCode': 'ko-KR'}).encode('utf-8'),
         {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json'},
         method='POST')
-    # Keep the 24-URL sequential daily inspection batch inside the 8-minute CI job budget.
-    # Search Analytics and sitemap calls have separate timeouts; a slow inspection
-    # endpoint must not stall the entire daily evidence report for 8+ minutes.
-    with urlopen(request, timeout=8) as response:
-        data = json.load(response)
+    # Keep the sequential inspection batch inside the 8-minute CI job budget.
+    # Retry one transient network timeout/connection failure: the homepage is
+    # the primary organic landing page, and a single dropped response should
+    # not erase its stored-index evidence from the daily report.
+    for attempt in range(2):
+        try:
+            with urlopen(request, timeout=8) as response:
+                data = json.load(response)
+            break
+        except (URLError, TimeoutError, ConnectionError) as error:
+            # HTTP errors are authoritative API responses, not transport failures.
+            if isinstance(error, HTTPError) or attempt == 1:
+                raise
+            time.sleep(1)
     state = data.get('inspectionResult', {}).get('indexStatusResult', {})
     return {'url': inspection_url, 'verdict': state.get('verdict', 'UNKNOWN'),
             'coverage': state.get('coverageState', '정보 없음'),
