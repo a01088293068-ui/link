@@ -1096,15 +1096,6 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.korail.com/",
-    "name": "코레일",
-    "source_url": "https://www.korail.com/ticket/reserve/guide/faq",
-    "scope": "코레일 공식 승차권 안내에서 통합 홈페이지와 예매 서비스 운영 정보를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
     "url": "https://www.q-net.or.kr/",
     "name": "큐넷",
     "source_url": "https://www.q-net.or.kr/",
