@@ -1967,5 +1967,50 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://kin.naver.com/",
+    "name": "네이버 지식iN",
+    "source_url": "https://kin.naver.com/",
+    "scope": "네이버 지식iN 공식 페이지에서 질문·답변과 주제별 지식 검색 및 Q&A 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.fmkorea.com/",
+    "name": "에펨코리아",
+    "source_url": "https://www.fmkorea.com/",
+    "scope": "에펨코리아 공식 홈페이지에서 유머·축구·스포츠·게임·인터넷 방송 등 종합 커뮤니티 게시판을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.millie.co.kr/",
+    "name": "밀리의서재",
+    "source_url": "https://www.millie.co.kr/",
+    "scope": "밀리의서재 공식 홈페이지에서 전자책·오디오북·웹툰과 도서 추천 및 구독 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mootoon.co.kr/",
+    "name": "무툰",
+    "source_url": "https://www.mootoon.co.kr/",
+    "scope": "무툰 공식 홈페이지에서 무협·액션 중심 웹툰·만화·소설 콘텐츠와 무료 회차 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mcomics.co.kr/",
+    "name": "마녀코믹스",
+    "source_url": "https://www.mcomics.co.kr/",
+    "scope": "마녀코믹스 공식 홈페이지에서 순정만화·프리미엄 웹툰의 작품 목록과 연재·무료 회차 정보를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
