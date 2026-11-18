@@ -1,4 +1,4 @@
-""""Bounded retry coverage for transient Google URL Inspection transport failures."""
+"""Bounded retry coverage for transient Google URL Inspection transport failures."""
 import io
 import json
 from pathlib import Path
