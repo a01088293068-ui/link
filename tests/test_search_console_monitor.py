@@ -47,7 +47,9 @@ class SearchConsoleMonitorTests(unittest.TestCase):
                     ".github/workflows/search-console-monitor.yml").read_text(encoding="utf-8")
         self.assertIn("group: linkwiki-gsc-measurement", workflow)
         self.assertIn("cancel-in-progress: false", workflow)
-        self.assertNotIn("workflow_run:", workflow)
+        self.assertIn("workflow_run:", workflow)
+        self.assertIn("LinkWiki Cloudflare Pages production deployment", workflow)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", workflow)
         self.assertIn("cron: '25 3 * * *'", workflow)
         self.assertIn("push:", workflow)
         self.assertIn("branches: [main]", workflow)
@@ -158,7 +160,9 @@ class SearchConsoleMonitorTests(unittest.TestCase):
     def test_private_gsc_reporting_uses_controlled_schedule_and_manual_runs(self):
         workflow = (Path(__file__).resolve().parents[1] /
                     '.github/workflows/search-console-monitor.yml').read_text(encoding='utf-8')
-        self.assertNotIn("workflow_run:", workflow)
+        self.assertIn("workflow_run:", workflow)
+        self.assertIn("LinkWiki Cloudflare Pages production deployment", workflow)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", workflow)
         self.assertIn("cron: '25 3 * * *'", workflow)
         self.assertIn("group: linkwiki-gsc-measurement", workflow)
         self.assertIn("vars.GSC_MONITOR_ENABLED == 'true'", workflow)
