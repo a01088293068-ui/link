@@ -2014,10 +2014,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.tmap.co.kr/",
+    "url": "https://www.tmapmobility.com/",
     "name": "티맵",
     "source_url": "https://www.tmapmobility.com/",
-    "scope": "기존 티맵 주소가 티맵모빌리티 공식 사이트로 이동하는 것을 확인하고, 내비게이션·대중교통·주차·대리운전 등 TMAP 이동 서비스를 확인",
+    "scope": "기존 티맵 주소의 공식 리디렉션을 확인하고, TMAP Mobility 공식 홈페이지에서 내비게이션·대중교통·주차·대리운전 등 이동 서비스 안내와 현재 도메인을 대조",
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -2635,10 +2635,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://band.us/",
+    "url": "https://www.band.us/about/intro",
     "name": "네이버 밴드",
     "source_url": "https://www.navercorp.com/media/pressReleasesDetail?seq=33511",
-    "scope": "NAVER 공식 보도자료에서 밴드(BAND)를 네이버의 그룹 커뮤니케이션·모임 서비스로 소개한 내용과 서비스 도메인 band.us를 대조",
+    "scope": "기존 band.us 주소의 공식 리디렉션을 따라 BAND 공식 소개 페이지를 확인하고, NAVER 공식 보도자료와 서비스 운영 주체·그룹 커뮤니케이션 기능을 대조",
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "agency_guide"
