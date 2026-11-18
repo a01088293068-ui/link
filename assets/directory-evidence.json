@@ -2084,5 +2084,41 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.qtoon.co.kr/",
+    "name": "큐툰",
+    "source_url": "https://www.qtoon.co.kr/",
+    "scope": "큐툰 공식 홈페이지에서 로맨스·BL·판타지 장르의 웹툰·만화·소설 작품과 무료 회차 안내를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://japaninfo.kr/",
+    "name": "(일본)제팬인포",
+    "source_url": "https://japaninfo.kr/",
+    "scope": "재팬인포 공식 홈페이지에서 도쿄·오사카·후쿠오카·오키나와 등 일본 지역별 여행지·관광·생활 정보를 제공하는 콘텐츠를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.jpnews.kr/",
+    "name": "(일본)재펜뉴스",
+    "source_url": "https://www.jpnews.kr/",
+    "scope": "JPNews 공식 홈페이지에서 일본 정치·경제·사회·문화·연예·스포츠 뉴스와 일본 생활·유학·비자 정보를 제공하는 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreaherald.com/",
+    "name": "코리아헤럴드",
+    "source_url": "https://www.koreaherald.com/",
+    "scope": "코리아헤럴드 공식 홈페이지에서 한국 국내·국제 뉴스와 영문 일간 보도 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
