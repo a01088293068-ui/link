@@ -1895,5 +1895,41 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hankookilbo.com/",
+    "name": "한국일보",
+    "source_url": "https://www.hankookilbo.com/",
+    "scope": "한국일보 공식 홈페이지에서 뉴스·정치·경제·사회·국제·문화·스포츠 보도 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.sedaily.com/",
+    "name": "서울경제",
+    "source_url": "https://www.sedaily.com/",
+    "scope": "서울경제 공식 홈페이지에서 경제·금융·기업 중심의 뉴스 및 분석 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://pawinhand.kr/",
+    "name": "포인핸드",
+    "source_url": "https://pawinhand.kr/",
+    "scope": "포인핸드 공식 홈페이지에서 전국 동물보호센터의 유기동물 입양 정보와 보호소 연결 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://bemypet.kr/",
+    "name": "비마이펫",
+    "source_url": "https://bemypet.kr/",
+    "scope": "비마이펫 공식 홈페이지에서 반려동물 콘텐츠·커뮤니티·동물병원 찾기·입양 등 반려생활 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
