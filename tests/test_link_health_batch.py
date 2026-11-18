@@ -36,15 +36,23 @@ class LinkHealthBatchTests(unittest.TestCase):
         self.assertRaises(ValueError, daily_batch, rows,first,37)
         self.assertEqual(daily_batch([],first),[])
 
-    def test_does_not_follow_redirect_or_retry_restricted_head(self):
+    def test_does_not_follow_redirect_and_retries_head_method_errors_with_get(self):
         client=Mock()
         client.open.side_effect=HTTPError("https://example.com/",302,"redirect",{},None)
         output=observe("https://example.com/",checker=lambda url: True,opener=client)
-        self.assertEqual(output,{"status":"redirect_manual_review","http":302})
+        self.assertEqual(output,{"status":"redirect_manual_review","http":302,"method":"HEAD"})
         self.assertEqual(client.open.call_count,1)
-        client.open.side_effect=HTTPError("https://example.com/",405,"unsupported",{},None)
-        self.assertEqual(observe("https://example.com/",checker=lambda url: True,opener=client)["status"],
-                         "head_blocked_or_unsupported")
+
+        client.open.reset_mock()
+        client.open.side_effect=[
+            HTTPError("https://example.com/",405,"unsupported",{},None),
+            HTTPError("https://example.com/",405,"unsupported",{},None),
+        ]
+        output=observe("https://example.com/",checker=lambda url: True,opener=client)
+        self.assertEqual([call.args[0].get_method() for call in client.open.call_args_list],["HEAD","GET"])
+        self.assertEqual(output,{"status":"head_blocked_or_unsupported","http":405,"method":"GET"})
+
+        client.open.reset_mock()
         client.open.side_effect=URLError("offline")
         self.assertEqual(observe("https://example.com/",checker=lambda url: True,opener=client)["status"],
                          "network_unverified")
@@ -53,10 +61,27 @@ class LinkHealthBatchTests(unittest.TestCase):
         self.assertEqual(observe("https://example.com/",checker=lambda url: True,opener=client)["status"],
                          "head_responded")
 
+    def test_false_head_404_is_rechecked_with_header_only_get(self):
+        client=Mock()
+        client.open.side_effect=[HTTPError("https://example.com/",404,"HEAD route",{},None),FakeResponse()]
+        output=observe("https://example.com/",checker=lambda url: True,opener=client)
+        self.assertEqual([call.args[0].get_method() for call in client.open.call_args_list],["HEAD","GET"])
+        self.assertEqual(output,{"status":"get_responded","http":200,"method":"GET"})
+
+    def test_get_404_is_not_called_reachable(self):
+        client=Mock()
+        client.open.side_effect=[
+            HTTPError("https://example.com/",404,"HEAD route",{},None),
+            HTTPError("https://example.com/",404,"not found",{},None),
+        ]
+        output=observe("https://example.com/",checker=lambda url: True,opener=client)
+        self.assertEqual(output,{"status":"http_manual_review","http":404,"method":"GET"})
+
     def test_private_report_never_calls_url_healthy_or_safety_ranking(self):
         row={"name":"Example","url":"https://example.com/"}
-        text=render([row],[(row,{"status":"head_responded","http":200})],date(2026,11,11))
-        self.assertIn("HEAD 요청",text)
+        text=render([row],[(row,{"status":"head_responded","http":200,"method":"HEAD"})],date(2026,11,11))
+        self.assertIn("HEAD 우선 검사",text)
+        self.assertIn("GET으로 헤더만 재확인",text)
         self.assertIn("안전성",text)
         self.assertIn("example.com",text)
         self.assertNotIn("정상 사이트로 인증",text)
