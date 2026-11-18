@@ -2014,10 +2014,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://sports.naver.com/",
+    "url": "https://m.sports.naver.com/index",
     "name": "네이버 스포츠",
     "source_url": "https://m.sports.naver.com/index",
-    "scope": "네이버 스포츠 공식 페이지에서 야구·축구·농구·배구·골프·e스포츠 경기와 뉴스 메뉴를 확인",
+    "scope": "네이버 스포츠 공식 모바일 홈페이지에서 종목 메뉴와 경기·뉴스 서비스 및 현재 도착 주소를 확인",
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
