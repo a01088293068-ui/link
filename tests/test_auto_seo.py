@@ -12,6 +12,13 @@ spec.loader.exec_module(seo)
 
 
 class SEOTests(unittest.TestCase):
+    def test_broad_directory_guide_requires_a_real_catalogue_example(self):
+        article = self.sample_article()
+        self.assertTrue(seo.generic_directory_example_missing("주소 모음 사이트", article))
+        article["introduction"] += " 정부24는 증명서 발급과 행정 민원에 활용할 수 있습니다."
+        self.assertFalse(seo.generic_directory_example_missing("주소 모음 사이트", article))
+        self.assertFalse(seo.generic_directory_example_missing("링크모음 접속 오류 해결 방법", self.sample_article()))
+
     def test_category_guide_accepts_registered_fourth_site(self):
         article = self.sample_article()
         article["introduction"] += (
