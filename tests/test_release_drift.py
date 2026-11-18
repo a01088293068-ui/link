@@ -17,6 +17,17 @@ def fixture(path):
     return 200, BASE + path, {"/": HOME, "/directory": DIRECTORY, "/sitemap.xml": SITEMAP, "/robots.txt": ROBOTS}[path], Message()
 
 class ReleaseDriftTests(unittest.TestCase):
+
+    def test_live_release_audit_runs_after_successful_deploy_of_same_commit(self):
+        from pathlib import Path
+        workflow = (Path(__file__).resolve().parents[1] /
+                    ".github" / "workflows" / "release-drift.yml").read_text(encoding="utf-8")
+        self.assertIn('workflow_run:', workflow)
+        self.assertIn('workflows: ["LinkWiki Cloudflare Pages production deployment"]', workflow)
+        self.assertIn("github.event.workflow_run.head_sha || github.sha", workflow)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", workflow)
+        self.assertNotIn("\n  push:\n", workflow)
+
     def test_healthy_release(self):
         problems, details = check(SOURCE, fixture)
         self.assertEqual(problems, [])
