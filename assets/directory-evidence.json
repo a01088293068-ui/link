@@ -2147,5 +2147,41 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.dogdrip.net/",
+    "name": "개드립",
+    "source_url": "https://www.dogdrip.net/",
+    "scope": "개드립 공식 홈페이지의 유머·이슈·정보 게시물과 이용자 댓글 중심 커뮤니티 구성을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.slrclub.com/",
+    "name": "SLR",
+    "source_url": "https://www.slrclub.com/",
+    "scope": "SLR클럽 공식 홈페이지에서 디지털 사진 작품·강좌·리뷰·장터와 자유게시판 등 사진가 중심 커뮤니티 구성을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://mlbpark.donga.com/mp/",
+    "name": "MLB파크",
+    "source_url": "https://mlbpark.donga.com/mp/",
+    "scope": "스포츠동아 MLB파크 공식 홈페이지의 MLB타운·한국야구타운·크보기록실·스포츠 뉴스와 야구팬 커뮤니티 게시판을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://cafe.naver.com/joonggonara",
+    "name": "중고나라",
+    "source_url": "https://cafe.naver.com/joonggonara",
+    "scope": "네이버 카페의 중고나라 공식 카페 페이지 제목과 가입·회원 활동 안내를 통해 등록된 커뮤니티 경로를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
