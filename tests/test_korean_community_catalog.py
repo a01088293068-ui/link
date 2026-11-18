@@ -14,7 +14,7 @@ class KoreanCommunityCatalogTests(unittest.TestCase):
         evidence_by_url = {row["url"]: row for row in evidence}
         expected = {
             "https://www.82cook.com/": ("82쿡", "service_page"),
-            "https://band.us/": ("네이버 밴드", "agency_guide"),
+            "https://www.band.us/about/intro": ("네이버 밴드", "agency_guide"),
         }
         for url, (name, evidence_type) in expected.items():
             with self.subTest(url=url):
