@@ -31,6 +31,38 @@ class ReleaseDriftTests(unittest.TestCase):
         self.assertTrue(any("differs" in p for p in problems))
         self.assertTrue(any("missing 주소모음" in p for p in problems))
 
+
+    def test_homepage_source_evidence_disclosure_must_match_build(self):
+        from seo.check_release_drift import homepage_evidence_signature
+        evidence = (
+            '<section class="wrap seo-related-links seo-home-evidence">'
+            '<p>공개 목록 360개 가운데 202건의 출처 대조 기록이 있습니다.</p>'
+            '<p><a href="/directory#directory-source-evidence">대조한 출처와 확인일 보기</a></p>'
+            '</section>'
+        )
+        self.assertEqual(homepage_evidence_signature(evidence),
+                         (202, "/directory#directory-source-evidence"))
+        source = SOURCE + evidence
+        def deployed(path):
+            status, url, body, headers = fixture(path)
+            if path == "/":
+                body += evidence
+            return status, url, body, headers
+        problems, observations = check(source, deployed)
+        self.assertEqual(problems, [])
+        self.assertTrue(any("source-evidence 202 records" in row for row in observations))
+
+    def test_stale_homepage_source_evidence_disclosure_is_reported(self):
+        evidence = (
+            '<section class="wrap seo-related-links seo-home-evidence">'
+            '<p>공개 목록 360개 가운데 202건의 출처 대조 기록이 있습니다.</p>'
+            '<p><a href="/directory#directory-source-evidence">대조한 출처와 확인일 보기</a></p>'
+            '</section>'
+        )
+        source = SOURCE + evidence
+        problems, _ = check(source, fixture)
+        self.assertIn("/: live homepage source-evidence disclosure differs from build", problems)
+
     def test_home_title_checks_its_own_address_intent_not_other_landing_terms(self):
         problems, _ = check(SOURCE, fixture)
         self.assertFalse(any("title missing 링크모음" in p or "title missing 사이트모음" in p
