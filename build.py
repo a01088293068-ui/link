@@ -927,11 +927,17 @@ def homepage_evidence_summary(records):
     checked = len(evidence)
     if total < 1 or checked > total:
         raise RuntimeError("Directory source-evidence counts are inconsistent")
+    latest_checked = max((row["checked_on"] for row in evidence.values()), default=None)
+    date_note = (
+        " 최근 출처 대조 기록일은 " + latest_checked + "입니다."
+        if latest_checked else " 아직 공개된 출처 대조 기록이 없습니다."
+    )
     return (
         '<section class="wrap seo-related-links seo-home-evidence" '
         'aria-label="등록 주소의 출처 대조 기록">'
         '<h2>등록 주소의 출처 대조 기록 공개</h2>'
-        f'<p>공개 목록 {total}개 가운데 {checked}건의 출처 대조 기록이 있습니다. '
+        f'<p>공개 목록 {total}개 가운데 {checked}건의 출처 대조 기록이 있습니다.'
+        + date_note + ' '
         '해당 기록은 서비스 페이지 또는 관련 기관 안내를 바탕으로 등록 주소와 이용 범위를 대조한 내용입니다. '
         '이 수치는 전체 목록의 실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다.</p>'
         '<p><a href="/directory#directory-source-evidence">대조한 출처와 확인일 보기</a>'
@@ -1402,6 +1408,7 @@ def directory_source_evidence_section(records, evidence):
         raise RuntimeError("Source evidence section requires the published catalog and evidence map")
     by_url = {item.get("url"): item for item in records if isinstance(item, dict)}
     rows = []
+    latest_checked = max((row["checked_on"] for row in evidence.values()), default=None)
     for url, source in sorted(
         evidence.items(),
         key=lambda pair: (
@@ -1430,7 +1437,9 @@ def directory_source_evidence_section(records, evidence):
         '<h2 id="directory-source-evidence-heading">공식 출처와 대조한 사이트 주소 기록</h2>'
         '<p>현재 공개 목록 ' + str(len(records)) + '개 중 '
         + str(len(rows)) + '건의 항목은 서비스 페이지 또는 관련 기관 안내를 출처로 삼아 '
-        '표시된 연결 주소와 이용 범위를 대조한 기록이 있습니다. 각 항목의 공식 근거를 직접 확인할 수 있습니다.</p>'
+        '표시된 연결 주소와 이용 범위를 대조한 기록이 있습니다. '
+        + ('최근 출처 대조 기록일은 ' + latest_checked + '입니다. ' if latest_checked else '')
+        + '각 항목의 공식 근거를 직접 확인할 수 있습니다.</p>'
         '<p>확인일은 출처와 등록 주소를 대조한 날짜이며, 현재 접속 가능 여부·운영 주체의 소유권·보안·서비스 품질을 보증하지 않습니다. '
         '아래에 표시되지 않은 항목은 이 출처 대조 기록에 포함되지 않았습니다.</p>'
         '<div class="table-scroll"><table><thead><tr><th>등록 사이트</th><th>대조 범위</th>'
@@ -2167,12 +2176,15 @@ def build():
     directory_html = sync_directory_count(directory_html, len(records))
     directory_evidence = load_directory_evidence(records)
     directory_html = replace_directory_catalog_cards(directory_html, records, directory_evidence)
+    latest_evidence_date = max(
+        (row["checked_on"] for row in directory_evidence.values()), default=None)
     evidence_summary = (
         '<p class="directory-evidence-summary"><strong>출처 대조 기록 '
         + str(len(directory_evidence)) + '건</strong> · 공개 목록 '
         + str(len(records)) + '개 중 이 항목들은 서비스 페이지 또는 관련 기관 안내와 '
         '등록 주소·이용 범위를 대조했습니다. '
-        '<a href="#directory-source-evidence">대조한 출처와 확인일 보기</a></p>'
+        + ('최근 출처 대조 기록일 ' + latest_evidence_date + '. ' if latest_evidence_date else '')
+        + '<a href="#directory-source-evidence">대조한 출처와 확인일 보기</a></p>'
     )
     # Lead with search before the category and editorial shortcuts.
     search_form = re.compile(r'<form class="v6-search" id="v6-form".*?</form>', re.S)
