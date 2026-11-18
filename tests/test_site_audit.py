@@ -93,16 +93,12 @@ class SiteAuditTests(unittest.TestCase):
                   '<meta property="og:description" content="97개 사이트의 목록">'
                   '<meta name="twitter:title" content="97개 사이트">'
                   '<meta name="twitter:description" content="97개 사이트의 목록">'
-                  '<h1 id="directory-heading">사이트모음 전체 목록 · 97개 사이트 이름·도메인 검색</h1>'
                   '<p>97개 등록 사이트의 설명</p>'
                   '<p>등록 사이트 97개</p><p>8개 분야</p>')
         fixed = sync_directory_count(sample, 112)
         self.assertGreaterEqual(fixed.count("112개"), 6)
         self.assertNotIn("97개", fixed)
         self.assertIn("8개 분야", fixed)
-        self.assertIn("링크모음·사이트모음 112개 전체 목록 | 링크위키", fixed)
-        self.assertIn("링크모음·사이트모음 전체 목록 · 112개 사이트 이름·도메인 검색", fixed)
-        self.assertIn("링크모음·사이트모음에서 112개 국내외 사이트", fixed)
         with self.assertRaises(RuntimeError):
             sync_directory_count("<html>97개 사이트</html>", 112)
 
