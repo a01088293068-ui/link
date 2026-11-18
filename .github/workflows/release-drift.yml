@@ -1,22 +1,10 @@
 name: LinkWiki live release drift audit
 
 on:
-  push:
+  workflow_run:
+    workflows: ["LinkWiki Cloudflare Pages production deployment"]
+    types: [completed]
     branches: [main]
-    paths:
-      - 'build.py'
-      - 'assets/verified-directory.json'
-      - 'tests/test_directory_catalog_render.py'
-      - 'assets/directory-search.js'
-      - 'assets/directory.js'
-      - 'tests/test_directory_search.cjs'
-      - 'tests/test_directory_dom.cjs'
-      - 'tests/test_directory_static_integrity.py'
-      - 'tests/test_directory_asset_fingerprints.py'
-      - 'seo/check_release_drift.py'
-      - 'tests/test_release_drift.py'
-      - 'tests/test_related_guides.py'
-      - '.github/workflows/release-drift.yml'
   schedule:
     - cron: '40 4 * * *'
   workflow_dispatch:
@@ -26,10 +14,13 @@ permissions:
 
 jobs:
   audit:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
