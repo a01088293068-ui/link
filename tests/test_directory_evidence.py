@@ -119,7 +119,7 @@ class DirectoryEvidenceTests(unittest.TestCase):
             "https://www.ssg.com/": "https://company.ssg.com/intrd/keybsns.ssg",
             "https://quasarzone.com/": "https://quasarzone.com/",
             "https://www.munpia.com/": "https://munpiacorp.com/",
-            "https://www.mrblue.com/": "https://www.mrbluecorp.com/",
+            "https://m.mrblue.com/": "https://www.mrbluecorp.com/",
             "https://www.webtoonguide.com/ko/": "https://www.webtoonguide.com/ko/",
             "https://novelpia.com/": "https://novelpia.com/page/terms_of_use",
         }
