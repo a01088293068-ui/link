@@ -57,6 +57,22 @@ class UpdatedDestinationsTests(unittest.TestCase):
             for old in LEGACY_URLS:
                 self.assertNotIn('href="' + old + '"', source)
 
+
+    def test_redirected_korean_services_use_final_official_destinations_and_matching_evidence(self):
+        evidence = json.loads((ROOT / "assets/directory-evidence.json").read_text(encoding="utf-8"))
+        by_url = {row["url"]: row for row in evidence}
+        expected = {
+            "티맵": "https://www.tmapmobility.com/",
+            "네이버 밴드": "https://www.band.us/about/intro",
+        }
+        for name, url in expected.items():
+            with self.subTest(name=name):
+                self.assertEqual(self.by_name[name]["url"], url)
+                self.assertIn(url, by_url)
+                self.assertEqual(by_url[url]["name"], name)
+                self.assertTrue(by_url[url]["source_url"].startswith("https://"))
+                self.assertEqual(by_url[url]["checked_on"], "2026-11-18")
+
     def test_directory_javascript_uses_single_dom_backed_catalog(self):
         js = (ROOT / "assets/directory.js").read_text(encoding="utf-8")
         self.assertIn("querySelectorAll('article.v6-card')", js)
