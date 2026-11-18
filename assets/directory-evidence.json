@@ -2012,5 +2012,32 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.tmap.co.kr/",
+    "name": "티맵",
+    "source_url": "https://www.tmapmobility.com/",
+    "scope": "기존 티맵 주소가 티맵모빌리티 공식 사이트로 이동하는 것을 확인하고, 내비게이션·대중교통·주차·대리운전 등 TMAP 이동 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://sports.naver.com/",
+    "name": "네이버 스포츠",
+    "source_url": "https://m.sports.naver.com/index",
+    "scope": "네이버 스포츠 공식 페이지에서 야구·축구·농구·배구·골프·e스포츠 경기와 뉴스 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://brunch.co.kr/",
+    "name": "브런치스토리",
+    "source_url": "https://brunch.co.kr/",
+    "scope": "브런치 공식 페이지에서 작가의 글·연재 작품과 콘텐츠 발행 및 구독형 읽기 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
