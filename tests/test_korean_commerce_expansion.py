@@ -8,7 +8,7 @@ EXPECTED = {
     "오늘의집": ("https://ohou.se/", "https://ohou.se/"),
     "당근": ("https://www.daangn.com/kr/", "https://www.daangn.com/kr/"),
     "에이블리": ("https://mobile.a-bly.com/", "https://mobile.a-bly.com/"),
-    "W컨셉": ("https://www.wconcept.co.kr/", "https://display.wconcept.co.kr/rn/women"),
+    "W컨셉": ("https://display.wconcept.co.kr/rn/women", "https://display.wconcept.co.kr/rn/women"),
 }
 
 
