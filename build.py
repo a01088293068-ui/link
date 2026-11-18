@@ -459,7 +459,7 @@ def sync_directory_count(html, total_sites):
     if inline_count < 5 or status_count != 1:
         raise RuntimeError("Directory SEO count markers changed; review required")
 
-    heading_text = f"링크모음·사이트모음 전체 목록 · {total_sites}개 사이트 이름·도메인 검색"
+    heading_text = f"사이트모음 전체 목록 · {total_sites}개 사이트 이름·도메인 검색"
     if 'id="directory-heading"' in html:
         heading_pattern = re.compile(
             r'(<h1\b[^>]*id="directory-heading"[^>]*>).*?(</h1>)', re.S)
@@ -469,11 +469,11 @@ def sync_directory_count(html, total_sites):
         if count != 1:
             raise RuntimeError("Directory intent heading malformed")
 
-    title = f"링크모음·사이트모음 {total_sites}개 전체 목록 | 링크위키"
+    title = f"사이트모음 전체 목록 | {total_sites}개 사이트 검색·비교 - 링크위키"
     description = (
-        f"링크모음·사이트모음에서 {total_sites}개 국내외 사이트를 이름·도메인·분야별로 "
-        "검색하고 이용 목적과 공식 연결 주소를 비교하세요. 검색·포털, 공공서비스, 금융, "
-        "교육, 커뮤니티, 웹툰, 스포츠, AI 등 13개 분야의 사이트를 한곳에서 찾아볼 수 있습니다."
+        f"{total_sites}개 등록 사이트의 이름·도메인·분야별 정보를 검색하고, "
+        "각 서비스의 설명과 연결 주소를 비교하세요. 검색·포털, 공공서비스, 금융, "
+        "커뮤니티, 웹툰, 스포츠, AI 등 분야별 목록에서 필요한 사이트를 찾을 수 있습니다."
     )
     html, title_count = re.subn(
         r"<title>.*?</title>",
