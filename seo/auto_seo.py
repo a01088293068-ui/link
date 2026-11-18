@@ -284,7 +284,8 @@ def generate(topic, search, prior_titles):
       "기존 주제와 중복을 피하세요. 주제를 확장한다는 이유로 브라우저 멀티검색·멀티서치 등 별도 기능을 섞지 마세요. 실제 주제의 검색 의도를 일관되게 유지하세요. 광고 문구, 키워드 반복, 허위 경험담은 금지합니다. "
       "제공된 verified_directory 정보만 실제 링크위키 카테고리와 등록 개수의 근거로 사용하세요. "
       "listed_examples_by_category는 실제 등록 목록의 설명일 뿐 현재 접속·공식 인증 자료가 아닙니다. "
-      "주제와 직접 관련되는 경우에만 실제 등록 사례를 1~2개 구체적으로 설명하고, 관련 없으면 나열하지 마세요. "
+      "주제와 직접 관련되는 경우에만 실제 등록 사례를 1~2개 구체적으로 설명하고, 관련 없으면 나열하지 마세요. " +
+      "단, 주소모음·링크모음·사이트모음처럼 디렉터리 자체를 다루는 넓은 주제는 실제 등록 목록의 구체적인 사이트명을 최소 1개 포함하고 그 항목이 어떤 업무나 탐색에 쓰이는지 설명하세요. "
       "없는 분야를 링크위키에 등록되어 있다고 소개하거나 링크 점검 주기·실시간 검증을 보장하지 마세요. "
       "실제로 전달된 검증 근거가 없는 직접 사용·실패·테스트·성과 수치를 꾸미지 마세요. "
       "관찰하지 않은 오류는 가능한 원인으로 설명하고 실제 관찰 결과와 구분하세요. "
@@ -420,6 +421,51 @@ def category_example_missing(topic, article):
     return not any(mentioned(name) for name in verified_names)
 
 
+
+def generic_directory_example_missing(topic, article):
+    """Broad directory-intent articles must connect advice to a real listed item."""
+    broad_terms = (
+        "주소모음", "주소 모음", "링크모음", "링크 모음",
+        "사이트모음", "사이트 모음", "링크 디렉터리", "링크 디렉토리",
+    )
+    if not any(term in str(topic).casefold() for term in broad_terms):
+        return False
+    records = json.loads(
+        (ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8")
+    )
+    prose = " ".join(
+        [str(article.get("introduction", ""))]
+        + [
+            str(paragraph)
+            for section in article.get("sections", [])
+            if isinstance(section, dict)
+            for paragraph in section.get("paragraphs", [])
+            if isinstance(paragraph, str)
+        ]
+        + [
+            str(item.get("answer", ""))
+            for item in article.get("faq", [])
+            if isinstance(item, dict)
+        ]
+    ).casefold()
+
+    def mentioned(name):
+        value = str(name or "").strip()
+        if len(value) < 2:
+            return False
+        expression = re.escape(value.casefold())
+        if value[0].isascii() and value[0].isalnum():
+            expression = r"(?<![a-z0-9])" + expression
+        if value[-1].isascii() and value[-1].isalnum():
+            expression += r"(?![a-z0-9])"
+        return re.search(expression, prose) is not None
+
+    return not any(
+        mentioned(record.get("name"))
+        for record in records if isinstance(record, dict)
+    )
+
+
 def deterministic_review(topic, article, text, titles, require_structured=False):
     required = (("title", str), ("description", str), ("introduction", str),
                 ("sections", list), ("faq", list))
@@ -515,6 +561,8 @@ def deterministic_review(topic, article, text, titles, require_structured=False)
         reasons.append("meta description length out of range")
     if category_example_missing(topic, article):
         reasons.append("category-specific guide lacks a verified local example")
+    if require_structured and generic_directory_example_missing(topic, article):
+        reasons.append("broad directory guide lacks a concrete listed example")
     if content_overlap(text) > .34:
         reasons.append("near-duplicate article body")
     article_prose = json.dumps(article, ensure_ascii=False)
