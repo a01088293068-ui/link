@@ -16,14 +16,13 @@ concurrency:
 
 jobs:
   publish:
-    # This optional Wrangler deploy requires separately configured Cloudflare
-    # credentials. The repository's Cloudflare Git integration is the active
-    # production deployment path; keep this manual fallback explicitly gated.
+    # Attempt production deployment after every successful main-branch SEO
+    # build. Validate credentials and the exact Pages project in job steps;
+    # do not silently skip because an optional repository variable is absent.
     if: >-
-      ${{ (github.event_name == 'workflow_dispatch' ||
+      ${{ github.event_name == 'workflow_dispatch' ||
            (github.event.workflow_run.conclusion == 'success' &&
-            github.event.workflow_run.event == 'push')) &&
-          vars.CLOUDFLARE_DEPLOY_ENABLED == 'true' }}
+            github.event.workflow_run.event == 'push') }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
