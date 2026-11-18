@@ -18,6 +18,7 @@ LEGACY_URLS = (
     "https://www.plex.tv/",
     "https://www.letskorail.com/",
     "https://www.wconcept.co.kr/",
+    "https://sports.naver.com/",
 )
 
 class UpdatedDestinationsTests(unittest.TestCase):
@@ -61,6 +62,7 @@ class UpdatedDestinationsTests(unittest.TestCase):
             "코레일 승차권": ("https://www.korail.com/", "생활·교통·여행"),
             "W컨셉": ("https://display.wconcept.co.kr/rn/women", "쇼핑·가격비교"),
             "네이버 밴드": ("https://www.band.us/about/intro", "커뮤니티"),
+            "네이버 스포츠": ("https://m.sports.naver.com/index", "스포츠"),
         }
         for name, (url, category) in expected.items():
             with self.subTest(name=name):
@@ -74,9 +76,10 @@ class UpdatedDestinationsTests(unittest.TestCase):
             ("커뮤니티", ROOT / "categories" / "community.html"),
             ("생활·교통·여행", ROOT / "categories" / "travel.html"),
             ("쇼핑·가격비교", ROOT / "categories" / "shopping.html"),
+            ("스포츠", ROOT / "categories" / "sports.html"),
         ):
             rendered = build.sync_category_card_copy(path.read_text(encoding="utf-8"), self.records, category)
-            url = expected["네이버 밴드"][0] if category == "커뮤니티" else expected["W컨셉"][0] if category == "쇼핑·가격비교" else expected["티맵"][0]
+            url = expected["네이버 밴드"][0] if category == "커뮤니티" else expected["W컨셉"][0] if category == "쇼핑·가격비교" else expected["네이버 스포츠"][0] if category == "스포츠" else expected["티맵"][0]
             self.assertIn('href="' + url + '"', rendered)
 
     def test_directory_javascript_uses_single_dom_backed_catalog(self):
