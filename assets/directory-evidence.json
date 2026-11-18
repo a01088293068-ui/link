@@ -2624,5 +2624,23 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.82cook.com/",
+    "name": "82쿡",
+    "source_url": "https://www.82cook.com/",
+    "scope": "82cook 메인 페이지의 요리·살림·생활 커뮤니티 게시물과 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://band.us/",
+    "name": "네이버 밴드",
+    "source_url": "https://www.navercorp.com/media/pressReleasesDetail?seq=33511",
+    "scope": "NAVER 공식 보도자료에서 밴드(BAND)를 네이버의 그룹 커뮤니케이션·모임 서비스로 소개한 내용과 서비스 도메인 band.us를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
   }
 ]
