@@ -1096,15 +1096,6 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.korail.com/",
-    "name": "코레일",
-    "source_url": "https://www.korail.com/ticket/reserve/guide/faq",
-    "scope": "코레일 공식 승차권 안내에서 통합 홈페이지와 예매 서비스 운영 정보를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
     "url": "https://www.q-net.or.kr/",
     "name": "큐넷",
     "source_url": "https://www.q-net.or.kr/",
@@ -1789,11 +1780,11 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.wconcept.co.kr/",
+    "url": "https://display.wconcept.co.kr/rn/women",
     "name": "W컨셉",
     "source_url": "https://display.wconcept.co.kr/rn/women",
-    "scope": "W컨셉 공식 사이트의 패션·뷰티·라이프 편집숍 첫 화면 및 canonical 연결 주소를 대조",
-    "checked_on": "2026-11-14",
+    "scope": "W컨셉 공식 여성 패션 카테고리에서 디자이너 브랜드·패션 상품 서비스와 정식 표시 도메인을 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1942,10 +1933,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.letskorail.com/",
+    "url": "https://www.korail.com/",
     "name": "코레일 승차권",
-    "source_url": "https://www.letskorail.com/",
-    "scope": "한국철도공사 공식 코레일 사이트의 승차권 예매·기차여행상품·운행정보 안내와 현재 공식 도메인 이동을 확인",
+    "source_url": "https://www.korail.com/",
+    "scope": "한국철도공사 공식 홈페이지에서 승차권 예매와 열차 운행 정보 서비스 및 대표 도메인을 확인",
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"

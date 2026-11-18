@@ -44,7 +44,7 @@ class KoreanOverseasEvidenceTests(unittest.TestCase):
     def test_evidence_count_is_not_misrepresented_as_full_catalog_verification(self):
         records = json.loads((ROOT / "assets" / "verified-directory.json").read_text(encoding="utf-8"))
         evidence = json.loads((ROOT / "assets" / "directory-evidence.json").read_text(encoding="utf-8"))
-        self.assertGreaterEqual(len(records), 362)
+        self.assertGreaterEqual(len(records), 361)
         self.assertGreaterEqual(len(evidence), 291)
         self.assertLess(len(evidence), len(records))
 

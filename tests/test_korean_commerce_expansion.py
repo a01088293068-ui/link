@@ -8,7 +8,7 @@ EXPECTED = {
     "오늘의집": ("https://ohou.se/", "https://ohou.se/"),
     "당근": ("https://www.daangn.com/kr/", "https://www.daangn.com/kr/"),
     "에이블리": ("https://mobile.a-bly.com/", "https://mobile.a-bly.com/"),
-    "W컨셉": ("https://www.wconcept.co.kr/", "https://display.wconcept.co.kr/rn/women"),
+    "W컨셉": ("https://display.wconcept.co.kr/rn/women", "https://display.wconcept.co.kr/rn/women"),
 }
 
 
@@ -38,7 +38,7 @@ class KoreanCommerceExpansionTests(unittest.TestCase):
                 self.assertEqual(row["name"], name)
                 self.assertEqual(row["source_url"], source)
                 self.assertEqual(row["evidence_type"], "service_page")
-                self.assertEqual(row["checked_on"], "2026-11-14")
+                self.assertEqual(row["checked_on"], "2026-11-18" if name == "W컨셉" else "2026-11-14")
                 self.assertEqual(row["freshness_days"], 180)
 
     def test_shopping_entries_remain_in_canonical_category_order(self):

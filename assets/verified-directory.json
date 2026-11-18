@@ -835,12 +835,6 @@
     "description": "국가유산청이 제공하는 국가유산 통합 검색 서비스입니다. 문화유산·자연유산·무형유산을 지역과 종목별로 찾고, 기록유산 원문과 국가유산 안내판 정보도 확인할 수 있습니다."
   },
   {
-    "name": "코레일",
-    "url": "https://www.korail.com/",
-    "category": "생활·교통·여행",
-    "description": "한국철도공사의 열차 시간표와 승차권 예매, 운행 안내를 제공하는 공식 사이트입니다. 노선과 열차 종류를 선택하고 변경·취소 규정 및 운행 공지를 확인하세요."
-  },
-  {
     "name": "SRT",
     "url": "https://etk.srail.kr/",
     "category": "생활·교통·여행",
@@ -890,7 +884,7 @@
   },
   {
     "name": "코레일 승차권",
-    "url": "https://www.letskorail.com/",
+    "url": "https://www.korail.com/",
     "category": "생활·교통·여행",
     "description": "한국철도공사 열차 시간표와 승차권 예매, 여행 정보를 확인할 수 있습니다. 운행 일정은 예매 화면에서 다시 확인하세요."
   },
@@ -1064,7 +1058,7 @@
   },
   {
     "name": "W컨셉",
-    "url": "https://www.wconcept.co.kr/",
+    "url": "https://display.wconcept.co.kr/rn/women",
     "category": "쇼핑·가격비교",
     "description": "디자이너 브랜드와 패션·뷰티·라이프스타일 상품을 큐레이션하는 온라인 편집숍입니다. 브랜드와 판매 주체, 상품 옵션 및 배송·교환 조건을 확인하세요."
   },
