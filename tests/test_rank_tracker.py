@@ -11,6 +11,10 @@ class RankTrackerTests(unittest.TestCase):
         self.assertIn("국내 AI 사이트모음", rank_tracker.LONGTAIL_KEYWORDS)
         self.assertIn("한국 스포츠 사이트모음", rank_tracker.LONGTAIL_KEYWORDS)
         self.assertIn("국내 쇼핑 사이트모음", rank_tracker.LONGTAIL_KEYWORDS)
+        self.assertIn("금융 사이트모음", rank_tracker.LONGTAIL_KEYWORDS)
+        self.assertIn("금융 링크모음", rank_tracker.LONGTAIL_KEYWORDS)
+        self.assertIn("카드포인트 통합조회", rank_tracker.LONGTAIL_KEYWORDS)
+        self.assertIn("계좌정보통합관리서비스", rank_tracker.LONGTAIL_KEYWORDS)
 
     def test_ranking_workflow_has_missed_schedule_recovery_and_daily_dedup(self):
         from pathlib import Path
