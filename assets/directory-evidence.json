@@ -1931,5 +1931,41 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://map.naver.com/",
+    "name": "네이버 지도",
+    "source_url": "https://map.naver.com/",
+    "scope": "네이버지도 공식 서비스에서 지도 검색, 장소 탐색, 자동차·대중교통·도보 길찾기 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.letskorail.com/",
+    "name": "코레일 승차권",
+    "source_url": "https://www.letskorail.com/",
+    "scope": "한국철도공사 공식 코레일 사이트의 승차권 예매·기차여행상품·운행정보 안내와 현재 공식 도메인 이동을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.lotteon.com/",
+    "name": "롯데ON",
+    "source_url": "https://www.lotteon.com/",
+    "scope": "롯데ON 공식 쇼핑몰에서 상품 검색, 패션·뷰티·키즈·푸드 등 쇼핑 카테고리와 주문 관련 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.enuri.com/",
+    "name": "에누리 가격비교",
+    "source_url": "https://www.enuri.com/",
+    "scope": "에누리 공식 홈페이지에서 가전·디지털·식품·생활·패션 등 상품 가격비교 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
