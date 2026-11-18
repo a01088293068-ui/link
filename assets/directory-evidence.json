@@ -2120,5 +2120,32 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.todayhumor.co.kr/",
+    "name": "오늘의유머",
+    "source_url": "https://www.todayhumor.co.kr/",
+    "scope": "오늘의유머 공식 사이트에서 베스트·유머·시사·생활 등 주제별 게시판과 이용자 커뮤니티 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://everytime.kr/",
+    "name": "에브리타임",
+    "source_url": "https://www.vinuteam.com/everytime",
+    "scope": "운영사 비누랩스 공식 서비스 소개에서 에브리타임의 대학별 소통 공간, 강의평·시험정보·시간표·중고거래 등 대학생활 플랫폼 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://kovo.co.kr/",
+    "name": "한국배구연맹 KOVO",
+    "source_url": "https://kovo.co.kr/",
+    "scope": "한국배구연맹 공식 홈페이지에서 V-리그 경기·기록·티켓 및 구단 소식, 연맹 운영 정보를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
