@@ -3,7 +3,7 @@ import unittest
 from html import escape
 from pathlib import Path
 
-from build import directory_source_evidence_section, load_directory_evidence
+from build import directory_source_evidence_section, homepage_evidence_summary, load_directory_evidence
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +28,18 @@ class DirectorySourceEvidenceSectionTests(unittest.TestCase):
     def test_empty_evidence_does_not_claim_verification(self):
         records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
         self.assertEqual(directory_source_evidence_section(records, {}), "")
+
+
+    def test_homepage_and_directory_evidence_summaries_show_latest_checked_date(self):
+        records = json.loads((ROOT / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        evidence = load_directory_evidence(records)
+        latest = max(row["checked_on"] for row in evidence.values())
+        homepage = homepage_evidence_summary(records)
+        directory = directory_source_evidence_section(records, evidence)
+        self.assertIn(f"최근 출처 대조 기록일은 {latest}입니다.", homepage)
+        self.assertIn(f"최근 출처 대조 기록일은 {latest}입니다.", directory)
+        self.assertIn("실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다.", homepage)
+        self.assertIn("현재 접속 가능 여부", directory)
 
 
 if __name__ == "__main__":
