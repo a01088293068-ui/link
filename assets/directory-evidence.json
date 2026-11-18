@@ -2453,5 +2453,23 @@
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://bank.shinhan.com/",
+    "name": "신한은행",
+    "source_url": "https://bank.shinhan.com/",
+    "scope": "신한은행 공식 개인 인터넷뱅킹 화면에서 개인 고객의 계좌·금융 업무 이용 경로와 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://flyasiana.com/",
+    "name": "아시아나항공",
+    "source_url": "https://flyasiana.com/C/KR/KO/contents/book-online",
+    "scope": "아시아나항공 공식 온라인 예약 안내에서 국내·국제선 항공권 예약 및 변경·취소 경로와 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
