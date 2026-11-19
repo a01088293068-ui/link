@@ -167,7 +167,10 @@ class HomeIntentTests(unittest.TestCase):
         for article in blog.glob("*/index.html"):
             content = article.read_text(encoding="utf-8")
             self.assertIn('href="/">주소모음·링크모음 홈</a>', content)
-            self.assertIn('href="https://linkwiki01.com/" rel="noopener noreferrer">링크위키 바로가기</a>', content)
+            self.assertIn('href="/directory">전체 주소모음·사이트모음 검색</a>', content)
+            self.assertIn('href="/categories/">분야별 링크모음 보기</a>', content)
+            self.assertNotIn("linkwiki01.com", content)
+            self.assertNotIn("링크위키 바로가기", content)
 
 
 if __name__ == "__main__":
