@@ -226,13 +226,13 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
 
     def test_directory_landing_metadata_targets_distinct_catalog_intent(self):
         html = (ROOT / "directory.html").read_text(encoding="utf-8")
-        expected = "주소모음·링크모음·사이트모음 전체 검색 | 365개 사이트 - 링크위키"
+        expected = "주소모음·링크모음·사이트모음 전체 목록 | 365개 사이트 검색 - 링크위키"
         self.assertIn("<title>" + expected + "</title>", html)
         self.assertIn('name="twitter:title"', html)
         self.assertIn('property="og:title"', html)
         self.assertIn(expected, html)
         self.assertIn(
-            '<h1 id="directory-heading">주소모음·링크모음·사이트모음 전체 검색 · '
+            '<h1 id="directory-heading">주소모음·링크모음·사이트모음 전체 목록 · '
             + str(len(self.records)) + '개 사이트</h1>',
             html,
         )
