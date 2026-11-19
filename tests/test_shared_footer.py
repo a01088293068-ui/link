@@ -6,7 +6,6 @@ from build import synchronize_shared_footer
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_MAIN_SERVICE = 'href="https://linkwiki01.com/"'
 
 
 class SharedFooterRegressionTests(unittest.TestCase):
@@ -23,8 +22,9 @@ class SharedFooterRegressionTests(unittest.TestCase):
                 self.assertIsNotNone(match, "page must have the shared footer")
                 footer = match.group(0)
                 self.assertIn('class="footer-cta"', footer)
-                self.assertIn(EXPECTED_MAIN_SERVICE, footer)
-                self.assertIn(">링크위키 바로가기 <span", footer)
+                self.assertNotIn("linkwiki01.com", footer)
+                self.assertNotIn("링크위키 바로가기", footer)
+                self.assertIn('class="footer-secondary-action"', footer)
                 self.assertIn('href="/directory"', footer)
                 self.assertIn('class="footer-nav"', footer)
                 self.assertNotIn("링크위키 본 사이트 방문", footer)
