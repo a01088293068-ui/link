@@ -44,7 +44,7 @@ const report = [];
             .filter(link => /assets\/(?:style|blog)\.css/.test(link.href));
           const footer = document.querySelector(".footer");
           const cta = document.querySelector(".footer-cta");
-          const primaryAction = document.querySelector(".footer-primary-action");
+          const directoryAction = document.querySelector(".footer-secondary-action");
           const menu = document.querySelector("#mobile-primary-nav");
           const toggle = document.querySelector(".mobile-menu-toggle");
           return {
@@ -57,7 +57,7 @@ const report = [];
               loaded: Boolean(link.sheet),
             })),
             footer: Boolean(footer),
-            cta: Boolean(cta && primaryAction),
+            cta: Boolean(cta && directoryAction),
             ctaWidth: cta?.getBoundingClientRect().width ?? 0,
             menu: Boolean(menu),
             toggle: Boolean(toggle),
@@ -67,7 +67,7 @@ const report = [];
         if (state.documentWidth > viewport.width + 1 || state.bodyWidth > viewport.width + 1) {
           failures.push(`${viewport.name} ${route.path}: horizontal overflow (document=${state.documentWidth}, viewport=${viewport.width})`);
         }
-        if (!state.footer || !state.cta) failures.push(`${viewport.name} ${route.path}: shared footer/CTA missing`);
+        if (!state.footer || !state.cta) failures.push(`${viewport.name} ${route.path}: shared footer/directory action missing`);
         if (route.name === "directory" && viewport.isMobile && state.gridColumns !== 1) failures.push(`mobile /directory: expected one result-card column, got ${state.gridColumns}`);
         if (route.name === "directory" && !viewport.isMobile && state.gridColumns < 2) failures.push(`desktop /directory: expected multi-column result cards, got ${state.gridColumns}`);
         if (!state.stylesheetLinks.length) failures.push(`${viewport.name} ${route.path}: style.css link missing`);
@@ -116,6 +116,6 @@ const report = [];
     failures.forEach(item => console.error(" - " + item));
     process.exitCode = 1;
   } else {
-    console.log(`PASS: ${report.length} real-browser viewport/page combinations; no overflow, missing CSS fingerprints, footer/CTA issues, search failures or JS page errors.`);
+    console.log(`PASS: ${report.length} real-browser viewport/page combinations; no overflow, missing CSS fingerprints, footer/directory-action issues, search failures or JS page errors.`);
   }
 })();
