@@ -1,6 +1,6 @@
 import unittest
 from email.message import Message
-from seo.check_release_drift import BASE, check
+from seo.check_release_drift import BASE, check, category_hub_signature
 
 SOURCE = "<title>주소모음 | 사이트 주소 찾기 - 링크위키</title><h1>사이트 주소모음</h1>"
 HOME = f'<title>주소모음 | 사이트 주소 찾기 - 링크위키</title><link rel="canonical" href="{BASE}/"><h1>사이트 주소모음</h1>'
@@ -42,6 +42,76 @@ class ReleaseDriftTests(unittest.TestCase):
         self.assertTrue(any("differs" in p for p in problems))
         self.assertTrue(any("missing 주소모음" in p for p in problems))
 
+
+
+    def test_category_hub_counts_match_the_generated_catalogue(self):
+        hub = (
+            f'<title>분야별 링크모음</title>'
+            f'<link rel="canonical" href="{BASE}/categories/">'
+            '<h1>분야별 링크모음: 목적에 맞는 사이트 찾기</h1>'
+            + ''.join(
+                f'<article class="v6-card"><h2><a href="/categories/{slug}">{slug}</a></h2>'
+                f'<p>분야 안내</p><p>{count}개 등록 사이트</p></article>'
+                for slug, count in (
+                    ("search", 78), ("finance", 29), ("education", 33),
+                    ("travel", 25), ("shopping", 16), ("news", 18),
+                    ("community", 27), ("ai", 26), ("sports", 22),
+                    ("video", 22), ("webtoon", 14), ("comics-directory", 7),
+                    ("korean", 46),
+                )
+            )
+            + f'<a href="/directory">363개 사이트 이름·도메인 전체 검색</a>'
+        )
+        self.assertEqual(category_hub_signature(hub)[0], 363)
+        self.assertEqual(len(category_hub_signature(hub)[1]), 13)
+
+        def stale(path):
+            if path == "/categories/":
+                return 200, BASE + path, hub.replace("29개 등록 사이트", "27개 등록 사이트"), Message()
+            return fixture(path)
+
+        problems, observations = check(
+            SOURCE, stale, category_hub_source=hub
+        )
+        self.assertTrue(any(
+            "category hub totals/category counts differ" in issue
+            for issue in problems
+        ))
+        self.assertTrue(any(
+            "built 363 sites / 13 category rows" in line
+            for line in observations
+        ))
+
+    def test_category_hub_matches_when_live_counts_are_current(self):
+        hub = (
+            f'<title>분야별 링크모음</title>'
+            f'<link rel="canonical" href="{BASE}/categories/">'
+            '<h1>분야별 링크모음: 목적에 맞는 사이트 찾기</h1>'
+            + ''.join(
+                f'<article class="v6-card"><h2><a href="/categories/{slug}">{slug}</a></h2>'
+                f'<p>분야 안내</p><p>{count}개 등록 사이트</p></article>'
+                for slug, count in (
+                    ("search", 78), ("finance", 29), ("education", 33),
+                    ("travel", 25), ("shopping", 16), ("news", 18),
+                    ("community", 27), ("ai", 26), ("sports", 22),
+                    ("video", 22), ("webtoon", 14), ("comics-directory", 7),
+                    ("korean", 46),
+                )
+            )
+            + f'<a href="/directory">363개 사이트 이름·도메인 전체 검색</a>'
+        )
+        def current(path):
+            if path == "/categories/":
+                return 200, BASE + path, hub, Message()
+            return fixture(path)
+        problems, observations = check(
+            SOURCE, current, category_hub_source=hub
+        )
+        self.assertEqual(problems, [])
+        self.assertTrue(any(
+            "live 363 sites / 13 category rows" in line
+            for line in observations
+        ))
 
     def test_homepage_source_evidence_disclosure_must_match_build(self):
         from seo.check_release_drift import homepage_evidence_signature
