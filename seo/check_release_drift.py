@@ -288,9 +288,9 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
                 errors.append(f"{path}: generated category hub counts missing or incomplete")
             if actual_signature != expected_signature:
                 errors.append(f"{path}: live category hub totals/category counts differ from build")
-            if any(re.search(r"\\bnoindex\\b", x, re.I) for x in actual.robots):
+            if any(re.search(r"\bnoindex\b", x, re.I) for x in actual.robots):
                 errors.append(f"{path}: HTML noindex")
-            if re.search(r"\\bnoindex\\b", str(headers.get("X-Robots-Tag", "")), re.I):
+            if re.search(r"\bnoindex\b", str(headers.get("X-Robots-Tag", "")), re.I):
                 errors.append(f"{path}: HTTP noindex")
         except Exception as exc:
             errors.append(f"{path}: fetch error ({type(exc).__name__}: {exc})")
