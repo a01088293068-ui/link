@@ -101,6 +101,19 @@ def maintenance_signature(html):
     )
     return (int(total.group(1)) if total else None, tuple(rows))
 
+def category_hub_signature(html):
+    """Extract the overall directory size and data-backed category-card counts."""
+    total = re.search(
+        r'<a href="/directory">(\d+)개 사이트 이름·도메인 전체 검색</a>', html
+    )
+    rows = re.findall(
+        r'<article class="v6-card">.*?<a href="/categories/([^"]+)">.*?</a>'
+        r'.*?<p>(\d+)개 등록 사이트</p>.*?</article>',
+        html, re.S,
+    )
+    return (int(total.group(1)) if total else None,
+            tuple((slug, int(count)) for slug, count in rows))
+
 
 
 def homepage_evidence_signature(html):
@@ -117,7 +130,7 @@ def homepage_evidence_signature(html):
         return None
     return int(count.group(1)), target.group(1)
 
-def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None, category_sources=None, maintenance_source=None):
+def check(source_html, load=fetch, article_sources=None, directory_source=None, script_source=None, category_sources=None, maintenance_source=None, category_hub_source=None):
     errors, observations = [], []
     source = Page()
     source.feed(source_html)
@@ -249,6 +262,39 @@ def check(source_html, load=fetch, article_sources=None, directory_source=None, 
         except Exception as exc:
             errors.append(f"{path}: fetch failed ({type(exc).__name__}: {exc})")
 
+    # The category hub is a primary crawlable entry point. Verify its
+    # overall total and every category count against the same generated build.
+    if category_hub_source is not None:
+        path = "/categories/"
+        try:
+            status, final, body, headers = load(path)
+            expected = Page()
+            expected.feed(category_hub_source)
+            actual = Page()
+            actual.feed(body)
+            expected_signature = category_hub_signature(category_hub_source)
+            actual_signature = category_hub_signature(body)
+            observations.append(
+                f"{path}: built {expected_signature[0]} sites / "
+                f"{len(expected_signature[1])} category rows; live "
+                f"{actual_signature[0]} sites / {len(actual_signature[1])} category rows")
+            if status != 200 or final != BASE + path:
+                errors.append(f"{path}: noncanonical status/redirect")
+            if actual.canonical != [BASE + path]:
+                errors.append(f"{path}: canonical mismatch")
+            if expected.value("h1") != actual.value("h1"):
+                errors.append(f"{path}: live heading differs from built output")
+            if expected_signature[0] is None or len(expected_signature[1]) != 13:
+                errors.append(f"{path}: generated category hub counts missing or incomplete")
+            if actual_signature != expected_signature:
+                errors.append(f"{path}: live category hub totals/category counts differ from build")
+            if any(re.search(r"\\bnoindex\\b", x, re.I) for x in actual.robots):
+                errors.append(f"{path}: HTML noindex")
+            if re.search(r"\\bnoindex\\b", str(headers.get("X-Robots-Tag", "")), re.I):
+                errors.append(f"{path}: HTTP noindex")
+        except Exception as exc:
+            errors.append(f"{path}: fetch error ({type(exc).__name__}: {exc})")
+
     # The maintenance guide must be built from the same live catalogue as
     # the homepage and directory. A stale count here undermines the public
     # evidence trail even when the main directory itself is current.
@@ -359,6 +405,7 @@ def main():
             "/categories/education": Path("dist/categories/education.html").read_text(encoding="utf-8"),
         },
         maintenance_source=Path("dist/guides/directory-maintenance.html").read_text(encoding="utf-8"),
+        category_hub_source=Path("dist/categories/index.html").read_text(encoding="utf-8"),
     )
     print("# Public release consistency (NOT Google indexing or search rankings)")
     for line in observations: print("- " + line)
