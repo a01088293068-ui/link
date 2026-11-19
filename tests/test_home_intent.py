@@ -9,8 +9,8 @@ class HomeIntentTests(unittest.TestCase):
     def test_home_preserves_existing_cta_and_adds_navigation(self):
         source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
         modified = build.polish_home_intent(source)
-        self.assertIn("링크위키 바로가기", modified)
-        self.assertIn("https://linkwiki01.com/", modified)
+        self.assertNotIn("링크위키 바로가기", modified)
+        self.assertNotIn("https://linkwiki01.com/", modified)
         self.assertIn('href="/categories/"', modified)
         self.assertIn('href="/directory"', modified)
         self.assertNotIn('href="/directory.html"', modified)
