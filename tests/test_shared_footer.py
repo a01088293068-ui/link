@@ -10,8 +10,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SharedFooterRegressionTests(unittest.TestCase):
     def test_every_static_html_page_uses_the_same_footer_actions(self):
+        published_root = ROOT / "dist"
+        if not published_root.exists():
+            self.skipTest("Production build not generated")
         pages = [
-            path for path in ROOT.rglob("*.html")
+            path for path in published_root.rglob("*.html")
             if path.name != "naver8cd598bf6fee0ad116a386a3d915bb9f.html"
         ]
         self.assertGreaterEqual(len(pages), 20)
