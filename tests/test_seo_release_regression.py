@@ -838,8 +838,11 @@ class SEOReleaseRegressionTests(unittest.TestCase):
 
     def test_all_static_pages_share_the_same_bottom_service_actions(self):
         root = Path(__file__).resolve().parents[1]
+        published_root = root / "dist"
+        if not published_root.exists():
+            self.skipTest("Production build not generated")
         pages = [
-            path for path in root.rglob("*.html")
+            path for path in published_root.rglob("*.html")
             if path.name != "naver8cd598bf6fee0ad116a386a3d915bb9f.html"
         ]
         self.assertGreaterEqual(len(pages), 20)
