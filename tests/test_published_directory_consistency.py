@@ -233,7 +233,7 @@ for (const name of ['네이버','정부24','Cursor','한국배구연맹 KOVO','�
         self.assertIn(expected, html)
         self.assertIn(
             '<h1 id="directory-heading">주소모음·링크모음·사이트모음 전체 목록 · '
-            + str(len(self.records)) + '개 사이트</h1>',
+            + str(len(self.records)) + '개 사이트 검색</h1>',
             html,
         )
         self.assertIn("주소모음과 링크모음에서 찾는 사이트를 이름·도메인·분야로 검색", html)
