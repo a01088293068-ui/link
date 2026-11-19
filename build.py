@@ -2081,7 +2081,7 @@ def build():
                    '<a href="/directory">전체 주소모음·사이트모음 검색</a>'
                    '<a href="/categories/">분야별 링크모음 보기</a>'
                    + related_links +
-                   '<a href="/blog/">다른 이용 가이드 보기</a>'</div></article></div>')
+                   '<a href="/blog/">다른 이용 가이드 보기</a></div></article></div>')
         target = OUT / "blog" / name / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
         built_html = document(title, desc, canonical, article, header, footer)
