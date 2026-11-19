@@ -1,5 +1,176 @@
 [
   {
+    "url": "https://www.haninsinmun.com/",
+    "name": "(멕시코)멕시코 한인신문",
+    "source_url": "https://www.haninsinmun.com/",
+    "scope": "멕시코 한인 대상 한국어 신문 및 지역 소식 페이지의 공개 서비스와 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.newyorkkorea.net/main/index.html",
+    "name": "(미국)뉴욕코리아",
+    "source_url": "https://www.newyorkkorea.net/main/index.html",
+    "scope": "미국 뉴욕 지역의 한국어 생활 정보와 지역별 한인 서비스 탐색 페이지에서 등록 주소와 서비스 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.dalsaram.com/main_VER2.php",
+    "name": "(미국)달사람닷컴",
+    "source_url": "https://www.dalsaram.com/main_VER2.php",
+    "scope": "미국 텍사스 달라스 지역 한인 커뮤니티의 생활·지역 정보와 게시판을 제공하는 페이지에서 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.workingus.com/",
+    "name": "(미국)워킹어스",
+    "source_url": "https://www.workingus.com/",
+    "scope": "미국 생활·취업·이민 관련 한국어 게시판과 최근 공개 게시물 페이지에서 등록 주소와 서비스 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://housamo.com/",
+    "name": "(미국)휴사모",
+    "source_url": "https://housamo.com/",
+    "scope": "미국 휴스턴 지역 한인 생활정보 커뮤니티의 구인·주거·중고거래·지역 게시판을 제공하는 페이지에서 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.vinahanin.com/",
+    "name": "(베트남)비나한인",
+    "source_url": "https://www.vinahanin.com/",
+    "scope": "베트남 법인·공장 설립 컨설팅과 현지 사업 정보를 제공하는 서비스 페이지에서 등록 주소와 안내 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.jpnews.kr/",
+    "name": "(일본)재펜뉴스",
+    "source_url": "https://www.jpnews.kr/",
+    "scope": "JPNews 공식 홈페이지에서 일본 정치·경제·사회·문화·연예·스포츠 뉴스와 일본 생활·유학·비자 정보를 제공하는 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://japaninfo.kr/",
+    "name": "(일본)제팬인포",
+    "source_url": "https://japaninfo.kr/",
+    "scope": "재팬인포 공식 홈페이지에서 도쿄·오사카·후쿠오카·오키나와 등 일본 지역별 여행지·관광·생활 정보를 제공하는 콘텐츠를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.korean.net/web/main/main",
+    "name": "(전세계)코리안넷",
+    "source_url": "https://www.korean.net/web/main/main",
+    "scope": "재외동포협력센터가 운영하는 재외동포 뉴스·사업 공지·지역 소식을 제공하는 공식 포털 페이지에서 등록 주소와 운영 주체를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kyomin.org/?ckattempt=1",
+    "name": "(중국)교민세계",
+    "source_url": "https://www.kyomin.org/?ckattempt=1",
+    "scope": "한국인·세계인·교민 관련 뉴스와 최신 게시물을 제공하는 공개 홈페이지에서 등록 주소와 콘텐츠 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.chinatalk.net/",
+    "name": "(중국)차이나톡",
+    "source_url": "https://www.chinatalk.net/",
+    "scope": "중국 거주 한국인을 위한 생활 정보와 업체·서비스 커뮤니티 게시판의 공개 페이지에서 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.canadapia.com/",
+    "name": "(캐나다)캐나다피아",
+    "source_url": "https://www.canadapia.com/",
+    "scope": "캐나다 한인 커뮤니티의 생활정보·질문답변·구인구직·부동산 게시판과 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kosarang.net/g4/index.php",
+    "name": "(캐나다)코사랑",
+    "source_url": "https://www.kosarang.net/g4/index.php",
+    "scope": "캐나다 퀘벡 지역 한인 뉴스·행사·생활정보를 제공하는 공개 홈페이지에서 등록 주소와 콘텐츠 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://thaiholic.com/",
+    "name": "(태국)타이홀릭",
+    "source_url": "https://thaiholic.com/",
+    "scope": "태국의 여행지·음식점·병원·생활 서비스를 지역과 분류로 탐색하는 한국어 안내 페이지에서 등록 주소와 서비스 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hanasia.com/",
+    "name": "(태국)한아시아",
+    "source_url": "https://www.hanasia.com/",
+    "scope": "태국 교민 뉴스와 생활정보·커뮤니티 게시판을 제공하는 사이트의 현재 공개 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.francezone.com/",
+    "name": "(프랑스)프랑스존",
+    "source_url": "https://www.francezone.com/",
+    "scope": "프랑스 교민 대상 지역 소식·경제인 네트워크·생활 게시물을 제공하는 공개 홈페이지에서 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hungaryej.com/",
+    "name": "(헝가리)헝가리 한인포스트",
+    "source_url": "https://www.hungaryej.com/",
+    "scope": "헝가리 한인 뉴스와 대사관·문화원·한인단체·지역 생활 정보 메뉴를 제공하는 페이지에서 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://channel.cafe/tabs/home",
+    "name": "(호주)호주채널",
+    "source_url": "https://channel.cafe/tabs/home",
+    "scope": "호주 지역별 생활정보·업체·친목·워킹홀리데이 채널을 탐색하는 공개 페이지에서 등록 주소와 기능을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.topdigital.com.au/",
+    "name": "(호주)TOP Digital",
+    "source_url": "https://www.topdigital.com.au/",
+    "scope": "호주 한국어 뉴스와 경제·부동산·지역 소식을 제공하는 공개 홈페이지에서 등록 주소와 콘텐츠 범위를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.1365.go.kr/vols/main.do",
     "name": "1365 자원봉사포털",
     "source_url": "https://www.1365.go.kr/vols/main.do",
@@ -14,6 +185,33 @@
     "source_url": "https://www.29cm.co.kr/",
     "scope": "29CM 공식 첫 화면에서 패션·라이프스타일·컬처 상품 큐레이션 서비스와 주소를 확인",
     "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.82cook.com/",
+    "name": "82쿡",
+    "source_url": "https://www.82cook.com/",
+    "scope": "82cook 메인 페이지의 요리·살림·생활 커뮤니티 게시물과 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.gasengi.com/",
+    "name": "가생이닷컴",
+    "source_url": "https://www.gasengi.com/",
+    "scope": "가생이닷컴 공식 홈페이지에서 해외 네티즌 반응 번역, 한류·일본·중국 반응과 주제별 커뮤니티 게시판을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.dogdrip.net/",
+    "name": "개드립",
+    "source_url": "https://www.dogdrip.net/",
+    "scope": "개드립 공식 홈페이지의 유머·이슈·정보 게시물과 이용자 댓글 중심 커뮤니티 구성을 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -41,6 +239,15 @@
     "source_url": "https://www.khan.co.kr/",
     "scope": "경향신문 공식 홈페이지의 뉴스·기사 서비스와 등록 도메인을 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.payinfo.or.kr/",
+    "name": "계좌정보통합관리서비스",
+    "source_url": "https://www.payinfo.or.kr/",
+    "scope": "계좌정보통합관리서비스 공식 홈페이지와 FAQ에서 본인 명의 계좌 통합조회 및 비활동성 계좌 잔고이전·해지 기능을 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -86,6 +293,15 @@
     "source_url": "https://unipass.customs.go.kr/csp/index.do",
     "scope": "관세청 국가관세종합정보시스템에서 통관 진행정보·관세법령·수출입 관련 전자업무 메뉴를 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.google.com/",
+    "name": "구글",
+    "source_url": "https://www.google.com/",
+    "scope": "Google 검색·이미지 등 공식 검색 포털의 진입 화면과 등록 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -333,6 +549,24 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.band.us/about/intro",
+    "name": "네이버 밴드",
+    "source_url": "https://www.navercorp.com/media/pressReleasesDetail?seq=33511",
+    "scope": "기존 band.us 주소의 공식 리디렉션을 따라 BAND 공식 소개 페이지를 확인하고, NAVER 공식 보도자료와 서비스 운영 주체·그룹 커뮤니케이션 기능을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://m.sports.naver.com/index",
+    "name": "네이버 스포츠",
+    "source_url": "https://m.sports.naver.com/index",
+    "scope": "네이버 스포츠 공식 모바일 홈페이지에서 종목 메뉴와 경기·뉴스 서비스 및 현재 도착 주소를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://series.naver.com/",
     "name": "네이버 시리즈",
     "source_url": "https://series.naver.com/novel/home.series",
@@ -351,11 +585,47 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://map.naver.com/",
+    "name": "네이버 지도",
+    "source_url": "https://map.naver.com/",
+    "scope": "네이버지도 공식 서비스에서 지도 검색, 장소 탐색, 자동차·대중교통·도보 길찾기 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://kin.naver.com/",
+    "name": "네이버 지식iN",
+    "source_url": "https://kin.naver.com/",
+    "scope": "네이버 지식iN 공식 페이지에서 질문·답변과 주제별 지식 검색 및 Q&A 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.nate.com/",
     "name": "네이트",
     "source_url": "https://www.nate.com/",
     "scope": "네이트 공식 메인에서 뉴스와 포털 콘텐츠 서비스 진입 경로를 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://pann.nate.com/",
+    "name": "네이트판",
+    "source_url": "https://pann.nate.com/",
+    "scope": "네이트판 공식 페이지에서 오늘의 판·톡커의 선택·명예의 전당·팬톡 등 주제별 이용자 이야기와 게시판 콘텐츠를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://novelpia.com/",
+    "name": "노벨피아",
+    "source_url": "https://novelpia.com/page/terms_of_use",
+    "scope": "노벨피아 공식 이용약관에서 운영사 메타크래프트와 웹소설 등 디지털 콘텐츠 제공 플랫폼의 서비스 범위를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -392,6 +662,15 @@
     "source_url": "https://www.daum.net/",
     "scope": "다음 공식 메인에서 검색·뉴스·쇼핑 등 포털 서비스 구성을 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.diningcode.com/",
+    "name": "다이닝코드",
+    "source_url": "https://www.diningcode.com/",
+    "scope": "다이닝코드 공식 홈페이지에서 빅데이터 맛집 검색과 음식 종류별 추천·지역별 식당 탐색 기능을 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -502,6 +781,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://theqoo.net/",
+    "name": "더쿠",
+    "source_url": "https://theqoo.net/",
+    "scope": "더쿠 공식 홈페이지에서 유머·이슈·정보, 생활·국내외 연예·스포츠·취미·뷰티·음식 등 주제별 게시판 구성을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.dataq.or.kr/",
     "name": "데이터자격검정 DataQ",
     "source_url": "https://www.dataq.or.kr/www/accept/guide.do",
@@ -520,11 +808,29 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.reddit.com/",
+    "name": "레딧",
+    "source_url": "https://www.reddit.com/",
+    "scope": "관심사별 subreddit 게시글·질문·토론을 제공하는 Reddit 공식 플랫폼 화면과 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.lezhin.com/ko",
     "name": "레진코믹스",
     "source_url": "https://www.lezhin.com/ko",
     "scope": "레진코믹스 공식 한국어 페이지에서 웹툰 콘텐츠와 운영사 정보를 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.lotteon.com/",
+    "name": "롯데ON",
+    "source_url": "https://www.lotteon.com/",
+    "scope": "롯데ON 공식 쇼핑몰에서 상품 검색, 패션·뷰티·키즈·푸드 등 쇼핑 카테고리와 주문 관련 메뉴를 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -556,6 +862,24 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.mcomics.co.kr/",
+    "name": "마녀코믹스",
+    "source_url": "https://www.mcomics.co.kr/",
+    "scope": "마녀코믹스 공식 홈페이지에서 순정만화·프리미엄 웹툰의 작품 목록과 연재·무료 회차 정보를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.10000recipe.com/index.html",
+    "name": "만개의레시피",
+    "source_url": "https://www.10000recipe.com/index.html",
+    "scope": "만개의레시피 공식 홈페이지에서 레시피 검색, 인기 레시피, 이용자 요리 후기와 식품 관련 콘텐츠 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.mk.co.kr/",
     "name": "매일경제",
     "source_url": "https://www.mk.co.kr/",
@@ -570,6 +894,33 @@
     "source_url": "https://www.melon.com/",
     "scope": "멜론 공식 홈페이지에서 음악 검색·앨범·음원 서비스와 등록 도메인을 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.musinsa.com/",
+    "name": "무신사",
+    "source_url": "https://www.musinsa.com/",
+    "scope": "무신사 공식 패션 플랫폼의 상품 탐색·브랜드 쇼핑 진입 화면과 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mootoon.co.kr/",
+    "name": "무툰",
+    "source_url": "https://www.mootoon.co.kr/",
+    "scope": "무툰 공식 홈페이지에서 무협·액션 중심 웹툰·만화·소설 콘텐츠와 무료 회차 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.munpia.com/",
+    "name": "문피아",
+    "source_url": "https://munpiacorp.com/",
+    "scope": "문피아 운영사 공식 소개에서 웹소설 전문 플랫폼의 서비스 분야와 운영 주체를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -601,11 +952,29 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://m.mrblue.com/",
+    "name": "미스터블루",
+    "source_url": "https://www.mrbluecorp.com/",
+    "scope": "미스터블루 운영사 공식 홈페이지에서 웹툰·만화·소설 종합 플랫폼 및 콘텐츠 사업 안내를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.pqi.or.kr/",
     "name": "민간자격정보서비스",
     "source_url": "https://www.pqi.or.kr/inf/qul/infQulSitRegView.do",
     "scope": "민간자격정보서비스의 등록·공인 민간자격 검색과 등록현황 안내를 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.millie.co.kr/",
+    "name": "밀리의서재",
+    "source_url": "https://www.millie.co.kr/",
+    "scope": "밀리의서재 공식 홈페이지에서 전자책·오디오북·웹툰과 도서 추천 및 구독 서비스를 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -624,6 +993,15 @@
     "source_url": "https://www.mma.go.kr/index.do",
     "scope": "병무청 공식 홈페이지의 병역판정검사·입영·모집병·병무민원 신청 및 상담 경로를 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bobaedream.co.kr/",
+    "name": "보배드림",
+    "source_url": "https://www.bobaedream.co.kr/",
+    "scope": "보배드림 공식 홈페이지에서 자동차 정보·중고차 매물·자동차 커뮤니티 서비스와 대표 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -655,6 +1033,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://brunch.co.kr/",
+    "name": "브런치스토리",
+    "source_url": "https://brunch.co.kr/",
+    "scope": "브런치 공식 페이지에서 작가의 글·연재 작품과 콘텐츠 발행 및 구독형 읽기 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://vrew.ai/",
     "name": "브루(Vrew)",
     "source_url": "https://vrew.ai/en/",
@@ -673,11 +1060,29 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://bemypet.kr/",
+    "name": "비마이펫",
+    "source_url": "https://bemypet.kr/",
+    "scope": "비마이펫 공식 홈페이지에서 반려동물 콘텐츠·커뮤니티·동물병원 찾기·입양 등 반려생활 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.bigkinds.or.kr/",
     "name": "빅카인즈",
     "source_url": "https://www.bigkinds.or.kr/",
     "scope": "한국언론진흥재단 뉴스빅데이터 분석서비스의 뉴스 검색·분석 메뉴와 공식 접속 주소를 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bing.com/",
+    "name": "빙",
+    "source_url": "https://www.bing.com/",
+    "scope": "Microsoft Bing 검색과 이미지·동영상·지도 등 공식 탐색 기능 및 등록 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -718,6 +1123,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.sedaily.com/",
+    "name": "서울경제",
+    "source_url": "https://www.sedaily.com/",
+    "scope": "서울경제 공식 홈페이지에서 경제·금융·기업 중심의 뉴스 및 분석 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://yeyak.seoul.go.kr/web/main.do",
     "name": "서울시 공공서비스예약",
     "source_url": "https://yeyak.seoul.go.kr/web/main.do",
@@ -745,11 +1159,47 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://txbus.t-money.co.kr/",
+    "name": "시외버스 통합예매",
+    "source_url": "https://txbus.t-money.co.kr/",
+    "scope": "시외버스 통합예매시스템의 승차권 예매·조회·취소 및 운행정보 제공 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.foodsafetykorea.go.kr/main.do",
     "name": "식품안전나라",
     "source_url": "https://www.foodsafetykorea.go.kr/main.do",
     "scope": "식품안전나라 공식 서비스의 식품 회수·판매중지·업체 및 제품 검색 기능을 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://bank.shinhan.com/",
+    "name": "신한은행",
+    "source_url": "https://bank.shinhan.com/",
+    "scope": "신한은행 공식 개인 인터넷뱅킹 화면에서 개인 고객의 계좌·금융 업무 이용 경로와 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://flyasiana.com/",
+    "name": "아시아나항공",
+    "source_url": "https://flyasiana.com/C/KR/KO/contents/book-online",
+    "scope": "아시아나항공 공식 온라인 예약 안내에서 국내·국제선 항공권 예약 및 변경·취소 경로와 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://arca.live/",
+    "name": "아카라이브",
+    "source_url": "https://arca.live/",
+    "scope": "아카라이브 공식 홈페이지에서 주제별 채널의 게시글·자료 공유와 이용자 커뮤니티 기능을 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -772,11 +1222,29 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.aladin.co.kr/",
+    "name": "알라딘",
+    "source_url": "https://www.aladin.co.kr/home/welcome.aspx",
+    "scope": "알라딘 공식 홈페이지에서 국내도서·전자책·중고상품·음반 등 온라인 서점 서비스와 대표 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.albamon.com/",
     "name": "알바몬",
     "source_url": "https://www.albamon.com/jobs/full-time",
     "scope": "알바몬 공식 채용 페이지의 구인 정보 제공과 등록 서비스 도메인을 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.enuri.com/",
+    "name": "에누리 가격비교",
+    "source_url": "https://www.enuri.com/",
+    "scope": "에누리 공식 홈페이지에서 가전·디지털·식품·생활·패션 등 상품 가격비교 서비스를 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -790,11 +1258,38 @@
     "evidence_type": "education_guide"
   },
   {
+    "url": "https://everytime.kr/",
+    "name": "에브리타임",
+    "source_url": "https://www.vinuteam.com/everytime",
+    "scope": "운영사 비누랩스 공식 서비스 소개에서 에브리타임의 대학별 소통 공간, 강의평·시험정보·시간표·중고거래 등 대학생활 플랫폼 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://mobile.a-bly.com/",
     "name": "에이블리",
     "source_url": "https://mobile.a-bly.com/",
     "scope": "에이블리 공식 모바일 웹 첫 화면에서 패션·뷰티·라이프 쇼핑 서비스 안내와 최종 연결 주소를 대조",
     "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.fmkorea.com/",
+    "name": "에펨코리아",
+    "source_url": "https://www.fmkorea.com/",
+    "scope": "에펨코리아 공식 홈페이지에서 유머·축구·스포츠·게임·인터넷 방송 등 종합 커뮤니티 게시판을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.cardpoint.or.kr/",
+    "name": "여신금융협회 카드포인트 통합조회",
+    "source_url": "https://www.cardpoint.or.kr/",
+    "scope": "여신금융협회 공식 서비스 첫 화면에서 카드포인트 통합조회·계좌입금·기부 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -817,6 +1312,24 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.yes24.com/",
+    "name": "예스24",
+    "source_url": "https://www.yes24.com/Main/default.aspx",
+    "scope": "예스24 공식 홈페이지에서 국내·외 도서, 전자책, 음반·DVD, 공연 티켓 등 문화상품의 검색·판매 카테고리와 고객 메뉴를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.todayhumor.co.kr/",
+    "name": "오늘의유머",
+    "source_url": "https://www.todayhumor.co.kr/",
+    "scope": "오늘의유머 공식 사이트에서 베스트·유머·시사·생활 등 주제별 게시판과 이용자 커뮤니티 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://ohou.se/",
     "name": "오늘의집",
     "source_url": "https://ohou.se/",
@@ -831,6 +1344,15 @@
     "source_url": "https://www.oliveyoung.co.kr/store/main/main.do",
     "scope": "올리브영 공식 온라인몰 첫 화면에서 뷰티·헬스·라이프스타일 쇼핑 서비스와 주소를 확인",
     "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://watcha.com/",
+    "name": "왓챠",
+    "source_url": "https://watcha.com/ko/notices",
+    "scope": "왓챠 공식 공지와 서비스 첫 화면에서 영화·시리즈·웹툰 서비스 및 주식회사 왓챠 운영 안내를 대조",
+    "checked_on": "2026-11-19",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -862,11 +1384,65 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://web.humoruniv.com/main.html",
+    "name": "웃긴대학",
+    "source_url": "https://web.humoruniv.com/main.html",
+    "scope": "웃긴대학 공식 홈페이지에서 웃긴 자료·제목·웹툰과 게임·요리·헬스·사진 등 테마 게시판 및 이용자 최신 게시글을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.wavve.com/",
+    "name": "웨이브",
+    "source_url": "https://member.wavve.com/signup/terms?category=service",
+    "scope": "콘텐츠웨이브 주식회사의 공식 서비스 이용약관에서 Wavve 서비스 제공 주체와 이용 서비스 정의를 대조하고 공식 서비스 첫 화면 주소를 확인",
+    "checked_on": "2026-11-19",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.webtoonguide.com/ko/",
+    "name": "웹툰가이드",
+    "source_url": "https://www.webtoonguide.com/ko/",
+    "scope": "웹툰가이드 공식 페이지의 작품 추천·리뷰·뉴스·작가 인터뷰 및 웹툰 플랫폼 정보 메뉴를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.wetax.go.kr/",
+    "name": "위택스",
+    "source_url": "https://www.wetax.go.kr/main.do",
+    "scope": "위택스 공식 홈페이지에서 지방세 신고·납부, 전자송달·자동납부·지방세 미리계산 등 지방세 업무 메뉴와 연결 주소를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.inven.co.kr/",
     "name": "인벤",
     "source_url": "https://www.inven.co.kr/",
     "scope": "인벤 공식 메인에서 게임 뉴스·공략·커뮤니티·e스포츠 정보를 제공하는 게임 미디어 서비스 구성을 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.instiz.net/",
+    "name": "인스티즈",
+    "source_url": "https://www.instiz.net/",
+    "scope": "인스티즈 공식 홈페이지에서 이슈·일상·연예·드라마·뷰티·스터디 등 주제별 이용자 커뮤니티 게시판과 인기글 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.airport.kr/",
+    "name": "인천국제공항",
+    "source_url": "https://www.airport.kr/ap_en/1579/subview.do",
+    "scope": "인천국제공항 공식 홈페이지의 공항 이용 안내와 터미널·교통·시설 정보 제공 경로를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -943,6 +1519,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://jumpit.saramin.co.kr/",
+    "name": "점핏",
+    "source_url": "https://team.jumpit.co.kr/0f6906ab-330e-48e7-afa9-fe7c7d2cca98",
+    "scope": "점핏 공식 약관 변경 공지에서 2024년 9월 26일 서비스 주소가 jumpit.saramin.co.kr로 변경됐음을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.gov.kr/",
     "name": "정부24",
     "source_url": "https://www.gov.kr/portal/main",
@@ -997,6 +1582,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://cafe.naver.com/joonggonara",
+    "name": "중고나라",
+    "source_url": "https://cafe.naver.com/joonggonara",
+    "scope": "네이버 카페의 중고나라 공식 카페 페이지 제목과 가입·회원 활동 안내를 통해 등록된 커뮤니티 경로를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.joongang.co.kr/",
     "name": "중앙일보",
     "source_url": "https://www.joongang.co.kr/",
@@ -1020,6 +1614,15 @@
     "source_url": "https://local.gosi.go.kr/",
     "scope": "공식 인터넷원서접수센터의 사이트 주소와 서비스 안내를 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.applyhome.co.kr/",
+    "name": "청약Home",
+    "source_url": "https://www.applyhome.co.kr/",
+    "scope": "한국부동산원 주택청약 공식 서비스 첫 화면에서 청약 일정·모집공고·신청 서비스와 연결 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1096,11 +1699,65 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.korail.com/",
+    "name": "코레일 승차권",
+    "source_url": "https://www.korail.com/",
+    "scope": "한국철도공사 공식 홈페이지에서 승차권 예매와 열차 운행 정보 서비스 및 대표 도메인을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreaherald.com/",
+    "name": "코리아헤럴드",
+    "source_url": "https://www.koreaherald.com/",
+    "scope": "코리아헤럴드 공식 홈페이지에서 한국 국내·국제 뉴스와 영문 일간 보도 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://comento.kr/job-questions",
+    "name": "코멘토",
+    "source_url": "https://comento.kr/job-questions",
+    "scope": "코멘토 공식 취업 Q&A 페이지에서 직무별 질문·현직자 답변 등 취업 커뮤니티 기능과 연결 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.coupangplay.com/",
+    "name": "쿠팡플레이",
+    "source_url": "https://www.coupangplay.com/catalog",
+    "scope": "쿠팡플레이 공식 카탈로그와 서비스 안내에서 영화·시리즈·스포츠·라이브 엔터테인먼트 제공 및 공식 접속 주소를 확인",
+    "checked_on": "2026-11-19",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://quasarzone.com/",
+    "name": "퀘이사존",
+    "source_url": "https://quasarzone.com/",
+    "scope": "퀘이사존 공식 첫 화면의 하드웨어·게임·모바일 뉴스와 PC 하드웨어 커뮤니티 게시판 구성을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.q-net.or.kr/",
     "name": "큐넷",
     "source_url": "https://www.q-net.or.kr/",
     "scope": "큐넷 공식 첫 화면에서 국가기술자격·국가전문자격의 시험 안내, 원서접수 및 합격자 발표 메뉴를 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.qtoon.co.kr/",
+    "name": "큐툰",
+    "source_url": "https://www.qtoon.co.kr/",
+    "scope": "큐툰 공식 홈페이지에서 로맨스·BL·판타지 장르의 웹툰·만화·소설 작품과 무료 회차 안내를 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1195,6 +1852,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.tmapmobility.com/",
+    "name": "티맵",
+    "source_url": "https://www.tmapmobility.com/",
+    "scope": "기존 티맵 주소의 공식 리디렉션을 확인하고, TMAP Mobility 공식 홈페이지에서 내비게이션·대중교통·주차·대리운전 등 이동 서비스 안내와 현재 도메인을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.tmoney.co.kr/",
     "name": "티머니",
     "source_url": "https://www.tmoney.co.kr/",
@@ -1218,6 +1884,15 @@
     "source_url": "https://fastcampus.co.kr/",
     "scope": "패스트캠퍼스 공식 서비스 첫 화면의 직무 교육 과정 안내와 연결 주소를 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://pawinhand.kr/",
+    "name": "포인핸드",
+    "source_url": "https://pawinhand.kr/",
+    "scope": "포인핸드 공식 홈페이지에서 전국 동물보호센터의 유기동물 입양 정보와 보호소 연결 서비스를 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1274,6 +1949,15 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://www.hani.co.kr/",
+    "name": "한겨레",
+    "source_url": "https://www.hani.co.kr/",
+    "scope": "한겨레 공식 홈페이지에서 정치·사회·경제·문화 분야의 뉴스와 심층 보도 제공 및 대표 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   },
   {
     "url": "https://www.krx.co.kr/",
@@ -1335,6 +2019,15 @@
     "source_url": "https://encykorea.aks.ac.kr/",
     "scope": "한국학중앙연구원 한국민족문화대백과의 한국 역사·문화 분야별 항목 및 통합검색 안내를 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://kovo.co.kr/",
+    "name": "한국배구연맹 KOVO",
+    "source_url": "https://kovo.co.kr/",
+    "scope": "한국배구연맹 공식 홈페이지에서 V-리그 경기·기록·티켓 및 구단 소식, 연맹 운영 정보를 확인",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1411,6 +2104,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.hankookilbo.com/",
+    "name": "한국일보",
+    "source_url": "https://www.hankookilbo.com/",
+    "scope": "한국일보 공식 홈페이지에서 뉴스·정치·경제·사회·국제·문화·스포츠 보도 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://www.kosaf.go.kr/ko/main.do",
     "name": "한국장학재단",
     "source_url": "https://www.kosaf.go.kr/ko/main.do",
@@ -1465,6 +2167,33 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.heydealer.com/",
+    "name": "헤이딜러",
+    "source_url": "https://www.heydealer.com/",
+    "scope": "헤이딜러 공식 홈페이지에서 내 차 팔기 경매, 인증중고차 구매, 차량 시세·사고 이력 조회 등 자동차 거래 서비스를 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://search.brave.com/",
+    "name": "Brave Search",
+    "source_url": "https://search.brave.com/",
+    "scope": "Brave Search의 독립 검색 색인 및 웹 검색 서비스 공식 화면과 등록 주소를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.canva.com/",
+    "name": "Canva",
+    "source_url": "https://www.canva.com/",
+    "scope": "Canva 공식 홈페이지에서 소셜 콘텐츠·프레젠테이션·포스터·영상·로고 제작과 AI 디자인 도구 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://chatgpt.com/",
     "name": "ChatGPT",
     "source_url": "https://chatgpt.com/",
@@ -1479,6 +2208,24 @@
     "source_url": "https://www.dbpia.co.kr/search",
     "scope": "DBpia 공식 논문 검색 화면에서 논문명·저널·발행기관·저자 및 주제별 학술자료 검색 기능을 대조",
     "checked_on": "2026-11-16",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.deepl.com/translator",
+    "name": "DeepL",
+    "source_url": "https://www.deepl.com/translator",
+    "scope": "DeepL 공식 번역 페이지에서 텍스트·문서 번역과 언어별 번역 기능을 확인. 한국어 URL이 영어 경로로 리디렉션되는 점도 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://duckduckgo.com/",
+    "name": "DuckDuckGo",
+    "source_url": "https://duckduckgo.com/",
+    "scope": "개인정보 보호를 강조하는 DuckDuckGo 검색 서비스의 공식 안내와 등록 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1506,6 +2253,15 @@
     "source_url": "https://www.ebsi.co.kr/ebs/pot/poti/main.ebs",
     "scope": "EBSi 국가대표 고교강의 서비스 첫 화면과 연결 주소를 대조",
     "checked_on": "2026-11-14",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.ecosia.org/",
+    "name": "Ecosia",
+    "source_url": "https://www.ecosia.org/",
+    "scope": "Ecosia 웹 검색과 환경 프로젝트 지원에 관한 공식 서비스 안내 및 등록 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1544,6 +2300,24 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "official_announcement"
+  },
+  {
+    "url": "https://aistudio.google.com/",
+    "name": "Google AI Studio",
+    "source_url": "https://aistudio.google.com/",
+    "scope": "Google AI Studio 공식 시작 페이지에서 Gemini 프롬프트 실험, API 키 관리, SDK 및 도구 연동 기능을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://news.ycombinator.com/",
+    "name": "Hacker News",
+    "source_url": "https://news.ycombinator.com/",
+    "scope": "기술·개발·스타트업 관련 링크 게시와 이용자 토론을 제공하는 공식 서비스 화면을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   },
   {
     "url": "https://www.ibk.co.kr/",
@@ -1663,6 +2437,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://klpga.co.kr/",
+    "name": "KLPGA",
+    "source_url": "https://klpga.co.kr/about/guide/FAQ?menu2=0002",
+    "scope": "KLPGA 공식 FAQ에서 투어 일정·기록·대회 참가 신청 및 관람 안내와 공식 홈페이지 도메인을 대조",
+    "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "name": "KOCW 대학공개강의",
     "url": "https://www.kocw.net/",
     "source_url": "https://www.kocw.net/",
@@ -1717,6 +2500,24 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://mlbpark.donga.com/mp/",
+    "name": "MLB파크",
+    "source_url": "https://mlbpark.donga.com/mp/",
+    "scope": "스포츠동아 MLB파크 공식 홈페이지의 MLB타운·한국야구타운·크보기록실·스포츠 뉴스와 야구팬 커뮤니티 게시판을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mojeek.com/",
+    "name": "Mojeek",
+    "source_url": "https://www.mojeek.com/",
+    "scope": "Mojeek 독립 검색 색인과 웹·이미지·뉴스 검색 기능의 공식 안내를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://banking.nonghyup.com/",
     "name": "NH농협은행",
     "source_url": "https://banking.nonghyup.com/nhbank.html",
@@ -1731,6 +2532,15 @@
     "source_url": "https://www.perplexity.ai/",
     "scope": "Perplexity 공식 서비스 페이지에서 출처 기반 검색형 AI 서비스와 등록 도메인을 대조",
     "checked_on": "2026-11-17",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.qwant.com/",
+    "name": "Qwant",
+    "source_url": "https://www.qwant.com/",
+    "scope": "Qwant 검색과 개인정보 처리 관련 공식 서비스 안내 및 등록 주소를 대조",
+    "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
@@ -1753,6 +2563,15 @@
     "evidence_type": "service_page"
   },
   {
+    "url": "https://www.slrclub.com/",
+    "name": "SLR",
+    "source_url": "https://www.slrclub.com/",
+    "scope": "SLR클럽 공식 홈페이지에서 디지털 사진 작품·강좌·리뷰·장터와 자유게시판 등 사진가 중심 커뮤니티 구성을 확인",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
     "url": "https://etk.srail.kr/",
     "name": "SRT",
     "source_url": "https://etk.srail.kr/cms/article/view.do?pageId=TK0502000000&pageIndex=31&postNo=922",
@@ -1760,6 +2579,33 @@
     "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "official_announcement"
+  },
+  {
+    "url": "https://www.ssg.com/",
+    "name": "SSG.COM",
+    "source_url": "https://company.ssg.com/intrd/keybsns.ssg",
+    "scope": "SSG.COM 공식 기업 소개에서 신세계백화점·이마트 상품을 온라인으로 제공하는 통합 쇼핑 플랫폼과 주요 사업 영역을 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.startpage.com/",
+    "name": "Startpage",
+    "source_url": "https://www.startpage.com/",
+    "scope": "Startpage의 개인정보 보호 중심 웹 검색 기능과 공식 서비스 안내를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://swisscows.com/",
+    "name": "Swisscows",
+    "source_url": "https://swisscows.com/",
+    "scope": "Swisscows 검색 서비스의 개인정보 보호 및 가족 친화 검색 기능에 관한 공식 안내를 대조",
+    "checked_on": "2026-11-18",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   },
   {
     "url": "https://www.teps.or.kr/",
@@ -1789,514 +2635,10 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.ytn.co.kr/",
-    "name": "YTN",
-    "source_url": "https://infor.ytn.co.kr/ytn/about.php",
-    "scope": "YTN 공식 회사 소개에서 뉴스 전문 채널과 온라인 콘텐츠 운영 정보를 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://jumpit.saramin.co.kr/",
-    "name": "점핏",
-    "source_url": "https://team.jumpit.co.kr/0f6906ab-330e-48e7-afa9-fe7c7d2cca98",
-    "scope": "점핏 공식 약관 변경 공지에서 2024년 9월 26일 서비스 주소가 jumpit.saramin.co.kr로 변경됐음을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://klpga.co.kr/",
-    "name": "KLPGA",
-    "source_url": "https://klpga.co.kr/about/guide/FAQ?menu2=0002",
-    "scope": "KLPGA 공식 FAQ에서 투어 일정·기록·대회 참가 신청 및 관람 안내와 공식 홈페이지 도메인을 대조",
-    "checked_on": "2026-11-17",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.airport.kr/",
-    "name": "인천국제공항",
-    "source_url": "https://www.airport.kr/ap_en/1579/subview.do",
-    "scope": "인천국제공항 공식 홈페이지의 공항 이용 안내와 터미널·교통·시설 정보 제공 경로를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.applyhome.co.kr/",
-    "name": "청약Home",
-    "source_url": "https://www.applyhome.co.kr/",
-    "scope": "한국부동산원 주택청약 공식 서비스 첫 화면에서 청약 일정·모집공고·신청 서비스와 연결 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://txbus.t-money.co.kr/",
-    "name": "시외버스 통합예매",
-    "source_url": "https://txbus.t-money.co.kr/",
-    "scope": "시외버스 통합예매시스템의 승차권 예매·조회·취소 및 운행정보 제공 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.aladin.co.kr/",
-    "name": "알라딘",
-    "source_url": "https://www.aladin.co.kr/home/welcome.aspx",
-    "scope": "알라딘 공식 홈페이지에서 국내도서·전자책·중고상품·음반 등 온라인 서점 서비스와 대표 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.hani.co.kr/",
-    "name": "한겨레",
-    "source_url": "https://www.hani.co.kr/",
-    "scope": "한겨레 공식 홈페이지에서 정치·사회·경제·문화 분야의 뉴스와 심층 보도 제공 및 대표 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://zdnet.co.kr/",
-    "name": "ZDNet Korea",
-    "source_url": "https://zdnet.co.kr/",
-    "scope": "지디넷코리아 공식 홈페이지에서 IT·기술·인터넷 산업 뉴스와 분석 콘텐츠 제공 및 대표 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.bobaedream.co.kr/",
-    "name": "보배드림",
-    "source_url": "https://www.bobaedream.co.kr/",
-    "scope": "보배드림 공식 홈페이지에서 자동차 정보·중고차 매물·자동차 커뮤니티 서비스와 대표 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://comento.kr/job-questions",
-    "name": "코멘토",
-    "source_url": "https://comento.kr/job-questions",
-    "scope": "코멘토 공식 취업 Q&A 페이지에서 직무별 질문·현직자 답변 등 취업 커뮤니티 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.hankookilbo.com/",
-    "name": "한국일보",
-    "source_url": "https://www.hankookilbo.com/",
-    "scope": "한국일보 공식 홈페이지에서 뉴스·정치·경제·사회·국제·문화·스포츠 보도 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.sedaily.com/",
-    "name": "서울경제",
-    "source_url": "https://www.sedaily.com/",
-    "scope": "서울경제 공식 홈페이지에서 경제·금융·기업 중심의 뉴스 및 분석 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://pawinhand.kr/",
-    "name": "포인핸드",
-    "source_url": "https://pawinhand.kr/",
-    "scope": "포인핸드 공식 홈페이지에서 전국 동물보호센터의 유기동물 입양 정보와 보호소 연결 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://bemypet.kr/",
-    "name": "비마이펫",
-    "source_url": "https://bemypet.kr/",
-    "scope": "비마이펫 공식 홈페이지에서 반려동물 콘텐츠·커뮤니티·동물병원 찾기·입양 등 반려생활 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://map.naver.com/",
-    "name": "네이버 지도",
-    "source_url": "https://map.naver.com/",
-    "scope": "네이버지도 공식 서비스에서 지도 검색, 장소 탐색, 자동차·대중교통·도보 길찾기 메뉴를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.korail.com/",
-    "name": "코레일 승차권",
-    "source_url": "https://www.korail.com/",
-    "scope": "한국철도공사 공식 홈페이지에서 승차권 예매와 열차 운행 정보 서비스 및 대표 도메인을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.lotteon.com/",
-    "name": "롯데ON",
-    "source_url": "https://www.lotteon.com/",
-    "scope": "롯데ON 공식 쇼핑몰에서 상품 검색, 패션·뷰티·키즈·푸드 등 쇼핑 카테고리와 주문 관련 메뉴를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.enuri.com/",
-    "name": "에누리 가격비교",
-    "source_url": "https://www.enuri.com/",
-    "scope": "에누리 공식 홈페이지에서 가전·디지털·식품·생활·패션 등 상품 가격비교 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://kin.naver.com/",
-    "name": "네이버 지식iN",
-    "source_url": "https://kin.naver.com/",
-    "scope": "네이버 지식iN 공식 페이지에서 질문·답변과 주제별 지식 검색 및 Q&A 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.fmkorea.com/",
-    "name": "에펨코리아",
-    "source_url": "https://www.fmkorea.com/",
-    "scope": "에펨코리아 공식 홈페이지에서 유머·축구·스포츠·게임·인터넷 방송 등 종합 커뮤니티 게시판을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.millie.co.kr/",
-    "name": "밀리의서재",
-    "source_url": "https://www.millie.co.kr/",
-    "scope": "밀리의서재 공식 홈페이지에서 전자책·오디오북·웹툰과 도서 추천 및 구독 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.mootoon.co.kr/",
-    "name": "무툰",
-    "source_url": "https://www.mootoon.co.kr/",
-    "scope": "무툰 공식 홈페이지에서 무협·액션 중심 웹툰·만화·소설 콘텐츠와 무료 회차 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.mcomics.co.kr/",
-    "name": "마녀코믹스",
-    "source_url": "https://www.mcomics.co.kr/",
-    "scope": "마녀코믹스 공식 홈페이지에서 순정만화·프리미엄 웹툰의 작품 목록과 연재·무료 회차 정보를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.tmapmobility.com/",
-    "name": "티맵",
-    "source_url": "https://www.tmapmobility.com/",
-    "scope": "기존 티맵 주소의 공식 리디렉션을 확인하고, TMAP Mobility 공식 홈페이지에서 내비게이션·대중교통·주차·대리운전 등 이동 서비스 안내와 현재 도메인을 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://m.sports.naver.com/index",
-    "name": "네이버 스포츠",
-    "source_url": "https://m.sports.naver.com/index",
-    "scope": "네이버 스포츠 공식 모바일 홈페이지에서 종목 메뉴와 경기·뉴스 서비스 및 현재 도착 주소를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://brunch.co.kr/",
-    "name": "브런치스토리",
-    "source_url": "https://brunch.co.kr/",
-    "scope": "브런치 공식 페이지에서 작가의 글·연재 작품과 콘텐츠 발행 및 구독형 읽기 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.yes24.com/",
-    "name": "예스24",
-    "source_url": "https://www.yes24.com/Main/default.aspx",
-    "scope": "예스24 공식 홈페이지에서 국내·외 도서, 전자책, 음반·DVD, 공연 티켓 등 문화상품의 검색·판매 카테고리와 고객 메뉴를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.10000recipe.com/index.html",
-    "name": "만개의레시피",
-    "source_url": "https://www.10000recipe.com/index.html",
-    "scope": "만개의레시피 공식 홈페이지에서 레시피 검색, 인기 레시피, 이용자 요리 후기와 식품 관련 콘텐츠 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.instiz.net/",
-    "name": "인스티즈",
-    "source_url": "https://www.instiz.net/",
-    "scope": "인스티즈 공식 홈페이지에서 이슈·일상·연예·드라마·뷰티·스터디 등 주제별 이용자 커뮤니티 게시판과 인기글 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.gasengi.com/",
-    "name": "가생이닷컴",
-    "source_url": "https://www.gasengi.com/",
-    "scope": "가생이닷컴 공식 홈페이지에서 해외 네티즌 반응 번역, 한류·일본·중국 반응과 주제별 커뮤니티 게시판을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://pann.nate.com/",
-    "name": "네이트판",
-    "source_url": "https://pann.nate.com/",
-    "scope": "네이트판 공식 페이지에서 오늘의 판·톡커의 선택·명예의 전당·팬톡 등 주제별 이용자 이야기와 게시판 콘텐츠를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.qtoon.co.kr/",
-    "name": "큐툰",
-    "source_url": "https://www.qtoon.co.kr/",
-    "scope": "큐툰 공식 홈페이지에서 로맨스·BL·판타지 장르의 웹툰·만화·소설 작품과 무료 회차 안내를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://japaninfo.kr/",
-    "name": "(일본)제팬인포",
-    "source_url": "https://japaninfo.kr/",
-    "scope": "재팬인포 공식 홈페이지에서 도쿄·오사카·후쿠오카·오키나와 등 일본 지역별 여행지·관광·생활 정보를 제공하는 콘텐츠를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.jpnews.kr/",
-    "name": "(일본)재펜뉴스",
-    "source_url": "https://www.jpnews.kr/",
-    "scope": "JPNews 공식 홈페이지에서 일본 정치·경제·사회·문화·연예·스포츠 뉴스와 일본 생활·유학·비자 정보를 제공하는 메뉴를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.koreaherald.com/",
-    "name": "코리아헤럴드",
-    "source_url": "https://www.koreaherald.com/",
-    "scope": "코리아헤럴드 공식 홈페이지에서 한국 국내·국제 뉴스와 영문 일간 보도 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.todayhumor.co.kr/",
-    "name": "오늘의유머",
-    "source_url": "https://www.todayhumor.co.kr/",
-    "scope": "오늘의유머 공식 사이트에서 베스트·유머·시사·생활 등 주제별 게시판과 이용자 커뮤니티 기능을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://everytime.kr/",
-    "name": "에브리타임",
-    "source_url": "https://www.vinuteam.com/everytime",
-    "scope": "운영사 비누랩스 공식 서비스 소개에서 에브리타임의 대학별 소통 공간, 강의평·시험정보·시간표·중고거래 등 대학생활 플랫폼 기능을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://kovo.co.kr/",
-    "name": "한국배구연맹 KOVO",
-    "source_url": "https://kovo.co.kr/",
-    "scope": "한국배구연맹 공식 홈페이지에서 V-리그 경기·기록·티켓 및 구단 소식, 연맹 운영 정보를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.dogdrip.net/",
-    "name": "개드립",
-    "source_url": "https://www.dogdrip.net/",
-    "scope": "개드립 공식 홈페이지의 유머·이슈·정보 게시물과 이용자 댓글 중심 커뮤니티 구성을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.slrclub.com/",
-    "name": "SLR",
-    "source_url": "https://www.slrclub.com/",
-    "scope": "SLR클럽 공식 홈페이지에서 디지털 사진 작품·강좌·리뷰·장터와 자유게시판 등 사진가 중심 커뮤니티 구성을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://mlbpark.donga.com/mp/",
-    "name": "MLB파크",
-    "source_url": "https://mlbpark.donga.com/mp/",
-    "scope": "스포츠동아 MLB파크 공식 홈페이지의 MLB타운·한국야구타운·크보기록실·스포츠 뉴스와 야구팬 커뮤니티 게시판을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://cafe.naver.com/joonggonara",
-    "name": "중고나라",
-    "source_url": "https://cafe.naver.com/joonggonara",
-    "scope": "네이버 카페의 중고나라 공식 카페 페이지 제목과 가입·회원 활동 안내를 통해 등록된 커뮤니티 경로를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://web.humoruniv.com/main.html",
-    "name": "웃긴대학",
-    "source_url": "https://web.humoruniv.com/main.html",
-    "scope": "웃긴대학 공식 홈페이지에서 웃긴 자료·제목·웹툰과 게임·요리·헬스·사진 등 테마 게시판 및 이용자 최신 게시글을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://theqoo.net/",
-    "name": "더쿠",
-    "source_url": "https://theqoo.net/",
-    "scope": "더쿠 공식 홈페이지에서 유머·이슈·정보, 생활·국내외 연예·스포츠·취미·뷰티·음식 등 주제별 게시판 구성을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://arca.live/",
-    "name": "아카라이브",
-    "source_url": "https://arca.live/",
-    "scope": "아카라이브 공식 홈페이지에서 주제별 채널의 게시글·자료 공유와 이용자 커뮤니티 기능을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.wetax.go.kr/",
-    "name": "위택스",
-    "source_url": "https://www.wetax.go.kr/main.do",
-    "scope": "위택스 공식 홈페이지에서 지방세 신고·납부, 전자송달·자동납부·지방세 미리계산 등 지방세 업무 메뉴와 연결 주소를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.diningcode.com/",
-    "name": "다이닝코드",
-    "source_url": "https://www.diningcode.com/",
-    "scope": "다이닝코드 공식 홈페이지에서 빅데이터 맛집 검색과 음식 종류별 추천·지역별 식당 탐색 기능을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.heydealer.com/",
-    "name": "헤이딜러",
-    "source_url": "https://www.heydealer.com/",
-    "scope": "헤이딜러 공식 홈페이지에서 내 차 팔기 경매, 인증중고차 구매, 차량 시세·사고 이력 조회 등 자동차 거래 서비스를 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.deepl.com/translator",
-    "name": "DeepL",
-    "source_url": "https://www.deepl.com/translator",
-    "scope": "DeepL 공식 번역 페이지에서 텍스트·문서 번역과 언어별 번역 기능을 확인. 한국어 URL이 영어 경로로 리디렉션되는 점도 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://aistudio.google.com/",
-    "name": "Google AI Studio",
-    "source_url": "https://aistudio.google.com/",
-    "scope": "Google AI Studio 공식 시작 페이지에서 Gemini 프롬프트 실험, API 키 관리, SDK 및 도구 연동 기능을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.canva.com/",
-    "name": "Canva",
-    "source_url": "https://www.canva.com/",
-    "scope": "Canva 공식 홈페이지에서 소셜 콘텐츠·프레젠테이션·포스터·영상·로고 제작과 AI 디자인 도구 기능을 확인",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.google.com/",
-    "name": "구글",
-    "source_url": "https://www.google.com/",
-    "scope": "Google 검색·이미지 등 공식 검색 포털의 진입 화면과 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.bing.com/",
-    "name": "빙",
-    "source_url": "https://www.bing.com/",
-    "scope": "Microsoft Bing 검색과 이미지·동영상·지도 등 공식 탐색 기능 및 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://duckduckgo.com/",
-    "name": "DuckDuckGo",
-    "source_url": "https://duckduckgo.com/",
-    "scope": "개인정보 보호를 강조하는 DuckDuckGo 검색 서비스의 공식 안내와 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://search.brave.com/",
-    "name": "Brave Search",
-    "source_url": "https://search.brave.com/",
-    "scope": "Brave Search의 독립 검색 색인 및 웹 검색 서비스 공식 화면과 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.ecosia.org/",
-    "name": "Ecosia",
-    "source_url": "https://www.ecosia.org/",
-    "scope": "Ecosia 웹 검색과 환경 프로젝트 지원에 관한 공식 서비스 안내 및 등록 주소를 대조",
+    "url": "https://www.wolframalpha.com/",
+    "name": "WolframAlpha",
+    "source_url": "https://www.wolframalpha.com/",
+    "scope": "자연어 계산·지식 질의와 수학·과학 분야별 공식 기능 안내 및 등록 주소를 대조",
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
@@ -2311,42 +2653,6 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.startpage.com/",
-    "name": "Startpage",
-    "source_url": "https://www.startpage.com/",
-    "scope": "Startpage의 개인정보 보호 중심 웹 검색 기능과 공식 서비스 안내를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.qwant.com/",
-    "name": "Qwant",
-    "source_url": "https://www.qwant.com/",
-    "scope": "Qwant 검색과 개인정보 처리 관련 공식 서비스 안내 및 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.mojeek.com/",
-    "name": "Mojeek",
-    "source_url": "https://www.mojeek.com/",
-    "scope": "Mojeek 독립 검색 색인과 웹·이미지·뉴스 검색 기능의 공식 안내를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://swisscows.com/",
-    "name": "Swisscows",
-    "source_url": "https://swisscows.com/",
-    "scope": "Swisscows 검색 서비스의 개인정보 보호 및 가족 친화 검색 기능에 관한 공식 안내를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
     "url": "https://yandex.com/",
     "name": "Yandex",
     "source_url": "https://yandex.com/",
@@ -2356,298 +2662,19 @@
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.wolframalpha.com/",
-    "name": "WolframAlpha",
-    "source_url": "https://www.wolframalpha.com/",
-    "scope": "자연어 계산·지식 질의와 수학·과학 분야별 공식 기능 안내 및 등록 주소를 대조",
-    "checked_on": "2026-11-18",
+    "url": "https://www.ytn.co.kr/",
+    "name": "YTN",
+    "source_url": "https://infor.ytn.co.kr/ytn/about.php",
+    "scope": "YTN 공식 회사 소개에서 뉴스 전문 채널과 온라인 콘텐츠 운영 정보를 대조",
+    "checked_on": "2026-11-17",
     "freshness_days": 180,
     "evidence_type": "service_page"
   },
   {
-    "url": "https://www.musinsa.com/",
-    "name": "무신사",
-    "source_url": "https://www.musinsa.com/",
-    "scope": "무신사 공식 패션 플랫폼의 상품 탐색·브랜드 쇼핑 진입 화면과 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.reddit.com/",
-    "name": "레딧",
-    "source_url": "https://www.reddit.com/",
-    "scope": "관심사별 subreddit 게시글·질문·토론을 제공하는 Reddit 공식 플랫폼 화면과 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://news.ycombinator.com/",
-    "name": "Hacker News",
-    "source_url": "https://news.ycombinator.com/",
-    "scope": "기술·개발·스타트업 관련 링크 게시와 이용자 토론을 제공하는 공식 서비스 화면을 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.ssg.com/",
-    "name": "SSG.COM",
-    "source_url": "https://company.ssg.com/intrd/keybsns.ssg",
-    "scope": "SSG.COM 공식 기업 소개에서 신세계백화점·이마트 상품을 온라인으로 제공하는 통합 쇼핑 플랫폼과 주요 사업 영역을 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://quasarzone.com/",
-    "name": "퀘이사존",
-    "source_url": "https://quasarzone.com/",
-    "scope": "퀘이사존 공식 첫 화면의 하드웨어·게임·모바일 뉴스와 PC 하드웨어 커뮤니티 게시판 구성을 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.munpia.com/",
-    "name": "문피아",
-    "source_url": "https://munpiacorp.com/",
-    "scope": "문피아 운영사 공식 소개에서 웹소설 전문 플랫폼의 서비스 분야와 운영 주체를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://m.mrblue.com/",
-    "name": "미스터블루",
-    "source_url": "https://www.mrbluecorp.com/",
-    "scope": "미스터블루 운영사 공식 홈페이지에서 웹툰·만화·소설 종합 플랫폼 및 콘텐츠 사업 안내를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.webtoonguide.com/ko/",
-    "name": "웹툰가이드",
-    "source_url": "https://www.webtoonguide.com/ko/",
-    "scope": "웹툰가이드 공식 페이지의 작품 추천·리뷰·뉴스·작가 인터뷰 및 웹툰 플랫폼 정보 메뉴를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://novelpia.com/",
-    "name": "노벨피아",
-    "source_url": "https://novelpia.com/page/terms_of_use",
-    "scope": "노벨피아 공식 이용약관에서 운영사 메타크래프트와 웹소설 등 디지털 콘텐츠 제공 플랫폼의 서비스 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://bank.shinhan.com/",
-    "name": "신한은행",
-    "source_url": "https://bank.shinhan.com/",
-    "scope": "신한은행 공식 개인 인터넷뱅킹 화면에서 개인 고객의 계좌·금융 업무 이용 경로와 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://flyasiana.com/",
-    "name": "아시아나항공",
-    "source_url": "https://flyasiana.com/C/KR/KO/contents/book-online",
-    "scope": "아시아나항공 공식 온라인 예약 안내에서 국내·국제선 항공권 예약 및 변경·취소 경로와 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.newyorkkorea.net/main/index.html",
-    "name": "(미국)뉴욕코리아",
-    "source_url": "https://www.newyorkkorea.net/main/index.html",
-    "scope": "미국 뉴욕 지역의 한국어 생활 정보와 지역별 한인 서비스 탐색 페이지에서 등록 주소와 서비스 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://thaiholic.com/",
-    "name": "(태국)타이홀릭",
-    "source_url": "https://thaiholic.com/",
-    "scope": "태국의 여행지·음식점·병원·생활 서비스를 지역과 분류로 탐색하는 한국어 안내 페이지에서 등록 주소와 서비스 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.vinahanin.com/",
-    "name": "(베트남)비나한인",
-    "source_url": "https://www.vinahanin.com/",
-    "scope": "베트남 법인·공장 설립 컨설팅과 현지 사업 정보를 제공하는 서비스 페이지에서 등록 주소와 안내 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.canadapia.com/",
-    "name": "(캐나다)캐나다피아",
-    "source_url": "https://www.canadapia.com/",
-    "scope": "캐나다 한인 커뮤니티의 생활정보·질문답변·구인구직·부동산 게시판과 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.hanasia.com/",
-    "name": "(태국)한아시아",
-    "source_url": "https://www.hanasia.com/",
-    "scope": "태국 교민 뉴스와 생활정보·커뮤니티 게시판을 제공하는 사이트의 현재 공개 페이지와 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.haninsinmun.com/",
-    "name": "(멕시코)멕시코 한인신문",
-    "source_url": "https://www.haninsinmun.com/",
-    "scope": "멕시코 한인 대상 한국어 신문 및 지역 소식 페이지의 공개 서비스와 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kyomin.org/?ckattempt=1",
-    "name": "(중국)교민세계",
-    "source_url": "https://www.kyomin.org/?ckattempt=1",
-    "scope": "한국인·세계인·교민 관련 뉴스와 최신 게시물을 제공하는 공개 홈페이지에서 등록 주소와 콘텐츠 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.chinatalk.net/",
-    "name": "(중국)차이나톡",
-    "source_url": "https://www.chinatalk.net/",
-    "scope": "중국 거주 한국인을 위한 생활 정보와 업체·서비스 커뮤니티 게시판의 공개 페이지에서 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.dalsaram.com/main_VER2.php",
-    "name": "(미국)달사람닷컴",
-    "source_url": "https://www.dalsaram.com/main_VER2.php",
-    "scope": "미국 텍사스 달라스 지역 한인 커뮤니티의 생활·지역 정보와 게시판을 제공하는 페이지에서 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.workingus.com/",
-    "name": "(미국)워킹어스",
-    "source_url": "https://www.workingus.com/",
-    "scope": "미국 생활·취업·이민 관련 한국어 게시판과 최근 공개 게시물 페이지에서 등록 주소와 서비스 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.kosarang.net/g4/index.php",
-    "name": "(캐나다)코사랑",
-    "source_url": "https://www.kosarang.net/g4/index.php",
-    "scope": "캐나다 퀘벡 지역 한인 뉴스·행사·생활정보를 제공하는 공개 홈페이지에서 등록 주소와 콘텐츠 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.hungaryej.com/",
-    "name": "(헝가리)헝가리 한인포스트",
-    "source_url": "https://www.hungaryej.com/",
-    "scope": "헝가리 한인 뉴스와 대사관·문화원·한인단체·지역 생활 정보 메뉴를 제공하는 페이지에서 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.francezone.com/",
-    "name": "(프랑스)프랑스존",
-    "source_url": "https://www.francezone.com/",
-    "scope": "프랑스 교민 대상 지역 소식·경제인 네트워크·생활 게시물을 제공하는 공개 홈페이지에서 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://channel.cafe/tabs/home",
-    "name": "(호주)호주채널",
-    "source_url": "https://channel.cafe/tabs/home",
-    "scope": "호주 지역별 생활정보·업체·친목·워킹홀리데이 채널을 탐색하는 공개 페이지에서 등록 주소와 기능을 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.korean.net/web/main/main",
-    "name": "(전세계)코리안넷",
-    "source_url": "https://www.korean.net/web/main/main",
-    "scope": "재외동포협력센터가 운영하는 재외동포 뉴스·사업 공지·지역 소식을 제공하는 공식 포털 페이지에서 등록 주소와 운영 주체를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.topdigital.com.au/",
-    "name": "(호주)TOP Digital",
-    "source_url": "https://www.topdigital.com.au/",
-    "scope": "호주 한국어 뉴스와 경제·부동산·지역 소식을 제공하는 공개 홈페이지에서 등록 주소와 콘텐츠 범위를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://housamo.com/",
-    "name": "(미국)휴사모",
-    "source_url": "https://housamo.com/",
-    "scope": "미국 휴스턴 지역 한인 생활정보 커뮤니티의 구인·주거·중고거래·지역 게시판을 제공하는 페이지에서 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.82cook.com/",
-    "name": "82쿡",
-    "source_url": "https://www.82cook.com/",
-    "scope": "82cook 메인 페이지의 요리·살림·생활 커뮤니티 게시물과 등록 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.band.us/about/intro",
-    "name": "네이버 밴드",
-    "source_url": "https://www.navercorp.com/media/pressReleasesDetail?seq=33511",
-    "scope": "기존 band.us 주소의 공식 리디렉션을 따라 BAND 공식 소개 페이지를 확인하고, NAVER 공식 보도자료와 서비스 운영 주체·그룹 커뮤니케이션 기능을 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "agency_guide"
-  },
-  {
-    "url": "https://www.cardpoint.or.kr/",
-    "name": "여신금융협회 카드포인트 통합조회",
-    "source_url": "https://www.cardpoint.or.kr/",
-    "scope": "여신금융협회 공식 서비스 첫 화면에서 카드포인트 통합조회·계좌입금·기부 기능과 연결 주소를 대조",
-    "checked_on": "2026-11-18",
-    "freshness_days": 180,
-    "evidence_type": "service_page"
-  },
-  {
-    "url": "https://www.payinfo.or.kr/",
-    "name": "계좌정보통합관리서비스",
-    "source_url": "https://www.payinfo.or.kr/",
-    "scope": "계좌정보통합관리서비스 공식 홈페이지와 FAQ에서 본인 명의 계좌 통합조회 및 비활동성 계좌 잔고이전·해지 기능을 대조",
+    "url": "https://zdnet.co.kr/",
+    "name": "ZDNet Korea",
+    "source_url": "https://zdnet.co.kr/",
+    "scope": "지디넷코리아 공식 홈페이지에서 IT·기술·인터넷 산업 뉴스와 분석 콘텐츠 제공 및 대표 주소를 대조",
     "checked_on": "2026-11-18",
     "freshness_days": 180,
     "evidence_type": "service_page"
