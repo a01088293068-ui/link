@@ -1012,7 +1012,7 @@ def homepage_task_paths(records):
         '<div class="blog-grid">'
         '<a class="blog-card" href="' + escape(url, quote=True) + '">'
         '<strong>사이트 이름이나 도메인을 알고 있을 때</strong>'
-        '<span>사이트 이름뿐 아니라 도메인이나 전체 URL을 붙여넣어 등록 목록과 대조할 수 있습니다.</span>'
+        '<span>예: 네이버 웹툰, naver.com 또는 전체 URL을 붙여넣어 등록 목록과 대조할 수 있습니다.</span>'
         '<span class="blog-card-more">등록 사이트 이름으로 검색 →</span></a>'
         '<a class="blog-card" href="/categories/">'
         '<strong>어떤 사이트를 쓸지 비교하고 싶을 때</strong>'
