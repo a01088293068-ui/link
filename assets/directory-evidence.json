@@ -2696,5 +2696,158 @@
     "checked_on": "2026-11-19",
     "freshness_days": 180,
     "evidence_type": "agency_guide"
+  },
+  {
+    "url": "https://huggingface.co/",
+    "name": "Hugging Face",
+    "source_url": "https://huggingface.co/",
+    "scope": "Hugging Face 공개 홈페이지에서 머신러닝 모델·데이터셋·애플리케이션 탐색과 공개 협업 기능을 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://gamma.app/",
+    "name": "Gamma",
+    "source_url": "https://gamma.app",
+    "scope": "Gamma 공식 홈페이지에서 AI 기반 프레젠테이션·문서·웹사이트 제작 기능을 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://elevenlabs.io/",
+    "name": "ElevenLabs",
+    "source_url": "https://elevenlabs.io",
+    "scope": "ElevenLabs 공식 홈페이지에서 음성 생성·텍스트 음성 변환·음성 인식·더빙 관련 도구 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://quillbot.com/",
+    "name": "QuillBot",
+    "source_url": "https://quillbot.com/",
+    "scope": "QuillBot 공식 홈페이지에서 문장 바꾸기·문법 검사·문체 및 글쓰기 보조 도구 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://runway.com/",
+    "name": "Runway",
+    "source_url": "https://runway.com",
+    "scope": "Runway 공식 홈페이지에서 영상·이미지·오디오 생성 및 편집 도구와 개발자 API 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://ideogram.ai/",
+    "name": "Ideogram",
+    "source_url": "https://ideogram.ai/",
+    "scope": "Ideogram 공식 홈페이지에서 AI 이미지 생성·편집 작업공간과 개발자 API 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://suno.com/",
+    "name": "Suno",
+    "source_url": "https://suno.com/",
+    "scope": "Suno 공식 홈페이지에서 프롬프트 기반 음악 생성과 편집 기능 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://leonardo.ai/",
+    "name": "Leonardo AI",
+    "source_url": "https://leonardo.ai",
+    "scope": "Leonardo 공식 홈페이지에서 생성형 이미지·아트·영상 제작 도구 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://cursor.com/",
+    "name": "Cursor",
+    "source_url": "https://cursor.com",
+    "scope": "Cursor 공식 홈페이지에서 AI 코딩 에이전트와 코드 작성·수정 개발 환경 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.espn.com/",
+    "name": "ESPN",
+    "source_url": "https://www.espn.com",
+    "scope": "ESPN 공식 홈페이지에서 종목별 스포츠 뉴스·경기 결과·하이라이트·판타지 스포츠 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.uefa.com/",
+    "name": "UEFA",
+    "source_url": "https://www.uefa.com/",
+    "scope": "UEFA 공식 홈페이지에서 유럽 축구 대회 일정·결과·순위와 연맹 관련 정보를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.mlb.com/",
+    "name": "MLB",
+    "source_url": "https://www.mlb.com/",
+    "scope": "MLB 공식 홈페이지에서 메이저리그 경기 뉴스·일정·통계·영상 콘텐츠 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.formula1.com/",
+    "name": "Formula 1",
+    "source_url": "https://www.formula1.com/en",
+    "scope": "Formula 1 공식 홈페이지에서 그랑프리 일정·결과·실시간 타이밍·뉴스·하이라이트 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.fotmob.com/",
+    "name": "FotMob",
+    "source_url": "https://www.fotmob.com",
+    "scope": "FotMob 공식 홈페이지에서 축구 경기 실시간 점수·일정·리그 순위·경기 통계 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nfl.com/",
+    "name": "NFL",
+    "source_url": "https://www.nfl.com",
+    "scope": "NFL 공식 홈페이지에서 미식축구 경기 일정·점수·통계·뉴스·하이라이트 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.nhl.com/",
+    "name": "NHL",
+    "source_url": "https://www.nhl.com/",
+    "scope": "NHL 공식 홈페이지에서 아이스하키 경기 뉴스·팀·선수 명단·통계·일정 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.atptour.com/",
+    "name": "ATP Tour",
+    "source_url": "https://www.atptour.com/",
+    "scope": "ATP Tour 공식 홈페이지에서 남자 프로 테니스 경기 점수·대회 일정·선수 랭킹·통계 안내를 확인",
+    "checked_on": "2026-11-20",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
