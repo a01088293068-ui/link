@@ -713,7 +713,7 @@ def category_hub_metadata(records, categories=CATEGORY_LANDING):
     title = f"분야별 링크모음 {category_count}개 분야·{total}개 사이트 | 링크위키"
     description = (
         f"국내 이용 목적 중심 {domestic_focus}개와 해외 한인 정보 {overseas}개 등 "
-        f"{total}개 등록 사이트를 {category_count}개 분야에서 찾아보세요. "
+        f"{total}개 항목을 {category_count}개 분야에서 찾아보세요. "
         "검색·포털, 금융·경제, 교육·취업, 커뮤니티, 웹툰, 스포츠 등 목적별 링크를 비교하고 "
         "각 서비스의 운영 안내와 이용 조건을 확인하세요."
     )
