@@ -23,17 +23,23 @@
     output.append(node);
     return node;
   };
-  let catalogPromise = fetch('/assets/verified-directory.json', {
-    credentials: 'same-origin',
-    headers: { Accept: 'application/json' }
-  }).then(response => {
-    if (!response.ok) throw new Error('catalog unavailable');
-    return response.json();
-  }).then(rows => {
-    if (!Array.isArray(rows)) throw new Error('invalid catalog');
-    return rows.filter(row => row && typeof row.name === 'string' &&
-      typeof row.url === 'string' && /^https:\/\//i.test(row.url));
-  });
+  let catalogPromise = null;
+  const loadCatalog = () => {
+    if (!catalogPromise) {
+      catalogPromise = fetch('/assets/verified-directory.json', {
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' }
+      }).then(response => {
+        if (!response.ok) throw new Error('catalog unavailable');
+        return response.json();
+      }).then(rows => {
+        if (!Array.isArray(rows)) throw new Error('invalid catalog');
+        return rows.filter(row => row && typeof row.name === 'string' &&
+          typeof row.url === 'string' && /^https:\/\//i.test(row.url));
+      });
+    }
+    return catalogPromise;
+  };
 
   form.addEventListener('submit', async event => {
     event.preventDefault();
@@ -53,7 +59,7 @@
 
     write('p', '등록 목록과 대조 중입니다…');
     try {
-      const rows = await catalogPromise;
+      const rows = await loadCatalog();
       output.replaceChildren();
       const host = hostOf(pasted.href);
       const path = pathOf(pasted.href);
