@@ -927,6 +927,7 @@ def homepage_evidence_summary(records):
     checked = len(evidence)
     if total < 1 or checked > total:
         raise RuntimeError("Directory source-evidence counts are inconsistent")
+    coverage = round(checked * 100 / total)
     latest_checked = max((row["checked_on"] for row in evidence.values()), default=None)
     date_note = (
         " 최근 출처 대조 기록일은 " + latest_checked + "입니다."
@@ -936,7 +937,8 @@ def homepage_evidence_summary(records):
         '<section class="wrap seo-related-links seo-home-evidence" '
         'aria-label="등록 주소의 출처 대조 기록">'
         '<h2>등록 주소의 출처 대조 기록 공개</h2>'
-        f'<p>공개 목록 {total}개 가운데 {checked}건의 출처 대조 기록이 있습니다.'
+        f'<p>공개 목록 {total}개 가운데 {checked}건의 출처 대조 기록이 있습니다. '
+        f'기록이 있는 항목 비율은 약 {coverage}%입니다.'
         + date_note + ' '
         '해당 기록은 서비스 페이지 또는 관련 기관 안내를 바탕으로 등록 주소와 이용 범위를 대조한 내용입니다. '
         '이 수치는 전체 목록의 실시간 접속 확인이나 공식 인증 비율을 뜻하지 않습니다.</p>'
@@ -2181,6 +2183,7 @@ def build():
     directory_html = sync_directory_count(directory_html, len(records))
     directory_evidence = load_directory_evidence(records)
     directory_html = replace_directory_catalog_cards(directory_html, records, directory_evidence)
+    evidence_coverage = round(len(directory_evidence) * 100 / len(records))
     latest_evidence_date = max(
         (row["checked_on"] for row in directory_evidence.values()), default=None)
     evidence_summary = (
@@ -2188,6 +2191,7 @@ def build():
         + str(len(directory_evidence)) + '건</strong> · 공개 목록 '
         + str(len(records)) + '개 중 이 항목들은 서비스 페이지 또는 관련 기관 안내와 '
         '등록 주소·이용 범위를 대조했습니다. '
+        + '출처 대조 기록이 있는 항목 비율은 약 ' + str(evidence_coverage) + '%입니다. '
         + ('최근 출처 대조 기록일 ' + latest_evidence_date + '. ' if latest_evidence_date else '')
         + '<a href="#directory-source-evidence">대조한 출처와 확인일 보기</a></p>'
     )
