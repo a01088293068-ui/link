@@ -499,19 +499,19 @@ class SEOReleaseRegressionTests(unittest.TestCase):
         self.assertIn('id="v6-empty"', page)
         self.assertIn('id="v6-results"', page)
 
-    def test_address_check_guide_uses_canonical_main_service_cta(self):
+    def test_address_check_guide_hides_unavailable_main_service_shortcut(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / "guides" / "address-check.html").read_text(encoding="utf-8")
-        self.assertIn('href="https://linkwiki01.com/"', source)
-        self.assertIn(">링크위키 바로가기</a>", source)
-        self.assertNotIn("링크위키 본 사이트 방문", source)
+        self.assertNotIn("linkwiki01.com", source)
+        self.assertNotIn("링크위키 바로가기", source)
+        self.assertIn('href="/directory"', source)
 
-    def test_security_guide_uses_canonical_main_service_cta(self):
+    def test_security_guide_hides_unavailable_main_service_shortcut(self):
         root = Path(__file__).resolve().parents[1]
         source = (root / "guides" / "security.html").read_text(encoding="utf-8")
-        self.assertIn('href="https://linkwiki01.com/"', source)
-        self.assertIn(">링크위키 바로가기</a>", source)
-        self.assertNotIn("링크위키 본 사이트 방문", source)
+        self.assertNotIn("linkwiki01.com", source)
+        self.assertNotIn("링크위키 바로가기", source)
+        self.assertIn('href="/directory"', source)
 
     def test_latest_published_article_is_in_built_sitemap_with_matching_canonical(self):
         root = Path(__file__).resolve().parents[1]
