@@ -7,6 +7,7 @@ on:
       - 'build.py'
       - 'assets/style.css'
       - 'assets/blog.css'
+      - 'assets/address-catalog-match.js'
       - 'index.html'
       - 'directory.html'
       - 'categories/**'
