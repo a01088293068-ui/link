@@ -56,7 +56,7 @@ class CategoryCollectionSchemaTests(unittest.TestCase):
                 data = json.loads(match.group(1))
                 self.assertEqual(data["@type"], "CollectionPage")
                 self.assertEqual(data["url"], f"https://linkwiki.info/categories/{slug}")
-                self.assertEqual(data["name"], f"{heading} 사이트모음")
+                self.assertEqual(data["name"], heading)
                 self.assertEqual(data["mainEntity"]["name"], f"{heading} 등록 사이트")
                 items = data["mainEntity"]["itemListElement"]
                 expected_records = [record for record in records if record.get("category") == category]
