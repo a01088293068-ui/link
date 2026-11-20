@@ -255,7 +255,7 @@ def validate_maintenance_page(maintenance_html, records):
         )
         row = re.search(
             r'<tr><th><a href="/categories/' + re.escape(slug)
-            + r'">.*?</a></th><td>(\\d+)개</td><td>.*?</td></tr>',
+            + r'">.*?</a></th><td>(\d+)개</td><td>.*?</td></tr>',
             maintenance_html, re.S,
         )
         if not row or int(row.group(1)) != expected:
