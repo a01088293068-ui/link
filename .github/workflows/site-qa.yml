@@ -99,8 +99,8 @@ jobs:
           node-version: '22'
       - name: Test directory search and comparison actions
         run: node --test tests/test_directory_search.cjs tests/test_directory_dom.cjs tests/test_comparison_card_actions.cjs
-      - name: Test local address hostname inspector
-        run: node --test tests/test_address_inspector.cjs
+      - name: Test local address hostname and catalog matching
+        run: node --test tests/test_address_inspector.cjs tests/test_address_catalog_match.cjs
       - name: Verify generated sitemap and canonical URLs
         run: python3 -B -m seo.site_audit dist
       - name: Report crawlable inbound links to priority landing pages
