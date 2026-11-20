@@ -126,16 +126,17 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         issues.append("homepage must expose exactly one source-evidence summary")
     else:
         evidence = evidence_sections[0]
-        search_form = re.search(
-            r'<form\b[^>]*id="lw-home-query"[^>]*>.*?</form>', home_html, re.S
-        )
+        query_input = home_html.find('id="lw-home-query"')
+        form_start = home_html.rfind("<form", 0, query_input) if query_input >= 0 else -1
+        form_end = home_html.find("</form>", query_input) if query_input >= 0 else -1
+        search_form_end = form_end + len("</form>") if form_start >= 0 and form_end >= 0 else -1
         task_links = re.search(
             r'<nav\b[^>]*aria-label="업무별 사이트 검색"[^>]*>.*?</nav>',
             home_html, re.S
         )
         recent_content = home_html.find('aria-label="최근 등록된 정보"')
-        if (not search_form or not task_links
-                or evidence.start() < search_form.end()
+        if (search_form_end < 0 or not task_links
+                or evidence.start() < search_form_end
                 or evidence.start() < task_links.end()
                 or (recent_content >= 0 and evidence.start() > recent_content)):
             issues.append("homepage source-evidence summary must follow search shortcuts and precede recent articles")
