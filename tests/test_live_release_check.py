@@ -665,5 +665,64 @@ class LiveReleaseCheckTests(unittest.TestCase):
             self.assertEqual(run(dist, fetch=lambda path: pages[path]), [])
 
 
+    def test_address_and_security_guides_reject_obsolete_main_service_shortcut(self):
+        address_path = "/guides/address-check"
+        tool = (
+            '<section class="guide-summary lw-catalog-match" aria-labelledby="tool-title">'
+            '<h2 id="tool-title">받은 주소를 링크위키 등록 목록과 대조</h2>'
+            '<form id="lw-catalog-match-form"><input id="lw-catalog-match-input">'
+            '<button>등록 주소와 대조</button></form>'
+            '<div id="lw-catalog-match-result"></div></section>'
+        )
+        script = '<script defer="" src="../assets/address-catalog-match.js?v=test"></script>'
+        address = page(address_path, "공식 주소 확인", "공식 주소 확인", tool + script +
+                       '<a href="/directory">전체 목록</a>')
+        self.assertEqual(check_page(address, address, address_path), [])
+        stale_tool = address.replace('id="lw-catalog-match-form"', 'id="old-form"')
+        self.assertTrue(any("catalog URL matching tool differs" in issue
+                            for issue in check_page(address, stale_tool, address_path)))
+        stale_script = address.replace("address-catalog-match.js", "old-matcher.js")
+        self.assertTrue(any("catalog URL matching script differs" in issue
+                            for issue in check_page(address, stale_script, address_path)))
+        stale_cta = address.replace('href="/directory"', 'href="https://linkwiki01.com/"')
+        self.assertTrue(any("unavailable main-service shortcut" in issue
+                            for issue in check_page(address, stale_cta, address_path)))
+
+        security_path = "/guides/security"
+        security = page(security_path, "접속 안전 점검", "접속 안전 점검",
+                        '<a href="/directory">전체 목록</a>')
+        self.assertEqual(check_page(security, security, security_path), [])
+        stale_security = security.replace("</body>",
+                                          '<a href="https://linkwiki01.com/">바로가기</a></body>')
+        self.assertTrue(any("unavailable main-service shortcut" in issue
+                            for issue in check_page(security, stale_security, security_path)))
+
+    def test_address_guide_public_route_must_not_redirect_to_html_alias(self):
+        from email.message import Message
+        from unittest.mock import patch
+        from seo.live_release_check import fetch_public
+
+        class Response:
+            status = 200
+            headers = Message()
+            def __init__(self, final_url):
+                self.final_url = final_url
+            def geturl(self):
+                return self.final_url
+            def read(self):
+                return b"<html>test</html>"
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+
+        with patch("seo.live_release_check.urlopen",
+                   return_value=Response("https://linkwiki.info/guides/address-check.html")):
+            with self.assertRaisesRegex(RuntimeError, "Canonical URL redirected"):
+                fetch_public("/guides/address-check")
+        with patch("seo.live_release_check.urlopen",
+                   return_value=Response("https://linkwiki.info/guides/address-check")):
+            self.assertEqual(fetch_public("/guides/address-check"), "<html>test</html>")
+
 if __name__ == "__main__":
     unittest.main()
