@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const source = fs.readFileSync(
   require('node:path').join(__dirname, '..', 'assets', 'address-catalog-match.js'), 'utf8');
 
-function harness(value, rows) {
+function harness(value, rows, fetchImpl = async () => ({ ok: true, json: async () => rows })) {
   const handlers = {};
   const output = {
     children: [],
@@ -77,4 +77,23 @@ test('uses same-origin catalog data and safe text nodes, not HTML injection', ()
   assert.match(source, /verified-directory\.json/);
   assert.equal(source.includes('innerHTML'), false);
   assert.equal(source.includes('insertAdjacentHTML'), false);
+});
+
+
+test('catalog fetch is deferred until the user submits a valid URL', async () => {
+  const h = harness('https://www.naver.com/', rows);
+  assert.equal(h.fetchCalls, 0);
+  await h.submit({ preventDefault() {} });
+  assert.equal(h.fetchCalls, 1);
+  assert.match(text(h.output), /등록된 주소와 도메인·경로가 일치/);
+});
+
+test('catalog fetch failures are handled without an eager page-level rejection', async () => {
+  const h = harness('https://www.naver.com/', rows, async () => {
+    throw new TypeError('Failed to fetch');
+  });
+  assert.equal(h.fetchCalls, 0);
+  await h.submit({ preventDefault() {} });
+  assert.equal(h.fetchCalls, 1);
+  assert.match(text(h.output), /주소 목록을 불러오지 못했습니다/);
 });
