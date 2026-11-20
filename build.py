@@ -698,6 +698,27 @@ CATEGORY_SEARCH_EXAMPLES = {
 }
 
 
+
+def category_hub_metadata(records, categories=CATEGORY_LANDING):
+    """Build distinct, data-backed metadata for the category navigation hub."""
+    counts = {}
+    for item in records:
+        category = item.get("category")
+        if isinstance(category, str):
+            counts[category] = counts.get(category, 0) + 1
+    total = len(records)
+    category_count = len(categories)
+    overseas = counts.get("한인교민", 0)
+    domestic_focus = total - overseas
+    title = f"분야별 링크모음 {category_count}개 분야·{total}개 사이트 | 링크위키"
+    description = (
+        f"국내 이용 목적 중심 {domestic_focus}개와 해외 한인 정보 {overseas}개 등 "
+        f"{total}개 등록 사이트를 {category_count}개 분야에서 찾아보세요. "
+        "검색·포털, 금융·경제, 교육·취업, 커뮤니티, 웹툰, 스포츠 등 목적별 링크를 비교하고 "
+        "각 서비스의 운영 안내와 이용 조건을 확인하세요."
+    )
+    return title, description, domestic_focus, overseas
+
 def category_decision_guide(slug, records, categories=CATEGORY_LANDING):
     """Add original, task-specific advice while grounding examples in the list."""
     catalog = {item_slug: category for category, item_slug, _, _ in categories}
@@ -2324,10 +2345,17 @@ def build():
                 [item["name"] for item in records if item["category"] == category][:3]
             )) + '</p>'
             f'<a href="/categories/{slug}">사이트 목록 보기</a></article>')
+    hub_title, hub_description, domestic_focus_count, overseas_count = category_hub_metadata(records)
+    category_count = len(CATEGORY_LANDING)
     hub = ('<div class="wrap blog-wrap"><nav class="blog-breadcrumb"><a href="/">홈</a> / 분야별 사이트</nav>'
            '<div class="blog-heading"><p class="eyebrow">LINKWIKI · DIRECTORY</p>'
-           '<h1>분야별 링크모음: 목적에 맞는 사이트 찾기</h1>'
-           '<p>필요한 분야를 선택하면 등록된 사이트의 이름과 주소, 이용 목적을 살펴볼 수 있습니다.</p></div>'
+           f'<h1>분야별 링크모음: {category_count}개 분야에서 사이트 찾기</h1>'
+           f'<p>등록된 {len(records)}개 사이트를 이용 목적과 분야에 따라 탐색하세요. '
+           f'국내 이용 목적 중심 {domestic_focus_count}개와 해외 한인 정보 {overseas_count}개를 구분해 살펴볼 수 있습니다.</p></div>'
+           f'<section class="seo-guidance category-hub-intro" aria-label="분야별 링크모음 안내"><h2>{category_count}개 분야의 사이트를 목적별로 비교</h2>'
+           '<p>검색·포털과 공공정보, 금융·경제, 교육·취업, 생활·교통, 쇼핑, 뉴스, 커뮤니티, AI 도구, 스포츠, 영상·OTT, 웹툰·만화, 해외 한인 정보까지 실제 등록된 분야별 목록으로 이동할 수 있습니다.</p>'
+           '<p>각 분야의 등록 수와 예시는 현재 목록 데이터를 기준으로 표시합니다. 분야별 사이트 수는 등록·분류 변경에 따라 달라질 수 있습니다.</p>'
+           '<p>등록된 사실만으로 공식 운영 여부나 실시간 접속·안전성이 보증되지는 않습니다. 로그인이나 결제 전에는 운영 주체와 정확한 도메인을 별도로 확인하세요.</p></section>'
            '<div class="v6-grid">' + ''.join(category_cards) + '</div>'
            '<section class="seo-guidance"><h2>사이트를 선택할 때</h2>'
            '<p>사이트 수가 많다고 더 신뢰할 수 있는 것은 아닙니다. 각 서비스의 운영 주체, 정확한 도메인, 로그인·결제 조건을 확인하세요.</p>'
@@ -2336,7 +2364,7 @@ def build():
            '<a href="/guides/address-check">주소 확인 방법</a></p>'
            '</section></div>')
     hub_path = OUT / "categories" / "index.html"
-    hub_path.write_text(document("분야별 링크모음", "분야와 이용 목적에 맞는 사이트를 찾아보고, 서비스별 운영 안내와 이용 조건을 확인하세요.",
+    hub_path.write_text(document(hub_title, hub_description,
                                  SITE + "/categories/", hub, header, footer), encoding="utf-8")
     from seo.directory_maintenance import render as maintenance_render
     maintenance_body = maintenance_render(records, significant_updates, CATEGORY_LANDING)
