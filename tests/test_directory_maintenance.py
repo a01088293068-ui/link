@@ -39,7 +39,14 @@ class DirectoryMaintenanceTests(unittest.TestCase):
             "maintenance page total does not match verified directory data",
             validate_maintenance_page(stale_total, self.records),
         )
-        stale_category = output.replace("<td>33개</td>", "<td>32개</td>", 1)
+        community_count = sum(
+            item.get("category") == "커뮤니티" for item in self.records
+        )
+        stale_category = output.replace(
+            f"<td>{community_count}개</td>",
+            f"<td>{community_count - 1}개</td>",
+            1,
+        )
         self.assertTrue(any(
             issue.startswith("maintenance page category count mismatch:")
             for issue in validate_maintenance_page(stale_category, self.records)
