@@ -67,9 +67,12 @@
       if (exact.length) {
         write('h3', '등록된 주소와 도메인·경로가 일치합니다');
         exact.slice(0, 5).forEach(row => {
-          const p = write('p', row.name + ' · ' + row.category + ' · ' + host);
+          const p = write('p', row.name + ' · ' + row.category + ' · 등록 주소: ' + row.url);
           p.className = 'lw-catalog-match-item';
         });
+        if (pasted.protocol !== 'https:') {
+          write('p', '주의: 입력 주소는 HTTP입니다. 등록 목록에 HTTPS 주소가 있으므로 로그인·결제 전에는 HTTPS 등록 주소를 사용하세요.');
+        }
       } else if (sameHost.length) {
         write('h3', '등록된 사이트와 도메인은 같지만 경로가 다릅니다');
         sameHost.slice(0, 5).forEach(row => {
