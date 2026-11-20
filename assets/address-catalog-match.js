@@ -23,7 +23,7 @@
     output.append(node);
     return node;
   };
-  let catalogPromise = fetch('../assets/verified-directory.json', {
+  let catalogPromise = fetch('/assets/verified-directory.json', {
     credentials: 'same-origin',
     headers: { Accept: 'application/json' }
   }).then(response => {
