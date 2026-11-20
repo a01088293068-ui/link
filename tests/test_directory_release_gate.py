@@ -62,6 +62,12 @@ class DirectoryReleaseGateTests(unittest.TestCase):
     def test_complete_static_directory_passes(self):
         self.assertEqual(validate(*fixture()), [])
 
+    def test_directory_explains_full_url_lookup_without_claiming_live_safety(self):
+        root = Path(__file__).resolve().parents[1]
+        directory = (root / "directory.html").read_text(encoding="utf-8")
+        self.assertIn("전체 URL을 붙여넣어 등록된 주소와 대조", directory)
+        self.assertIn("실시간 접속·보안 검사는 아닙니다", directory)
+
     def test_missing_quick_category_navigation_fails(self):
         parts = list(fixture())
         parts[0] = parts[0].replace('id="directory-quick-compare"', 'id="removed"')
