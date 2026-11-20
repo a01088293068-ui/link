@@ -40,7 +40,8 @@ class CanonicalURLTests(unittest.TestCase):
         self.assertIn("https://linkwiki.info/categories/ai", urls)
         self.assertNotIn("https://linkwiki.info/categories/ai.html", urls)
         html = (dist / "categories" / "ai.html").read_text(encoding="utf-8")
-        self.assertIn('href="https://linkwiki.info/categories/ai" rel="canonical"', html)
+        canonical = __import__("re").search(r'<link\\b(?=[^>]*\\brel="canonical")(?=[^>]*\\bhref="https://linkwiki\\.info/categories/ai")[^>]*>', html)
+        self.assertIsNotNone(canonical, "category canonical must use the extensionless public URL")
 
     def test_category_hub_links_to_full_directory_with_dynamic_site_count(self):
         dist = ROOT / "dist"
