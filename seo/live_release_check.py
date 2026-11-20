@@ -37,6 +37,13 @@ PRIORITY_GUIDE_SLUGS = (
     "seo-20261111-mobile-address-directory-check",
 )
 
+# Static guides are public landing pages too; compare their live content instead
+# of checking only the homepage, directory and generated blog articles.
+GUIDE_PAGES = {
+    "/guides/address-check": "address-check.html",
+    "/guides/security": "security.html",
+}
+
 
 def priority_guide_pages(dist):
     """Return existing generated priority articles, preserving test fixtures."""
@@ -289,7 +296,9 @@ def check_page(expected_html, live_html, path):
                 f"({live_counts} != {expected_counts})")
     if ["".join(expected.headings).strip()] != ["".join(live.headings).strip()]:
         errors.append(f"{path}: deployed H1 differs from generated build")
-    if live.canonicals != [SITE + path]:
+    expected_canonicals = (expected.canonicals if path in GUIDE_PAGES
+                            else [SITE + path])
+    if live.canonicals != expected_canonicals:
         errors.append(f"{path}: deployed canonical differs or is duplicated")
     if live.noindex:
         errors.append(f"{path}: deployed robots noindex detected")
@@ -320,6 +329,23 @@ def check_page(expected_html, live_html, path):
             errors.append(f"{path}: deployed editorial provenance differs from generated build")
         if "/directory" not in live.links or "/categories/" not in live.links:
             errors.append(f"{path}: published guide lacks canonical directory/category navigation")
+    if path in ("/about", "/directory", *GUIDE_PAGES):
+        if "linkwiki01.com" in live_html or "footer-primary-action" in live_html:
+            errors.append(f"{path}: unavailable main-service shortcut is still published")
+    if path in GUIDE_PAGES:
+        if "/directory" not in live.links:
+            errors.append(f"{path}: canonical directory navigation missing")
+    if path == "/guides/address-check":
+        section_pattern = r'<section class="guide-summary lw-catalog-match"[^>]*>.*?</section>'
+        expected_tool = re.search(section_pattern, expected_html, re.S)
+        live_tool = re.search(section_pattern, live_html, re.S)
+        if not expected_tool or not live_tool or expected_tool.group() != live_tool.group():
+            errors.append("/guides/address-check: catalog URL matching tool differs from current build")
+        script_pattern = r'<script\b[^>]*src="[^"]*address-catalog-match\.js[^"]*"[^>]*></script>'
+        expected_script = re.search(script_pattern, expected_html, re.S)
+        live_script = re.search(script_pattern, live_html, re.S)
+        if not expected_script or not live_script or expected_script.group() != live_script.group():
+            errors.append("/guides/address-check: catalog URL matching script differs from current build")
     if path == "/about" and "글 작성과 정보 확인 범위" in expected_html:
         if "글 작성과 정보 확인 범위" not in live_html:
             errors.append("/about: editorial methodology not deployed")
@@ -426,14 +452,14 @@ def fetch_public(path):
         # not proof the extensionless canonical was served directly. Such
         # redirects can leave Google inspecting a different URL variant.
         if path in ("/", "/directory", "/categories/", "/about",
-                    "/guides/directory-maintenance") + CATEGORY_PATHS or path.startswith("/blog/"):
+                    "/guides/directory-maintenance", *GUIDE_PAGES) + CATEGORY_PATHS or path.startswith("/blog/"):
             if final.path != path or final.query or final.fragment:
                 raise RuntimeError("Canonical URL redirected or gained query parameters: "
                                    + url + " -> " + response.geturl())
         if response.status != 200:
             raise RuntimeError(f"HTTP {response.status}: {url}")
         if path in ("/", "/directory", "/categories/", "/about",
-                    "/guides/directory-maintenance") + CATEGORY_PATHS or path.startswith("/blog/"):
+                    "/guides/directory-maintenance", *GUIDE_PAGES) + CATEGORY_PATHS or path.startswith("/blog/"):
             tags = response.headers.get_all("X-Robots-Tag", [])
             if google_index_blocked_by_header(tags):
                 raise RuntimeError("HTTP X-Robots-Tag prohibits Google indexing: " + url)
@@ -462,6 +488,10 @@ def run(dist, fetch=fetch_public):
     expected_map.update(priority_guide_pages(dist))
     if (dist / "about.html").is_file():
         expected_map["/about"] = dist / "about.html"
+    for public_path, filename in GUIDE_PAGES.items():
+        guide = dist / "guides" / filename
+        if guide.is_file():
+            expected_map[public_path] = guide
     maintenance_page = dist / "guides" / "directory-maintenance.html"
     if maintenance_page.is_file():
         expected_map["/guides/directory-maintenance"] = maintenance_page
