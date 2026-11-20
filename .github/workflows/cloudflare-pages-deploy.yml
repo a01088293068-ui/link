@@ -19,11 +19,11 @@ jobs:
     # Attempt production deployment after every successful main-branch SEO
     # build. Validate credentials and the exact Pages project in job steps;
     # do not silently skip because an optional repository variable is absent.
+    # The workflow_run trigger already restricts this job to the two
+    # approved main-branch workflows above. Only successful runs may publish.
     if: >-
       ${{ github.event_name == 'workflow_dispatch' ||
-           (github.event.workflow_run.conclusion == 'success' &&
-            (github.event.workflow_run.name == 'LinkWiki SEO research and publish' ||
-             github.event.workflow_run.event == 'push')) }}
+           github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
