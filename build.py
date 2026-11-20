@@ -1795,7 +1795,7 @@ def category_collection_schema(records, category, slug, heading):
         "@type": "CollectionPage",
         "@id": SITE + "/categories/" + slug + "#collection",
         "url": SITE + "/categories/" + slug,
-        "name": heading + " 사이트모음",
+        "name": heading,
         "inLanguage": "ko",
         "mainEntity": {
             "@type": "ItemList",
