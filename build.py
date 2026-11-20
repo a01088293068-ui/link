@@ -2160,10 +2160,10 @@ def build():
     if count_replacements < 2:
         raise RuntimeError("Homepage directory count labels changed; review required")
     search_form_end = home.index("</form>", home.index('id="lw-home-query"')) + len("</form>")
-    home = home[:search_form_end] + quick_service_searches(first_party_records) + home[search_form_end:]
+    home = home[:search_form_end] + quick_service_searches(first_party_records) + homepage_evidence_summary(first_party_records) + home[search_form_end:]
     homepage_intents = core_search_intent_section(actual_count)
     real_directory_examples = homepage_directory_examples(first_party_records, CATEGORY_LANDING)
-    home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_evidence_summary(first_party_records) + homepage_intents + homepage_search_guide_links() + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
+    home = home.replace(position, panel + homepage_task_paths(first_party_records) + homepage_intents + homepage_search_guide_links() + korean_first_shortcuts(first_party_records) + real_directory_examples + position, 1)
     home = home.replace('</head>', '<link href="/assets/blog.css" rel="stylesheet"/></head>', 1)
     (OUT / "index.html").write_text(home, encoding="utf-8")
 
