@@ -15,7 +15,7 @@
   };
   const pathOf = value => {
     const u = new URL(value);
-    return (decodeURI(u.pathname || '/').replace(/\/$/, '') || '/');
+    return (u.pathname || '/').replace(/\/$/, '') || '/';
   };
   const write = (tag, value) => {
     const node = document.createElement(tag);
