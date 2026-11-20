@@ -40,7 +40,7 @@ test('exact registered URL is identified by host and path without safety claims'
   await h.submit({ preventDefault() {} });
   assert.match(text(h.output), /등록된 주소와 도메인·경로가 일치/);
   assert.match(text(h.output), /중고나라/);
-  assert.match(text(h.output), /안전성을 인증하거나 보증하지 않습니다/);
+  assert.match(text(h.output), /보안성을 인증하거나 보증하지 않습니다/);
 });
 
 test('same host with a different path is explicitly distinguished', async () => {
