@@ -51,8 +51,11 @@ class HomeIntentTests(unittest.TestCase):
         self.assertIn('href="/directory?q=', html)
         self.assertIn("커뮤니티·웹툰·AI 도구·스포츠", html)
         self.assertIn("네이버 웹툰", html)
+        self.assertIn("전체 URL을 붙여넣어 등록 목록과 대조", html)
+        self.assertIn('href="/directory#directory-two-site-compare"', html)
+        self.assertIn("두 사이트 비교 도구 열기", html)
         self.assertNotIn("정부 민원, 연금·건강보험", html)
-        self.assertEqual(html.count('class="blog-card"'), 3)
+        self.assertEqual(html.count('class="blog-card"'), 4)
         without_sample = [r for r in records if r["name"] != "네이버 웹툰"]
         with self.assertRaisesRegex(RuntimeError, "not backed"):
             build.homepage_task_paths(without_sample)
@@ -119,6 +122,8 @@ class HomeIntentTests(unittest.TestCase):
         self.assertIn("커뮤니티·웹툰·AI 도구·스포츠", html)
         self.assertIn('href="/categories/"', html)
         self.assertIn('href="/directory?q=', html)
+        self.assertIn('href="/directory#directory-two-site-compare"', html)
+        self.assertIn("전체 URL을 붙여넣어 등록 목록과 대조", html)
         self.assertIn('action="/directory"', html)
         self.assertNotIn('href="/directory.html"', html)
         self.assertIn('href="https://linkwiki.info/" rel="canonical"', html)
