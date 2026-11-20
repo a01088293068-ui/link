@@ -26,6 +26,18 @@ class HomeIntentTests(unittest.TestCase):
         self.assertIn('name="twitter:title"', modified)
         self.assertIn('content="' + expected + '"', modified)
 
+    def test_homepage_source_evidence_coverage_is_derived_from_unique_records(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        evidence = build.load_directory_evidence(records)
+        coverage = round(len(evidence) * 100 / len(records))
+        summary = build.homepage_evidence_summary(records)
+        self.assertIn(
+            f"공개 목록 {len(records)}개 가운데 {len(evidence)}건의 출처 대조 기록이 있습니다.",
+            summary,
+        )
+        self.assertIn(f"기록이 있는 항목 비율은 약 {coverage}%입니다.", summary)
+
     def test_home_primary_keyword_intent_is_visible_and_consistent(self):
         source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
         self.assertIn("<title>주소모음·링크모음·사이트모음 |", source)
