@@ -334,10 +334,14 @@ def polish_home_intent(home):
         else:
             raise RuntimeError("Homepage structure changed; SEO intent adjustment needs review")
     title = "주소모음·링크모음·사이트모음 | 링크위키"
+    evidence = load_directory_evidence(records)
+    evidence_count = len(evidence)
+    evidence_coverage = round(evidence_count * 100 / total_sites)
     description = (
-        f"주소모음·링크모음에서 {total_sites}개 사이트를 이름·도메인·분야별로 찾고, "
-        "사이트모음의 설명과 이용 목적을 비교하세요. 외부 주소의 공식성 및 실시간 접속 여부는 "
-        "각 서비스 운영기관의 최신 안내에서 확인하세요."
+        f"주소모음·링크모음·사이트모음에서 {total_sites}개 사이트를 이름·도메인·"
+        f"{len(CATEGORY_LANDING)}개 분야로 찾고 비교하세요. "
+        f"{evidence_count}건의 출처 대조 기록(목록의 약 {evidence_coverage}%)과 확인일을 공개합니다. "
+        "실시간 접속·안전성은 별도 확인이 필요합니다."
     )
     home, title_count = re.subn(r"<title>.*?</title>", "<title>" + escape(title) + "</title>", home, count=1, flags=re.S)
     if title_count != 1:
