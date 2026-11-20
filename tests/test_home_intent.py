@@ -38,6 +38,25 @@ class HomeIntentTests(unittest.TestCase):
         )
         self.assertIn(f"기록이 있는 항목 비율은 약 {coverage}%입니다.", summary)
 
+    def test_home_meta_description_highlights_measured_source_coverage(self):
+        root = Path(__file__).resolve().parents[1]
+        records = json.loads((root / "assets/verified-directory.json").read_text(encoding="utf-8"))
+        evidence = build.load_directory_evidence(records)
+        coverage = round(len(evidence) * 100 / len(records))
+        modified = build.polish_home_intent(
+            (root / "index.html").read_text(encoding="utf-8")
+        )
+        expected = (
+            f"주소모음·링크모음·사이트모음에서 {len(records)}개 사이트를 이름·도메인·"
+            f"{len(build.CATEGORY_LANDING)}개 분야로 찾고 비교하세요. "
+            f"{len(evidence)}건의 출처 대조 기록(목록의 약 {coverage}%)과 확인일을 공개합니다. "
+            "실시간 접속·안전성은 별도 확인이 필요합니다."
+        )
+        self.assertIn('name="description"', modified)
+        self.assertIn(expected, modified)
+        self.assertIn('property="og:description"', modified)
+        self.assertIn('name="twitter:description"', modified)
+
     def test_home_primary_keyword_intent_is_visible_and_consistent(self):
         source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
         self.assertIn("<title>주소모음·링크모음·사이트모음 |", source)
