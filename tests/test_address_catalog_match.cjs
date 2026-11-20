@@ -23,11 +23,12 @@ function harness(value, rows, fetchImpl = async () => ({ ok: true, json: async (
     },
     createElement(tag) { return { tag, textContent: '', className: '', href: '' }; }
   };
+  let fetchCalls = 0;
   vm.runInNewContext(source, {
     document, URL, encodeURIComponent,
-    fetch: async () => ({ ok: true, json: async () => rows })
+    fetch: (...args) => { fetchCalls += 1; return fetchImpl(...args); }
   });
-  return { submit: handlers.submit, output };
+  return { submit: handlers.submit, output, get fetchCalls() { return fetchCalls; } };
 }
 const rows = [
   {name: '네이버', category: '검색·포털', url: 'https://www.naver.com/'},
