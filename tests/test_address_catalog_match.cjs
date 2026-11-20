@@ -43,6 +43,14 @@ test('exact registered URL is identified by host and path without safety claims'
   assert.match(text(h.output), /보안성을 인증하거나 보증하지 않습니다/);
 });
 
+test('HTTP input is distinguished from the registered HTTPS URL', async () => {
+  const h = harness('http://cafe.naver.com/joonggonara', rows);
+  await h.submit({ preventDefault() {} });
+  assert.match(text(h.output), /등록된 주소와 도메인·경로가 일치/);
+  assert.match(text(h.output), /입력 주소는 HTTP/);
+  assert.match(text(h.output), /등록 주소: https:\/\/cafe\.naver\.com\/joonggonara/);
+});
+
 test('same host with a different path is explicitly distinguished', async () => {
   const h = harness('https://cafe.naver.com/other', rows);
   await h.submit({ preventDefault() {} });
