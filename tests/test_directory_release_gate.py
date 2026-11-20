@@ -28,7 +28,7 @@ def fixture(card_count=13):
     home = ('<html><head><title>주소모음·링크모음·사이트모음 | 링크위키</title>'
             '<link rel="canonical" href="'+ORIGIN+'/"></head><body>'
             '<a href="/directory">directory</a><a href="/categories/">분야</a>'
-            '<form id="lw-home-query"></form>'
+            '<form class="lw-search"><input id="lw-home-query"/></form>'
             '<nav aria-label="업무별 사이트 검색"></nav>'
             '<section class="wrap seo-related-links seo-home-evidence"><p>공개 목록 365개 가운데 299건의 출처 대조 기록이 있습니다.</p></section>'
             '<section aria-label="최근 등록된 정보"></section>'
@@ -76,8 +76,10 @@ class DirectoryReleaseGateTests(unittest.TestCase):
     def test_homepage_evidence_must_follow_task_shortcuts(self):
         parts = list(fixture())
         parts[1] = parts[1].replace('<nav aria-label="업무별 사이트 검색"></nav>', '')
-        self.assertIn("homepage source-evidence summary must follow search shortcuts",
-                      validate(*parts))
+        self.assertTrue(any(
+            "homepage source-evidence summary must follow search shortcuts" in issue
+            for issue in validate(*parts)
+        ))
 
     def test_directory_explains_full_url_lookup_without_claiming_live_safety(self):
         root = Path(__file__).resolve().parents[1]
