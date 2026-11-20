@@ -183,3 +183,13 @@
  .section[aria-label="함께 확인할 이용 가이드"] li a{min-height:46px}
  .content-note>a{display:flex;width:100%;margin:8px 0 0}
 }
+
+/* Catalog-backed address comparison tool */
+.lw-catalog-match{margin:24px 0;padding:20px 24px;background:#fff;border:1px solid var(--line);border-radius:var(--radius)}
+.lw-catalog-match>label{display:block;margin:12px 0 8px;font-weight:700}
+.lw-catalog-match .v6-search{margin:12px 0}
+.lw-catalog-match-result{display:grid;gap:8px;margin-top:14px}
+.lw-catalog-match-result h3{font-size:1rem;margin:8px 0 0}
+.lw-catalog-match-result p{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.lw-catalog-match-result a{width:fit-content;font-weight:700;color:var(--deep)}
+@media(max-width:600px){.lw-catalog-match{padding:16px}.lw-catalog-match .v6-search{flex-direction:column}.lw-catalog-match .v6-search button{width:100%}}
