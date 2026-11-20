@@ -172,5 +172,38 @@ class DirectoryEvidenceTests(unittest.TestCase):
         self.assertIn("현재 작동 여부", html)
 
 
+    def test_new_ai_and_sports_entries_have_verified_first_party_sources(self):
+        expected = {
+            "https://huggingface.co/": ("Hugging Face", "https://huggingface.co/"),
+            "https://gamma.app/": ("Gamma", "https://gamma.app"),
+            "https://elevenlabs.io/": ("ElevenLabs", "https://elevenlabs.io"),
+            "https://quillbot.com/": ("QuillBot", "https://quillbot.com/"),
+            "https://runway.com/": ("Runway", "https://runway.com"),
+            "https://ideogram.ai/": ("Ideogram", "https://ideogram.ai/"),
+            "https://suno.com/": ("Suno", "https://suno.com/"),
+            "https://leonardo.ai/": ("Leonardo AI", "https://leonardo.ai"),
+            "https://cursor.com/": ("Cursor", "https://cursor.com"),
+            "https://www.espn.com/": ("ESPN", "https://www.espn.com"),
+            "https://www.uefa.com/": ("UEFA", "https://www.uefa.com/"),
+            "https://www.mlb.com/": ("MLB", "https://www.mlb.com/"),
+            "https://www.formula1.com/": ("Formula 1", "https://www.formula1.com/en"),
+            "https://www.fotmob.com/": ("FotMob", "https://www.fotmob.com"),
+            "https://www.nfl.com/": ("NFL", "https://www.nfl.com"),
+            "https://www.nhl.com/": ("NHL", "https://www.nhl.com/"),
+            "https://www.atptour.com/": ("ATP Tour", "https://www.atptour.com/"),
+        }
+        self.assertGreaterEqual(len(self.evidence), 316)
+        for url, (name, source_url) in expected.items():
+            with self.subTest(url=url):
+                self.assertIn(url, self.evidence)
+                row = self.evidence[url]
+                self.assertEqual(row["name"], name)
+                self.assertEqual(row["source_url"], source_url)
+                self.assertEqual(row["checked_on"], "2026-11-20")
+                self.assertEqual(row["evidence_type"], "service_page")
+                self.assertTrue(row["scope"])
+                self.assertLessEqual(date.fromisoformat(row["checked_on"]), date.today())
+
+
 if __name__ == "__main__":
     unittest.main()
