@@ -237,6 +237,32 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
     return issues
 
 
+
+def validate_maintenance_page(maintenance_html, records):
+    """Reject stale public maintenance counts before a release is published."""
+    issues = []
+    if not isinstance(maintenance_html, str) or not maintenance_html:
+        return ["directory maintenance page missing from release"]
+    if not isinstance(records, list) or not records:
+        return ["verified directory data empty"]
+    count = len(records)
+    if f"현재 {count}개 사이트가 등록되어 있습니다." not in maintenance_html:
+        issues.append("maintenance page total does not match verified directory data")
+    for slug, category in CATEGORY_LABELS.items():
+        expected = sum(
+            1 for item in records
+            if isinstance(item, dict) and item.get("category") == category
+        )
+        row = re.search(
+            r'<tr><th><a href="/categories/' + re.escape(slug)
+            + r'">.*?</a></th><td>(\\d+)개</td><td>.*?</td></tr>',
+            maintenance_html, re.S,
+        )
+        if not row or int(row.group(1)) != expected:
+            issues.append(f"maintenance page category count mismatch: {slug}")
+    return issues
+
+
 def main():
     dist = ROOT / "dist"
     if not (dist / "directory.html").is_file():
@@ -251,6 +277,15 @@ def main():
          for slug in CATEGORIES},
         (dist / "sitemap.xml").read_text(encoding="utf-8"),
     )
+    maintenance_path = dist / "guides" / "directory-maintenance.html"
+    maintenance_html = (
+        maintenance_path.read_text(encoding="utf-8")
+        if maintenance_path.is_file() else ""
+    )
+    issues.extend(validate_maintenance_page(
+        maintenance_html,
+        json.loads((dist / "assets" / "verified-directory.json").read_text(encoding="utf-8")),
+    ))
     if issues:
         for issue in issues:
             print("FAIL:", issue)
