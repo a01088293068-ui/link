@@ -26,7 +26,7 @@ class SiteCompareReleaseTests(unittest.TestCase):
         dist = ROOT / "dist"
         if not (dist / "assets/site-comparison.js").is_file():
             self.skipTest("Run build first")
-        from seo.live_release_check import CATEGORY_PATHS
+        from seo.live_release_check import CATEGORY_PATHS, GUIDE_PAGES
         source = (dist / "assets/site-comparison.js").read_text(encoding="utf-8")
         def fetch(path):
             if path == "/assets/site-comparison.js":
@@ -41,6 +41,8 @@ class SiteCompareReleaseTests(unittest.TestCase):
                 return (dist / "categories/index.html").read_text(encoding="utf-8")
             if path == "/about":
                 return (dist / "about.html").read_text(encoding="utf-8")
+            if path in GUIDE_PAGES:
+                return (dist / "guides" / GUIDE_PAGES[path]).read_text(encoding="utf-8")
             if path == "/guides/directory-maintenance":
                 return (dist / "guides/directory-maintenance.html").read_text(encoding="utf-8")
             if path in CATEGORY_PATHS:
