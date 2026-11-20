@@ -118,6 +118,24 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         issues.append("directory canonical missing or noncanonical")
     if home.canonicals != [ORIGIN + "/"]:
         issues.append("homepage canonical missing or noncanonical")
+    evidence_sections = list(re.finditer(
+        r'<section\b[^>]*class="[^"]*\bseo-home-evidence\b[^"]*"[^>]*>.*?</section>',
+        home_html, re.S,
+    ))
+    if len(evidence_sections) != 1:
+        issues.append("homepage must expose exactly one source-evidence summary")
+    else:
+        evidence = evidence_sections[0]
+        search_form = re.search(
+            r'<form\b[^>]*id="lw-home-query"[^>]*>.*?</form>', home_html, re.S
+        )
+        recent_content = home_html.find('aria-label="최근 등록된 정보"')
+        if (not search_form or evidence.start() < search_form.end()
+                or (recent_content >= 0 and evidence.start() > recent_content)):
+            issues.append("homepage source-evidence summary must follow search and precede recent articles")
+        counts = re.search(r'공개 목록\s+(\d+)개\s+가운데\s+(\d+)건', evidence.group(0))
+        if not counts or int(counts.group(1)) < 1 or int(counts.group(2)) > int(counts.group(1)):
+            issues.append("homepage source-evidence counts are missing or inconsistent")
     if any("noindex" in directive for directive in parser.robots):
         issues.append("directory has noindex")
     if directory_html.count('id="directory-quick-compare"') != 1:
