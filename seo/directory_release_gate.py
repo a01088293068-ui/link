@@ -129,10 +129,16 @@ def validate(directory_html, home_html, records, category_htmls, sitemap_xml):
         search_form = re.search(
             r'<form\b[^>]*id="lw-home-query"[^>]*>.*?</form>', home_html, re.S
         )
+        task_links = re.search(
+            r'<nav\b[^>]*aria-label="업무별 사이트 검색"[^>]*>.*?</nav>',
+            home_html, re.S
+        )
         recent_content = home_html.find('aria-label="최근 등록된 정보"')
-        if (not search_form or evidence.start() < search_form.end()
+        if (not search_form or not task_links
+                or evidence.start() < search_form.end()
+                or evidence.start() < task_links.end()
                 or (recent_content >= 0 and evidence.start() > recent_content)):
-            issues.append("homepage source-evidence summary must follow search and precede recent articles")
+            issues.append("homepage source-evidence summary must follow search shortcuts and precede recent articles")
         counts = re.search(r'공개 목록\s+(\d+)개\s+가운데\s+(\d+)건', evidence.group(0))
         if not counts or int(counts.group(1)) < 1 or int(counts.group(2)) > int(counts.group(1)):
             issues.append("homepage source-evidence counts are missing or inconsistent")
