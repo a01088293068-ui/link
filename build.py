@@ -1012,7 +1012,7 @@ def homepage_task_paths(records):
         '<div class="blog-grid">'
         '<a class="blog-card" href="' + escape(url, quote=True) + '">'
         '<strong>사이트 이름이나 도메인을 알고 있을 때</strong>'
-        '<span>예: 네이버 웹툰. 이름·도메인을 입력해 실제 등록된 주소와 설명을 확인합니다.</span>'
+        '<span>사이트 이름뿐 아니라 도메인이나 전체 URL을 붙여넣어 등록 목록과 대조할 수 있습니다.</span>'
         '<span class="blog-card-more">등록 사이트 이름으로 검색 →</span></a>'
         '<a class="blog-card" href="/categories/">'
         '<strong>어떤 사이트를 쓸지 비교하고 싶을 때</strong>'
@@ -1022,6 +1022,10 @@ def homepage_task_paths(records):
         '<strong>이동할 주소를 확인하고 싶을 때</strong>'
         '<span>등록 도메인과 실제 운영기관 안내를 대조하고 로그인 전에 주소를 확인합니다.</span>'
         '<span class="blog-card-more">사이트 주소 확인 방법 →</span></a>'
+        '<a class="blog-card" href="/directory#directory-two-site-compare">'
+        '<strong>비슷한 서비스 두 곳을 직접 비교하고 싶을 때</strong>'
+        '<span>등록 목록의 분야·도메인·설명을 나란히 비교합니다. 인기 순위나 안전 등급을 임의로 매기지 않습니다.</span>'
+        '<span class="blog-card-more">두 사이트 비교 도구 열기 →</span></a>'
         '</div></section>'
     )
 
