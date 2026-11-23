@@ -783,6 +783,7 @@ def core_family_keyword_rows(rows):
         weighted = sum(float(row.get("position", 0)) *
                        int(row.get("impressions", 0)) for row in items)
         return {"impressions": impressions, "clicks": clicks,
+                "ctr": round(clicks / impressions * 100, 1) if impressions else None,
                 "position": round(weighted / impressions, 1) if impressions else None,
                 "observed": bool(items)}
 
@@ -800,16 +801,18 @@ def format_core_family_keyword_report(rows, error=''):
         '- 두 개 이상의 핵심 표현이 한 검색어에 함께 있을 때는 '
         '주소모음 → 링크모음 → 사이트모음 순서로 한 번만 집계합니다.',
         '- 미관측은 검색어 데이터 미제공을 뜻하며 검색량 0을 보장하지 않습니다.',
-        '| 핵심 표현 | 정확 검색 노출 / 클릭 / 평균 순위 | 연관 검색 노출 / 클릭 / 평균 순위 |',
+        '| 핵심 표현 | 정확 검색 노출 / 클릭 / CTR / 평균 순위 | 연관 검색 노출 / 클릭 / CTR / 평균 순위 |',
         '|---|---|---|',
     ]
     if error:
         lines.append('| 조회 오류 | ' + str(error) + ' | - |')
         return '\n'.join(lines)
     def show(item):
-        return (f"{item['impressions']} / {item['clicks']} / "
-                f"{item['position']:.1f}" if item['observed'] and
-                item['position'] is not None else '관측 없음')
+        if not item['observed']:
+            return '관측 없음'
+        ctr = f"{item['ctr']:.1f}%" if item['ctr'] is not None else '-'
+        position = f"{item['position']:.1f}" if item['position'] is not None else '-'
+        return f"{item['impressions']} / {item['clicks']} / {ctr} / {position}"
     for row in core_family_keyword_rows(rows):
         lines.append(f"| {row['keyword']} | {show(row['exact'])} | {show(row['related'])} |")
     return '\n'.join(lines)
@@ -1448,9 +1451,10 @@ def format_korea_guide_queries(rows, end, error=''):
 
     def metric(period):
         impressions, clicks, weighted = period
-        return f'{impressions} / {clicks} / {weighted / impressions:.1f}' if impressions else '미관측'
+        return (f'{impressions} / {clicks} / {weighted / impressions:.1f} / '
+                f'{clicks / impressions * 100:.1f}%') if impressions else '미관측'
 
-    lines += ['| 가이드 | 검색어 | 직전 노출 / 클릭 / 평균 순위 | 최근 노출 / 클릭 / 평균 순위 |',
+    lines += ['| 가이드 | 검색어 | 직전 노출 / 클릭 / 평균 순위 / CTR | 최근 노출 / 클릭 / 평균 순위 / CTR |',
               '|---|---|---:|---:|']
     for label, slug in LONG_TAIL_GUIDES:
         page = f'https://linkwiki.info/blog/{slug}/'
