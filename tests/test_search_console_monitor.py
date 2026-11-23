@@ -158,6 +158,10 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertEqual((brand["impressions"], brand["clicks"], brand["ctr"], brand["position"]),
                          (20, 10, 50.0, 3.0))
         self.assertEqual(brand["pages"], ["https://linkwiki.info/"])
+        report = monitor.format_report(
+            [], [], "2026-10-01", "2026-10-28", "sc-domain:linkwiki.info",
+            focused_keyword_rows=keyword_rows, focused_query_page_rows=page_rows)
+        self.assertIn("| 링크위키 | 20 | 10 | 50.0% | 3.0위 | https://linkwiki.info/ |", report)
         daily = [
             {"keys": ["링크위키", "2026-11-04"], "impressions": 5, "clicks": 2, "position": 4},
             {"keys": ["링크위키", "2026-11-11"], "impressions": 10, "clicks": 5, "position": 2},
@@ -639,6 +643,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         actual = monitor.core_keyword_rows(rows, query_pages)
         self.assertEqual([r['keyword'] for r in actual], ['주소모음', '링크모음', '사이트모음'])
         self.assertEqual((actual[0]['impressions'], actual[0]['clicks'], actual[0]['position']), (4, 1, 25.0))
+        self.assertEqual(actual[0]['ctr'], 25.0)
         self.assertEqual(actual[0]['pages'],
                          ['https://linkwiki.info/', 'https://linkwiki.info/directory'])
         self.assertEqual(actual[1]['impressions'], 2)
@@ -986,6 +991,13 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertIn("/categories/ai | 관측 없음 | 4 / 1 / 25.0% / 30.0위", report)
         self.assertIn("블로그 글 전체 (/blog/*)", report)
         self.assertIn("/blog/seo-one", report)
+        self.assertEqual(monitor.normalized_gsc_page_path("https://linkwiki.info/blog/"), "/blog/")
+        guide_rows = rows + [
+            {"keys": ["https://linkwiki.info/guides/address-check", "2026-11-11"],
+             "impressions": 2, "clicks": 1, "position": 12},
+        ]
+        guide_report = monitor.format_priority_page_weekly_comparison(guide_rows, "2026-11-11")
+        self.assertIn("/guides/address-check | 관측 없음 | 2 / 1 / 50.0% / 12.0위", guide_report)
         failed = monitor.format_priority_page_weekly_comparison([], "2026-11-11", "HTTPError HTTP 403")
         self.assertIn("조회 실패", failed)
         self.assertNotIn("/directory | 관측 없음", failed)
