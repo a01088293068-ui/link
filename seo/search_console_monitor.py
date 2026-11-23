@@ -1093,8 +1093,8 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
     lines.extend(['', '## 핵심 목표 키워드 3종 실적', '',
                   '- 주소모음·링크모음·사이트모음과 띄어쓰기 변형의 실제 조회 결과입니다.',
                   '- 검색어가 제공되지 않으면 순위를 추정하지 않습니다. 평균 순위는 노출수 가중값입니다.',
-                  '| 키워드 | 노출 | 클릭 | 평균 순위 | 실제 노출 페이지 |',
-                  '|---|---:|---:|---:|---|'])
+                  '| 키워드 | 노출 | 클릭 | 평균 순위 | 실제 노출 페이지 | CTR |',
+                  '|---|---:|---:|---:|---|---:|'])
     if focused_error:
         lines.append('- 별도 핵심 키워드 조회 실패: ' + focused_error)
     source_keywords = (focused_keyword_rows if focused_keyword_rows is not None
