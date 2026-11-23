@@ -161,6 +161,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         report = monitor.format_report(
             [], [], "2026-10-01", "2026-10-28", "sc-domain:linkwiki.info",
             focused_keyword_rows=keyword_rows, focused_query_page_rows=page_rows)
+        self.assertIn("| 키워드 | 노출 | 클릭 | 평균 순위 | 실제 노출 페이지 | CTR |", report)
         self.assertIn("| 링크위키 | 20 | 10 | 50.0% | 3.0위 | https://linkwiki.info/ |", report)
         daily = [
             {"keys": ["링크위키", "2026-11-04"], "impressions": 5, "clicks": 2, "position": 4},
