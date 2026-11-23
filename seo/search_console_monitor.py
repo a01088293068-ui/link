@@ -12,7 +12,7 @@ import os
 import re
 import time
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 
@@ -696,6 +696,13 @@ def format_index_inspection(rows, error=''):
 
 
 CORE_KEYWORDS = ("주소모음", "링크모음", "사이트모음")
+TRACKED_KEYWORDS = CORE_KEYWORDS + ("링크위키",)
+PRIORITY_PAGE_PATHS = (
+    "/", "/directory", "/blog/", "/categories/ai", "/categories/sports",
+    "/guides/address-check", "/guides/choose-directory", "/guides/link-faq",
+    "/guides/security", "/guides/directory-comparison",
+    "/guides/link-troubleshooting", "/guides/directory-maintenance",
+)
 
 # Google Search Analytics API supports RE2 includingRegex query filters.
 # A dedicated filtered request prevents the top-ranked query list from
@@ -717,6 +724,22 @@ KOREA_CORE_QUERY_FILTERS = [{
     "filters": [
         {"dimension": "query", "operator": "includingRegex",
          "expression": r"^(주소[[:space:]]*모음|링크[[:space:]]*모음|사이트[[:space:]]*모음)$"},
+        {"dimension": "country", "operator": "equals", "expression": "kor"},
+    ],
+}]
+
+TRACKED_QUERY_FILTERS = [{
+    "groupType": "and",
+    "filters": [{
+        "dimension": "query", "operator": "includingRegex",
+        "expression": r"^(주소[[:space:]]*모음|링크[[:space:]]*모음|사이트[[:space:]]*모음|링크[[:space:]]*위키)$",
+    }],
+}]
+KOREA_TRACKED_QUERY_FILTERS = [{
+    "groupType": "and",
+    "filters": [
+        {"dimension": "query", "operator": "includingRegex",
+         "expression": r"^(주소[[:space:]]*모음|링크[[:space:]]*모음|사이트[[:space:]]*모음|링크[[:space:]]*위키)$"},
         {"dimension": "country", "operator": "equals", "expression": "kor"},
     ],
 }]
@@ -792,10 +815,10 @@ def format_core_family_keyword_report(rows, error=''):
     return '\n'.join(lines)
 
 
-def core_keyword_rows(keyword_rows, query_page_rows=None):
+def core_keyword_rows(keyword_rows, query_page_rows=None, keywords=CORE_KEYWORDS):
     """Use observed query rows only; merge internal whitespace variants."""
     output = []
-    for target in CORE_KEYWORDS:
+    for target in keywords:
         matched = [
             row for row in keyword_rows
             if ''.join(str((row.get("keys") or [""])[0]).split()) == target
@@ -812,14 +835,38 @@ def core_keyword_rows(keyword_rows, query_page_rows=None):
         output.append({
             "keyword": target, "impressions": impressions,
             "clicks": clicks,
+            "ctr": round(clicks / impressions * 100, 1) if impressions else None,
             "position": round(weighted / impressions, 1) if impressions else None,
             "pages": pages, "observed": bool(matched),
         })
     return output
 
 
+def brand_keyword_row(keyword_rows, query_page_rows=None):
+    """Report the LinkWiki brand query separately from generic keywords."""
+    rows = [
+        row for row in keyword_rows
+        if ''.join(str((row.get("keys") or [""])[0]).split()) == "링크위키"
+    ]
+    impressions = sum(int(row.get("impressions", 0)) for row in rows)
+    clicks = sum(int(row.get("clicks", 0)) for row in rows)
+    weighted = sum(float(row.get("position", 0)) * int(row.get("impressions", 0))
+                   for row in rows)
+    pages = sorted({
+        str(row["keys"][1]) for row in (query_page_rows or [])
+        if len(row.get("keys") or []) >= 2
+        and ''.join(str(row["keys"][0]).split()) == "링크위키"
+    })
+    return {
+        "keyword": "링크위키", "impressions": impressions, "clicks": clicks,
+        "ctr": round(clicks / impressions * 100, 1) if impressions else None,
+        "position": round(weighted / impressions, 1) if impressions else None,
+        "pages": pages, "observed": bool(rows),
+    }
 
-def core_keyword_weekly_comparison(rows, end_date):
+
+
+def core_keyword_weekly_comparison(rows, end_date, keywords=CORE_KEYWORDS):
     """Compare two disjoint seven-day windows of *observed* keyword-date rows.
 
     GSC may anonymize low-volume queries: missing rows are zero observed rows,
@@ -827,7 +874,7 @@ def core_keyword_weekly_comparison(rows, end_date):
     Distinguish no-row from a genuine reported position.
     """
     end = date.fromisoformat(str(end_date))
-    by_key = {key: {"recent": [], "previous": []} for key in CORE_KEYWORDS}
+    by_key = {key: {"recent": [], "previous": []} for key in keywords}
     for row in rows or []:
         keys = row.get('keys') or []
         if len(keys) < 2:
@@ -852,6 +899,7 @@ def core_keyword_weekly_comparison(rows, end_date):
                        int(row.get('impressions', 0)) for row in selected)
         return {
             'impressions': impressions, 'clicks': clicks,
+            'ctr': round(clicks / impressions * 100, 1) if impressions else None,
             'position': round(weighted / impressions, 1) if impressions else None,
             'observed': bool(selected),
         }
@@ -864,26 +912,27 @@ def core_keyword_weekly_comparison(rows, end_date):
     ]
 
 
-def format_core_keyword_weekly_comparison(rows, end_date, error='', scope='global'):
-    """Render genuine week-over-week impressions, clicks and weighted ranks."""
+def format_core_keyword_weekly_comparison(rows, end_date, error='', scope='global',
+                                           keywords=CORE_KEYWORDS):
+    """Render genuine week-over-week impressions, clicks, CTR and weighted ranks."""
     lines = [
         '', ('## 대한민국 이용자 기준 최근 7일 핵심 키워드 노출 변화'
              if scope == 'korea' else
              '## 주소모음·링크모음·사이트모음 최근 7일 노출 변화'), '',
         '- Google Search Console 검색어×날짜 필터 결과만 사용합니다. '
-        '브랜드 검색, 검색량 추정치, 외부 검색 API 순위는 포함하지 않습니다.',
+        '브랜드어는 일반 키워드와 별도 행으로 표시하며, 검색량 추정치나 외부 검색 API 순위는 포함하지 않습니다.',
         f'- 비교 기간: 최근 7일 {end_date} 종료 / 직전 7일은 그 이전 7일.',
         '- 데이터 없음은 GSC에 공개된 해당 검색어 행이 없다는 뜻이며 '
         '실제 노출 0회를 보장하지 않습니다.',
         '| 키워드 | 직전 7일 노출·클릭 | 최근 7일 노출·클릭 | '
-        '관측 노출 변화 | 직전 평균 순위 | 최근 평균 순위 |',
-        '|---|---:|---:|---:|---:|---:|',
+        '관측 노출 변화 | 직전 평균 순위 | 최근 평균 순위 | 직전 CTR | 최근 CTR |',
+        '|---|---:|---:|---:|---:|---:|---:|---:|',
     ]
     if error:
         lines.append('- 별도 핵심 키워드 일별 조회 실패: ' + str(error))
         lines.append('| 조회 실패 | - | - | - | - | - |')
         return '\n'.join(lines)
-    for item in core_keyword_weekly_comparison(rows, end_date):
+    for item in core_keyword_weekly_comparison(rows, end_date, keywords=keywords):
         prior, recent = item['previous'], item['recent']
         def count_text(window):
             return (f"{window['impressions']}회 · {window['clicks']}회"
@@ -892,9 +941,11 @@ def format_core_keyword_weekly_comparison(rows, end_date, error='', scope='globa
                  if prior['observed'] or recent['observed'] else '비교 불가')
         def rank_text(window):
             return f"{window['position']:.1f}위" if window['position'] is not None else '-'
+        def ctr_text(window):
+            return f"{window['ctr']:.1f}%" if window['ctr'] is not None else '-'
         lines.append('| ' + ' | '.join((
             item['keyword'], count_text(prior), count_text(recent), delta,
-            rank_text(prior), rank_text(recent)
+            rank_text(prior), rank_text(recent), ctr_text(prior), ctr_text(recent)
         )) + ' |')
     lines.extend([
         '', '- 표본이 적으면 평균 순위 변화가 크게 흔들립니다. '
@@ -908,21 +959,21 @@ def format_core_keyword_weekly_comparison(rows, end_date, error='', scope='globa
 
 
 
-def format_core_landing_page_split(query_page_rows, error=''):
-    """Show which site URLs Google actually surfaced for each exact core query.
+def format_core_landing_page_split(query_page_rows, error='', keywords=CORE_KEYWORDS):
+    """Show which site URLs Google actually surfaced for each exact tracked query.
 
     This does not infer indexation from absence of search analytics rows.
     """
-    lines = ['', '## 핵심 키워드별 실제 노출 URL 분포', '',
+    lines = ['', '## 핵심 키워드·브랜드별 실제 노출 URL 분포', '',
              '- Google Search Console 검색어×페이지 실측 데이터만 사용합니다.',
              '- 한 검색어로 여러 URL이 노출되면 페이지별 목적과 내부 링크를 검토하세요.',
-             '| 키워드 | 노출 URL | 노출 | 클릭 | 평균 순위 |',
-             '|---|---|---:|---:|---:|']
+             '| 키워드 | 노출 URL | 노출 | 클릭 | 평균 순위 | CTR |',
+             '|---|---|---:|---:|---:|---:|']
     if error:
         return '\n'.join(lines + ['| 조회 실패 | - | - | - | - |', '',
                                    '- 조회 오류: ' + str(error), ''])
     observed = False
-    for keyword in CORE_KEYWORDS:
+    for keyword in keywords:
         matched = []
         for row in query_page_rows or []:
             keys = row.get('keys') or []
@@ -937,8 +988,10 @@ def format_core_landing_page_split(query_page_rows, error=''):
             impressions = int(row.get('impressions', 0))
             position = (f"{float(row.get('position', 0)):.1f}" if impressions else '-')
             url = str(row['keys'][1]).replace('|', '%7C')
+            clicks = int(row.get('clicks', 0))
+            ctr = clicks / impressions * 100 if impressions else 0
             lines.append(f"| {keyword} | {url} | {impressions} | "
-                         f"{int(row.get('clicks', 0))} | {position} |")
+                         f"{clicks} | {position} | {ctr:.1f}% |")
     if not observed:
         lines.append('| 관측된 검색어·페이지 조합 없음 | - | - | - | - |')
     lines.extend(['', '- 관측된 URL이 여러 개여도 자동으로 키워드 잠식이라고 단정하지 않습니다.',
@@ -1050,11 +1103,23 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
                     else query_page_rows)
     for core in core_keyword_rows(source_keywords, source_pages):
         if not core["observed"]:
-            lines.append(f'| {core["keyword"]} | 데이터 없음 | - | - | - |')
+            lines.append(f'| {core["keyword"]} | 데이터 없음 | - | - | - | - |')
             continue
         landing = ', '.join(core["pages"][:3]).replace('|', '%7C') if core["pages"] else '페이지 쌍 데이터 없음'
         lines.append(f'| {core["keyword"]} | {core["impressions"]} | {core["clicks"]} | '
-                     f'{core["position"] if core["position"] is not None else "-"} | {landing} |')
+                     f'{core["position"] if core["position"] is not None else "-"} | {landing} | '
+                     f'{core["ctr"]:.1f}% |')
+    brand = brand_keyword_row(source_keywords, source_pages)
+    lines.extend(['', '## 브랜드어 링크위키 실적', '',
+                  '- 정확 일치(띄어쓰기 변형 포함) 검색어만 별도 집계합니다.',
+                  '| 브랜드 검색어 | 노출 | 클릭 | CTR | 평균 순위 | 실제 노출 페이지 |',
+                  '|---|---:|---:|---:|---:|---|'])
+    if not brand["observed"]:
+        lines.append('| 링크위키 | 데이터 없음 | - | - | - | - |')
+    else:
+        landing = ', '.join(brand["pages"][:3]).replace('|', '%7C') if brand["pages"] else '페이지 쌍 데이터 없음'
+        lines.append(f'| 링크위키 | {brand["impressions"]} | {brand["clicks"]} | '
+                     f'{brand["ctr"]:.1f}% | {brand["position"]:.1f}위 | {landing} |')
     # Work queue: observed searches already close enough to deserve targeted improvement.
     # Thresholds prevent one-off low-volume rows from dominating the report.
     opportunities = sorted(
@@ -1085,22 +1150,28 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
     )[:20]
     lines.extend(['', '## 검색어별 실제 노출 페이지 (수정 대상)', '',
                   '- 검색어와 노출 URL이 함께 관측된 경우만 표시합니다. 한 검색어에 여러 페이지가 나올 수 있습니다.',
-                  '| 검색어 | 노출 URL | 노출 | 클릭 | 평균 순위 |',
-                  '|---|---|---:|---:|---:|'])
+                  '| 검색어 | 노출 URL | 노출 | 클릭 | 평균 순위 | CTR |',
+                  '|---|---|---:|---:|---:|---:|'])
     for row in candidates:
         keys = row['keys']
         query = str(keys[0]).replace('|', '\\|').replace('\n', ' ')
         page = str(keys[1]).replace('|', '%7C')
-        lines.append(f"| {query} | {page} | {int(row.get('impressions', 0))} | "
-                     f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
+        impressions = int(row.get('impressions', 0))
+        clicks = int(row.get('clicks', 0))
+        ctr = clicks / impressions * 100 if impressions else 0
+        lines.append(f"| {query} | {page} | {impressions} | "
+                     f"{clicks} | {float(row.get('position', 0)):.1f} | {ctr:.1f}% |")
     if not candidates:
         lines.append('| 검색어·페이지 쌍의 개선 후보 없음 | - | - | - | - |')
-    lines.extend(['', '## 페이지 상위 30개', '', '| URL | 노출 | 클릭 | 평균 순위 |',
-                  '|---|---:|---:|---:|'])
+    lines.extend(['', '## 페이지 상위 30개', '', '| URL | 노출 | 클릭 | 평균 순위 | CTR |',
+                  '|---|---:|---:|---:|---:|'])
     for row in page_rows[:30]:
         key = str((row.get('keys') or [''])[0]).replace('|', '%7C')
-        lines.append(f"| {key} | {int(row.get('impressions', 0))} | "
-                     f"{int(row.get('clicks', 0))} | {row.get('position', 0):.1f} |")
+        impressions = int(row.get('impressions', 0))
+        clicks = int(row.get('clicks', 0))
+        ctr = clicks / impressions * 100 if impressions else 0
+        lines.append(f"| {key} | {impressions} | "
+                     f"{clicks} | {row.get('position', 0):.1f} | {ctr:.1f}% |")
     if not page_rows:
         lines.append('| 데이터 없음 | - | - | - |')
     # Page-level improvements still work when Google anonymizes every query.
@@ -1113,12 +1184,15 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
     lines.extend(['', '## 노출 페이지 우선 개선 후보 (검색어 비공개 시에도 사용)', '',
                   '- 검색어 행이 없어도 실제 노출 페이지의 평균 순위와 노출수를 기준으로 판단합니다.',
                   '- 평균 순위 7~50위, 노출 3회 이상인 페이지를 노출수 순으로 정리합니다.',
-                  '| 페이지 URL | 노출 | 클릭 | 평균 순위 |',
-                  '|---|---:|---:|---:|'])
+                  '| 페이지 URL | 노출 | 클릭 | 평균 순위 | CTR |',
+                  '|---|---:|---:|---:|---:|'])
     for row in page_opportunities:
         page = str((row.get('keys') or [''])[0]).replace('|', '%7C')
-        lines.append(f"| {page} | {int(row.get('impressions', 0))} | "
-                     f"{int(row.get('clicks', 0))} | {float(row.get('position', 0)):.1f} |")
+        impressions = int(row.get('impressions', 0))
+        clicks = int(row.get('clicks', 0))
+        ctr = clicks / impressions * 100 if impressions else 0
+        lines.append(f"| {page} | {impressions} | "
+                     f"{clicks} | {float(row.get('position', 0)):.1f} | {ctr:.1f}% |")
     if not page_opportunities:
         lines.append('| 조건에 맞는 페이지 없음 | - | - | - |')
     if daily:
@@ -1132,6 +1206,106 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
     lines.extend(['', '※ 데이터 집계 지연과 API 상위 행 제한으로 전체 실적과 다를 수 있습니다.', ''])
     return '\n'.join(lines)
 
+
+
+def normalized_gsc_page_path(value):
+    """Normalize observed GSC URLs to the site's extensionless public paths."""
+    parts = urlsplit(str(value))
+    if parts.netloc and parts.netloc.lower() not in ("linkwiki.info", "www.linkwiki.info"):
+        return ""
+    path = parts.path or "/"
+    if path.endswith(".html"):
+        path = path[:-5]
+    if path == "/index":
+        path = "/"
+    if path == "/blog":
+        path = "/blog/"
+    elif path != "/" and path.endswith("/"):
+        path = path.rstrip("/")
+    return path
+
+
+def page_weekly_comparison(rows, end_date):
+    """Compare page-level GSC impressions, clicks, CTR and rank over two weeks."""
+    end = date.fromisoformat(str(end_date))
+    by_path = {}
+    for row in rows or []:
+        keys = row.get("keys") or []
+        if len(keys) < 2:
+            continue
+        path = normalized_gsc_page_path(keys[0])
+        if not path or (path not in PRIORITY_PAGE_PATHS and not path.startswith("/blog/")):
+            continue
+        try:
+            day = date.fromisoformat(str(keys[1]))
+        except ValueError:
+            continue
+        age = (end - day).days
+        if not 0 <= age < 14:
+            continue
+        window = "recent" if age < 7 else "previous"
+        by_path.setdefault(path, {"recent": [], "previous": []})[window].append(row)
+
+    def summarize(selected):
+        impressions = sum(int(row.get("impressions", 0)) for row in selected)
+        clicks = sum(int(row.get("clicks", 0)) for row in selected)
+        weighted = sum(float(row.get("position", 0)) * int(row.get("impressions", 0))
+                       for row in selected)
+        return {
+            "impressions": impressions, "clicks": clicks,
+            "ctr": round(clicks / impressions * 100, 1) if impressions else None,
+            "position": round(weighted / impressions, 1) if impressions else None,
+            "observed": bool(selected),
+        }
+
+    result = []
+    for path in PRIORITY_PAGE_PATHS:
+        windows = by_path.get(path, {"recent": [], "previous": []})
+        result.append({"page": path, "recent": summarize(windows["recent"]),
+                       "previous": summarize(windows["previous"])})
+    blog_paths = sorted(path for path in by_path if path.startswith("/blog/") and path != "/blog/")
+    if blog_paths:
+        result.append({
+            "page": "블로그 글 전체 (/blog/*)",
+            "recent": summarize([row for path in blog_paths for row in by_path[path]["recent"]]),
+            "previous": summarize([row for path in blog_paths for row in by_path[path]["previous"]]),
+        })
+        ranked_posts = sorted(
+            blog_paths,
+            key=lambda path: -sum(int(row.get("impressions", 0))
+                                  for window in ("recent", "previous")
+                                  for row in by_path[path][window]),
+        )[:10]
+        for path in ranked_posts:
+            windows = by_path[path]
+            result.append({"page": path, "recent": summarize(windows["recent"]),
+                           "previous": summarize(windows["previous"])})
+    return result
+
+
+def format_priority_page_weekly_comparison(rows, end_date, error=""):
+    lines = [
+        "", "## 우선 페이지 최근 7일·직전 7일 비교", "",
+        f"- 비교 기간: 최근 7일 {end_date} 종료 / 직전 7일은 그 이전 7일.",
+        "- 페이지별 검색어 익명 처리와 무관한 GSC 페이지×날짜 집계입니다.",
+        "- 블로그 글 전체는 /blog/ 허브를 제외한 개별 글 URL의 합계입니다.",
+        "| 페이지 | 직전 7일 노출 / 클릭 / CTR / 평균순위 | 최근 7일 노출 / 클릭 / CTR / 평균순위 | 노출 변화 |",
+        "|---|---:|---:|---:|",
+    ]
+    if error:
+        lines.append("| 조회 실패 | - | - | " + str(error) + " |")
+        return "\n".join(lines)
+    def metric(window):
+        if not window["observed"]:
+            return "관측 없음"
+        return (f'{window["impressions"]} / {window["clicks"]} / '
+                f'{window["ctr"]:.1f}% / {window["position"]:.1f}위')
+    for item in page_weekly_comparison(rows, end_date):
+        prior, recent = item["previous"], item["recent"]
+        delta = (f'{recent["impressions"] - prior["impressions"]:+d}회'
+                 if prior["observed"] or recent["observed"] else "비교 불가")
+        lines.append("| " + " | ".join((item["page"], metric(prior), metric(recent), delta)) + " |")
+    return "\n".join(lines) + "\n"
 
 
 def collect_index_inspections(token, property_url, urls, inspector=None):
@@ -1159,7 +1333,8 @@ def collect_index_inspections(token, property_url, urls, inspector=None):
 
 
 
-def format_core_keyword_index_alignment(focused_pages, inspections, error=''):
+def format_core_keyword_index_alignment(focused_pages, inspections, error='',
+                                         keywords=CORE_KEYWORDS):
     """Tie exact target-query landing pages to Google stored index status.
 
     This is a prioritization aid, not an automatic diagnosis of SEO quality.
@@ -1183,7 +1358,7 @@ def format_core_keyword_index_alignment(focused_pages, inspections, error=''):
             continue
         query = ''.join(str(keys[0]).split())
         url = str(keys[1])
-        if query not in CORE_KEYWORDS or not url.startswith('https://linkwiki.info/'):
+        if query not in keywords or not url.startswith('https://linkwiki.info/'):
             continue
         matched.append((query, url, int(row.get('impressions') or 0)))
     for query, url, impressions in sorted(matched, key=lambda x: (-x[2], x[0], x[1]))[:30]:
@@ -1306,10 +1481,10 @@ def main():
     try:
         focused_keywords = query_performance(
             token, args.property, start.isoformat(), end.isoformat(),
-            ['query'], limit=100, filter_groups=CORE_QUERY_FILTERS)
+            ['query'], limit=100, filter_groups=TRACKED_QUERY_FILTERS)
         focused_pages = query_performance(
             token, args.property, start.isoformat(), end.isoformat(),
-            ['query', 'page'], limit=1000, filter_groups=CORE_QUERY_FILTERS)
+            ['query', 'page'], limit=1000, filter_groups=TRACKED_QUERY_FILTERS)
     except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
         focused_error = type(exc).__name__
         if isinstance(exc, HTTPError):
@@ -1330,7 +1505,7 @@ def main():
         weekly_core_rows = query_performance(
             token, args.property,
             (end - timedelta(days=13)).isoformat(), end.isoformat(),
-            ['query', 'date'], limit=1000, filter_groups=CORE_QUERY_FILTERS)
+            ['query', 'date'], limit=1000, filter_groups=TRACKED_QUERY_FILTERS)
     except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
         weekly_core_error = type(exc).__name__
         if isinstance(exc, HTTPError):
@@ -1343,11 +1518,21 @@ def main():
             token, args.property,
             (end - timedelta(days=13)).isoformat(), end.isoformat(),
             ['query', 'date'], limit=1000,
-            filter_groups=KOREA_CORE_QUERY_FILTERS)
+            filter_groups=KOREA_TRACKED_QUERY_FILTERS)
     except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
         korea_core_error = type(exc).__name__
         if isinstance(exc, HTTPError):
             korea_core_error += f' HTTP {exc.code}'
+    page_weekly_rows, page_weekly_error = [], ''
+    try:
+        page_weekly_rows = query_performance(
+            token, args.property,
+            (end - timedelta(days=13)).isoformat(), end.isoformat(),
+            ['page', 'date'], limit=1000)
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+        page_weekly_error = type(exc).__name__
+        if isinstance(exc, HTTPError):
+            page_weekly_error += f' HTTP {exc.code}'
     args.output.parent.mkdir(parents=True, exist_ok=True)
     inspections, inspection_error = collect_index_inspections(
         token, args.property, inspection_targets(pages, core_query_pages=focused_pages, as_of=date.today()))
@@ -1357,13 +1542,16 @@ def main():
         focused_query_page_rows=focused_pages, focused_error=focused_error)
     report += format_core_family_keyword_report(family_keyword_rows, family_error)
     report += format_core_keyword_weekly_comparison(
-        weekly_core_rows, end.isoformat(), weekly_core_error)
+        weekly_core_rows, end.isoformat(), weekly_core_error, keywords=TRACKED_KEYWORDS)
     report += '\n\n## 한국 검색 이용자 기준 핵심 키워드 추이\n'
     report += ('\n- Google Search Console 국가 필터: 대한민국(kor). '
                '한국어 검색 전체 또는 구글 한국 도메인 순위와 동일하지 않습니다.\n'
                '- 아래 평균 순위는 실제 한국 이용자 대상 검색 노출의 가중 평균입니다.\n')
     report += format_core_keyword_weekly_comparison(
-        korea_core_rows, end.isoformat(), korea_core_error, scope='korea')
+        korea_core_rows, end.isoformat(), korea_core_error, scope='korea',
+        keywords=TRACKED_KEYWORDS)
+    report += format_priority_page_weekly_comparison(
+        page_weekly_rows, end.isoformat(), page_weekly_error)
     guide_rows, guide_error = [], ''
     try:
         guide_rows = query_performance(
@@ -1374,8 +1562,11 @@ def main():
         if isinstance(exc, HTTPError):
             guide_error += f' HTTP {exc.code}'
     report += format_korea_guide_queries(guide_rows, end, guide_error)
-    report += format_core_landing_page_split(focused_pages, focused_error)
-    report += format_core_keyword_index_alignment(focused_pages, inspections, focused_error or inspection_error)
+    report += format_core_landing_page_split(
+        focused_pages, focused_error, keywords=TRACKED_KEYWORDS)
+    report += format_core_keyword_index_alignment(
+        focused_pages, inspections, focused_error or inspection_error,
+        keywords=TRACKED_KEYWORDS)
     report += format_index_inspection(inspections, inspection_error)
     report += format_search_visibility_inspection_conflicts(
         pages, inspections, end.isoformat(), inspection_error)
@@ -1400,12 +1591,20 @@ def main():
         "core_keywords": core_keyword_rows(
             focused_keywords if focused_keywords is not None else keywords,
             focused_pages if focused_pages is not None else query_pages),
+        "brand_keyword": brand_keyword_row(
+            focused_keywords if focused_keywords is not None else keywords,
+            focused_pages if focused_pages is not None else query_pages),
         "global_core_weekly": core_keyword_weekly_comparison(
-            weekly_core_rows, end.isoformat()) if not weekly_core_error else [],
+            weekly_core_rows, end.isoformat(), keywords=TRACKED_KEYWORDS)
+            if not weekly_core_error else [],
         "global_core_weekly_error": weekly_core_error,
         "korea_core_weekly": core_keyword_weekly_comparison(
-            korea_core_rows, end.isoformat()) if not korea_core_error else [],
+            korea_core_rows, end.isoformat(), keywords=TRACKED_KEYWORDS)
+            if not korea_core_error else [],
         "korea_core_weekly_error": korea_core_error,
+        "priority_page_weekly": page_weekly_comparison(page_weekly_rows, end.isoformat())
+            if not page_weekly_error else [],
+        "priority_page_weekly_error": page_weekly_error,
         "core_query_error": focused_error,
         "inspections": inspections,
         "inspection_error": inspection_error,
