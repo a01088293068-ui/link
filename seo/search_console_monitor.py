@@ -918,7 +918,7 @@ def format_core_keyword_weekly_comparison(rows, end_date, error='', scope='globa
     lines = [
         '', ('## 대한민국 이용자 기준 최근 7일 핵심 키워드 노출 변화'
              if scope == 'korea' else
-             '## 주소모음·링크모음·사이트모음 최근 7일 노출 변화'), '',
+             '## 핵심 키워드·브랜드어 최근 7일 변화'), '',
         '- Google Search Console 검색어×날짜 필터 결과만 사용합니다. '
         '브랜드어는 일반 키워드와 별도 행으로 표시하며, 검색량 추정치나 외부 검색 API 순위는 포함하지 않습니다.',
         f'- 비교 기간: 최근 7일 {end_date} 종료 / 직전 7일은 그 이전 7일.',
@@ -930,7 +930,7 @@ def format_core_keyword_weekly_comparison(rows, end_date, error='', scope='globa
     ]
     if error:
         lines.append('- 별도 핵심 키워드 일별 조회 실패: ' + str(error))
-        lines.append('| 조회 실패 | - | - | - | - | - |')
+        lines.append('| 조회 실패 | - | - | - | - | - | - | - |')
         return '\n'.join(lines)
     for item in core_keyword_weekly_comparison(rows, end_date, keywords=keywords):
         prior, recent = item['previous'], item['recent']
@@ -970,7 +970,7 @@ def format_core_landing_page_split(query_page_rows, error='', keywords=CORE_KEYW
              '| 키워드 | 노출 URL | 노출 | 클릭 | 평균 순위 | CTR |',
              '|---|---|---:|---:|---:|---:|']
     if error:
-        return '\n'.join(lines + ['| 조회 실패 | - | - | - | - |', '',
+        return '\n'.join(lines + ['| 조회 실패 | - | - | - | - | - |', '',
                                    '- 조회 오류: ' + str(error), ''])
     observed = False
     for keyword in keywords:
@@ -993,7 +993,7 @@ def format_core_landing_page_split(query_page_rows, error='', keywords=CORE_KEYW
             lines.append(f"| {keyword} | {url} | {impressions} | "
                          f"{clicks} | {position} | {ctr:.1f}% |")
     if not observed:
-        lines.append('| 관측된 검색어·페이지 조합 없음 | - | - | - | - |')
+        lines.append('| 관측된 검색어·페이지 조합 없음 | - | - | - | - | - |')
     lines.extend(['', '- 관측된 URL이 여러 개여도 자동으로 키워드 잠식이라고 단정하지 않습니다.',
                   '- 검색어가 익명 처리되거나 노출이 적으면 이 표에 표시되지 않을 수 있습니다.', ''])
     return '\n'.join(lines)
@@ -1106,9 +1106,10 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
             lines.append(f'| {core["keyword"]} | 데이터 없음 | - | - | - | - |')
             continue
         landing = ', '.join(core["pages"][:3]).replace('|', '%7C') if core["pages"] else '페이지 쌍 데이터 없음'
+        position = f'{core["position"]:.1f}' if core["position"] is not None else '-'
+        ctr = f'{core["ctr"]:.1f}%' if core["ctr"] is not None else '-'
         lines.append(f'| {core["keyword"]} | {core["impressions"]} | {core["clicks"]} | '
-                     f'{core["position"] if core["position"] is not None else "-"} | {landing} | '
-                     f'{core["ctr"]:.1f}% |')
+                     f'{position} | {landing} | {ctr} |')
     brand = brand_keyword_row(source_keywords, source_pages)
     lines.extend(['', '## 브랜드어 링크위키 실적', '',
                   '- 정확 일치(띄어쓰기 변형 포함) 검색어만 별도 집계합니다.',
@@ -1118,8 +1119,10 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
         lines.append('| 링크위키 | 데이터 없음 | - | - | - | - |')
     else:
         landing = ', '.join(brand["pages"][:3]).replace('|', '%7C') if brand["pages"] else '페이지 쌍 데이터 없음'
+        brand_ctr = f'{brand["ctr"]:.1f}%' if brand["ctr"] is not None else '-'
+        brand_position = f'{brand["position"]:.1f}위' if brand["position"] is not None else '-'
         lines.append(f'| 링크위키 | {brand["impressions"]} | {brand["clicks"]} | '
-                     f'{brand["ctr"]:.1f}% | {brand["position"]:.1f}위 | {landing} |')
+                     f'{brand_ctr} | {brand_position} | {landing} |')
     # Work queue: observed searches already close enough to deserve targeted improvement.
     # Thresholds prevent one-off low-volume rows from dominating the report.
     opportunities = sorted(
@@ -1162,7 +1165,7 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
         lines.append(f"| {query} | {page} | {impressions} | "
                      f"{clicks} | {float(row.get('position', 0)):.1f} | {ctr:.1f}% |")
     if not candidates:
-        lines.append('| 검색어·페이지 쌍의 개선 후보 없음 | - | - | - | - |')
+        lines.append('| 검색어·페이지 쌍의 개선 후보 없음 | - | - | - | - | - |')
     lines.extend(['', '## 페이지 상위 30개', '', '| URL | 노출 | 클릭 | 평균 순위 | CTR |',
                   '|---|---:|---:|---:|---:|'])
     for row in page_rows[:30]:
@@ -1173,7 +1176,7 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
         lines.append(f"| {key} | {impressions} | "
                      f"{clicks} | {row.get('position', 0):.1f} | {ctr:.1f}% |")
     if not page_rows:
-        lines.append('| 데이터 없음 | - | - | - |')
+        lines.append('| 데이터 없음 | - | - | - | - |')
     # Page-level improvements still work when Google anonymizes every query.
     page_opportunities = sorted(
         (row for row in page_rows
@@ -1194,7 +1197,7 @@ def format_report(keyword_rows, page_rows, start_date, end_date, property_url,
         lines.append(f"| {page} | {impressions} | "
                      f"{clicks} | {float(row.get('position', 0)):.1f} | {ctr:.1f}% |")
     if not page_opportunities:
-        lines.append('| 조건에 맞는 페이지 없음 | - | - | - |')
+        lines.append('| 조건에 맞는 페이지 없음 | - | - | - | - |')
     if daily:
         lines.extend(['', '## 최근 날짜별 추세', '',
                       '| 날짜 | 노출 | 클릭 | 평균 순위 |',
@@ -1218,7 +1221,7 @@ def normalized_gsc_page_path(value):
         path = path[:-5]
     if path == "/index":
         path = "/"
-    if path == "/blog":
+    if path in ("/blog", "/blog/"):
         path = "/blog/"
     elif path != "/" and path.endswith("/"):
         path = path.rstrip("/")
@@ -1298,8 +1301,10 @@ def format_priority_page_weekly_comparison(rows, end_date, error=""):
     def metric(window):
         if not window["observed"]:
             return "관측 없음"
+        ctr = f'{window["ctr"]:.1f}%' if window["ctr"] is not None else '-'
+        position = f'{window["position"]:.1f}위' if window["position"] is not None else '-'
         return (f'{window["impressions"]} / {window["clicks"]} / '
-                f'{window["ctr"]:.1f}% / {window["position"]:.1f}위')
+                f'{ctr} / {position}')
     for item in page_weekly_comparison(rows, end_date):
         prior, recent = item["previous"], item["recent"]
         delta = (f'{recent["impressions"] - prior["impressions"]:+d}회'
