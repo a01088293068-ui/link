@@ -23,7 +23,7 @@ class SearchConsoleMonitorTests(unittest.TestCase):
             {"keys": ["다른 페이지", "https://linkwiki.info/", "2026-11-09"], "impressions": 100},
         ]
         report = monitor.format_korea_guide_queries(rows, date(2026, 11, 9))
-        self.assertIn(r"정부24\|민원 | 2 / 1 / 30.0 | 4 / 1 / 12.0", report)
+        self.assertIn(r"정부24\|민원 | 2 / 1 / 30.0 / 50.0% | 4 / 1 / 12.0 / 25.0%", report)
         self.assertIn("미관측", report)
         self.assertNotIn("기간 제외", report)
         self.assertNotIn("다른 페이지", report)
@@ -710,7 +710,9 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         result = {item["keyword"]: item for item in monitor.core_family_keyword_rows(rows)}
         self.assertEqual(result["주소모음"]["exact"]["impressions"], 2)
         self.assertEqual(result["주소모음"]["exact"]["position"], 100.5)
+        self.assertEqual(result["주소모음"]["exact"]["ctr"], 50.0)
         self.assertEqual(result["주소모음"]["related"]["impressions"], 6)
+        self.assertEqual(result["주소모음"]["related"]["ctr"], 16.7)
         self.assertEqual(result["주소모음"]["related"]["position"], 14.0)
         self.assertEqual(result["링크모음"]["related"]["impressions"], 2)
         self.assertFalse(result["사이트모음"]["exact"]["observed"])
