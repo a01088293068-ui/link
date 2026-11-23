@@ -144,6 +144,43 @@ class SearchConsoleMonitorTests(unittest.TestCase):
         self.assertNotIn('대한민국 이용자 기준', global_report)
         self.assertIn('주소모음 | 관측 없음 | 5회 · 2회', korea)
         self.assertIn('21.0위', korea)
+        self.assertIn('CTR', korea)
+
+    def test_tracked_brand_keyword_has_28_day_and_weekly_ctr(self):
+        keyword_rows = [
+            {"keys": ["링크위키"], "impressions": 10, "clicks": 4, "position": 4.0},
+            {"keys": ["링크 위키"], "impressions": 10, "clicks": 6, "position": 2.0},
+        ]
+        page_rows = [
+            {"keys": ["링크위키", "https://linkwiki.info/"], "impressions": 20, "clicks": 10},
+        ]
+        brand = monitor.brand_keyword_row(keyword_rows, page_rows)
+        self.assertEqual((brand["impressions"], brand["clicks"], brand["ctr"], brand["position"]),
+                         (20, 10, 50.0, 3.0))
+        self.assertEqual(brand["pages"], ["https://linkwiki.info/"])
+        daily = [
+            {"keys": ["링크위키", "2026-11-04"], "impressions": 5, "clicks": 2, "position": 4},
+            {"keys": ["링크위키", "2026-11-11"], "impressions": 10, "clicks": 5, "position": 2},
+        ]
+        weekly = monitor.core_keyword_weekly_comparison(
+            daily, "2026-11-11", keywords=monitor.TRACKED_KEYWORDS)
+        brand_week = next(item for item in weekly if item["keyword"] == "링크위키")
+        self.assertEqual(brand_week["previous"]["ctr"], 40.0)
+        self.assertEqual(brand_week["recent"]["ctr"], 50.0)
+        rendered = monitor.format_core_keyword_weekly_comparison(
+            daily, "2026-11-11", keywords=monitor.TRACKED_KEYWORDS)
+        self.assertIn("링크위키 | 5회 · 2회 | 10회 · 5회", rendered)
+        self.assertIn("직전 CTR | 최근 CTR", rendered)
+        self.assertIn("40.0% | 50.0%", rendered)
+
+    def test_tracked_query_filters_keep_brand_separate_and_korea_scoped(self):
+        global_filters = monitor.TRACKED_QUERY_FILTERS[0]["filters"]
+        korea_filters = monitor.KOREA_TRACKED_QUERY_FILTERS[0]["filters"]
+        self.assertIn("링크", global_filters[0]["expression"])
+        self.assertIn("위키", global_filters[0]["expression"])
+        self.assertEqual(korea_filters[1], {
+            "dimension": "country", "operator": "equals", "expression": "kor",
+        })
 
     def test_korean_market_api_errors_remain_explicit(self):
         report = monitor.format_core_keyword_weekly_comparison(
@@ -930,6 +967,28 @@ class SearchConsoleMonitorTests(unittest.TestCase):
     def test_core_landing_page_split_handles_absent_rows(self):
         report = monitor.format_core_landing_page_split([])
         self.assertIn('관측된 검색어·페이지 조합 없음', report)
+
+    def test_priority_page_weekly_comparison_includes_ctr_and_blog_articles(self):
+        rows = [
+            {"keys": ["https://linkwiki.info/directory", "2026-11-04"],
+             "impressions": 5, "clicks": 1, "position": 40},
+            {"keys": ["https://linkwiki.info/directory", "2026-11-11"],
+             "impressions": 10, "clicks": 2, "position": 20},
+            {"keys": ["https://linkwiki.info/categories/ai", "2026-11-11"],
+             "impressions": 4, "clicks": 1, "position": 30},
+            {"keys": ["https://linkwiki.info/blog/seo-one/", "2026-11-04"],
+             "impressions": 3, "clicks": 0, "position": 70},
+            {"keys": ["https://linkwiki.info/blog/seo-one/", "2026-11-11"],
+             "impressions": 6, "clicks": 1, "position": 35},
+        ]
+        report = monitor.format_priority_page_weekly_comparison(rows, "2026-11-11")
+        self.assertIn("/directory | 5 / 1 / 20.0% / 40.0위 | 10 / 2 / 20.0% / 20.0위 | +5회", report)
+        self.assertIn("/categories/ai | 관측 없음 | 4 / 1 / 25.0% / 30.0위", report)
+        self.assertIn("블로그 글 전체 (/blog/*)", report)
+        self.assertIn("/blog/seo-one", report)
+        failed = monitor.format_priority_page_weekly_comparison([], "2026-11-11", "HTTPError HTTP 403")
+        self.assertIn("조회 실패", failed)
+        self.assertNotIn("/directory | 관측 없음", failed)
 
 
 if __name__ == '__main__':
