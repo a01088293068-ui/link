@@ -3119,5 +3119,50 @@
     "checked_on": "2026-11-24",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://spainagain.net/",
+    "name": "(스페인)스페인어게인",
+    "source_url": "https://spainagain.net/",
+    "scope": "스페인 여행·유학·생활·취업·비즈니스 정보를 한국어로 안내하는 서비스의 공개 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.qldvision.com.au/",
+    "name": "(호주)퀸즐랜드",
+    "source_url": "https://www.qldvision.com.au/",
+    "scope": "퀸즐랜드 한인 대상 구인구직·주거·생활정보·커뮤니티 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.kncolorado.com/",
+    "name": "(미국)콜로라도 한인",
+    "source_url": "https://www.kncolorado.com/",
+    "scope": "콜로라도 한인 네트워크의 구인구직·주거·지역 커뮤니티 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://forwarding.weebly.com/",
+    "name": "(중동)아랍코리아넷",
+    "source_url": "https://forwarding.weebly.com/",
+    "scope": "아랍권 유학·생활 정보와 한-중동 커뮤니티 소식을 안내하는 아랍코리아넷 공개 페이지 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://mykorean.org/",
+    "name": "(말레이시아)한인회",
+    "source_url": "https://mykorean.org/",
+    "scope": "말레이시아 한인회의 공식 공지·교민동정·구인구직·생활정보 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
