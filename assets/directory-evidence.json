@@ -3074,5 +3074,50 @@
     "checked_on": "2026-11-24",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://replit.com/",
+    "name": "Replit",
+    "source_url": "https://replit.com/",
+    "scope": "AI 기반 앱·웹사이트 생성, 코드 편집 및 배포 기능을 제공하는 Replit 공식 서비스 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://github.com/features/copilot",
+    "name": "GitHub Copilot",
+    "source_url": "https://github.com/features/copilot",
+    "scope": "GitHub Copilot의 AI 코딩 지원·코드 리뷰·개발 워크플로 기능을 안내하는 공식 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.flashscore.com/",
+    "name": "Flashscore",
+    "source_url": "https://www.flashscore.com/",
+    "scope": "축구 등 여러 종목의 라이브 스코어·경기 일정·결과를 제공하는 공식 서비스 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.wtatennis.com/",
+    "name": "WTA Tennis",
+    "source_url": "https://www.wtatennis.com/",
+    "scope": "여자 프로테니스 대회·선수·경기 뉴스와 공식 정보를 제공하는 WTA 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.bbc.com/sport",
+    "name": "BBC Sport",
+    "source_url": "https://www.bbc.com/sport",
+    "scope": "축구·F1·크리켓 등 스포츠 뉴스·경기 결과·영상 정보를 제공하는 BBC Sport 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
