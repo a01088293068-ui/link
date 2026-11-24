@@ -290,3 +290,12 @@ if __name__ == "__main__":
                 self.assertEqual(row["checked_on"], "2026-11-24")
                 self.assertEqual(row["evidence_type"], "service_page")
                 self.assertTrue(row["scope"])
+
+
+    def test_hojuro_korean_australia_information_page_has_first_party_evidence(self):
+        row = self.evidence["https://www.hojuro.com.au/"]
+        self.assertEqual(row["name"], "(호주)호주로")
+        self.assertEqual(row["source_url"], "https://www.hojuro.com.au/")
+        self.assertEqual(row["checked_on"], "2026-11-24")
+        self.assertEqual(row["evidence_type"], "service_page")
+        self.assertIn("호주 정부", row["scope"])
