@@ -193,7 +193,7 @@ class SitemapSubmitTests(unittest.TestCase):
 
     def test_substantive_source_evidence_release_advances_only_affected_sitemap_lastmods(self):
         updates = json.loads((ROOT / "seo/significant-page-updates.json").read_text(encoding="utf-8"))
-        affected = ["/","/directory","/categories/korean","/categories/comics-directory","/categories/webtoon","/categories/ai","/categories/sports","/categories/video"]
+        affected = ["/","/directory","/categories/korean","/categories/comics-directory","/categories/webtoon","/categories/ai","/categories/sports","/categories/video", "/guides/directory-maintenance"]
         for path in affected:
             with self.subTest(path=path):
                 self.assertEqual(updates[path], "2026-11-24")
