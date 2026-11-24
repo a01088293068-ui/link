@@ -1,5 +1,6 @@
 """Offline tests for safe sitemap deployment waits and official GSC submission."""
 import io
+import json
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
@@ -188,6 +189,14 @@ class SitemapSubmitTests(unittest.TestCase):
              patch.object(submit, "submit_sitemap") as send:
             submit.main()
         send.assert_not_called()
+
+
+    def test_substantive_source_evidence_release_advances_only_affected_sitemap_lastmods(self):
+        updates = json.loads((ROOT / "seo/significant-page-updates.json").read_text(encoding="utf-8"))
+        affected = ["/","/directory","/categories/korean","/categories/comics-directory","/categories/webtoon","/categories/ai","/categories/sports","/categories/video", "/guides/directory-maintenance"]
+        for path in affected:
+            with self.subTest(path=path):
+                self.assertEqual(updates[path], "2026-11-24")
 
 
 if __name__ == "__main__":
