@@ -2849,5 +2849,230 @@
     "checked_on": "2026-11-20",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://dailyhongkong.com/",
+    "name": "(홍콩)데일리홍콩",
+    "source_url": "https://dailyhongkong.com/",
+    "scope": "홍콩 뉴스와 교민·생활 정보 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://himongolianews.net/",
+    "name": "(몽골)하이몽골리아",
+    "source_url": "https://himongolianews.net/",
+    "scope": "몽골 현지 뉴스와 한국어 지역 정보 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://berlinreport.com/",
+    "name": "(독일)베를린리포트",
+    "source_url": "https://berlinreport.com/",
+    "scope": "독일 한인 커뮤니티의 생활·유학·구인구직 게시판과 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.joyseattle.com/",
+    "name": "(미국)조이시애틀",
+    "source_url": "https://www.joyseattle.com/",
+    "scope": "시애틀 한인 뉴스와 생활·교육·지역 정보 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://haninherald.com/xe/",
+    "name": "(영국)한인헤럴드",
+    "source_url": "https://haninherald.com/xe/",
+    "scope": "영국 한인 사회 관련 한국어 뉴스 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.weeklyhk.com/",
+    "name": "(홍콩)위클리홍콩",
+    "source_url": "https://www.weeklyhk.com/",
+    "scope": "홍콩 지역 한국어 뉴스와 한인사회 소식 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hanintoday.com.br/",
+    "name": "(브라질)한인투데이",
+    "source_url": "https://www.hanintoday.com.br/",
+    "scope": "브라질 한인 대상 뉴스·생활정보·지역업체 안내 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreadaily.com/",
+    "name": "(미국)미주중앙일보",
+    "source_url": "https://www.koreadaily.com/",
+    "scope": "미국 한인 대상 지역 뉴스·이민·비즈니스 정보 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.uaekorean.com/",
+    "name": "(UAE)UAE 한인회",
+    "source_url": "https://www.uaekorean.com/",
+    "scope": "UAE 한인회 공지·생활정보·구인구직 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.eknews.net/",
+    "name": "(유럽)EKNews",
+    "source_url": "https://www.eknews.net/",
+    "scope": "유럽 한인 뉴스와 국가별 한인기관·단체 안내 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.korea.com.sg/",
+    "name": "(싱가포르)코닷싱",
+    "source_url": "https://www.korea.com.sg/",
+    "scope": "싱가포르 한인 생활상담·취업·교육·주거 정보 게시판의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.koreanoregon.com/",
+    "name": "(미국)오렌곤저널",
+    "source_url": "https://www.koreanoregon.com/",
+    "scope": "미국 오리건 지역 한인 뉴스와 생활정보 페이지의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.adelaidefocus.com/",
+    "name": "(호주)포커스",
+    "source_url": "https://www.adelaidefocus.com/",
+    "scope": "애들레이드 한인 커뮤니티·생활정보·구인구직 게시판의 공개 서비스 및 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.youtube.com/",
+    "name": "유튜브",
+    "source_url": "https://www.youtube.com/",
+    "scope": "동영상 시청·업로드·공유 기능을 제공하는 YouTube 공식 서비스 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.disneyplus.com/",
+    "name": "디즈니+",
+    "source_url": "https://www.disneyplus.com/",
+    "scope": "영화·시리즈 스트리밍 구독 서비스의 공식 안내 페이지와 등록 주소를 대조; 국가별 콘텐츠 제공 범위는 별도 확인 필요",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://vimeo.com/",
+    "name": "Vimeo",
+    "source_url": "https://vimeo.com/",
+    "scope": "동영상 호스팅·공유 및 시청 서비스의 공식 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://tv.apple.com/",
+    "name": "Apple TV",
+    "source_url": "https://tv.apple.com/",
+    "scope": "Apple TV 영상 콘텐츠 탐색·스트리밍 서비스의 공식 페이지와 등록 주소를 대조; 국가별 제공 범위는 별도 확인 필요",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://watch.plex.tv/",
+    "name": "Plex",
+    "source_url": "https://watch.plex.tv/",
+    "scope": "Plex의 무료 광고형 영상 스트리밍 및 개인 미디어 서비스 공식 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.viki.com/",
+    "name": "Rakuten Viki",
+    "source_url": "https://www.viki.com/",
+    "scope": "한국·중국·일본 등 아시아 드라마와 영화 스트리밍 서비스의 공식 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://mubi.com/",
+    "name": "MUBI",
+    "source_url": "https://mubi.com/",
+    "scope": "영화 큐레이션·스트리밍 서비스의 공식 페이지와 등록 주소를 대조; 국가별 제공 작품은 별도 확인 필요",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://pluto.tv/",
+    "name": "Pluto TV",
+    "source_url": "https://pluto.tv/",
+    "scope": "무료 광고형 라이브 TV 채널 및 주문형 영상 서비스의 공식 페이지와 등록 주소를 대조; 국가별 채널은 별도 확인 필요",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.webtoons.com/",
+    "name": "WEBTOON (글로벌)",
+    "source_url": "https://www.webtoons.com/",
+    "scope": "글로벌 웹툰 연재·탐색 서비스의 공식 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://tapas.io/",
+    "name": "Tapas",
+    "source_url": "https://tapas.io/",
+    "scope": "웹코믹·디지털 소설 연재 및 탐색 서비스의 공식 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.tappytoon.com/",
+    "name": "Tappytoon",
+    "source_url": "https://www.tappytoon.com/",
+    "scope": "영문 웹툰·디지털 소설의 공식 유통·탐색 서비스 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
+  },
+  {
+    "url": "https://comics.inkr.com/",
+    "name": "INKR Comics",
+    "source_url": "https://comics.inkr.com/",
+    "scope": "만화·웹툰 디지털 콘텐츠 탐색·열람 서비스의 공식 페이지와 등록 주소를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
