@@ -270,3 +270,23 @@ if __name__ == "__main__":
                 self.assertEqual(row["freshness_days"], 180)
                 self.assertEqual(row["evidence_type"], "service_page")
                 self.assertTrue(row["scope"])
+
+
+    def test_additional_overseas_korean_services_have_live_first_party_evidence(self):
+        expected = {
+            "https://spainagain.net/": "(스페인)스페인어게인",
+            "https://www.qldvision.com.au/": "(호주)퀸즐랜드",
+            "https://www.kncolorado.com/": "(미국)콜로라도 한인",
+            "https://forwarding.weebly.com/": "(중동)아랍코리아넷",
+            "https://mykorean.org/": "(말레이시아)한인회",
+        }
+        self.assertGreaterEqual(len(self.evidence), 351)
+        for url, name in expected.items():
+            with self.subTest(url=url):
+                self.assertIn(url, self.evidence)
+                row = self.evidence[url]
+                self.assertEqual(row["name"], name)
+                self.assertEqual(row["source_url"], url)
+                self.assertEqual(row["checked_on"], "2026-11-24")
+                self.assertEqual(row["evidence_type"], "service_page")
+                self.assertTrue(row["scope"])
