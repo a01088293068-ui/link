@@ -21,7 +21,7 @@ API = "https://www.googleapis.com/webmasters/v3/sites/"
 SCOPES = ["https://www.googleapis.com/auth/webmasters"]
 
 
-def validate_public_sitemap(xml_bytes, required_urls=()):
+def validate_public_sitemap(xml_bytes, required_urls=(), required_lastmods=None):
     """Return canonical URLs; reject bad XML and pages missing from the live deploy."""
     if len(xml_bytes) > 4_000_000:
         raise ValueError("sitemap exceeds expected byte limit")
@@ -45,6 +45,26 @@ def validate_public_sitemap(xml_bytes, required_urls=()):
     for item in tuple(required) + tuple(required_urls):
         if item not in locations:
             raise ValueError("required deployed SEO URL missing: " + item)
+    if required_lastmods:
+        published = {}
+        for node in root.findall(
+            "{http://www.sitemaps.org/schemas/sitemap/0.9}url"
+        ):
+            loc = node.find("{http://www.sitemaps.org/schemas/sitemap/0.9}loc")
+            lastmod = node.find("{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod")
+            if loc is not None and loc.text and lastmod is not None and lastmod.text:
+                published[loc.text] = lastmod.text.strip()[:10]
+        for url, expected_day in required_lastmods.items():
+            actual_day = published.get(url)
+            if not actual_day:
+                raise ValueError("required deployed sitemap lastmod missing: " + url)
+            try:
+                actual = date.fromisoformat(actual_day)
+                expected = date.fromisoformat(expected_day)
+            except (TypeError, ValueError) as error:
+                raise ValueError("invalid required sitemap lastmod: " + url) from error
+            if actual < expected:
+                raise ValueError("deployed sitemap lastmod is stale: " + url)
     return locations
 
 
@@ -81,9 +101,9 @@ def latest_sitemap_lastmod(xml_bytes):
     return max(values).isoformat() if values else None
 
 
-def fetch_deployed_sitemap(expected_urls=(), fetch=urlopen, attempts=10,
-                           delay_seconds=12, sleep=None):
-    """Wait for Pages deployment to publish all source-backed URLs before GSC actions."""
+def fetch_deployed_sitemap(expected_urls=(), expected_lastmods=None, fetch=urlopen,
+                           attempts=10, delay_seconds=12, sleep=None):
+    """Wait for Pages to publish source URLs and their substantive update dates."""
     if attempts < 1 or delay_seconds < 0:
         raise ValueError("invalid sitemap deployment wait configuration")
     sleep = sleep or time.sleep
@@ -91,7 +111,9 @@ def fetch_deployed_sitemap(expected_urls=(), fetch=urlopen, attempts=10,
     for attempt in range(attempts):
         xml_bytes = fetch_xml(fetch)
         try:
-            urls = validate_public_sitemap(xml_bytes, required_urls=expected_urls)
+            urls = validate_public_sitemap(
+                xml_bytes, required_urls=expected_urls,
+                required_lastmods=expected_lastmods)
             return xml_bytes, urls
         except ValueError as error:
             last_error = error
@@ -169,8 +191,13 @@ def main():
     # be valid XML yet omit the new article/category URLs and must never be
     # treated as the current release.
     expected = expected_public_urls()
+    updates_path = Path(__file__).resolve().parents[1] / "seo/significant-page-updates.json"
+    updates = json.loads(updates_path.read_text(encoding="utf-8"))
+    expected_lastmods = {SITE + path: day for path, day in updates.items()}
     print(f"SOURCE_RELEASE_EXPECTS: {len(expected)} category, guide, and article URLs")
-    xml_bytes, urls = fetch_deployed_sitemap(expected)
+    print(f"SOURCE_RELEASE_EXPECTS_LASTMODS: {len(expected_lastmods)} substantive update dates")
+    xml_bytes, urls = fetch_deployed_sitemap(
+        expected, expected_lastmods=expected_lastmods)
     newest_lastmod = latest_sitemap_lastmod(xml_bytes)
     print(f"PUBLIC_SITEMAP_VALID: {len(urls)} canonical URLs")
     print("PUBLIC_SITEMAP_NEWEST_LASTMOD:", newest_lastmod or "not provided")
