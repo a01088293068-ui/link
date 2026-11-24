@@ -3164,5 +3164,14 @@
     "checked_on": "2026-11-24",
     "freshness_days": 180,
     "evidence_type": "service_page"
+  },
+  {
+    "url": "https://www.hojuro.com.au/",
+    "name": "(호주)호주로",
+    "source_url": "https://www.hojuro.com.au/",
+    "scope": "한국어 페이지에서 호주 정부의 Council News·Media Release와 인구주택총조사 등 지역 생활정보 안내를 제공하는 범위를 대조",
+    "checked_on": "2026-11-24",
+    "freshness_days": 180,
+    "evidence_type": "service_page"
   }
 ]
