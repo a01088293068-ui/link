@@ -95,6 +95,30 @@ class SitemapSubmitTests(unittest.TestCase):
         self.assertEqual(fetch.call_count, 2)
         clock.sleep.assert_called_once_with(7)
 
+    def test_wait_for_live_deployment_to_publish_expected_lastmod_even_when_urls_are_unchanged(self):
+        urls = valid_urls()
+        expected_lastmods = {urls[0]: "2026-11-24"}
+        stale = sitemap(urls, {urls[0]: "2026-11-20"})
+        deployed = sitemap(urls, {urls[0]: "2026-11-24"})
+        with patch.object(submit, "fetch_xml", side_effect=[stale, deployed]) as fetch, \
+             patch.object(submit, "time") as clock:
+            xml, actual_urls = submit.fetch_deployed_sitemap(
+                expected_lastmods=expected_lastmods, attempts=3, delay_seconds=9)
+        self.assertEqual(actual_urls, urls)
+        self.assertEqual(fetch.call_count, 2)
+        clock.sleep.assert_called_once_with(9)
+
+    def test_deployment_wait_fails_closed_when_sitemap_lastmod_never_catches_up(self):
+        urls = valid_urls()
+        stale = sitemap(urls, {urls[0]: "2026-11-20"})
+        with patch.object(submit, "fetch_xml", return_value=stale), \
+             patch.object(submit, "time") as clock:
+            with self.assertRaisesRegex(RuntimeError, "lastmod is stale"):
+                submit.fetch_deployed_sitemap(
+                    expected_lastmods={urls[0]: "2026-11-24"},
+                    attempts=3, delay_seconds=5)
+        self.assertEqual(clock.sleep.call_count, 2)
+
     def test_deployment_wait_fails_closed_if_current_release_never_appears(self):
         expected = submit.SITE + "/blog/new-guide/"
         with patch.object(submit, "fetch_xml", return_value=sitemap(valid_urls())), \
