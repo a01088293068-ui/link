@@ -249,3 +249,24 @@ if __name__ == "__main__":
                 self.assertEqual(row["evidence_type"], "service_page")
                 self.assertTrue(row["scope"])
                 self.assertLessEqual(date.fromisoformat(row["checked_on"]), date.today())
+
+
+    def test_additional_ai_and_sports_platforms_have_live_first_party_evidence(self):
+        expected = {
+            "https://replit.com/": "Replit",
+            "https://github.com/features/copilot": "GitHub Copilot",
+            "https://www.flashscore.com/": "Flashscore",
+            "https://www.wtatennis.com/": "WTA Tennis",
+            "https://www.bbc.com/sport": "BBC Sport",
+        }
+        self.assertGreaterEqual(len(self.evidence), 346)
+        for url, name in expected.items():
+            with self.subTest(url=url):
+                self.assertIn(url, self.evidence)
+                row = self.evidence[url]
+                self.assertEqual(row["name"], name)
+                self.assertEqual(row["source_url"], url)
+                self.assertEqual(row["checked_on"], "2026-11-24")
+                self.assertEqual(row["freshness_days"], 180)
+                self.assertEqual(row["evidence_type"], "service_page")
+                self.assertTrue(row["scope"])
