@@ -1119,12 +1119,59 @@ def load_directory_evidence(records):
     return checked
 
 
-def render_directory_catalog_cards(records, evidence=None, today=None):
+
+LINK_STATUS_LABELS = {
+    "head_responded": ("HTTP 응답 확인", "observed"),
+    "get_responded": ("HTTP 응답 확인", "observed"),
+    "redirect_manual_review": ("리디렉션 확인 필요", "review"),
+    "head_blocked_or_unsupported": ("자동 확인 불가", "unknown"),
+    "http_manual_review": ("응답 재확인 필요", "review"),
+    "network_unverified": ("연결 확인 불가", "unknown"),
+    "skipped_invalid_or_nonpublic": ("검사 제외", "unknown"),
+}
+
+
+def load_public_link_status(records, path=None):
+    """Load bounded public HTTP observations; never interpret them as safety scores."""
+    path = path or (ROOT / "assets" / "link-status.json")
+    if not path.is_file():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict) or payload.get("schema") != 1:
+        raise RuntimeError("Invalid public link-status schema")
+    known = {row.get("url") for row in records if isinstance(row, dict)}
+    results = payload.get("results")
+    if not isinstance(results, dict):
+        raise RuntimeError("Public link-status results must be an object")
+    checked = {}
+    from datetime import datetime
+    for url, row in results.items():
+        if url not in known or not isinstance(row, dict):
+            raise RuntimeError("Public link status does not match catalog: " + str(url))
+        status = row.get("status")
+        if status not in LINK_STATUS_LABELS:
+            raise RuntimeError("Unknown public link status: " + str(status))
+        checked_at = row.get("checked_at")
+        if not isinstance(checked_at, str):
+            raise RuntimeError("Public link status missing checked_at: " + url)
+        try:
+            datetime.fromisoformat(checked_at.replace("Z", "+00:00"))
+        except ValueError as error:
+            raise RuntimeError("Invalid public link status timestamp: " + url) from error
+        http = row.get("http")
+        if http is not None and (not isinstance(http, int) or not 100 <= http <= 599):
+            raise RuntimeError("Invalid public link HTTP code: " + url)
+        checked[url] = row
+    return checked
+
+
+def render_directory_catalog_cards(records, evidence=None, today=None, link_status=None):
     """Render crawlable cards directly from the verified catalog."""
     if not isinstance(records, list) or len(records) < 200:
         raise RuntimeError("Verified directory catalog unexpectedly empty")
     cards = []
     evidence = evidence or {}
+    link_status = link_status or {}
     from datetime import date, timedelta
     today = today or date.today()
     seen = set()
@@ -1167,6 +1214,17 @@ def render_directory_catalog_cards(records, evidence=None, today=None):
                     for change in source.get("history", [])
                 ) + '</p>'
             )
+        status_markup = ""
+        observation = link_status.get(url)
+        if observation:
+            label, kind = LINK_STATUS_LABELS[observation["status"]]
+            status_markup = (
+                '<p class="directory-link-observation ' + kind + '"><strong>'
+                + escape(label) + '</strong> · '
+                + escape(observation["checked_at"][:10])
+                + ((' · HTTP ' + str(observation["http"])) if observation.get("http") else '')
+                + '</p>'
+            )
         cards.append(
             '<article class="v6-card" data-source-evidence="' + evidence_flag +
             '" id="' + directory_card_anchor(item) + '"><small>' + escape(category) +
@@ -1175,13 +1233,13 @@ def render_directory_catalog_cards(records, evidence=None, today=None):
             '<a aria-label="' + escape(name, quote=True) +
             ' 사이트 새 창에서 열기" href="' + escape(url, quote=True) +
             '" rel="noopener noreferrer external" target="_blank">사이트 방문 ↗</a>'
-            + evidence_markup +
+            + evidence_markup + status_markup +
             '</article>'
         )
     return "".join(cards)
 
 
-def replace_directory_catalog_cards(html, records, evidence=None):
+def replace_directory_catalog_cards(html, records, evidence=None, link_status=None):
     """Keep published static cards synchronized with the verified catalog."""
     pattern = re.compile(
         r'(?P<open><div class="v6-grid" id="v6-results">)'
@@ -1189,7 +1247,7 @@ def replace_directory_catalog_cards(html, records, evidence=None):
         r'(?P<close></div>)', re.S)
     if len(pattern.findall(html)) != 1:
         raise RuntimeError("Directory static list container changed")
-    rendered = render_directory_catalog_cards(records, evidence)
+    rendered = render_directory_catalog_cards(records, evidence, link_status=link_status)
     return pattern.sub(
         lambda match: match.group("open") + rendered + match.group("close"),
         html, count=1)
@@ -2207,7 +2265,9 @@ def build():
     directory_html = directory_path.read_text(encoding="utf-8")
     directory_html = sync_directory_count(directory_html, len(records))
     directory_evidence = load_directory_evidence(records)
-    directory_html = replace_directory_catalog_cards(directory_html, records, directory_evidence)
+    public_link_status = load_public_link_status(records)
+    directory_html = replace_directory_catalog_cards(
+        directory_html, records, directory_evidence, public_link_status)
     evidence_coverage = round(len(directory_evidence) * 100 / len(records))
     latest_evidence_date = max(
         (row["checked_on"] for row in directory_evidence.values()), default=None)
