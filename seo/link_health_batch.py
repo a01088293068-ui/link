@@ -106,6 +106,47 @@ def observe(url, checker=safe_public_host, opener=None):
     return {"status": "http_manual_review", "http": code, "method": method}
 
 
+
+def merge_public_observations(rows, observed, prior=None, checked_at=None):
+    """Merge a bounded sample into a catalog-keyed public status snapshot."""
+    from datetime import datetime, timezone
+    known = {row.get("url") for row in rows if isinstance(row, dict)}
+    prior = prior or {"schema": 1, "total": len(rows), "results": {}}
+    if not isinstance(prior, dict) or prior.get("schema") != 1:
+        raise ValueError("invalid prior public status schema")
+    results = prior.get("results", {})
+    if not isinstance(results, dict) or any(url not in known for url in results):
+        raise ValueError("prior public status contains an unknown catalog URL")
+    stamp = checked_at or datetime.now(timezone.utc).isoformat()
+    try:
+        datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except (AttributeError, ValueError) as error:
+        raise ValueError("invalid public status timestamp") from error
+    for item, result in observed:
+        url = item.get("url")
+        if url not in known or result.get("status") not in {
+            "head_responded", "get_responded", "redirect_manual_review",
+            "head_blocked_or_unsupported", "http_manual_review",
+            "network_unverified", "skipped_invalid_or_nonpublic",
+        }:
+            raise ValueError("observation does not match a known catalog URL/status")
+        code = result.get("http")
+        if code is not None and (not isinstance(code, int) or not 100 <= code <= 599):
+            raise ValueError("invalid HTTP status code")
+        results[url] = {
+            "status": result["status"],
+            "http": code,
+            "method": result.get("method", "HEAD"),
+            "checked_at": stamp,
+        }
+    return {
+        "schema": 1,
+        "total": len(rows),
+        "updated_at": stamp,
+        "results": results,
+        "note": "HTTP response observations only; not proof of official ownership, safety, or continuous availability.",
+    }
+
 def render(rows, observed, day):
     lines = ["# 링크위키 링크 접속 응답 표본 조사", "",
              "- 관측일(UTC): " + day.isoformat(),
@@ -131,6 +172,7 @@ def main():
     parser.add_argument("--day", default=date.today().isoformat())
     parser.add_argument("--limit", type=int, default=MAX_PER_RUN)
     parser.add_argument("--output", default="seo/link-health-report.md")
+    parser.add_argument("--status-output", default="assets/link-status.json")
     args = parser.parse_args()
     try:
         day = date.fromisoformat(args.day)
@@ -142,6 +184,11 @@ def main():
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(render(rows, observations, day), encoding="utf-8")
+    status_path = Path(args.status_output)
+    prior = json.loads(status_path.read_text(encoding="utf-8")) if status_path.is_file() else None
+    snapshot = merge_public_observations(rows, observations, prior)
+    status_path.parent.mkdir(parents=True, exist_ok=True)
+    status_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     statuses = {}
     for _, result in observations:
         statuses[result["status"]] = statuses.get(result["status"], 0) + 1

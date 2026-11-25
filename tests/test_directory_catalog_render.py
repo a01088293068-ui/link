@@ -80,5 +80,50 @@ class CatalogRenderTests(unittest.TestCase):
             render_directory_catalog_cards(items)
 
 
+    def test_public_http_observations_are_rendered_with_clear_non_security_labels(self):
+        from build import load_public_link_status
+        from tempfile import TemporaryDirectory
+        from datetime import datetime, timezone
+        import json
+        with TemporaryDirectory() as folder:
+            path = Path(folder) / "link-status.json"
+            url = self.records[0]["url"]
+            checked_at = datetime.now(timezone.utc).isoformat()
+            path.write_text(json.dumps({
+                "schema": 1, "results": {
+                    url: {"status": "head_responded", "http": 200,
+                          "method": "HEAD", "checked_at": checked_at}
+                }
+            }), encoding="utf-8")
+            statuses = load_public_link_status(self.records, path)
+            html = render_directory_catalog_cards(self.records, link_status=statuses)
+            self.assertIn("HTTP 응답 확인", html)
+            self.assertIn("HTTP 200", html)
+
+    def test_public_http_observations_reject_unknown_url_and_status(self):
+        from build import load_public_link_status
+        from tempfile import TemporaryDirectory
+        import json
+        with TemporaryDirectory() as folder:
+            path = Path(folder) / "link-status.json"
+            path.write_text(json.dumps({"schema": 1, "results": {
+                "https://unlisted.example/": {
+                    "status": "head_responded", "http": 200,
+                    "checked_at": "2026-11-25T00:00:00+00:00"
+                }
+            }}), encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "does not match catalog"):
+                load_public_link_status(self.records, path)
+            path.write_text(json.dumps({"schema": 1, "results": {
+                self.records[0]["url"]: {
+                    "status": "safe", "http": 200,
+                    "checked_at": "2026-11-25T00:00:00+00:00"
+                }
+            }}), encoding="utf-8")
+            with self.assertRaisesRegex(RuntimeError, "Unknown public link status"):
+                load_public_link_status(self.records, path)
+
+
+
 if __name__ == "__main__":
     unittest.main()

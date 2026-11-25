@@ -12,7 +12,7 @@ on:
       - '.github/workflows/catalog-link-health.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: linkwiki-catalog-link-observations
@@ -24,6 +24,8 @@ jobs:
     timeout-minutes: 9
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -32,6 +34,20 @@ jobs:
       - name: Inspect one bounded batch of public catalogue domains
         if: github.event_name != 'push'
         run: python3 -B seo/link_health_batch.py --limit 36
+      - name: Publish bounded observations to the public directory
+        if: github.event_name != 'push'
+        run: python3 -B seo/publish_link_health.py --limit 36
+      - name: Commit public observation snapshot
+        if: github.event_name != 'push'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/link-status.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish bounded directory HTTP observations'
+            bash seo/push_with_rebase.sh
+          fi
       - name: Retain report for manual catalog review
         if: github.event_name != 'push'
         uses: actions/upload-artifact@v4
