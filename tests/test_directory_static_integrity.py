@@ -37,5 +37,16 @@ class DirectoryCardTests(unittest.TestCase):
         self.assertLess(len(js.encode("utf-8")), 10000)
 
 
+    def test_address_domain_checker_is_present_and_explains_its_limits(self):
+        html = (ROOT / "dist/directory.html").read_text(encoding="utf-8")
+        js = (ROOT / "dist/assets/address-domain-check.js").read_text(encoding="utf-8")
+        self.assertIn('id="lw-address-check"', html)
+        self.assertIn('id="lw-address-check-form"', html)
+        self.assertIn('assets/address-domain-check.js', html)
+        self.assertIn("실시간 접속·피싱·악성코드 검사는 아닙니다", html)
+        self.assertIn("운영 주체", js)
+        self.assertIn("안전성을 인증하지 않습니다", js)
+
+
 if __name__ == "__main__":
     unittest.main()
