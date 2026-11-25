@@ -209,5 +209,11 @@ class HomeIntentTests(unittest.TestCase):
             self.assertNotIn("링크위키 바로가기", content)
 
 
+    def test_homepage_discloses_and_links_to_catalog_address_checker(self):
+        source = (Path(__file__).resolve().parents[1] / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/directory#lw-address-check"', source)
+        self.assertIn("붙여넣은 주소 대조", source)
+
+
 if __name__ == "__main__":
     unittest.main()
