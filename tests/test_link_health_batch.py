@@ -87,5 +87,28 @@ class LinkHealthBatchTests(unittest.TestCase):
         self.assertNotIn("정상 사이트로 인증",text)
 
 
+    def test_public_observations_merge_only_known_catalog_rows(self):
+        from seo.link_health_batch import merge_public_observations
+        rows = [{"name": "Example", "url": "https://example.org/"}]
+        observed = [(rows[0], {"status": "head_responded", "http": 200, "method": "HEAD"})]
+        payload = merge_public_observations(rows, observed, checked_at="2026-11-25T00:00:00+00:00")
+        self.assertEqual(payload["total"], 1)
+        self.assertEqual(payload["results"][rows[0]["url"]]["http"], 200)
+        self.assertIn("not proof", payload["note"])
+
+    def test_public_observations_reject_unknown_urls_and_invalid_http_codes(self):
+        from seo.link_health_batch import merge_public_observations
+        rows = [{"name": "Example", "url": "https://example.org/"}]
+        with self.assertRaisesRegex(ValueError, "known catalog"):
+            merge_public_observations(rows, [({"url": "https://elsewhere.example/"}, {
+                "status": "head_responded", "http": 200
+            })])
+        with self.assertRaisesRegex(ValueError, "HTTP status"):
+            merge_public_observations(rows, [(rows[0], {
+                "status": "head_responded", "http": 999
+            })])
+
+
+
 if __name__ == "__main__":
     unittest.main()
