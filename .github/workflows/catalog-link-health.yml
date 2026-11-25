@@ -9,7 +9,6 @@ on:
     paths:
       - 'seo/link_health_batch.py'
       - 'tests/test_link_health_batch.py'
-      - 'seo/publish_link_health.py'
       - '.github/workflows/catalog-link-health.yml'
 
 permissions:
