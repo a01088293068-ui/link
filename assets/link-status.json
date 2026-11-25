@@ -1,0 +1,224 @@
+{
+  "schema": 1,
+  "total": 365,
+  "updated_at": "2026-11-25T03:26:48.212939+00:00",
+  "results": {
+    "https://www.saramin.co.kr/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "GET",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.sbs.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.schoolinfo.go.kr/Main.do": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.sedaily.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.slrclub.com/": {
+      "status": "network_unverified",
+      "http": null,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.sofascore.com/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.sports.or.kr/sports/main/main.do": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.ssg.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.startpage.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.tappytoon.com/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.teamblind.com/kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.teps.or.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.tmapmobility.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.tmoney.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.todayhumor.co.kr/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.toomics.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.topdigital.com.au/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.topik.go.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.tossbank.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.tving.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.uaekorean.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.uefa.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.viki.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.vinahanin.com/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.wavve.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.weather.go.kr/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.webtoonguide.com/ko/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.webtoons.com/": {
+      "status": "redirect_manual_review",
+      "http": 301,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.weeklyhk.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.wetax.go.kr/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.wolframalpha.com/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.wooribank.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.work24.go.kr/": {
+      "status": "network_unverified",
+      "http": null,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.workingus.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.wtatennis.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    },
+    "https://www.yahoo.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-25T03:26:48.212939+00:00"
+    }
+  },
+  "note": "HTTP response observations only; not proof of official ownership, safety, or continuous availability."
+}
