@@ -32,13 +32,8 @@ jobs:
       - name: Verify safe bounded HTTP observations (offline)
         run: python3 -B -m unittest discover -s tests -p 'test_link_health_batch.py' -v
       - name: Inspect one bounded batch of public catalogue domains
-        if: github.event_name != 'push'
         run: python3 -B seo/link_health_batch.py --limit 36
-      - name: Publish bounded observations to the public directory
-        if: github.event_name != 'push'
-        run: python3 -B seo/publish_link_health.py --limit 36
       - name: Commit public observation snapshot
-        if: github.event_name != 'push'
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
@@ -49,7 +44,6 @@ jobs:
             bash seo/push_with_rebase.sh
           fi
       - name: Retain report for manual catalog review
-        if: github.event_name != 'push'
         uses: actions/upload-artifact@v4
         with:
           name: catalog-link-health
