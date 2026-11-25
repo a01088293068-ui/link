@@ -220,7 +220,7 @@ class SitemapSubmitTests(unittest.TestCase):
         affected = ["/","/directory","/categories/korean","/categories/comics-directory","/categories/webtoon","/categories/ai","/categories/sports","/categories/video", "/guides/directory-maintenance"]
         for path in affected:
             with self.subTest(path=path):
-                self.assertEqual(updates[path], "2026-11-24")
+                self.assertEqual(updates[path], "2026-11-25")
 
 
 if __name__ == "__main__":
