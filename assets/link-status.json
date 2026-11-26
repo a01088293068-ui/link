@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "total": 365,
-  "updated_at": "2026-11-25T15:30:51.098316+00:00",
+  "updated_at": "2026-11-26T15:04:30.931938+00:00",
   "results": {
     "https://www.saramin.co.kr/": {
       "status": "redirect_manual_review",
@@ -218,6 +218,222 @@
       "http": 200,
       "method": "HEAD",
       "checked_at": "2026-11-25T15:30:51.098316+00:00"
+    },
+    "https://www.yes24.com/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://www.yna.co.kr/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://www.youtube.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://www.ytn.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://yandex.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://yeyak.seoul.go.kr/web/main.do": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://zdnet.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://zigzag.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://zum.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://aistudio.google.com/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://arca.live/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://bank.shinhan.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://banking.nonghyup.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://bbs.ruliweb.com/": {
+      "status": "network_unverified",
+      "http": null,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://bemypet.kr/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 429,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://berlinreport.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://bizinfo.go.kr/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://brunch.co.kr/": {
+      "status": "network_unverified",
+      "http": null,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://cafe.naver.com/joonggonara": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://channel.cafe/tabs/home": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://chatgpt.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://chzzk.naver.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://class101.net/": {
+      "status": "redirect_manual_review",
+      "http": 307,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://claude.ai/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://clovanote.naver.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://comento.kr/job-questions": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://comic.naver.com/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://comics.inkr.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://copilot.com/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://cursor.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://dailyhongkong.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://dart.fss.or.kr/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://data.krx.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://display.wconcept.co.kr/rn/women": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://dlibrary.go.kr/": {
+      "status": "http_manual_review",
+      "http": 417,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://duckduckgo.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-26T15:04:30.931938+00:00"
     }
   },
   "note": "HTTP response observations only; not proof of official ownership, safety, or continuous availability."
