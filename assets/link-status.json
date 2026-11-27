@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "total": 365,
-  "updated_at": "2026-11-26T15:04:30.931938+00:00",
+  "updated_at": "2026-11-27T14:57:53.571782+00:00",
   "results": {
     "https://www.saramin.co.kr/": {
       "status": "redirect_manual_review",
@@ -434,6 +434,222 @@
       "http": 200,
       "method": "HEAD",
       "checked_at": "2026-11-26T15:04:30.931938+00:00"
+    },
+    "https://ecfs.scourt.go.kr/": {
+      "status": "network_unverified",
+      "http": null,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://ecos.bok.or.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://ecrm.police.go.kr/minwon/main": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://elevenlabs.io/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://encykorea.aks.ac.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://etk.srail.kr/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://everytime.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://exam.toeic.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://fastcampus.co.kr/": {
+      "status": "redirect_manual_review",
+      "http": 307,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://fine.fss.or.kr/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://finlife.fss.or.kr/finlife/main/main.do?menuNo=700000": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://flyasiana.com/": {
+      "status": "http_manual_review",
+      "http": 503,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://forwarding.weebly.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://gall.dcinside.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://gamma.app/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://gemini.google.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://github.com/features/copilot": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://haninherald.com/xe/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://health.kdca.go.kr/healthinfo/biz/health/intrcnYard/nationHlthinsPortalMain.do": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://himongolianews.net/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://housamo.com/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://huggingface.co/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://ideogram.ai/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://imnews.imbc.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://japaninfo.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://job.alio.go.kr/main.do": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://job.cleaneye.go.kr/": {
+      "status": "network_unverified",
+      "http": null,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://jumpit.saramin.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://kin.naver.com/": {
+      "status": "get_responded",
+      "http": 200,
+      "method": "GET",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://klpga.co.kr/": {
+      "status": "redirect_manual_review",
+      "http": 302,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://kopis.or.kr/por/main/main.do": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://korean.visitkorea.or.kr/": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://koreanksa.com/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://koreanpress.net/index_kor.php": {
+      "status": "head_blocked_or_unsupported",
+      "http": 403,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://kosis.kr/index/index.do": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
+    },
+    "https://kovo.co.kr/": {
+      "status": "head_responded",
+      "http": 200,
+      "method": "HEAD",
+      "checked_at": "2026-11-27T14:57:53.571782+00:00"
     }
   },
   "note": "HTTP response observations only; not proof of official ownership, safety, or continuous availability."
