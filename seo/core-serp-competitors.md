@@ -1,45 +1,45 @@
 # 링크위키 핵심 키워드 검색 결과 경쟁 페이지 관찰
 
-측정일: 2026-11-27
+측정일: 2026-11-28
 데이터: 한국어·한국 지역 검색 API 자연 검색 표본. 검색 결과는 시점과 위치에 따라 달라질 수 있습니다.
 기록 대상: 주소모음·링크모음·사이트모음 각 검색 결과의 앞쪽 최대 5개 외부 페이지.
 광고·검색량·실제 트래픽·도메인 권위 등은 측정하지 않았습니다.
 
 ## 주소모음
 
-- 검사한 자연 검색 결과: 27/30개 · 표본 범위: partial
+- 검사한 자연 검색 결과: 28/30개 · 표본 범위: partial
 
 | 표본 순서 | 검색 결과 제목 | URL |
 |---:|---|---|
-| 1 | 여기여 - 인기사이트 주소찾기 및 링크모음 공식 평생주소 | https://gae9.com/ |
-| 2 | 주소모음 링크모음 \| 최신 주소 바로가기 \| 주소온길공식 | https://send2u.net/ |
-| 3 | 주소찾기 사이트주소 · 최신링크 활용 안내 [ 레이더 주소모음 ] | https://www.youtube.com/watch?v=8L-bhQLpJ-s |
-| 4 | 주소온길 주소모음 필요한 사이트를 분야별로 살펴보세요 2026 최신주소 확인 방법 링크 ... | https://www.youtube.com/watch?v=NLtDTB-785U |
-| 5 | 여기여 \| 주소모음·링크모음과 사이트 검색 | https://ygy00.com/ |
+| 1 | 주소핫: 주소모음·링크모음 \| 최신 사이트 주소 안내 | https://xn--9y2bn6ltterpcb2a460ayxi.com/ |
+| 2 | 여기여 - 인기사이트 주소찾기 및 링크모음 공식 평생주소 | https://gae9.com/ |
+| 3 | 주소월드 \| 공식주소·링크모음·커뮤니티 안내 | https://wd8282.com/ |
+| 4 | 듀아커: 링크모음 쓸모 있는 주소모음 골라 담은 서랍 | https://duaker.com/ |
+| 5 | 무료링크모음 별주소の検索結果 | https://kids.yahoo.co.jp/search?p=%EB%AC%B4%EB%A3%8C%EB%A7%81%ED%81%AC%EB%AA%A8%EC%9D%8C%20%EB%B3%84%EC%A3%BC%EC%86%8C&rs=0 |
 
 ## 링크모음
 
-- 검사한 자연 검색 결과: 29/30개 · 표본 범위: partial
+- 검사한 자연 검색 결과: 25/30개 · 표본 범위: partial
 
 | 표본 순서 | 검색 결과 제목 | URL |
 |---:|---|---|
-| 1 | 여기여 - 인기사이트 주소찾기 및 링크모음 공식 평생주소 | https://gae9.com/ |
-| 2 | 2026 주소모음 – 자주 쓰는 사이트 공식 주소 바로가기 - 주소나라 - 주소모음 · 최신 공식 링크모음 바로가기 안내 2026 \| 여기여 | https://juku-elite.com/ |
-| 3 | 듀아커: 링크모음 쓸모 있는 주소모음 골라 담은 서랍 | https://duaker.com/ |
-| 4 | 링크모음 어디서 볼까? \| 주소온길 | https://www.youtube.com/watch?v=cKhcnv_qZsA |
-| 5 | 주소모음 · 링크모음 동맹주소 \| 주소곰 · 빠링 공식 주소 | https://xn--2q1b59ih8gu9h.com/ |
+| 1 | 주소모음·링크모음 \| 최신 사이트 주소 안내 \| 주소핫 | https://xn--9y2bn6ltterpcb2a460ayxi.com/ |
+| 2 | 주소모음·링크모음 활용법 \| 주소온길 | https://www.youtube.com/shorts/-vLoYO9KCxs |
+| 3 | 주소온길 - 링크모음 어디서 볼까? | https://www.youtube.com/watch?v=TVstJ_5W6-E |
+| 4 | 주소모음 링크모음 \| 최신 주소 바로가기 \| 주소온길공식 | https://send2u.net/ |
+| 5 | 주소찾기 사이트주소 · 최신링크 활용 안내 [ 레이더 주소모음 ] | https://www.youtube.com/watch?v=8L-bhQLpJ-s |
 
 ## 사이트모음
 
-- 검사한 자연 검색 결과: 26/30개 · 표본 범위: partial
+- 검사한 자연 검색 결과: 24/30개 · 표본 범위: partial
 
 | 표본 순서 | 검색 결과 제목 | URL |
 |---:|---|---|
-| 1 | 여기여 - 인기사이트 주소찾기 및 링크모음 공식 평생주소 | https://gae9.com/ |
-| 2 | 주소찾기 사이트주소 · 최신링크 활용 안내 [ 레이더 주소모음 ] | https://www.youtube.com/watch?v=8L-bhQLpJ-s |
-| 3 | 링크모음사이트 | https://sites.google.com/view/linkmoumssite/ |
-| 4 | 주소모음 링크모음 \| 최신 주소 바로가기 \| 주소온길공식 | https://send2u.net/ |
-| 5 | 링크다모아 \| 링크모아 링크모음 주소콘 주소킹 주소가이드 바로가기 | https://linkdamoa24.com/ |
+| 1 | 주소모음·링크모음 \| 최신 사이트 주소 안내 \| 주소핫 | https://xn--9y2bn6ltterpcb2a460ayxi.com/ |
+| 2 | 여기여 - 인기사이트 주소찾기 및 링크모음 공식 평생주소 | https://gae9.com/ |
+| 3 | 여기여 \| 주소모음·링크모음과 사이트 검색 | https://ygy00.com/ |
+| 4 | 주소아트 \| 링크모음 · 주소모음 · 사이트모음 | https://juso4.net/ |
+| 5 | Most Visited Websites in South Korea | https://www.youtube.com/shorts/sUcl00GFSqU |
 
 상위 페이지의 제목·구성·검색 의도를 실제로 확인한 뒤 링크위키의 등록 사이트 탐색 기능과 차별화할 점을 판단하세요.
 이 표는 자동으로 획득한 검색 제목·URL에 한정하며 다른 사이트의 콘텐츠를 복사하거나 가짜 링크를 만들기 위한 자료가 아닙니다.
